@@ -8,6 +8,10 @@
  */
 
 
+#include "Base.hpp"
+#include "Debug.hpp"
+
+
 namespace dolos
 {
 
