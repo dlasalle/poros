@@ -8,6 +8,12 @@
  */
 
 
+#ifndef DOLOS_SRC_GRAPH_HPP
+#define DOLOS_SRC_GRAPH_HPP
+
+
+#include "Base.hpp"
+
 namespace dolos
 {
 
@@ -54,3 +60,6 @@ class Graph
 };
 
 }
+
+
+#endif

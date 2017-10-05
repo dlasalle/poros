@@ -7,6 +7,11 @@
  * @date 2017-10-04
  */
 
+
+#ifndef DOLOS_SRC_BASE_HPP
+#define DOLOS_SRC_BASE_HPP
+
+
 #include "dolos.h"
 
 namespace dolos
@@ -33,3 +38,6 @@ wgt_type const NULL_WGT = static_cast<wgt_type>(-1);
 pid_type const NULL_PID = static_cast<pid_type>(-1);
 
 }
+
+
+#endif

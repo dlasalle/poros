@@ -8,8 +8,14 @@
  */
 
 
+#ifndef DOLOS_SRC_PARAMETERS_HPP
+#define DOLOS_SRC_PARAMETERS_HPP
+
+
+#include <vector>
+#include <string>
 #include <stdexcept>
-#include "dolos.h"
+#include "Base.hpp"
 
 
 namespace dolos
@@ -17,7 +23,7 @@ namespace dolos
 
 
 class InvalidParametersException :
-  public runtime_error
+  public std::runtime_error
 {
   public:
     InvalidParametersException(
@@ -50,3 +56,5 @@ class Parameters
 };
 
 }
+
+#endif

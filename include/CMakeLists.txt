@@ -1,0 +1,2 @@
+INSTALL(FILES dolos.h DESTINATION include)
+

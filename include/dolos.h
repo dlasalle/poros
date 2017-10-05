@@ -8,9 +8,22 @@
  */
 
 
+
+#ifndef DOLOS_H
+#define DOLOS_H
+
+
+#include <cstdint>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+typedef uint32_t dolos_vtx_type;
+typedef uint64_t dolos_adj_type;
+typedef uint32_t dolos_wgt_type;
+typedef uint32_t dolos_pid_type;
 
 /**
  * @brief Partition a graph using recursive bisection.
@@ -31,17 +44,20 @@ extern "C" {
  */
 int DOLOS_PartGraphRecursive(
     dolos_vtx_type numVertices,
-    dolos_adj_type edgePrefix,
-    dolos_vtx_type edgeList,
-    dolos_wgt_type vertexWeights,
-    dolos_wgt_type edgeWeights,
+    dolos_adj_type const * edgePrefix,
+    dolos_vtx_type const * edgeList,
+    dolos_wgt_type const * vertexWeights,
+    dolos_wgt_type const * edgeWeights,
     dolos_pid_type numPartitions,
-    double targetPartitionFractions,
+    double const * targetPartitionFractions,
     double imbalanceTolerance,
     dolos_wgt_type * totalCutEdgeWeight,
     dolos_pid_type * partitionAssignment);
 
 
+
 #ifdef __cplusplus
 }
+#endif
+
 #endif

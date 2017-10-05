@@ -8,6 +8,10 @@
  */
 
 
+#ifndef DOLOS_SRC_MULTILEVELSTACK_HPP
+#define DOLOS_SRC_MULTILEVELSTACK_HPP
+
+
 #include "Graph.hpp"
 #include "Partitioning.hpp"
 
@@ -29,6 +33,8 @@ class MultilevelStack
     void coarsen();
 
     void uncoarsen();
-}
+};
 
 }
+
+#endif

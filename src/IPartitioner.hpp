@@ -7,8 +7,12 @@
  * @date 2017-10-04
  */
 
+#ifndef DOLOS_SRC_IPARTITIONER_HPP
+#define DOLOS_SRC_IPARTITIONER_HPP
+
 
 #include "Partitioning.hpp"
+#include "Graph.hpp"
 
 namespace dolos
 {
@@ -31,7 +35,10 @@ class IPartitioner
     virtual Partitioning execute(
         Graph const * graph) const = 0;
 
-}
+};
 
 
 }
+
+
+#endif

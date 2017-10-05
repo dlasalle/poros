@@ -8,6 +8,10 @@
  */
 
 
+#include "dolos.h"
+#include "Base.hpp"
+#include "Parameters.hpp"
+
 using namespace dolos;
 
 extern "C" {
@@ -20,10 +24,10 @@ int DOLOS_PartGraphRecursive(
     wgt_type const * const vertexWeights,
     wgt_type const * const edgeWeights,
     pid_type const numPartitions,
-    double const const * const targetPartitionFractions,
+    double const * const targetPartitionFractions,
     double const imbalanceTolerance,
     wgt_type * const totalCutEdgeWeight,
-    pid_type * const partitionAssignment);
+    pid_type * const partitionAssignment)
 {
   // create a parameters object
   Parameters params(options);

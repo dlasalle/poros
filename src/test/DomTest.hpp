@@ -1,8 +1,8 @@
 /**
  * @file DomTest.hpp
  * @brief Top level header for DomTest 
- * @author Dominique LaSalle <wildriver@domnet.org>
- * Copyright 2015
+ * @author Dominique LaSalle <dominique@solidlake.com>
+ * Copyright 2015-2017
  * @version 1
  * @date 2015-08-22
  */
@@ -78,6 +78,9 @@
   void _unittest_ ## CLASS ## _ ## TEST ## _func(void) \
 
 
+/******************************************************************************
+* CLASSES AND TYPES ***********************************************************
+******************************************************************************/
 
 namespace DomTest
 {
