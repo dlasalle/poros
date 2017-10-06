@@ -10,7 +10,10 @@
 
 #include "dolos.h"
 #include "Base.hpp"
+#include "ConstantGraph.hpp"
+#include "Partitioning.hpp"
 #include "Parameters.hpp"
+#include "RecursiveBisectionPartitioner.hpp"
 
 using namespace dolos;
 
@@ -24,21 +27,20 @@ int DOLOS_PartGraphRecursive(
     wgt_type const * const vertexWeights,
     wgt_type const * const edgeWeights,
     pid_type const numPartitions,
-    double const * const targetPartitionFractions,
-    double const imbalanceTolerance,
+    dolos_options_struct const * const options,
     wgt_type * const totalCutEdgeWeight,
     pid_type * const partitionAssignment)
 {
   // create a parameters object
-  Parameters params(options);
+  Parameters params(numPartitions, options);
 
   // assemble a new graph
-  Graph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, edgeList, \
-      vertexWeights, edgeWeights);
+  ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
+      edgeList, vertexWeights, edgeWeights);
 
   // partition the graph
-  RecursiveBisector partitioner(params);
-  Partitioning part = partitioner.execute(base);
+  RecursiveBisectionPartitioner partitioner(&params);
+  Partitioning part = partitioner.execute(&baseGraph);
 
   // output data
   part.output(totalCutEdgeWeight, partitionAssignment);

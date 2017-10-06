@@ -1,5 +1,5 @@
 /**
- * @file RandomPartitioner.cpp
+ * @file RandomBisector.cpp
  * @brief Implementation of RandomParittioner. 
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
@@ -9,7 +9,7 @@
 
 
 #include <algorithm>
-#include "IPartitioner.hpp"
+#include "IBisector.hpp"
 #include "Parameters.hpp"
 
 
@@ -29,15 +29,14 @@ double FRACTION_SUM_TOLERANCE = 0.001;
 * CONSTRUCTORS ****************************************************************
 ******************************************************************************/
 
-RandomPartitioner::RandomPartitioner(
+RandomBisector::RandomBisector(
     Parameters const * params) :
-  m_numParts(params->getNumPartitions()),
   m_targetPartitionFractions(params->getTargetPartitionFractions())
 {
   // verify that input is reasonable
-  if (m_numParts <= 0) {
+  if (m_numParts == 2) {
     throw InvalidParametersException( \
-        std::string("Invalid number of partitions: ") + \
+        std::string("Invalid number of partitions for a bisection: ") + \
         std::to_string(m_numParts));
   }
 
@@ -59,7 +58,7 @@ RandomPartitioner::RandomPartitioner(
   }
 }
 
-RandomPartitioner::~RandomPartitioner()
+RandomBisector::~RandomBisector()
 {
   // do nothing
 }

@@ -12,7 +12,7 @@
 #define DOLOS_SRC_MULTILEVELSTACK_HPP
 
 
-#include "Graph.hpp"
+#include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
 
 
@@ -24,7 +24,7 @@ class MultilevelStack
 {
   public:
     MultilevelStack(
-        Graph const * base);
+        ConstantGraph const * base);
 
     Graph const * getTop() const;
 

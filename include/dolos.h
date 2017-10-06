@@ -25,18 +25,58 @@ typedef uint64_t dolos_adj_type;
 typedef uint32_t dolos_wgt_type;
 typedef uint32_t dolos_pid_type;
 
+
+typedef struct {
+  /**
+   * @brief The fraction of imbalance to accept (i.e., 0.03 allows for one
+   * partition to be 3% higher than its target).
+   */
+  double imbalanceTolerance;
+
+  /**
+   * @brief The fraction of weight for each partition.
+   * If this is null, then each partition will be of equal weight, otherwise it
+   * must be of length of the number of partitions and sum to 1.0.
+   */
+  double * targetPartitionFractions;
+
+  /**
+   * @brief The random seed to use for generating random numbers.
+   */
+  unsigned int randomSeed;
+
+  /**
+   * @brief The maximum number of refinement iterations to perform. A value of
+   * -1 will result in there being no maximum (any other negative value will
+   * result in an error). A value of 0 will prevent refinement from being
+   * performed.
+   */
+  int refinementIterations;
+
+} dolos_options_struct;
+
+
+/**
+ * @brief Generate the default options to execute Dolos with.
+ *
+ * @return The default options.
+ */
+dolos_options_struct DOLOS_defaultOptions(void);
+
+
 /**
  * @brief Partition a graph using recursive bisection.
  *
  * @param numVertices The number of vertices in the graph.
  * @param edgePrefix The prefixsum of the edge list (xadj or rowptr).
  * @param edgeList The list of edge endpoints (adjncy or rowind).
- * @param vertexWeights The list of vertex weights.
- * @param edgeWeights The weight associated with each edge.
+ * @param vertexWeights The list of vertex weights (if null, every vertex will
+ * be assigned a weight of 1).
+ * @param edgeWeights The weight associated with each edge (if null, every
+ * edge will be assigned a weight of 1).
  * @param numPartitions The number of partitions to create.
- * @param targetPartitionFractions The fraction of weight for each partition.
- * If this is nullptr, then each partition will be of equal weight.
- * @param imbalanceTolerance The level of imbalance tolerance to accept.
+ * @param options The list of options to use. This may be null when the
+ * defaults are desired.
  * @param totalCutEdgeWeight The total weight of cut edges (output).
  * @param partitionAssignment The partition assignment of each vertex.
  *
@@ -49,8 +89,7 @@ int DOLOS_PartGraphRecursive(
     dolos_wgt_type const * vertexWeights,
     dolos_wgt_type const * edgeWeights,
     dolos_pid_type numPartitions,
-    double const * targetPartitionFractions,
-    double imbalanceTolerance,
+    dolos_options_struct const * options,
     dolos_wgt_type * totalCutEdgeWeight,
     dolos_pid_type * partitionAssignment);
 

@@ -1,6 +1,6 @@
 /**
- * @file RandomPartitioner.hpp
- * @brief A class for creating a random partition.
+ * @file RandomBisector.hpp
+ * @brief A class for creating a random bisection.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
  * @version 1
@@ -8,12 +8,16 @@
  */
 
 
+#ifndef DOLOS_SRC_RANDOMBISECTOR_HPP
+#define DOLOS_SRC_RANDOMBISECTOR_HPP
+
+#include "IBisector.hpp"
 
 namespace dolos
 {
 
-class RandomPartitioner :
-  public IPartitioner
+class RandomBisector :
+  public IBisector
 {
   public:
     /**
@@ -21,13 +25,13 @@ class RandomPartitioner :
      *
      * @param params The parameters.
      */
-    RandomPartitioner(
+    RandomBisector(
         Parameters const * params);
 
     /**
      * @brief Destructor.
      */
-    virtual ~RandomPartitioner();
+    virtual ~RandomBisector();
 
     /**
      * @brief Randomly assign vertices to partitions.
@@ -37,12 +41,14 @@ class RandomPartitioner :
      * @return The assigned partitioning.
      */
     virtual Partitioning execute(
-        Graph const * graph) const override;
+        ConstantGraph const * graph) const override;
 
   private:
-    pid_type m_numParts;
     std::vector<double> m_targetPartitionFractions;
 };
 
 
 }
+
+
+#endif

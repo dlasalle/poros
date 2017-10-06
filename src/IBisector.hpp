@@ -1,14 +1,14 @@
 /**
- * @file IPartitioner.hpp
- * @brief The Partitioner interface.
+ * @file IBisector.hpp
+ * @brief The Bisector interface.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
  * @version 1
  * @date 2017-10-04
  */
 
-#ifndef DOLOS_SRC_IPARTITIONER_HPP
-#define DOLOS_SRC_IPARTITIONER_HPP
+#ifndef DOLOS_SRC_IBISECTOR_HPP
+#define DOLOS_SRC_IBISECTOR_HPP
 
 
 #include "Partitioning.hpp"
@@ -17,13 +17,13 @@
 namespace dolos
 {
 
-class IPartitioner
+class IBisector
 {
   public:
     /**
     * @brief Virtual destructor to prevent memory leaks.
     */
-    virtual ~IPartitioner() 
+    virtual ~IBisector() 
     {
       // do nothing
     }

@@ -8,6 +8,11 @@
  */
 
 
+#ifndef DOLOS_SRC_PARTITIONING_HPP
+#define DOLOS_SRC_PARTITIONING_HPP
+
+
+#include <vector>
 #include "Base.hpp"
 #include "Debug.hpp"
 
@@ -20,7 +25,7 @@ class Partitioning
   public:
     struct partition_struct {
       wgt_type weight;
-    }
+    };
 
     /**
      * @brief Create a new partitioning with the given number of partitions.
@@ -73,7 +78,7 @@ class Partitioning
         pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
-      ASSERT_LESS(partition, m_parts.size());
+      ASSERT_LESS(partition, m_partitions.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
 
       m_partitions[partition].weight += weight;
@@ -91,11 +96,11 @@ class Partitioning
     inline void move(
         vtx_type const vertex,
         wgt_type const weight,
-        pid_tyep const partition) noexcept
+        pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
-      ASSERT_LESS(partition, m_parts.size());
-      ASSERT_NOT_EQUAL(getAssignment(vertex), NULL_PID);
+      ASSERT_LESS(partition, m_partitions.size());
+      ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
 
       // remove from previous partition
       pid_type const current = getAssignment(vertex);
@@ -118,7 +123,10 @@ class Partitioning
         wgt_type const weight) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
-      ASSERT_NOT_EQUAL(getAssignment(vertex), NULL_PID);
+
+      pid_type const current = getAssignment(vertex);
+
+      ASSERT_NOTEQUAL(current, NULL_PID);
 
       m_partitions[current].weight -= weight;
       m_assignment[vertex] = NULL_PID;
@@ -158,6 +166,9 @@ class Partitioning
     std::vector<partition_struct> m_partitions;
     std::vector<pid_type> m_assignment;
 
-}
+};
 
 }
+
+
+#endif
