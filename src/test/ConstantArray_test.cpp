@@ -1,5 +1,5 @@
 /**
-* @file ConstantArray_test.hpp
+* @file ConstantArray_test.cpp
 * @brief Unit tests for the ConstantArray class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
@@ -8,6 +8,7 @@
 */
 
 
+#include <vector>
 #include "DomTest.hpp"
 #include "ConstantArray.hpp"
 
@@ -20,18 +21,18 @@ UNITTEST(ConstantArray, Size)
 {
   std::vector<int> data{1,2,3,4,8}; 
 
-  ConstantArray c(data.size(), data.data());
-  assertEqual(c.size(), data.size());
+  ConstantArray<int> c(data.size(), data.data());
+  testEqual(c.size(), data.size());
 }
 
 
 UNITTEST(ConstantArray, SelfOwnerSize)
 {
-  int * data = malloc(5UL);
+  int * data = reinterpret_cast<int*>(malloc(5UL));
 
-  ConstantArray c(5UL, data, true);
+  ConstantArray<int> c(5UL, data, true);
 
-  assertEqual(c.size(), 5UL);
+  testEqual(c.size(), 5UL);
 }
 
 
@@ -39,10 +40,10 @@ UNITTEST(ConstantArray, ElementFetching)
 {
   std::vector<int> data{1,2,3,4,8}; 
 
-  ConstantArray c(data.size(), data.data());
+  ConstantArray<int> c(data.size(), data.data());
 
   for (size_t i = 0; i < data.size(); ++i) {
-    assertEqual(c[i], data[i]);
+    testEqual(c[i], data[i]);
   }
 }
 

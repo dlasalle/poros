@@ -12,6 +12,7 @@
 #define DOLOS_SRC_RANDOMBISECTOR_HPP
 
 #include "IBisector.hpp"
+#include "Parameters.hpp"
 
 namespace dolos
 {
@@ -44,7 +45,13 @@ class RandomBisector :
         ConstantGraph const * graph) const override;
 
   private:
-    std::vector<double> m_targetPartitionFractions;
+    double m_leftSideTargetFraction;
+
+    // disable copying
+    RandomBisector(
+        RandomBisector const & lhs);
+    RandomBisector & operator=(
+        RandomBisector const & lhs);
 };
 
 

@@ -21,10 +21,24 @@
 
 
 #ifndef NDEBUG
+  #define ASSERT_TRUE(a) \
+    do { \
+      if (!(a)) { \
+        std::cerr << "("#a" = " << (a) << ")" << std::endl; \
+        assert(false); \
+      } \
+    } while (false)
+  #define ASSERT_FALSE(a) \
+    do { \
+      if (a) { \
+        std::cerr << "("#a" = " << (a) << ")" << std::endl; \
+        assert(false); \
+      } \
+    } while (false)
   #define ASSERT_EQUAL(a,b) \
     do { \
       if (a != b) { \
-        std::cerr << "("#a" = " << a << ") != ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") != ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
@@ -32,7 +46,7 @@
   #define ASSERT_NOTEQUAL(a,b) \
     do { \
       if (a == b) { \
-        std::cerr << "("#a" = " << a << ") == ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") == ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
@@ -40,7 +54,7 @@
   #define ASSERT_LESS(a,b) \
     do { \
       if (a >= b) { \
-        std::cerr << "("#a" = " << a << ") !< ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") !< ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
@@ -48,7 +62,7 @@
   #define ASSERT_LESSEQUAL(a,b) \
     do { \
       if (a > b) { \
-        std::cerr << "("#a" = " << a << ") !<= ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") !<= ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
@@ -56,7 +70,7 @@
   #define ASSERT_GREATER(a,b) \
     do { \
       if (a <= b) { \
-        std::cerr << "("#a" = " << a << ") !> ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") !> ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
@@ -64,13 +78,15 @@
   #define ASSERT_GREATEREQUAL(a,b) \
     do { \
       if (a < b) { \
-        std::cerr << "("#a" = " << a << ") !>= ("#b" = " << b << ")" << \
+        std::cerr << "("#a" = " << (a) << ") !>= ("#b" = " << (b) << ")" << \
             std::endl; \
         assert(false); \
       } \
     } while (false)
 
 #else
+  #define ASSERT_TRUE(a)
+  #define ASSERT_False(a)
   #define ASSERT_EQUAL(a,b)
   #define ASSERT_NOTEQUAL(a,b)
   #define ASSERT_LESS(a,b)

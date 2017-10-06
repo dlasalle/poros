@@ -1,5 +1,5 @@
 /**
-* @file MutableArray_test.hpp
+* @file MutableArray_test.cpp
 * @brief Unit tests for the MutableArray class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
@@ -8,6 +8,8 @@
 */
 
 
+#include <vector>
+#include <cstdlib>
 #include "DomTest.hpp"
 #include "MutableArray.hpp"
 
@@ -20,40 +22,40 @@ UNITTEST(MutableArray, ExternalSize)
 {
   std::vector<int> data{1,2,3,4,8}; 
 
-  MutableArray m(data.size(), data.data());
-  assertEqual(m.size(), data.size());
+  MutableArray<int> m(data.size(), data.data());
+  testEqual(m.size(), data.size());
 }
 
 
 UNITTEST(MutableArray, OwnerSize)
 {
-  MutableArray m(5UL);
+  MutableArray<int> m(5UL);
 
-  assertEqual(m.size(), 5UL);
+  testEqual(m.size(), 5UL);
 }
 
 
 UNITTEST(MutableArray, ExternalElementFetching)
 {
   std::vector<int> data{1,2,3,4,8}; 
-  MutableArray m(data.size(), data.data());
+  MutableArray<int> m(data.size(), data.data());
 
   for (size_t i = 0; i < data.size(); ++i) {
-    assertEqual(m[i], data[i]);
+    testEqual(m[i], data[i]);
   }
 }
 
 
 UNITTEST(MutableArray, OwnerElementFetching)
 {
-  MutableArray m(5UL);
+  MutableArray<size_t> m(5UL);
 
   for (size_t i = 0; i < m.size(); ++i) {
     m[i] = 10UL - i;
   }
 
   for (size_t i = 0; i < m.size(); ++i) {
-    assertEqual(m[i], 10UL - i);
+    testEqual(m[i], 10UL - i);
   }
 }
 
@@ -61,29 +63,29 @@ UNITTEST(MutableArray, OwnerElementFetching)
 UNITTEST(MutableArray, ExternalFinalize)
 {
   std::vector<int> data{1,2,3,4,8}; 
-  MutableArray m(data.size(), data.data());
+  MutableArray<int> m(data.size(), data.data());
 
-  ConstantArray c = m.finalize();
-  assertEqual(m.size(), c.size());
+  ConstantArray<int> c = m.finalize();
+  testEqual(c.size(), data.size());
 
   for (size_t i = 0; i < c.size(); ++i) {
-    assertEqual(c[i], m[i]);
+    testEqual(c[i], data[i]);
   }
 }
 
 UNITTEST(MutableArray, OwnerFinalize)
 {
-  MutableArray m(data.size(), 7UL);
+  MutableArray<size_t> m(7UL);
 
   for (size_t i = 0; i < m.size(); ++i) {
     m[i] = 10UL - i;
   }
 
-  ConstantArray c = m.finalize();
-  assertEqual(m.size(), c.size());
+  ConstantArray<size_t> c = m.finalize();
+  testEqual(m.size(), c.size());
 
   for (size_t i = 0; i < c.size(); ++i) {
-    assertEqual(c[i], m[i]);
+    testEqual(c[i], m[i]);
   }
 }
 

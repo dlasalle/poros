@@ -38,21 +38,6 @@ class Partitioning
         vtx_type numVertices);
 
     /**
-     * @brief Get the number of partitions.
-     *
-     * @return The number of partitions. 
-     */
-    pid_type getNumPartitions() const noexcept;
-
-    /**
-     * @brief Get the heaviest parition.
-     *
-     * @return The heaviest (most unbalanced parititon).
-     */
-    partition_struct const * getHeaviestPartition() const;
-
-
-    /**
      * @brief Output the partition to a given memory location.
      *
      * @param totalCutEdgeWeight The location to write the total cut
@@ -62,6 +47,29 @@ class Partitioning
     void output(
         wgt_type * totalCutEdgeWeight,
         pid_type * partitionAssignment) const noexcept;
+
+
+    /**
+    * @brief Assign all vertices to a single partition. This function may be
+    * called regardless of the current state of the partitioning.
+    *
+    * @param partition The partition to assign all vertices to.
+    * @param totalVertexWeight The total weight of all vertices.
+    */
+    void assignAll(
+        pid_type partition,
+        wgt_type const totalVertexWeight);
+
+
+    /**
+     * @brief Get the number of partitions.
+     *
+     * @return The number of partitions. 
+     */
+    inline pid_type getNumPartitions() const noexcept
+    {
+      return static_cast<pid_type>(m_partitions.size());
+    }
 
 
     /**
@@ -162,7 +170,24 @@ class Partitioning
     }
 
 
+    /**
+    * @brief Get the weight the given partition.
+    *
+    * @param partition The partition id.
+    *
+    * @return The weight of the partition.
+    */
+    inline pid_type getWeight(
+        pid_type partition) const noexcept
+    {
+      ASSERT_LESS(partition, m_partitions.size());
+      return m_partitions[partition].weight;
+    }
+
+
   private:
+    wgt_type m_cutEdgeWeight;
+
     std::vector<partition_struct> m_partitions;
     std::vector<pid_type> m_assignment;
 

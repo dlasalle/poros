@@ -18,7 +18,7 @@ UNITTEST(Partitioning, NumberOfPartitions)
 {
   Partitioning p(5, 100);
 
-  testEquals(5, p.getNumPartitions());
+  testEqual(5, p.getNumPartitions());
 }
 
 }

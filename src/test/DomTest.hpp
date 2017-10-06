@@ -29,19 +29,19 @@
 ******************************************************************************/
 
 
-#define testEquals(a,b) \
+#define testEqual(a,b) \
   if ((a) != (b)) { \
-    std::cerr << "Test Failed: " << #a << ":'" << a << "' != " << #b << ":'" \
-        << b << "' at " << __LINE__ << std::endl; \
-    throw DomTest::TestFailed("Equals Failed"); \
+    std::cerr << "Test Failed: " << #a << ":'" << (a) << "' != " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
+    throw DomTest::TestFailed("Equal Failed"); \
   }
 
 
-#define testStringEquals(a,b) \
+#define testStringEqual(a,b) \
   if ((a).compare(b) != 0) { \
-    std::cerr << "Test Failed: " << #a << ":'" << a << "' != " << #b << ":'" \
-        << b << "' at " << __LINE__ << std::endl; \
-    throw DomTest::TestFailed("Equals Failed"); \
+    std::cerr << "Test Failed: " << #a << ":'" << (a) << "' != " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
+    throw DomTest::TestFailed("Equal Failed"); \
   }
 
 
@@ -53,18 +53,40 @@
   }
 
 
-#define testGreaterThan(a,b) \
-  if ((a) <= (b)) { \
-    std::cerr << "Test Failed:" << #a << ":'" << a << "' <= " << #b << ":'" \
-        << b << "' at " << __LINE__ << std::endl; \
-    throw DomTest::TestFailed("Greater Than Failed"); \
+#define testFalse(a) \
+  if (a) { \
+    std::cerr << "Test Failed: '" << #a << "' is true at: " << __LINE__ \
+      << std::endl; \
+    throw DomTest::TestFailed("False Failed"); \
   }
 
 
-#define testGreaterThanOrEqual(a,b) \
+#define testGreater(a,b) \
+  if ((a) <= (b)) { \
+    std::cerr << "Test Failed:" << #a << ":'" << (a) << "' <= " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
+    throw DomTest::TestFailed("Greater Than Failed"); \
+  }
+
+#define testLess(a,b) \
+  if ((a) >= (b)) { \
+    std::cerr << "Test Failed:" << #a << ":'" << (a) << "' >= " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
+    throw DomTest::TestFailed("Less Than Failed"); \
+  }
+
+#define testGreaterOrEqual(a,b) \
   if ((a) < (b)) { \
-    std::cerr << "Test Failed:" << #a << ":'" << a << "' < " << #b << ":'" \
-        << b << "' at " << __LINE__ << std::endl; \
+    std::cerr << "Test Failed:" << #a << ":'" << (a) << "' < " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
+    throw DomTest::TestFailed("Greater Than Or Equal Failed"); \
+  }
+
+
+#define testLessOrEqual(a,b) \
+  if ((a) > (b)) { \
+    std::cerr << "Test Failed:" << #a << ":'" << (a) << "' > " << #b << ":'" \
+        << (b) << "' at " << __LINE__ << std::endl; \
     throw DomTest::TestFailed("Greater Than Or Equal Failed"); \
   }
 
@@ -88,6 +110,10 @@ namespace DomTest
 volatile int numberFailed = 0;
 volatile int numberPassed = 0;
 
+
+namespace
+{
+
 class TestFailed : public std::logic_error
 {
   public:
@@ -96,6 +122,7 @@ class TestFailed : public std::logic_error
     {
     }
 };
+
 
 bool UnitTest(
     char const * name,
@@ -113,6 +140,7 @@ bool UnitTest(
   }
 }
 
+}
 
 
 }

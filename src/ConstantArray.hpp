@@ -34,13 +34,32 @@ class ConstantArray
     */
     ConstantArray(
         size_t size,
-        T * data,
+        T * const data,
         bool owner = false) :
       m_owner(owner),
       m_size(size),
       m_data(data)
     {
       // do nothing
+    }
+
+
+    /**
+    * @brief Move constructor.
+    *
+    * @param lhs
+    */
+    ConstantArray(
+        ConstantArray<T> && lhs) :
+      m_owner(lhs.m_owner),
+      m_size(lhs.m_size),
+      m_data(lhs.m_data)
+    {
+      ASSERT_FALSE(!lhs.m_owner && !lhs.m_data && !lhs.m_size);
+
+      lhs.m_owner = false;
+      lhs.m_size = 0;
+      lhs.m_data = nullptr;
     }
 
 
@@ -87,9 +106,9 @@ class ConstantArray
 
     // disable copying
     ConstantArray(
-        ConstantArray const & lhs);
-    ConstantArray & operator=(
-        ConstantArray const & lhs);
+        ConstantArray<T> const & lhs);
+    ConstantArray<T> & operator=(
+        ConstantArray<T> const & lhs);
 
 };
 

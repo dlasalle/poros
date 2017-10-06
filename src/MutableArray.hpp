@@ -46,7 +46,7 @@ class MutableArray
 
       if (data == nullptr) {
         m_owner = true;
-        m_data = malloc(sizeof(T)*size);
+        m_data = reinterpret_cast<T*>(malloc(sizeof(T)*size));
       }
     }
 
@@ -74,8 +74,8 @@ class MutableArray
 
       // make this array useless
       m_owner = false;
-      m_data = nullptr;
       m_size = 0;
+      m_data = nullptr;
     }
 
 
@@ -86,7 +86,7 @@ class MutableArray
     *
     * @return The finalized version of this array.
     */
-    ConstantArray<T> finalize()
+    ConstantArray<T> && finalize()
     {
       // make sure we haven't been finalized yet
       ASSERT_FALSE(!m_owner && !m_data && !m_size);
@@ -99,7 +99,7 @@ class MutableArray
       disown();
 
       // NRVO -- the object will be returned in place rather than copied
-      return finalArray;
+      return std::move(finalArray);
     }
 
 
@@ -146,6 +146,14 @@ class MutableArray
     bool m_owner;
     size_t m_size;
     T * m_data;
+
+    // disable copying
+    MutableArray(
+        MutableArray<T> const & lhs);
+    MutableArray<T> & operator=(
+        MutableArray<T> const & lhs);
+
+
 };
 
 }
