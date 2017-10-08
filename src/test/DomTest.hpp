@@ -159,20 +159,20 @@ int main(
     for (int i=1; i<argc; ++i) {
       std::cerr << "Unused parameter: " << argv[i] << std::endl;
     }
-    return 0;
+    return 2;
   }
 
 
 
   if (DomTest::numberPassed == 0 && DomTest::numberFailed == 0) {
     std::cerr << "No tests run." << std::endl;
-    return 0;
+    return 3;
   }
 
   std::cout << DomTest::numberPassed << " tests passed." << std::endl;
   std::cout << DomTest::numberFailed << " tests failed." << std::endl;
   
-  if (DomTest::numberFailed > 0) {
+  if (DomTest::numberFailed == 0) {
     return 0;
   } else {
     return 1;

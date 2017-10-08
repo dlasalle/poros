@@ -41,9 +41,26 @@ UNITTEST(ConstantArray, ElementFetching)
   std::vector<int> data{1,2,3,4,8}; 
 
   ConstantArray<int> c(data.size(), data.data());
+  testEqual(c.size(), data.size());
 
   for (size_t i = 0; i < data.size(); ++i) {
     testEqual(c[i], data[i]);
+  }
+}
+
+
+UNITTEST(ConstantArray, MoveConstructor)
+{
+  std::vector<int> data{1,2,3,4,8}; 
+
+  ConstantArray<int> c(data.size(), data.data());
+
+  ConstantArray<int> b = std::move(c);
+
+  testEqual(b.size(), data.size());
+
+  for (size_t i = 0; i < data.size(); ++i) {
+    testEqual(b[i], data[i]);
   }
 }
 
