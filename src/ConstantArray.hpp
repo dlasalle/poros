@@ -16,6 +16,7 @@
 
 #include <cstring>
 #include "Debug.hpp"
+#include "MutableArray.hpp"
 
 
 namespace dolos
@@ -50,7 +51,7 @@ class ConstantArray
     * @param lhs
     */
     ConstantArray(
-        ConstantArray<T> && lhs) :
+        ConstantArray<T> && lhs) noexcept :
       m_owner(lhs.m_owner),
       m_size(lhs.m_size),
       m_data(lhs.m_data)
@@ -60,6 +61,23 @@ class ConstantArray
       lhs.m_owner = false;
       lhs.m_size = 0;
       lhs.m_data = nullptr;
+    }
+
+
+    /**
+    * @brief Move constructor.
+    *
+    * @param lhs
+    */
+    ConstantArray(
+        MutableArray<T> && lhs) noexcept :
+      m_owner(lhs.isOwner()),
+      m_size(lhs.size()),
+      m_data(lhs.data())
+    {
+      ASSERT_FALSE(!m_owner && !m_data && !m_size);
+
+      lhs.disown();
     }
 
 
@@ -75,6 +93,23 @@ class ConstantArray
 
 
     /**
+    * @brief Give up the contents of this array. It becomes useless after this
+    * operation, and calling anything other than the destructor is considered
+    * undefined behavior.
+    */
+    void disown()
+    {
+      // make sure we haven't been finalized yet
+      ASSERT_FALSE(!m_owner && !m_data && !m_size);
+
+      // make this array useless
+      m_owner = false;
+      m_size = 0;
+      m_data = nullptr;
+    }
+
+
+    /**
     * @brief Get the element at the given index.
     *
     * @param index The index of the element.
@@ -86,6 +121,30 @@ class ConstantArray
     {
       ASSERT_LESS(index, m_size);
       return m_data[index];
+    }
+
+
+    /**
+    * @brief Check if this array owns its memory.
+    *
+    * @return 
+    */
+    bool isOwner() noexcept
+    {
+      ASSERT_FALSE(!m_owner && !m_data && !m_size);
+
+      return m_owner;
+    }
+
+
+    /**
+    * @brief Get the underlying array.
+    *
+    * @return The underlying array.
+    */
+    T * data() noexcept
+    {
+      return m_data;
     }
 
 

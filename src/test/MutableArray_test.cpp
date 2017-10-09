@@ -60,33 +60,6 @@ UNITTEST(MutableArray, OwnerElementFetching)
 }
 
 
-UNITTEST(MutableArray, ExternalFinalize)
-{
-  std::vector<int> data{1,2,3,4,8}; 
-  MutableArray<int> m(data.size(), data.data());
 
-  ConstantArray<int> c = m.finalize();
-  testEqual(c.size(), data.size());
-
-  for (size_t i = 0; i < c.size(); ++i) {
-    testEqual(c[i], data[i]);
-  }
-}
-
-UNITTEST(MutableArray, OwnerFinalize)
-{
-  MutableArray<size_t> m(7UL);
-
-  for (size_t i = 0; i < m.size(); ++i) {
-    m[i] = 10UL - i;
-  }
-
-  ConstantArray<size_t> c = m.finalize();
-  testEqual(m.size(), c.size());
-
-  for (size_t i = 0; i < c.size(); ++i) {
-    testEqual(c[i], m[i]);
-  }
-}
 
 }

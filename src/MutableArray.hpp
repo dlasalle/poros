@@ -15,7 +15,6 @@
 
 #include <cstring>
 #include "Debug.hpp"
-#include "ConstantArray.hpp"
 
 
 namespace dolos
@@ -52,6 +51,25 @@ class MutableArray
 
 
     /**
+    * @brief Move constructor.
+    *
+    * @param lhs
+    */
+    MutableArray(
+        MutableArray<T> && lhs) noexcept :
+      m_owner(lhs.m_owner),
+      m_size(lhs.m_size),
+      m_data(lhs.m_data)
+    {
+      ASSERT_FALSE(!lhs.m_owner && !lhs.m_data && !lhs.m_size);
+
+      lhs.m_owner = false;
+      lhs.m_size = 0;
+      lhs.m_data = nullptr;
+    }
+
+
+    /**
     * @brief The destructor.
     */
     ~MutableArray()
@@ -80,26 +98,15 @@ class MutableArray
 
 
     /**
-    * @brief Create a constant version of this array and destroy this one.
-    * Calling any method other than the destructor is undefined behavior after
-    * this method.
+    * @brief Check if this array owns its memory.
     *
-    * @return The finalized version of this array.
+    * @return 
     */
-    ConstantArray<T> && finalize()
+    bool isOwner() noexcept
     {
-      // make sure we haven't been finalized yet
       ASSERT_FALSE(!m_owner && !m_data && !m_size);
 
-      // only give ownership to the constant version if we currently have
-      // ownership
-      ConstantArray<T> finalArray(m_size, m_data, m_owner);
-
-      // make this array useless
-      disown();
-
-      // NRVO -- the object will be returned in place rather than copied
-      return std::move(finalArray);
+      return m_owner;
     }
 
 
