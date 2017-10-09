@@ -34,7 +34,7 @@ class RandomTraverser
     */
     RandomTraverser(
         size_t const size) :
-      m_step(0),
+      m_step(-1),
       m_perm(size)
     {
       fill(&m_perm);
@@ -47,7 +47,7 @@ class RandomTraverser
     * @return True if the next index is valid, and false if the the end
     * of the array was hit.
     */
-    bool next()
+    inline bool next()
     {
       ++m_step; 
 
@@ -59,7 +59,7 @@ class RandomTraverser
     *
     * @return The current index in the traversal.
     */
-    size_t get() const
+    inline size_t get() const
     {
       ASSERT_LESS(m_step, m_perm.size());
 
