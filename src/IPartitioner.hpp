@@ -1,6 +1,6 @@
 /**
  * @file IPartitioner.hpp
- * @brief The Partitioner interface.
+ * @brief The IPartitioner interface.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
  * @version 1
