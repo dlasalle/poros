@@ -29,38 +29,10 @@ double const FRACTION_SUM_TOLERANCE = 0.0001;
 ******************************************************************************/
 
 RandomBisector::RandomBisector(
-    Parameters const * params) :
-  m_leftSideTargetFraction(0)
+    BisectionParameters const * params) :
+  m_params(*params)
 {
-  std::vector<double> const * targetPartitionFractions = \
-      params->getTargetPartitionFractions();
-  pid_type const numParts = params->getNumPartitions();
-
-  // verify that input is reasonable
-  if (numParts != NUM_BISECTION_PARTS) {
-    throw InvalidParametersException( \
-        std::string("Invalid number of partitions for a bisection: ") + \
-        std::to_string(numParts));
-  }
-
-  // sum target partition fractions and verify each one is greater than zero
-  double fractionTotal = 0.0;
-  for (double const frac : *targetPartitionFractions) {
-    if (frac <= 0.0) {
-      throw InvalidParametersException(
-        std::string("Invalid target partition weight fraction: ") + \
-        std::to_string(frac));
-    }
-    fractionTotal += frac;
-  }
-  if (fractionTotal <= 1.0 - FRACTION_SUM_TOLERANCE || \
-      fractionTotal >= 1.0 + FRACTION_SUM_TOLERANCE) {
-    throw InvalidParametersException(
-        std::string("Target partition fractions do not sum to 1.0: ") + \
-        std::to_string(fractionTotal));
-  }
-
-  m_leftSideTargetFraction = (*targetPartitionFractions)[LEFT_PARTITION];
+  // do nothing
 }
 
 RandomBisector::~RandomBisector()
@@ -80,9 +52,10 @@ Partitioning RandomBisector::execute(
 
   // construct maximum partition weights
   wgt_type maxPartitionWeight[NUM_BISECTION_PARTS];
-  maxPartitionWeight[LEFT_PARTITION] = totalWeight * m_leftSideTargetFraction;
+  maxPartitionWeight[LEFT_PARTITION] = totalWeight * \
+      m_params.getLeftSideMax();
   maxPartitionWeight[RIGHT_PARTITION] = \
-      totalWeight - maxPartitionWeight[LEFT_PARTITION];
+      totalWeight * m_params.getRightSideMax(); 
 
   // random vertex order
   RandomTraverser traverser(graph->getNumVertices());

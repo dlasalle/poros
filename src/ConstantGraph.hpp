@@ -41,10 +41,19 @@ class ConstantGraph
     ConstantGraph(
         vtx_type nvtxs,
         adj_type nedges,
-        adj_type const * const edgePrefix = nullptr,
-        vtx_type const * const edgeList = nullptr,
-        wgt_type const * const vertexWeight = nullptr,
-        wgt_type const * const edgeWeight = nullptr);
+        adj_type const * edgePrefix,
+        vtx_type const * edgeList,
+        wgt_type const * vertexWeight = nullptr,
+        wgt_type const * edgeWeight = nullptr);
+
+
+    /**
+    * @brief The move constructor.
+    *
+    * @param lhs The graph to move.
+    */
+    ConstantGraph(
+        ConstantGraph && lhs) noexcept;
 
     /**
     * @brief Get the number of vertices in the graph.

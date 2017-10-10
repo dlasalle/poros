@@ -12,7 +12,7 @@
 #define DOLOS_SRC_RANDOMBISECTOR_HPP
 
 #include "IBisector.hpp"
-#include "Parameters.hpp"
+#include "BisectionParameters.hpp"
 
 namespace dolos
 {
@@ -27,7 +27,7 @@ class RandomBisector :
      * @param params The parameters.
      */
     RandomBisector(
-        Parameters const * params);
+        BisectionParameters const * params);
 
     /**
      * @brief Destructor.
@@ -45,7 +45,7 @@ class RandomBisector :
         ConstantGraph const * graph) const override;
 
   private:
-    double m_leftSideTargetFraction;
+    BisectionParameters m_params;
 
     // disable copying
     RandomBisector(
