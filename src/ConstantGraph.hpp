@@ -26,23 +26,23 @@ class ConstantGraph
     /**
     * @brief Create a new constant graph.
     *
-    * @param nvtxs The number of vertices in the graph.
-    * @param nedges The number of edges in the graph.
+    * @param numVertices The number of vertices in the graph.
+    * @param numEdges The number of edges in the graph.
     * @param edgePrefix The prefixsum of the number of edges per vertex. This
-    * must be of length nvtxs+1. If this is null, then memory is allocated for
-    * it, and will be free'd when the object is deconstructed.
+    * must be of length numVertices+1. If this is null, then memory is
+    * allocated for it, and will be free'd when the object is deconstructed.
     * @param edgeList The list of edges per vertex. This must be of length the
     * number of edges in the graph (counted in each direction). If this is
     * null, then the memory is allocated for it, and will be free'd when the
     * object is deconstructed.
     * @param vertexWeight The weight for each vertex in the graph. 
-    * @param edgeWeight
+    * @param edgeWeight The weight for each edge in each direction.
     * @param data A pointer to an object which owns data to be free'd with this
     * graph.
     */
     ConstantGraph(
-        vtx_type nvtxs,
-        adj_type nedges,
+        vtx_type numVertices,
+        adj_type numEdges,
         adj_type const * edgePrefix,
         vtx_type const * edgeList,
         wgt_type const * vertexWeight,

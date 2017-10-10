@@ -24,15 +24,15 @@ namespace dolos
 
 
 ConstantGraph::ConstantGraph(
-    vtx_type nvtxs,
-    adj_type nedges,
+    vtx_type numVertices,
+    adj_type numEdges,
     adj_type const * const edgePrefix,
     vtx_type const * const edgeList,
     wgt_type const * const vertexWeight,
     wgt_type const * const edgeWeight,
     IAllocatedData * const data) :
-  m_numVertices(nvtxs),
-  m_numEdges(nedges),
+  m_numVertices(numVertices),
+  m_numEdges(numEdges),
   m_totalVertexWeight(0),
   m_totalEdgeWeight(0),
   m_edgePrefix(edgePrefix),

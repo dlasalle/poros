@@ -16,14 +16,6 @@ namespace dolos
 {
 
 
-namespace
-{
-
-double const FRACTION_SUM_TOLERANCE = 0.0001;
-
-}
-
-
 /******************************************************************************
 * CONSTRUCTORS ****************************************************************
 ******************************************************************************/
@@ -48,13 +40,13 @@ Partitioning RandomBisector::execute(
     ConstantGraph const * const graph) const
 {
   wgt_type const totalWeight = graph->getTotalVertexWeight();
+  double const * const maxFractions = params->getMaxFractions();
 
   // construct maximum partition weights
-  wgt_type maxPartitionWeight[NUM_BISECTION_PARTS];
-  maxPartitionWeight[LEFT_PARTITION] = totalWeight * \
-      params->getLeftSideMax();
-  maxPartitionWeight[RIGHT_PARTITION] = \
-      totalWeight * params->getRightSideMax(); 
+  std::vector<wgt_type> maxPartitionWeight(NUM_BISECTION_PARTS);
+  for (size_t i = 0; i < NUM_BISECTION_PARTS; ++i) {
+    maxPartitionWeight[i] = totalWeight * maxFractions[i];
+  }
 
   // random vertex order
   RandomTraverser traverser(graph->getNumVertices());

@@ -13,6 +13,7 @@
 
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
+#include "PartitionParameters.hpp"
 
 namespace dolos
 {
@@ -37,7 +38,7 @@ class IPartitioner
      * @return The partitioning.
      */
     virtual Partitioning execute(
-        Parameters const * params,
+        PartitionParameters const * params,
         ConstantGraph const * graph) const = 0;
 
 };

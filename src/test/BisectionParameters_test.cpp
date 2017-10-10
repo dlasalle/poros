@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include "DomTest.hpp"
 #include "BisectionParameters.hpp"
+#include "IBisector.hpp"
 
 
 namespace dolos
@@ -20,16 +21,21 @@ namespace dolos
 
 UNITTEST(BisectionParameters, SetGet)
 {
+  std::vector<double> targets{0.4, 0.6};
+
   BisectionParameters params;
-  params.setLeftSideTarget(0.4);
+  params.setTargetFractions(targets.data());
   params.setImbalanceTolerance(0.015);
 
   testEqual(params.getImbalanceTolerance(), 0.015);
-  testEqual(params.getLeftSideTarget(), 0.4);
-  testEqual(params.getRightSideTarget(), 0.6);
 
-  testEqual(params.getLeftSideMax(), 0.4*1.015);
-  testEqual(params.getRightSideMax(), 0.6*1.015);
+  double const * testTargets = params.getTargetFractions();
+  double const * testMaxs = params.getMaxFractions();
+
+  for (size_t i = 0; i < NUM_BISECTION_PARTS; ++i) {
+    testEqual(testTargets[i], targets[i]);
+    testEqual(testMaxs[i], targets[i]*1.015);
+  }
 }
 
 

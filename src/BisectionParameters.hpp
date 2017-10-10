@@ -13,10 +13,26 @@
 #ifndef DOLOS_SRC_BISECTIONPARAMETERS_HPP
 #define DOLOS_SRC_BISECTIONPARAMETERS_HPP
 
+#include <string>
+#include <stdexcept>
 #include "Base.hpp"
 
 namespace dolos
 {
+
+
+class InvalidBisectionParametersException :
+  public std::runtime_error
+{
+  public:
+    InvalidBisectionParametersException(
+        std::string msg) :
+      runtime_error(msg)
+    {
+      // do nothing
+    }
+};
+
 
 class BisectionParameters
 {
@@ -40,10 +56,10 @@ class BisectionParameters
     * @brief Set the target fraction of weight to place in the left/0th
     * partiion.
     *
-    * @param target The target fraction between 0 and 1.0.
+    * @param target The target fractions summing to 1.0.
     */
-    void setLeftSideTarget(
-        double target);
+    void setTargetFractions(
+        double const * target);
 
 
     /**
@@ -55,50 +71,27 @@ class BisectionParameters
 
 
     /**
-    * @brief Get the imbalance tolerance as a coefficient (e.g., 3% is 1.03).
+    * @brief Get the vector of the target fractions (will always be of length
+    * 2).
     *
-    * @return The coefficient.
+    * @return The weight fractions.
     */
-    double getImbalanceToleranceCoefficient() const;
+    double const * getTargetFractions() const;
 
 
     /**
-    * @brief Get the target weight fraction of the left/0th partition. 
-    *
-    * @return The target fraction.
-    */
-    double getLeftSideTarget() const;
-
-
-    /**
-    * @brief Get the target weight fraction of the left/0th partition. 
-    *
-    * @return The target fraction.
-    */
-    double getRightSideTarget() const;
-
-
-    /**
-    * @brief Get the maximum fraction of the weight allowable on the left/0th
+    * @brief Get the vector of the maximum allowable weight fractions in each
     * partition.
     *
-    * @return The maximum fraction.
+    * @return The weight fractions.
     */
-    double getLeftSideMax() const;
-
-
-    /**
-    * @brief Get the maximum fraction of the weight allowable on the right/1th
-    * partition.
-    *
-    * @return The maximum fraction.
-    */
-    double getRightSideMax() const;
+    double const * getMaxFractions() const;
 
 
   private:
     double m_imbalanceTolerance;
-    double m_leftTarget;
+    double m_targetFraction[2];
+    double m_maxFraction[2];
 };
 
 

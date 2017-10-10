@@ -1,6 +1,6 @@
 /**
- * @file Parameters.hpp
- * @brief The Parameters class.
+ * @file PartitionParameters.hpp
+ * @brief The PartitionParameters class.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
  * @version 1
@@ -8,8 +8,8 @@
  */
 
 
-#ifndef DOLOS_SRC_PARAMETERS_HPP
-#define DOLOS_SRC_PARAMETERS_HPP
+#ifndef DOLOS_SRC_PARTITIONPARAMETERS_HPP
+#define DOLOS_SRC_PARTITIONPARAMETERS_HPP
 
 
 #include <vector>
@@ -22,11 +22,11 @@ namespace dolos
 {
 
 
-class InvalidParametersException :
+class InvalidPartitionParametersException :
   public std::runtime_error
 {
   public:
-    InvalidParametersException(
+    InvalidPartitionParametersException(
         std::string msg) :
       runtime_error(msg)
     {
@@ -35,25 +35,32 @@ class InvalidParametersException :
 };
 
 
-class Parameters
+class PartitionParameters
 {
   public:
     /**
      * @brief Construct a new set of parameters given the options.
      *
      * @param numPartitions The number of partitions to create.
-     * @param options The options.
      */
-    Parameters(
-        pid_type numPartitions,
-        dolos_options_struct const * const options);
+    PartitionParameters(
+        pid_type numPartitions);
 
     /**
-     * @brief Get the random seed in use.
-     *
-     * @return The random seed.
-     */
-    unsigned int getSeed() const;
+    * @brief The fraction of imbalance tolerance to accept (e.g., 0.03 is %3).
+    *
+    * @param toleranceFraction The fraction.
+    */
+    void setImbalanceTolerance(
+        double toleranceFraction);
+
+    /**
+    * @brief Set the weight fraction targerts for each partition.
+    *
+    * @param fractions The target weight fractions.
+    */
+    void setTargetPartitionFractions(
+        double const * fractions);
 
     /**
      * @brief Get the maximum allowed imbalance (as a fraction). That is, 3%
@@ -62,13 +69,6 @@ class Parameters
      * @return The imbalance tolerance.
      */
     double getImbalanceTolerance() const;
-
-    /**
-     * @brief Get the number of refinement iterations to use.
-     *
-     * @return The number of refinement iterations.
-     */
-    int getNumRefinementIterations() const;
 
     /**
      * @brief Get the number of partitions.
@@ -84,20 +84,10 @@ class Parameters
      */
     std::vector<double> const * getTargetPartitionFractions() const;
 
-    /**
-     * @brief Get the maximum vertex weight allowed per partition.
-     *
-     * @return The maximum allowed vertex weight;
-     */
-    std::vector<wgt_type> const * getMaxPartitionWeights() const;
-
    private:
-    unsigned int m_seed;
-    int m_numRefinementIterations;
     pid_type m_numParts;
     double m_imbalanceTolerance;
     std::vector<double> m_targetPartitionFractions;
-    std::vector<wgt_type> m_maxPartitionWeights;
 };
 
 }

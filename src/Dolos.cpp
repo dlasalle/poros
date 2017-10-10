@@ -12,7 +12,7 @@
 #include "Base.hpp"
 #include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
-#include "Parameters.hpp"
+#include "PartitionParameters.hpp"
 #include "RandomBisector.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
 
@@ -33,11 +33,14 @@ int DOLOS_PartGraphRecursive(
     pid_type * const partitionAssignment)
 {
   // create a parameters object
-  Parameters params(numPartitions, options);
 
   // assemble a new graph
   ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
       edgeList, vertexWeights, edgeWeights);
+
+
+  // setup paramters for the partition
+  PartitionParameters params(numPartitions);
 
   // partition the graph
   RandomBisector bisector;

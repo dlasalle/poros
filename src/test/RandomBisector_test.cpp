@@ -20,13 +20,12 @@ namespace dolos
 
 UNITTEST(RandomBisector, Execute)
 {
+  std::vector<double> targets{0.4, 0.6};
+
   // setup parameters
   BisectionParameters params;
-  params.setLeftSideTarget(0.4);
+  params.setTargetFractions(targets.data());
   params.setImbalanceTolerance(0.0);
-
-  std::vector<double> targets{ \
-      params.getLeftSideTarget(), params.getRightSideTarget()};
 
   // create bisector
   RandomBisector b;

@@ -43,7 +43,7 @@ class RecursiveBisectionPartitioner :
      * @return The partitioning.
      */
     Partitioning execute(
-        Parameters const * params,
+        PartitionParameters const * params,
         ConstantGraph const * graph) const override;
 
 

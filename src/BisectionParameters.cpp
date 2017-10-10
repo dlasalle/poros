@@ -9,12 +9,20 @@
 
 
 #include "BisectionParameters.hpp"
-#include "Parameters.hpp"
 
+#include <string>
 
 namespace dolos
 {
 
+namespace
+{
+
+double const FRACTION_SUM_TOLERANCE = 0.0001;
+double const MIN_FRACTION_SUM = 1.0 - FRACTION_SUM_TOLERANCE;
+double const MAX_FRACTION_SUM = 1.0 + FRACTION_SUM_TOLERANCE;
+
+}
 
 
 /******************************************************************************
@@ -23,7 +31,8 @@ namespace dolos
 
 BisectionParameters::BisectionParameters() :
     m_imbalanceTolerance(0.0),
-    m_leftTarget(0.5)
+    m_targetFraction{0.5, 0.5},
+    m_maxFraction{0.5, 0.5}
 {
   // do nothing
 }
@@ -36,28 +45,40 @@ BisectionParameters::BisectionParameters() :
 
 
 void BisectionParameters::setImbalanceTolerance(
-    double fraction)
+    double const fraction)
 {
   if (fraction < 0.0 || fraction >= 1.0) {
-    throw InvalidParametersException(std::string("Invalid imbalance "
-        "tolerance ") + std::to_string(fraction) + std::string(". Must be " \
-        "equal to or greater than 0.0 and less than 1.0."));
+    throw InvalidBisectionParametersException(std::string("Invalid " \
+        "imbalance tolerance ") + std::to_string(fraction) + std::string( \
+        ". Must be equal to or greater than 0.0 and less than 1.0."));
   }
 
   m_imbalanceTolerance = fraction;
+
+  double const coeff = 1.0 + fraction;
+  
+  // update maximums
+  m_maxFraction[0] = m_targetFraction[0] * coeff; 
+  m_maxFraction[1] = m_targetFraction[1] * coeff; 
 }
 
 
-void BisectionParameters::setLeftSideTarget(
-    double target)
+void BisectionParameters::setTargetFractions(
+    double const * const target)
 {
-  if (target >= 1.0 || target <= 0.0) {
-    throw InvalidParametersException(std::string("Invalid target "
-        "fraction ") + std::to_string(target) + std::string(". Must be " \
-        "greater than 0.0 and less than 1.0."));
+  if (target[0] + target[1] >= MAX_FRACTION_SUM || \
+      target[0] + target[1] <= MIN_FRACTION_SUM) {
+    throw InvalidBisectionParametersException(std::string("Invalid target " \
+        "fractions {") + std::to_string(target[0]) + std::string(", ") + \
+        std::to_string(target[1]) + std::string("} . Must sum to 1.0."));
   }
 
-  m_leftTarget = target;
+  // update targets
+  m_targetFraction[0] = target[0];
+  m_targetFraction[1] = target[1];
+
+  // implicitly update maximums
+  setImbalanceTolerance(getImbalanceTolerance());
 }
 
 
@@ -66,33 +87,15 @@ double BisectionParameters::getImbalanceTolerance() const
   return m_imbalanceTolerance;
 }
 
-double BisectionParameters::getImbalanceToleranceCoefficient() const
+double const * BisectionParameters::getTargetFractions() const
 {
-  return 1.0 + getImbalanceTolerance();
+  return m_targetFraction;
 }
 
 
-double BisectionParameters::getLeftSideTarget() const
+double const * BisectionParameters::getMaxFractions() const
 {
-  return m_leftTarget;
-}
-
-
-double BisectionParameters::getRightSideTarget() const
-{
-  return 1.0 - m_leftTarget;
-}
-
-
-double BisectionParameters::getLeftSideMax() const
-{
-  return getLeftSideTarget() * getImbalanceToleranceCoefficient();
-}
-
-
-double BisectionParameters::getRightSideMax() const
-{
-  return getRightSideTarget() * getImbalanceToleranceCoefficient();
+  return m_maxFraction;
 }
 
 
