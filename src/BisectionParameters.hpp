@@ -55,6 +55,14 @@ class BisectionParameters
 
 
     /**
+    * @brief Get the imbalance tolerance as a coefficient (e.g., 3% is 1.03).
+    *
+    * @return The coefficient.
+    */
+    double getImbalanceToleranceCoefficient() const;
+
+
+    /**
     * @brief Get the target weight fraction of the left/0th partition. 
     *
     * @return The target fraction.

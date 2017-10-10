@@ -47,11 +47,7 @@ class RandomBisector :
   private:
     BisectionParameters m_params;
 
-    // disable copying
-    RandomBisector(
-        RandomBisector const & lhs);
-    RandomBisector & operator=(
-        RandomBisector const & lhs);
+
 };
 
 

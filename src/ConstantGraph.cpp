@@ -10,11 +10,17 @@
 
 
 #include "Base.hpp"
+#include "Debug.hpp"
 #include "ConstantGraph.hpp"
 
 
 namespace dolos
 {
+
+
+/******************************************************************************
+* CONSTRUCTORS / DESTRUCTOR ***************************************************
+******************************************************************************/
 
 
 ConstantGraph::ConstantGraph(
@@ -23,30 +29,66 @@ ConstantGraph::ConstantGraph(
     adj_type const * const edgePrefix,
     vtx_type const * const edgeList,
     wgt_type const * const vertexWeight,
-    wgt_type const * const edgeWeight) :
+    wgt_type const * const edgeWeight,
+    IAllocatedData * const data) :
   m_numVertices(nvtxs),
   m_numEdges(nedges),
   m_totalVertexWeight(0),
   m_totalEdgeWeight(0),
-  m_vertexWeight(nvtxs, vertexWeight),
-  m_edgePrefix(nvtxs+1, edgePrefix),
-  m_edgeList(nedges, edgeList),
-  m_edgeWeight(nedges, edgeWeight)
+  m_edgePrefix(edgePrefix),
+  m_edgeList(edgeList),
+  m_vertexWeight(vertexWeight),
+  m_edgeWeight(edgeWeight),
+  m_data(data)
 {
-  if (vertexWeight == nullptr) {
-    m_vertexWeight = ConstantArray<wgt_type>(nvtxs, 1);
+  ASSERT_NOTNULL(m_edgePrefix);
+  ASSERT_NOTNULL(m_edgeList);
+  ASSERT_NOTNULL(m_vertexWeight);
+  ASSERT_NOTNULL(m_edgeWeight);
+
+  // calculate total vertex weight
+  for (vtx_type v = 0; v < m_numVertices; ++v) {
+    m_totalVertexWeight += m_vertexWeight[v];
   }
 
-  if (edgeWeight == nullptr) {
-    m_edgeWeight = ConstantArray<wgt_type>(nedges, 1);
+  // calculate total  edge weight
+  for (adj_type e = 0; e < m_numEdges; ++e) {
+    m_totalEdgeWeight += m_edgeWeight[e];
   }
 }
 
 
 ConstantGraph::ConstantGraph(
-    ConstantGraph && lhs) :
+    ConstantGraph && lhs) noexcept :
+  m_numVertices(lhs.m_numVertices),
+  m_numEdges(lhs.m_numEdges),
+  m_totalVertexWeight(lhs.m_totalVertexWeight),
+  m_totalEdgeWeight(lhs.m_totalEdgeWeight),
+  m_edgePrefix(lhs.m_edgePrefix),
+  m_edgeList(lhs.m_edgeList),
+  m_vertexWeight(lhs.m_vertexWeight),
+  m_edgeWeight(lhs.m_edgeWeight),
+  m_data(lhs.m_data)
 {
-  
+  // destrory old graph's data
+  lhs.m_numVertices = 0;
+  lhs.m_numEdges = 0;
+  lhs.m_totalVertexWeight = 0;
+  lhs.m_totalEdgeWeight = 0;
+  lhs.m_edgePrefix = nullptr;
+  lhs.m_edgeList = nullptr;
+  lhs.m_vertexWeight = nullptr;
+  lhs.m_edgeWeight = nullptr;
+  lhs.m_data = nullptr;
+}
+
+
+ConstantGraph::~ConstantGraph()
+{
+  if (m_data) {
+    // if we're responsible for free the data, do so.
+    delete m_data;
+  }
 }
 
 

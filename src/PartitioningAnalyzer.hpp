@@ -39,9 +39,17 @@ class PartitioningAnalyzer
     * @brief Get the maximum imbalance as a fraction. That is, if a partition
     * is 5% overweight, this function will return 0.05.
     *
+    * @param fractions The target weight fraction for each partition.
+    *
     * @return The maximum imbalance.
     */
-    double getMaxImbalance() const;
+    double calcMaxImbalance(
+        double const * const fractions) const;
+
+  private:
+    ConstantGraph const * m_graph;
+    Partitioning const * m_partitioning;
+
 };
 
 }

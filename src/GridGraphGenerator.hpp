@@ -9,6 +9,15 @@
 
 
 
+#ifndef DOLOS_SRC_GRIDGRAPHGENERATOR_HPP
+#define DOLOS_SRC_GRIDGRAPHGENERATOR_HPP
+
+
+#include <memory>
+#include "Base.hpp"
+#include "ConstantGraph.hpp"
+
+
 namespace dolos
 {
 
@@ -29,6 +38,12 @@ class GridGraphGenerator
 
 
     /**
+    * @brief Default destructor -- required for incomplete type of Grid.
+    */
+    ~GridGraphGenerator();
+
+
+    /**
     * @brief Set the random parameters of the vertex weights.
     *
     * @param min The minimum vertex weight (must be greater than 0).
@@ -44,9 +59,24 @@ class GridGraphGenerator
     *
     * @return The generated graph.
     */
-    ConstantGraph && generate();
+    ConstantGraph generate();
+
+  private:
+    // forward declaration
+    class Grid;
+    
+    std::unique_ptr<Grid> m_grid;
+
+    wgt_type m_vertexWeightMin;
+    wgt_type m_vertexWeightMax;
+    wgt_type m_edgeWeightMin;
+    wgt_type m_edgeWeightMax;
 
 };
 
 
 }
+
+
+
+#endif

@@ -28,8 +28,8 @@ UNITTEST(BisectionParameters, SetGet)
   testEqual(params.getLeftSideTarget(), 0.4);
   testEqual(params.getRightSideTarget(), 0.6);
 
-  testEqual(params.getLeftSideMax(), 0.4*0.15);
-  testEqual(params.getRightSideTarget() 0.6*0.15);
+  testEqual(params.getLeftSideMax(), 0.4*1.015);
+  testEqual(params.getRightSideMax(), 0.6*1.015);
 }
 
 

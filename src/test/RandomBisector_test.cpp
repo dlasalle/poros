@@ -8,8 +8,6 @@
 */
 
 
-#include <vector>
-#include <cstdlib>
 #include "DomTest.hpp"
 #include "RandomBisector.hpp"
 #include "GridGraphGenerator.hpp"
@@ -27,6 +25,9 @@ UNITTEST(RandomBisector, Execute)
   params.setLeftSideTarget(0.4);
   params.setImbalanceTolerance(0.0);
 
+  std::vector<double> targets{ \
+      params.getLeftSideTarget(), params.getRightSideTarget()};
+
   // create bisector
   RandomBisector b(&params);
 
@@ -37,13 +38,13 @@ UNITTEST(RandomBisector, Execute)
   ConstantGraph graph = gen.generate();
 
   // perform bisection
-  Partitioning part = b.execute(graph);
+  Partitioning part = b.execute(&graph);
 
   // verify its balanced
-  PartitioningAnalyzer analyzer(graph, part);
+  PartitioningAnalyzer analyzer(&graph, &part);
 
-  double imbalance = analyzer.getMaxImblance();
-  testLessThan(imbalance, 0.001);
+  double imbalance = analyzer.calcMaxImbalance(targets.data());
+  testLess(imbalance, 0.001);
 }
 
 

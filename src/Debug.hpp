@@ -51,6 +51,22 @@
         assert(false); \
       } \
     } while (false)
+  #define ASSERT_NULL(a) \
+    do { \
+      if (a != nullptr) { \
+        std::cerr << "("#a" = " << (a) << ") != nullptr" << \
+            std::endl; \
+        assert(false); \
+      } \
+    } while (false)
+  #define ASSERT_NOTNULL(a) \
+    do { \
+      if (a == nullptr) { \
+        std::cerr << #a" is  null" << \
+            std::endl; \
+        assert(false); \
+      } \
+    } while (false)
   #define ASSERT_LESS(a,b) \
     do { \
       if (a >= b) { \
@@ -86,9 +102,11 @@
 
 #else
   #define ASSERT_TRUE(a)
-  #define ASSERT_False(a)
+  #define ASSERT_FALSE(a)
   #define ASSERT_EQUAL(a,b)
   #define ASSERT_NOTEQUAL(a,b)
+  #define ASSERT_NULL(a)
+  #define ASSERT_NOTNULL(a)
   #define ASSERT_LESS(a,b)
   #define ASSERT_LESSEQUAL(a,b)
   #define ASSERT_GREATER(a,b)

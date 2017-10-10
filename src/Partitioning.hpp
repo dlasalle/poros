@@ -37,6 +37,16 @@ class Partitioning
         pid_type numParts,
         vtx_type numVertices);
 
+
+    /**
+    * @brief Move constructor.
+    *
+    * @param lhs The partitioning to move.
+    */
+    Partitioning(
+        Partitioning && lhs) noexcept;
+
+
     /**
      * @brief Output the partition to a given memory location.
      *
@@ -190,6 +200,12 @@ class Partitioning
 
     std::vector<partition_struct> m_partitions;
     std::vector<pid_type> m_assignment;
+
+    // disable copying
+    Partitioning(
+        Partitioning const & lhs);
+    Partitioning & operator=(
+        Partitioning const & lhs);
 
 };
 

@@ -15,12 +15,24 @@
 namespace dolos
 {
 
+
+
+/******************************************************************************
+* CONSTRUCTORS / DESTRUCTOR ***************************************************
+******************************************************************************/
+
 BisectionParameters::BisectionParameters() :
     m_imbalanceTolerance(0.0),
     m_leftTarget(0.5)
 {
   // do nothing
 }
+
+
+
+/******************************************************************************
+* PUBLIC METHODS **************************************************************
+******************************************************************************/
 
 
 void BisectionParameters::setImbalanceTolerance(
@@ -54,6 +66,11 @@ double BisectionParameters::getImbalanceTolerance() const
   return m_imbalanceTolerance;
 }
 
+double BisectionParameters::getImbalanceToleranceCoefficient() const
+{
+  return 1.0 + getImbalanceTolerance();
+}
+
 
 double BisectionParameters::getLeftSideTarget() const
 {
@@ -69,16 +86,14 @@ double BisectionParameters::getRightSideTarget() const
 
 double BisectionParameters::getLeftSideMax() const
 {
-  return getLeftSideTarget() * (1.0 + getImbalanceTolerance());
+  return getLeftSideTarget() * getImbalanceToleranceCoefficient();
 }
 
 
 double BisectionParameters::getRightSideMax() const
 {
-  return getRightSideTarget() * (1.0 * getImbalanceTolerance());
+  return getRightSideTarget() * getImbalanceToleranceCoefficient();
 }
-
-
 
 
 }

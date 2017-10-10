@@ -14,7 +14,7 @@
 
 
 #include "Base.hpp"
-#include "ConstantArray.hpp"
+#include "IAllocatedData.hpp"
 
 
 namespace dolos
@@ -37,14 +37,17 @@ class ConstantGraph
     * object is deconstructed.
     * @param vertexWeight The weight for each vertex in the graph. 
     * @param edgeWeight
+    * @param data A pointer to an object which owns data to be free'd with this
+    * graph.
     */
     ConstantGraph(
         vtx_type nvtxs,
         adj_type nedges,
         adj_type const * edgePrefix,
         vtx_type const * edgeList,
-        wgt_type const * vertexWeight = nullptr,
-        wgt_type const * edgeWeight = nullptr);
+        wgt_type const * vertexWeight,
+        wgt_type const * edgeWeight,
+        IAllocatedData * data = nullptr);
 
 
     /**
@@ -55,12 +58,19 @@ class ConstantGraph
     ConstantGraph(
         ConstantGraph && lhs) noexcept;
 
+
+    /**
+    * @brief Destructor.
+    */
+    ~ConstantGraph();
+
+
     /**
     * @brief Get the number of vertices in the graph.
     *
     * @return The number of vertices.
     */
-    vtx_type getNumVertices() const noexcept
+    inline vtx_type getNumVertices() const noexcept
     {
       return m_numVertices;
     }
@@ -70,7 +80,7 @@ class ConstantGraph
     *
     * @return The number of edges.
     */
-    adj_type getNumEdges() const noexcept
+    inline adj_type getNumEdges() const noexcept
     {
       return m_numEdges;
     }
@@ -80,7 +90,7 @@ class ConstantGraph
     *
     * @return The total weight.
     */
-    wgt_type getTotalVertexWeight() const
+    inline wgt_type getTotalVertexWeight() const noexcept
     {
       return m_totalVertexWeight; 
     }
@@ -90,7 +100,7 @@ class ConstantGraph
     *
     * @return The total weight.
     */
-    wgt_type getTotalEdgeWeight() const
+    inline wgt_type getTotalEdgeWeight() const noexcept
     {
       return m_totalEdgeWeight;
     }
@@ -101,7 +111,10 @@ class ConstantGraph
     *
     * @return The edge prefixsum array.
     */
-    adj_type const * getEdgePrefix() const;
+    inline adj_type const * getEdgePrefix() const noexcept
+    {
+      return m_edgePrefix;
+    }
 
 
     /**
@@ -109,7 +122,10 @@ class ConstantGraph
     *
     * @return The edge list array.
     */
-    vtx_type const * getEdgeList() const;
+    inline vtx_type const * getEdgeList() const noexcept
+    {
+      return m_edgeList;
+    }
 
 
     /**
@@ -117,7 +133,10 @@ class ConstantGraph
     *
     * @return The vertex weight array.
     */
-    wgt_type const * getVertexWeight() const;
+    inline wgt_type const * getVertexWeight() const noexcept
+    {
+      return m_vertexWeight;
+    }
 
 
     /**
@@ -125,7 +144,10 @@ class ConstantGraph
     *
     * @return The edge weight array.
     */
-    wgt_type const * getEdgeWeight() const;
+    inline wgt_type const * getEdgeWeight() const noexcept
+    {
+      return m_edgeWeight;
+    }
 
 
   private:
@@ -135,10 +157,15 @@ class ConstantGraph
     wgt_type m_totalVertexWeight;
     wgt_type m_totalEdgeWeight;
 
-    ConstantArray<wgt_type> m_vertexWeight;
-    ConstantArray<adj_type> m_edgePrefix;
-    ConstantArray<vtx_type> m_edgeList;
-    ConstantArray<wgt_type> m_edgeWeight;
+    adj_type const * m_edgePrefix;
+    vtx_type const * m_edgeList;
+    wgt_type const * m_vertexWeight;
+    wgt_type const * m_edgeWeight;
+
+    /**
+    * @brief Any data to free upon destruction.
+    */
+    IAllocatedData * m_data;
 
     // disable copying
     ConstantGraph(
