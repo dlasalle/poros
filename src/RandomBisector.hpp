@@ -23,29 +23,27 @@ class RandomBisector :
   public:
     /**
      * @brief Create a new random partitioner with the given parameters.
-     *
-     * @param params The parameters.
      */
-    RandomBisector(
-        BisectionParameters const * params);
+    RandomBisector();
+
 
     /**
      * @brief Destructor.
      */
     virtual ~RandomBisector();
 
+
     /**
      * @brief Randomly assign vertices to partitions.
      *
+     * @param params The parameters.
      * @param graph The graph.
      *
      * @return The assigned partitioning.
      */
     virtual Partitioning execute(
+        BisectionParameters const * params,
         ConstantGraph const * graph) const override;
-
-  private:
-    BisectionParameters m_params;
 
 
 };

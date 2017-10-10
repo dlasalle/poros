@@ -28,9 +28,7 @@ double const FRACTION_SUM_TOLERANCE = 0.0001;
 * CONSTRUCTORS ****************************************************************
 ******************************************************************************/
 
-RandomBisector::RandomBisector(
-    BisectionParameters const * params) :
-  m_params(*params)
+RandomBisector::RandomBisector()
 {
   // do nothing
 }
@@ -46,6 +44,7 @@ RandomBisector::~RandomBisector()
 ******************************************************************************/
 
 Partitioning RandomBisector::execute(
+    BisectionParameters const * const params,
     ConstantGraph const * const graph) const
 {
   wgt_type const totalWeight = graph->getTotalVertexWeight();
@@ -53,9 +52,9 @@ Partitioning RandomBisector::execute(
   // construct maximum partition weights
   wgt_type maxPartitionWeight[NUM_BISECTION_PARTS];
   maxPartitionWeight[LEFT_PARTITION] = totalWeight * \
-      m_params.getLeftSideMax();
+      params->getLeftSideMax();
   maxPartitionWeight[RIGHT_PARTITION] = \
-      totalWeight * m_params.getRightSideMax(); 
+      totalWeight * params->getRightSideMax(); 
 
   // random vertex order
   RandomTraverser traverser(graph->getNumVertices());

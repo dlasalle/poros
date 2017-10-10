@@ -13,6 +13,7 @@
 
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
+#include "BisectionParameters.hpp"
 
 namespace dolos
 {
@@ -40,11 +41,13 @@ class IBisector
     /**
      * @brief Create a partitioning of the graph.
      *
+     * @param parameters The bisection parameters.
      * @param graph The graph to partition.
      *
      * @return The partitioning.
      */
     virtual Partitioning execute(
+        BisectionParameters const * parameters,
         ConstantGraph const * graph) const = 0;
 
 };

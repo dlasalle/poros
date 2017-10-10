@@ -31,11 +31,13 @@ class IPartitioner
     /**
      * @brief Create a partitioning of the graph.
      *
+     * @param params The parameters to use.
      * @param graph The graph to partition.
      *
      * @return The partitioning.
      */
     virtual Partitioning execute(
+        Parameters const * params,
         ConstantGraph const * graph) const = 0;
 
 };

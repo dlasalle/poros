@@ -29,7 +29,7 @@ UNITTEST(RandomBisector, Execute)
       params.getLeftSideTarget(), params.getRightSideTarget()};
 
   // create bisector
-  RandomBisector b(&params);
+  RandomBisector b;
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -38,7 +38,7 @@ UNITTEST(RandomBisector, Execute)
   ConstantGraph graph = gen.generate();
 
   // perform bisection
-  Partitioning part = b.execute(&graph);
+  Partitioning part = b.execute(&params, &graph);
 
   // verify its balanced
   PartitioningAnalyzer analyzer(&graph, &part);

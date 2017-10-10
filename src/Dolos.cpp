@@ -13,6 +13,7 @@
 #include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
 #include "Parameters.hpp"
+#include "RandomBisector.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
 
 using namespace dolos;
@@ -39,8 +40,9 @@ int DOLOS_PartGraphRecursive(
       edgeList, vertexWeights, edgeWeights);
 
   // partition the graph
-  RecursiveBisectionPartitioner partitioner(&params);
-  Partitioning part = partitioner.execute(&baseGraph);
+  RandomBisector bisector;
+  RecursiveBisectionPartitioner partitioner(&bisector);
+  Partitioning part = partitioner.execute(&params, &baseGraph);
 
   // output data
   part.output(totalCutEdgeWeight, partitionAssignment);
