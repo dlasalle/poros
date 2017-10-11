@@ -1,6 +1,6 @@
 /**
-* @file GraphUtils.hpp
-* @brief The GraphUtils class.
+* @file SubgraphExtractor.hpp
+* @brief The SubgraphExtractor class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
 * @version 1
@@ -10,18 +10,19 @@
 
 
 
-#ifndef DOLOS_SRC_GRAPHUTILS_HPP
-#define DOLOS_SRC_GRAPHUTILS_HPP
+#ifndef DOLOS_SRC_SUBGRAPHEXTRACTOR_HPP
+#define DOLOS_SRC_SUBGRAPHEXTRACTOR_HPP
 
 
 #include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
+#include "Subgraph.hpp"
 
 
 namespace dolos
 {
 
-class GraphUtils
+class SubgraphExtractor
 {
   public:
     /**
@@ -32,7 +33,7 @@ class GraphUtils
     *
     * @return The subgraphs.
     */
-    static std::vector<ConstantGraph> extractParts(
+    static std::vector<Subgraph> partitions(
         ConstantGraph const * graph,
         Partitioning const * part);
 };

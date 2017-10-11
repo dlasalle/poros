@@ -12,7 +12,7 @@
 #include "RecursiveBisectionPartitioner.hpp"
 
 #include <cmath>
-#include "GraphUtils.hpp"
+#include "SubgraphExtractor.hpp"
 #include "PartitioningAnalyzer.hpp"
 
 
@@ -57,7 +57,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
 
   // extract graph parts
-  std::vector<ConstantGraph> parts = GraphUtils::extractParts(graph, \
+  std::vector<Subgraph> parts = SubgraphExtractor::partitions(graph, \
       &bisection);
   ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
 
@@ -65,10 +65,12 @@ Partitioning RecursiveBisectionPartitioner::execute(
   for (pid_type part = 0; part < parts.size(); ++part) {
     double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
         static_cast<double>(graph->getTotalVertexWeight())) ;
+
+    double const ratio = bisectParams.getTargetFractions()[part] / weightFrac;
     
     PartitionParameters subParams(numHalfParts[part]);
-    subParams.setImbalanceTolerance(
-    );
+
+    subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
   }
 
   return partitioning;
