@@ -24,7 +24,7 @@ UNITTEST(RandomBisector, Execute)
 
   // setup parameters
   BisectionParameters params;
-  params.setTargetFractions(targets.data());
+  params.setTargetPartitionFractions(targets.data());
   params.setImbalanceTolerance(0.0);
 
   // create bisector

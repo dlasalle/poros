@@ -82,12 +82,22 @@ class PartitionParameters
      *
      * @return The target partition fractions.
      */
-    std::vector<double> const * getTargetPartitionFractions() const;
+    double const * getTargetPartitionFractions() const;
+
+    /**
+     * @brief Get the maximum partition fractions.
+     *
+     * @return The maximum partition fractions.
+     */
+    double const * getMaxPartitionFractions() const;
+
+
 
    private:
     pid_type m_numParts;
     double m_imbalanceTolerance;
     std::vector<double> m_targetPartitionFractions;
+    std::vector<double> m_maxPartitionFractions;
 };
 
 }

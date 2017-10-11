@@ -31,8 +31,8 @@ double const MAX_FRACTION_SUM = 1.0 + FRACTION_SUM_TOLERANCE;
 
 BisectionParameters::BisectionParameters() :
     m_imbalanceTolerance(0.0),
-    m_targetFraction{0.5, 0.5},
-    m_maxFraction{0.5, 0.5}
+    m_targetPartitionFractions{0.5, 0.5},
+    m_maxPartitionFractions{0.5, 0.5}
 {
   // do nothing
 }
@@ -58,12 +58,12 @@ void BisectionParameters::setImbalanceTolerance(
   double const coeff = 1.0 + fraction;
   
   // update maximums
-  m_maxFraction[0] = m_targetFraction[0] * coeff; 
-  m_maxFraction[1] = m_targetFraction[1] * coeff; 
+  m_maxPartitionFractions[0] = m_targetPartitionFractions[0] * coeff; 
+  m_maxPartitionFractions[1] = m_targetPartitionFractions[1] * coeff; 
 }
 
 
-void BisectionParameters::setTargetFractions(
+void BisectionParameters::setTargetPartitionFractions(
     double const * const target)
 {
   if (target[0] + target[1] >= MAX_FRACTION_SUM || \
@@ -74,8 +74,8 @@ void BisectionParameters::setTargetFractions(
   }
 
   // update targets
-  m_targetFraction[0] = target[0];
-  m_targetFraction[1] = target[1];
+  m_targetPartitionFractions[0] = target[0];
+  m_targetPartitionFractions[1] = target[1];
 
   // implicitly update maximums
   setImbalanceTolerance(getImbalanceTolerance());
@@ -87,15 +87,15 @@ double BisectionParameters::getImbalanceTolerance() const
   return m_imbalanceTolerance;
 }
 
-double const * BisectionParameters::getTargetFractions() const
+double const * BisectionParameters::getTargetPartitionFractions() const
 {
-  return m_targetFraction;
+  return m_targetPartitionFractions;
 }
 
 
-double const * BisectionParameters::getMaxFractions() const
+double const * BisectionParameters::getMaxPartitionFractions() const
 {
-  return m_maxFraction;
+  return m_maxPartitionFractions;
 }
 
 

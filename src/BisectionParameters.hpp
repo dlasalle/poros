@@ -58,7 +58,7 @@ class BisectionParameters
     *
     * @param target The target fractions summing to 1.0.
     */
-    void setTargetFractions(
+    void setTargetPartitionFractions(
         double const * target);
 
 
@@ -76,7 +76,7 @@ class BisectionParameters
     *
     * @return The weight fractions.
     */
-    double const * getTargetFractions() const;
+    double const * getTargetPartitionFractions() const;
 
 
     /**
@@ -85,13 +85,13 @@ class BisectionParameters
     *
     * @return The weight fractions.
     */
-    double const * getMaxFractions() const;
+    double const * getMaxPartitionFractions() const;
 
 
   private:
     double m_imbalanceTolerance;
-    double m_targetFraction[2];
-    double m_maxFraction[2];
+    double m_targetPartitionFractions[2];
+    double m_maxPartitionFractions[2];
 };
 
 

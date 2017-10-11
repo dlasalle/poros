@@ -40,6 +40,18 @@ Partitioning::Partitioning(
 * PUBLIC FUNCTIONS ************************************************************
 ******************************************************************************/
 
+
+std::vector<vtx_type> Partitioning::calcVertexCounts() const
+{
+  std::vector<vtx_type> vertexCounts(getNumPartitions(), 0);
+  for (vtx_type const & part : m_assignment) {
+    ++vertexCounts[part];
+  }
+
+  return vertexCounts;
+}
+
+
 void Partitioning::assignAll(
     pid_type const partition,
     wgt_type const totalVertexWeight)
@@ -73,5 +85,6 @@ void Partitioning::output(
     partitionAssignment[v] = m_assignment[v];
   }
 }
+
 
 }

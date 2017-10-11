@@ -23,6 +23,29 @@ namespace dolos
 class ConstantGraph
 {
   public:
+    class EdgeTraverser
+    {
+      public:
+        EdgeTraverser(
+            adj_type const * begin,
+            adj_type const * end) :
+          m_begin(begin),
+          m_end(end)
+        {
+          // do nothing
+        }
+
+        inline adj_type const * begin() const noexcept
+        {
+          return m_begin;
+        }
+      
+        inline adj_type const * end() const noexcept
+        {
+          return m_end;
+        }
+    }
+
     /**
     * @brief Create a new constant graph.
     *
@@ -147,6 +170,22 @@ class ConstantGraph
     inline wgt_type const * getEdgeWeight() const noexcept
     {
       return m_edgeWeight;
+    }
+
+
+    /**
+    * @brief Get a traverser for the vertex's set of edges.
+    *
+    * @param vertex The vertex.
+    *
+    * @return The edge traverser.
+    */
+    inline EdgeTraverser getEdgeTraverser(
+        vtx_type const vertex) const noexcept
+    {
+      ASSERT_LESS(vertex, getNumVertices());
+
+      return EdgeTraverser(m_edgePrefix+v, m_edgePrefix+v+1);
     }
 
 

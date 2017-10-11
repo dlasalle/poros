@@ -40,7 +40,7 @@ Partitioning RandomBisector::execute(
     ConstantGraph const * const graph) const
 {
   wgt_type const totalWeight = graph->getTotalVertexWeight();
-  double const * const maxFractions = params->getMaxFractions();
+  double const * const maxFractions = params->getMaxPartitionFractions();
 
   // construct maximum partition weights
   std::vector<wgt_type> maxPartitionWeight(NUM_BISECTION_PARTS);

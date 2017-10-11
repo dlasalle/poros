@@ -66,7 +66,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
     double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
         static_cast<double>(graph->getTotalVertexWeight())) ;
 
-    double const ratio = bisectParams.getTargetFractions()[part] / weightFrac;
+    double const ratio = bisectParams.getTargetPartitionFractions()[part] / weightFrac;
     
     PartitionParameters subParams(numHalfParts[part]);
 
