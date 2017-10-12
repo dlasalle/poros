@@ -131,24 +131,6 @@ class Array
 
 
     /**
-    * @brief Set all entries int the array to the given sequence.
-    *
-    * @param start The starting value of the sequence.
-    * @param inc The increment of the sequence.
-    */
-    void inc(
-        T const start,
-        T const inc = 1) noexcept
-    {
-      T val = start;
-      for (size_t i = 0; i < m_size; ++i) {
-        m_data[i] = val;
-        val += inc;
-      }
-    }
-
-
-    /**
     * @brief Get the element at the given index.
     *
     * @param index The index of the element.

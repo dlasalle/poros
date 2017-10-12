@@ -13,6 +13,8 @@
 #define DOLOS_SRC_CONSTANTGRAPH_HPP
 
 
+#include <cstdlib>
+#include "Debug.hpp"
 #include "Base.hpp"
 #include "IAllocatedData.hpp"
 
@@ -20,32 +22,269 @@
 namespace dolos
 {
 
-class ConstantGraph
+
+class Edge
 {
   public:
-    class EdgeTraverser
+    /**
+    * @brief Create a new edge with a pointer to the given vertex and a pointer
+    * to the given weight.
+    *
+    * @param endpoint
+    * @param weight
+    */
+    Edge(
+        adj_type const index,
+        vtx_type const * const edgeList,
+        wgt_type const * const edgeWeight) noexcept :
+      m_endpoint(edgeList),
+      m_weight(edgeWeight)
+    {
+      // do nothing
+    }
+    
+
+    inline vtx_type getEndpoint() const noexcept
+    {
+      return m_edgeList[index];
+    }
+
+
+    inline wgt_type getWeight() const noexcept
+    {
+      return m_edgeWeight[index];
+    }
+
+
+  private:
+    vtx_type const * const m_edgeList;
+    wgt_type const * const m_edgeWeight;
+};
+
+
+class EdgeSet
+{
+  public:
+    class Iterator
     {
       public:
-        EdgeTraverser(
-            adj_type const * begin,
-            adj_type const * end) :
-          m_begin(begin),
-          m_end(end)
+        Iterator(
+            adj_type const index,
+            vtx_type const * const edgeList,
+            wgt_type const * const edgeWeight) noexcept :
+          m_index(index),
+          m_edgeList(edgeList),
+          m_edgeWeight(edgeWeight)
         {
           // do nothing
         }
 
-        inline adj_type const * begin() const noexcept
+        inline Edge operator*() const
         {
-          return m_begin;
+          return Edge(m_index, m_edgeList, m_edgeWeight);
         }
-      
-        inline adj_type const * end() const noexcept
+
+        inline Iterator const & operator++()
         {
-          return m_end;
+          ++m_index;
+          return *this;
         }
+
+        inline bool operator==(
+            Iterator const & other) const
+        {
+          return m_index == other.m_index;
+        }
+
+        inline bool operator!=(
+            Iterator const & other) const
+        {
+          return m_index != other.m_index;
+        }
+
+      private:
+        adj_type m_index;
+        vtx_type const * const m_edgeList;
+        wgt_type const * const m_edgeWeight;
+    };
+
+    EdgeSet(
+        adj_type const begin,
+        adj_type const end,
+        vtx_type const * const edgeList,
+        wgt_type const * const edgeWeight) :
+      m_begin(begin),
+      m_end(end),
+      m_edgeList(edgeList),
+      m_edgeWeight(edgeWeight)
+    {
+      // do nothing
     }
 
+    inline Iterator begin() const noexcept
+    {
+      return Iterator(m_begin, m_edgeList, m_edgeWeight);
+    }
+
+    inline Iterator end()
+    {
+      return Iterator(m_end, m_edgeList, m_edgeWeight);
+    }
+  
+  private:
+    adj_type const m_begin;
+    adj_type const m_end;
+    vtx_type const * const m_edgeList;
+    wgt_type const * const m_edgeWeight;
+};
+
+
+
+
+class Vertex
+{
+  public:
+    Vertex(
+        vtx_type const index,
+        wgt_type const * const vertexWeight,
+        adj_type const * const edgePrefix,
+        vtx_type const * const edgeList,
+        wgt_type const * const edgeWeight) noexcept :
+      m_index(index),
+      m_vertexWeight(vertexWeight),
+      m_edgePrefix(edgePrefix),
+      m_edgeList(edgeList),
+      m_edgeWeight(edgeWeight)
+    {
+      // do nothing 
+    }
+
+
+    inline vtx_type getID() const noexcept
+    {
+      return m_index;
+    }
+
+
+    inline wgt_type getWeight() const noexcept
+    {
+      return m_vertexWeight[m_index];
+    }
+
+
+    inline EdgeSet getEdges() const noexcept
+    {
+      return EdgeSet(m_edgePrefix[m_index], m_edgePrefix[m_index+1], \
+          m_edgeList, m_edgeWeight);
+    }
+
+
+  private:
+    vtx_type const m_index;
+    wgt_type const * const m_vertexWeight;
+    adj_type const * const m_edgePrefix;
+    vtx_type const * const m_edgeList;
+    wgt_type const * const m_edgeWeight;
+};
+
+
+class VertexSet
+{
+  public:
+    class Iterator
+    {
+      public:
+        Iterator(
+            vtx_type const index,
+            wgt_type const * const vertexWeight,
+            adj_type const * const edgePrefix,
+            vtx_type const * const edgeList,
+            wgt_type const * const edgeWeight) noexcept :
+          m_index(index),
+          m_vertexWeight(vertexWeight),
+          m_edgePrefix(edgePrefix),
+          m_edgeList(edgeList),
+          m_edgeWeight(edgeWeight)
+        {
+          // do nothing
+        }
+
+        inline Vertex operator*() const
+        {
+          return Vertex(m_index, m_vertexWeight, m_edgePrefix, m_edgeList, \
+              m_edgeWeight);
+        }
+
+        inline Iterator const & operator++()
+        {
+          ++m_index;
+          return *this;
+        }
+
+        inline bool operator==(
+            Iterator const & other) const
+        {
+          return m_index == other.m_index;
+        }
+
+        inline bool operator!=(
+            Iterator const & other) const
+        {
+          return m_index != other.m_index;
+        }
+
+      private:
+        adj_type m_index;
+        wgt_type const * const m_vertexWeight;
+        adj_type const * const m_edgePrefix;
+        vtx_type const * const m_edgeList;
+        wgt_type const * const m_edgeWeight;
+    };
+
+    VertexSet(
+        vtx_type const begin,
+        vtx_type const end,
+        wgt_type const * const weight,
+        adj_type const * const edgePrefix,
+        vtx_type const * const edgeList,
+        wgt_type const * const edgeWeight) noexcept :
+      m_begin(begin),
+      m_end(end),
+      m_weight(weight),
+      m_edgePrefix(edgePrefix),
+      m_edgeList(edgeList),
+      m_edgeWeight(edgeWeight)
+    {
+      // do nothing
+    }
+
+    inline Iterator begin() const noexcept
+    {
+      return Iterator(m_begin, m_weight, m_edgePrefix, m_edgeList, \
+          m_edgeWeight);
+    }
+
+    inline Iterator end() const noexcept
+    {
+      return Iterator(m_end, m_weight, m_edgePrefix, m_edgeList, \
+          m_edgeWeight);
+    }
+  
+  private:
+    vtx_type const m_begin;
+    vtx_type const m_end;
+    wgt_type const * const m_weight;
+    adj_type const * const m_edgePrefix;
+    vtx_type const * const m_edgeList;
+    wgt_type const * const m_edgeWeight;
+};
+
+
+
+
+class ConstantGraph
+{
+  public:
     /**
     * @brief Create a new constant graph.
     *
@@ -174,18 +413,14 @@ class ConstantGraph
 
 
     /**
-    * @brief Get a traverser for the vertex's set of edges.
+    * @brief Get the set of vertices in the graph for traversal. 
     *
-    * @param vertex The vertex.
-    *
-    * @return The edge traverser.
+    * @return The vertex set.
     */
-    inline EdgeTraverser getEdgeTraverser(
-        vtx_type const vertex) const noexcept
+    inline VertexSet getVertices() const noexcept
     {
-      ASSERT_LESS(vertex, getNumVertices());
-
-      return EdgeTraverser(m_edgePrefix+v, m_edgePrefix+v+1);
+      return VertexSet(0, m_numVertices, m_vertexWeight, m_edgePrefix, \
+          m_edgeList, m_edgeWeight);
     }
 
 

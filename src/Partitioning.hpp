@@ -48,6 +48,14 @@ class Partitioning
 
 
     /**
+    * @brief Calculate the number of vertices per partition.
+    *
+    * @return The vector containing the number of vertices per partition.
+    */
+    std::vector<vtx_type> calcVertexCounts() const;
+
+
+    /**
      * @brief Output the partition to a given memory location.
      *
      * @param totalCutEdgeWeight The location to write the total cut

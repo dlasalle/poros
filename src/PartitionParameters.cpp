@@ -80,14 +80,22 @@ PartitionParameters::PartitionParameters(
 void PartitionParameters::setImbalanceTolerance(
     double const toleranceFraction)
 {
-  (void)toleranceFraction;
+  m_imbalanceTolerance = toleranceFraction;
+
+  _fillMaxPartitionFractions(m_numParts, m_maxPartitionFractions.data(), \
+      m_targetPartitionFractions.data(), m_imbalanceTolerance);
 }
 
 
 void PartitionParameters::setTargetPartitionFractions(
     double const * const fractions)
 {
-  (void)fractions;
+  for (pid_type i = 0; i < m_numParts; ++i) {
+    m_targetPartitionFractions[i] = fractions[i];
+  }
+
+  _fillMaxPartitionFractions(m_numParts, m_maxPartitionFractions.data(), \
+      m_targetPartitionFractions.data(), m_imbalanceTolerance);
 }
 
 

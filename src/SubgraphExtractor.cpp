@@ -11,6 +11,8 @@
 
 #include "SubgraphExtractor.hpp"
 
+#include "GraphData.hpp"
+#include "ArrayUtils.hpp"
 
 
 namespace dolos
@@ -22,7 +24,7 @@ namespace dolos
 ******************************************************************************/
 
 
-static std::vector<Subgraph> SubgraphExtractor::partitions(
+std::vector<Subgraph> SubgraphExtractor::partitions(
     ConstantGraph const * const graph,
     Partitioning const * const part)
 {
@@ -44,9 +46,9 @@ static std::vector<Subgraph> SubgraphExtractor::partitions(
     ASSERT_EQUAL(map.size(), part);
 
     // allocate arrays for this subgraph
-    map.push_back(vertexCounts[part]);
+    map.emplace_back(vertexCounts[part]);
 
-    edgePrefixes.push_back(vertexCounts[part]+1);
+    edgePrefixes.emplace_back(vertexCounts[part]+1);
     edgePrefixes[part].set(0);
 
     // reset so we can populate the super-map
@@ -57,7 +59,7 @@ static std::vector<Subgraph> SubgraphExtractor::partitions(
   Array<vtx_type> subMap(numVertices);
   for (vtx_type v = 0; v < numVertices; ++v) {
     pid_type const where = part->getAssignment(v);
-    vtx_type const subV = vertexCounts[where]++
+    vtx_type const subV = vertexCounts[where]++;
 
     // assign sub to super
     map[where][subV] = v;
@@ -66,13 +68,14 @@ static std::vector<Subgraph> SubgraphExtractor::partitions(
     subMap[v] = subV;
   }
 
-  // count edges, and populate edgePrefixes
-  for (vtx_type v = 0; v < numVertices; ++v) {
-    pid_type const vPart = part->getAssignment(v);
+  // calculate number of edges
+  for (Vertex const & vertex : graph->getVertices()) {
+    vtx_type const v = vertex.getID();
     vtx_type const subV = subMap[v];
+    pid_type const vPart = part->getAssignment(v);
 
-    for (adj_type const & edge : graph->getEdgeTraverser(v)) {
-      vtx_type const u = edgeList[edge]; 
+    for (Edge const & edge : vertex.getEdges()) {
+      vtx_type const u = edge.getEndpoint();
       pid_type const uPart = part->getAssignment(u);
 
       // this edge will exist in the subgraph
@@ -82,13 +85,18 @@ static std::vector<Subgraph> SubgraphExtractor::partitions(
     }
   }
 
-  // assemble subgraphs
+  // prefix sum edge counts for each partition
+  for (pid_type part = 0; part < numParts; ++part) {
+    ArrayUtils::prefixSumExclusive(&edgePrefixes[part]);
+  }
+
 
   // assemble subgraphs
-  std::vector<Subgraph> subgraphs.reserve(numParts);
+  std::vector<Subgraph> subgraphs;
+  subgraphs.reserve(numParts);
   for (pid_type part = 0; part < numParts; ++part) {
-    subgraphs.push_back(&data[part], &map[part]);
-    
+    ConstantGraph graph = data[part].toGraph();
+    subgraphs.emplace_back(&graph, &map[part]);
   }
 
   return subgraphs;
