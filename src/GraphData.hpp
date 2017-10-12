@@ -44,7 +44,7 @@ class GraphData :
     * @param lhs The object to move.
     */
     GraphData(
-        GraphData && lhs);
+        GraphData && lhs) noexcept;
 
 
     /**
@@ -145,6 +145,66 @@ class GraphData :
     * @return The pointer.
     */
     wgt_type const * getEdgeWeight() const noexcept;
+
+
+    /**
+    * @brief Set the weight of an individual vertex.
+    *
+    * @param vertex The vertex to set the weight of.
+    * @param weight The weight of the vertex.
+    */
+    inline void setVertexWeight(
+        vtx_type const vertex,
+        wgt_type const weight) noexcept
+    {
+      m_vertexWeight[vertex] = weight;
+    }
+
+
+    /**
+    * @brief Set the starting index of a given vertex's edge list.
+    *
+    * @param vertex The vertex to set the starting index of.
+    * @param prefix The starting index.
+    */
+    inline void setVertexEdgePrefix(
+        vtx_type const vertex,
+        adj_type const prefix) noexcept
+    {
+      ASSERT_LESS(vertex, m_edgePrefix.size());
+      m_edgePrefix[vertex] = prefix;
+    }
+
+
+    /**
+    * @brief Set the vertex at the end of the given edge.
+    *
+    * @param edge The edge to set the endpoint of.
+    * @param vertex The endpoint to set.
+    */
+    inline void setEdgeVertex(
+        vtx_type const edge,
+        adj_type const vertex) noexcept
+    {
+      ASSERT_LESS(edge, m_edgeList.size());
+      m_edgeList[edge] = vertex;
+    }
+
+
+    /**
+    * @brief Set the weight of a given edge.
+    *
+    * @param edge The edge to set the weight of.
+    * @param weight The weight to set.
+    */
+    inline void setEdgeWeight(
+        vtx_type const edge,
+        wgt_type const weight) noexcept
+    {
+      ASSERT_LESS(edge, m_edgeWeight.size());
+      m_edgeWeight[edge] = weight;
+    }
+
 
 
   private:

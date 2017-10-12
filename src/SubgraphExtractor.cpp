@@ -90,6 +90,29 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     ArrayUtils::prefixSumExclusive(&edgePrefixes[part]);
   }
 
+  // allocate graph data
+  for (pid_type part = 0; part < numParts; ++part) {
+    vtx_type const partVertices = vertexCounts[part];
+    data.emplace_back(partVertices, edgePrefixes[part][partVertices]);
+  }
+
+  // fill vertex weights
+  for (Vertex const & vertex : graph->getVertices()) {
+    vtx_type const vSuper = vertex.getIndex();
+    vtx_type const vSub = subMap[vSuper];
+    
+    pid_type const part = part->getAssignment(vSuper);
+    data[part].setVertexWeight(vSub, vertex.getWeight());
+  }
+
+  // fill edges 
+  for (Vertex const & vertex : graph->getVertices()) {
+    vtx_type const vSuper = vertex.getIndex();
+    vtx_type const vSub = subMap[vSuper];
+    
+    pid_type const part = part->getAssignment(vSuper);
+    data[part].setVertexWeight(vSub, vertex.getWeight());
+  }
 
   // assemble subgraphs
   std::vector<Subgraph> subgraphs;

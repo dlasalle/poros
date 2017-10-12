@@ -34,9 +34,19 @@ GraphData::GraphData(
 }
 
 
-// the default will suit us fine
+// while the default would suit us just fine (aside from the missing noexcept),
+// debugging generated constructors is not really do-able. One reason to go
+// back to the default, is that any added fields to this class will require
+// modification of this constructor. 
 GraphData::GraphData(
-    GraphData && lhs) = default; 
+    GraphData && lhs) noexcept :
+  m_edgePrefix(std::move(lhs.m_edgePrefix)),
+  m_edgeList(std::move(lhs.m_edgeList)),
+  m_vertexWeight(std::move(lhs.m_vertexWeight)),
+  m_edgeWeight(std::move(lhs.m_edgeWeight))
+{
+  // do nothing
+}
 
 
 
