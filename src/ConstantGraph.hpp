@@ -167,7 +167,7 @@ class EdgeSet
     *
     * @return The number of edges in this edge set.
     */
-    inline adj_t size() const noexcept
+    inline adj_type size() const noexcept
     {
       return m_end - m_begin;
     }

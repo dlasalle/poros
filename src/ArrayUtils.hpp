@@ -39,7 +39,7 @@ class ArrayUtils
       T val = start;
       size_t const size = array->size();
       for (size_t i = 0; i < size; ++i) {
-        array[i] = val;
+        (*array)[i] = val;
         val += inc;
       }
     }

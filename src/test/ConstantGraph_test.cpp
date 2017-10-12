@@ -26,7 +26,7 @@ UNITTEST(ConstantGraph, IterateVertices)
 
   std::vector<bool> visited(g.getNumVertices(), false);
   for (Vertex const v : g.getVertices()) {
-    visited[v.getID()] = true;    
+    visited[v.getIndex()] = true;    
   }
 
   for (bool const & v : visited) {
@@ -44,7 +44,7 @@ UNITTEST(ConstantGraph, IterateEdges)
   std::vector<bool> visited(g.getNumEdges(), false);
   for (Vertex const & v : g.getVertices()) {
     for (Edge const & e : g.getEdges()) {
-      visited[e.getVertex()].
+      visited[e.getIndex()] = true;
     }
   }
 

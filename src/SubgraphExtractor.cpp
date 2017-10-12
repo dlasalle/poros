@@ -70,12 +70,12 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
 
   // calculate number of edges
   for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const v = vertex.getID();
+    vtx_type const v = vertex.getIndex();
     vtx_type const subV = subMap[v];
     pid_type const vPart = part->getAssignment(v);
 
     for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getEndpoint();
+      vtx_type const u = edge.getVertex();
       pid_type const uPart = part->getAssignment(u);
 
       // this edge will exist in the subgraph
