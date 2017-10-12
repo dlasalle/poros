@@ -42,16 +42,35 @@ UNITTEST(ConstantGraph, IterateEdges)
   ConstantGraph g = gen.generate();
 
   std::vector<bool> visited(g.getNumEdges(), false);
+  for (Edge const & e : g.getEdges()) {
+    visited[e.getIndex()] = true;
+  }
+
+  for (bool const & e : visited) {
+    testTrue(e);
+  }
+}
+
+
+UNITTEST(ConstantGraph, IteratePerVertexEdges)
+{
+  GridGraphGenerator gen(5, 5, 5);
+
+  ConstantGraph g = gen.generate();
+
+  std::vector<bool> visited(g.getNumEdges(), false);
   for (Vertex const & v : g.getVertices()) {
-    for (Edge const & e : g.getEdges()) {
+    for (Edge const & e : v.getEdges()) {
       visited[e.getIndex()] = true;
     }
   }
 
-  for (bool const & v : visited) {
-    testTrue(v);
+  for (bool const & e : visited) {
+    testTrue(e);
   }
 }
+
+
 
 
 

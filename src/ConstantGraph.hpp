@@ -43,6 +43,17 @@ class Edge
     {
       // do nothing
     }
+
+
+    /**
+    * @brief Get the index of the edge.
+    *
+    * @return The index of the edge.
+    */
+    inline adj_type getIndex() const noexcept
+    {
+      return m_index;
+    }
     
 
     /**
@@ -518,6 +529,17 @@ class ConstantGraph
     {
       return VertexSet(0, m_numVertices, m_vertexWeight, m_edgePrefix, \
           m_edgeList, m_edgeWeight);
+    }
+
+
+    /**
+    * @brief Get the set of edges in the graph for traversal.
+    *
+    * @return The edge set.
+    */
+    inline EdgeSet getEdges() const noexcept
+    {
+      return EdgeSet(0, m_numEdges, m_edgeList, m_edgeWeight);
     }
 
 
