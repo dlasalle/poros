@@ -37,7 +37,7 @@ class ArrayUtils
         T const inc = 1) noexcept
     {
       T val = start;
-      size_t const size = array.size();
+      size_t const size = array->size();
       for (size_t i = 0; i < size; ++i) {
         array[i] = val;
         val += inc;

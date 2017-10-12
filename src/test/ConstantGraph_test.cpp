@@ -8,6 +8,7 @@
 */
 
 
+#include <vector>
 #include "ConstantGraph.hpp"
 #include "DomTest.hpp"
 #include "GridGraphGenerator.hpp"
@@ -23,8 +24,36 @@ UNITTEST(ConstantGraph, IterateVertices)
 
   ConstantGraph g = gen.generate();
 
+  std::vector<bool> visited(g.getNumVertices(), false);
+  for (Vertex const v : g.getVertices()) {
+    visited[v.getID()] = true;    
+  }
 
+  for (bool const & v : visited) {
+    testTrue(v);
+  }
 }
+
+
+UNITTEST(ConstantGraph, IterateEdges)
+{
+  GridGraphGenerator gen(5, 5, 5);
+
+  ConstantGraph g = gen.generate();
+
+  std::vector<bool> visited(g.getNumEdges(), false);
+  for (Vertex const & v : g.getVertices()) {
+    for (Edge const & e : g.getEdges()) {
+      visited[e.getVertex()].
+    }
+  }
+
+  for (bool const & v : visited) {
+    testTrue(v);
+  }
+}
+
+
 
 
 }

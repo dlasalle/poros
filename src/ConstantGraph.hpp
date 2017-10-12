@@ -37,26 +37,38 @@ class Edge
         adj_type const index,
         vtx_type const * const edgeList,
         wgt_type const * const edgeWeight) noexcept :
-      m_endpoint(edgeList),
-      m_weight(edgeWeight)
+      m_index(index),
+      m_edgeList(edgeList),
+      m_edgeWeight(edgeWeight)
     {
       // do nothing
     }
     
 
-    inline vtx_type getEndpoint() const noexcept
+    /**
+    * @brief Get the vertex at the other end of this edge.
+    *
+    * @return The vertex.
+    */
+    inline vtx_type getVertex() const noexcept
     {
-      return m_edgeList[index];
+      return m_edgeList[m_index];
     }
 
 
+    /**
+    * @brief Get the weight of this edge.
+    *
+    * @return 
+    */
     inline wgt_type getWeight() const noexcept
     {
-      return m_edgeWeight[index];
+      return m_edgeWeight[m_index];
     }
 
 
   private:
+    adj_type const m_index;
     vtx_type const * const m_edgeList;
     wgt_type const * const m_edgeWeight;
 };
@@ -108,6 +120,14 @@ class EdgeSet
         wgt_type const * const m_edgeWeight;
     };
 
+    /**
+    * @brief Create a new edgeset.
+    *
+    * @param begin The starting index of the edge set.
+    * @param end The ending index of the edge set.
+    * @param edgeList The edge list array.
+    * @param edgeWeight The edge weight array.
+    */
     EdgeSet(
         adj_type const begin,
         adj_type const end,
@@ -121,14 +141,35 @@ class EdgeSet
       // do nothing
     }
 
+    /**
+    * @brief Get an iterator to the beginning of this edgeset.
+    *
+    * @return The iterator.
+    */
     inline Iterator begin() const noexcept
     {
       return Iterator(m_begin, m_edgeList, m_edgeWeight);
     }
 
-    inline Iterator end()
+    /**
+    * @brief Get an iterator to the end of this edgeset (one past the last
+    * edge).
+    *
+    * @return The iterator.
+    */
+    inline Iterator end() const noexcept
     {
       return Iterator(m_end, m_edgeList, m_edgeWeight);
+    }
+
+    /**
+    * @brief Get the number of edges in this edgeset.
+    *
+    * @return The number of edges in this edge set.
+    */
+    inline adj_t size() const noexcept
+    {
+      return m_end - m_begin;
     }
   
   private:
@@ -160,22 +201,48 @@ class Vertex
     }
 
 
-    inline vtx_type getID() const noexcept
+    /**
+    * @brief Get the index of this vertex (it's id).
+    *
+    * @return The index.
+    */
+    inline vtx_type getIndex() const noexcept
     {
       return m_index;
     }
 
 
+    /**
+    * @brief Get the weight of this vertex.
+    *
+    * @return The weight of this vertex.
+    */
     inline wgt_type getWeight() const noexcept
     {
       return m_vertexWeight[m_index];
     }
 
 
+    /**
+    * @brief Get the edges of this vertex.
+    *
+    * @return The edges of this vertex.
+    */
     inline EdgeSet getEdges() const noexcept
     {
       return EdgeSet(m_edgePrefix[m_index], m_edgePrefix[m_index+1], \
           m_edgeList, m_edgeWeight);
+    }
+
+
+    /**
+    * @brief Get the number of edges incident to this vertex.
+    *
+    * @return The number of edges incident to this vertex.
+    */
+    inline adj_type getNumEdges() const noexcept
+    {
+      return m_edgePrefix[m_index+1] - m_edgePrefix[m_index];
     }
 
 
@@ -241,6 +308,16 @@ class VertexSet
         wgt_type const * const m_edgeWeight;
     };
 
+    /**
+    * @brief Create a new vertex set.
+    *
+    * @param begin The starting vertex.
+    * @param end The ending vertex (exclusive).
+    * @param weight The vector of vertex weights.
+    * @param edgePrefix THe edge prefix vector.
+    * @param edgeList The edge list vector.
+    * @param edgeWeight The edge weight vector.
+    */
     VertexSet(
         vtx_type const begin,
         vtx_type const end,
@@ -258,16 +335,36 @@ class VertexSet
       // do nothing
     }
 
+    /**
+    * @brief Get the begin iterator to this vertex set.
+    *
+    * @return The iterator.
+    */
     inline Iterator begin() const noexcept
     {
       return Iterator(m_begin, m_weight, m_edgePrefix, m_edgeList, \
           m_edgeWeight);
     }
 
+    /**
+    * @brief Get an end iterator for the vertex set.
+    *
+    * @return The end iterator.
+    */
     inline Iterator end() const noexcept
     {
       return Iterator(m_end, m_weight, m_edgePrefix, m_edgeList, \
           m_edgeWeight);
+    }
+
+    /**
+    * @brief Get the number of vertices in this vertex set.
+    *
+    * @return The number of vertices.
+    */
+    inline vtx_type size() const noexcept
+    {
+      return m_end - m_begin;
     }
   
   private:

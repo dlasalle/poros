@@ -40,20 +40,6 @@ class Array
 
 
     /**
-    * @brief Copy constructor.
-    *
-    * @param lhs The array to copy.
-    */
-    Array(
-        Array const & lhs) :
-      m_size(lhs.m_size),
-      m_data(Alloc::duplicate(lhs.m_data, lhs.m_size))
-    {
-      // do nothing
-    }
-
-
-    /**
     * @brief Move constructor.
     *
     * @param lhs The array to move.
@@ -78,25 +64,6 @@ class Array
 
 
     /**
-    * @brief Assignment operator (copy).
-    *
-    * @param lhs The array to assign to this one.
-    *
-    * @return This array.
-    */
-    Array & operator=(
-        Array const & lhs)
-    {
-      m_size = lhs.m_size;
-      Alloc::free(m_data);
-
-      m_data = Alloc::duplicate(lhs.m_data, lhs.m_size);
-
-      return this;
-    }
-
-
-    /**
     * @brief Assignment operator (move).
     *
     * @param lhs The array to assign (and destroy) to this one.
@@ -112,7 +79,7 @@ class Array
       lhs.m_size = 0;
       lhs.m_data = nullptr;
 
-      return this;
+      return *this;
     }
 
 
@@ -196,6 +163,12 @@ class Array
   private:
     size_t m_size;
     T * m_data;
+
+    // disable copying
+    Array(
+        Array const & lhs);
+    Array & operator=(
+        Array const & lhs);
 
 
 };

@@ -9,6 +9,7 @@
 
 
 
+#include "ArrayUtils.hpp"
 #include "Array.hpp"
 #include "DomTest.hpp"
 
@@ -22,7 +23,7 @@ UNITTEST(ArrayUtils, Increment)
 {
   Array<int> m(5UL);
 
-  ArrayUtils::increment(m, 1, 2);
+  ArrayUtils::increment(&m, 1, 2);
 
   int val = 1;
   for (size_t i = 0; i < m.size(); ++i) {
@@ -40,7 +41,7 @@ UNITTEST(Array, PrefixSumExclusive)
   m[1] = 1;
   m[2] = 2;
 
-  ArrayUtils::prefixSumExclusive(m);
+  ArrayUtils::prefixSumExclusive(&m);
 
   testEqual(m[0], 0);
   testEqual(m[1], 3);
