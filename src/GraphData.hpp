@@ -39,6 +39,15 @@ class GraphData :
 
 
     /**
+    * @brief Move constructor.
+    *
+    * @param lhs The object to move.
+    */
+    GraphData(
+        GraphData && lhs);
+
+
+    /**
     * @brief Get the number of vertices in the graph.
     *
     * @return The number of vertices.
@@ -143,6 +152,13 @@ class GraphData :
     Array<vtx_type> m_edgeList;
     Array<wgt_type> m_vertexWeight;
     Array<wgt_type> m_edgeWeight;
+
+    // prevent copying
+    GraphData(
+        GraphData const & lhs);
+    GraphData & operator=(
+        GraphData const & lhs);
+
 };
 
 

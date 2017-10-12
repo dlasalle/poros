@@ -34,6 +34,12 @@ GraphData::GraphData(
 }
 
 
+// the default will suit us fine
+GraphData::GraphData(
+    GraphData && lhs) = default; 
+
+
+
 /******************************************************************************
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
@@ -42,13 +48,21 @@ GraphData::GraphData(
 vtx_type GraphData::getNumVertices() const
 {
   ASSERT_GREATER(m_edgePrefix.size(),0);
-  return m_edgePrefix.size()-1;
+
+  vtx_type const numVertices = m_edgePrefix.size()-1;
+
+  ASSERT_EQUAL(m_vertexWeight.size(), numVertices);
+
+  return numVertices;
 }
 
 
 adj_type GraphData::getNumEdges() const
 {
-  return m_edgePrefix[getNumVertices()];
+  adj_type const numEdges = m_edgeList.size();
+  ASSERT_EQUAL(m_edgeWeight.size(), numEdges);
+
+  return numEdges;
 }
 
 
@@ -61,7 +75,7 @@ ConstantGraph GraphData::toGraph()
       data->getEdgePrefix(), data->getEdgeList(), data->getVertexWeight(), \
       data->getEdgeWeight(), data);
 
-  return std::move(graph);
+  return graph;
 }
 
 
