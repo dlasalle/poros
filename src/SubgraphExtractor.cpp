@@ -11,7 +11,7 @@
 
 #include "SubgraphExtractor.hpp"
 
-#include "GraphData.hpp"
+#include "GraphBuilder.hpp"
 #include "ArrayUtils.hpp"
 
 
@@ -28,28 +28,24 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     ConstantGraph const * const graph,
     Partitioning const * const part)
 {
-  // place to hold subgraphs while being constructed
-  std::vector<GraphData> data;
-
-  // place to hold super-mapping during construction
-  std::vector<Array<vtx_type>> map;
-
   pid_type const numParts = part->getNumPartitions();
   vtx_type const numVertices = graph->getNumVertices();
+
+  // place to hold subgraphs while being constructed
+  std::vector<GraphBuilder> builder(numParts);
 
   // count vertices in each partition
   std::vector<vtx_type> vertexCounts = part->calcVertexCounts();
 
-  std::vector<Array<adj_type>> edgePrefixes;
+  // map of sub graph vertices to super graph vertices 
+  std::vector<Array<vtx_type>> map;
   for (pid_type part = 0; part < numParts; ++part) {
-    ASSERT_EQUAL(edgePrefixes.size(), part);
     ASSERT_EQUAL(map.size(), part);
 
     // allocate arrays for this subgraph
     map.emplace_back(vertexCounts[part]);
 
-    edgePrefixes.emplace_back(vertexCounts[part]+1);
-    edgePrefixes[part].set(0);
+    // create builder for this partition
 
     // reset so we can populate the super-map
     vertexCounts[part] = 0;
@@ -90,10 +86,10 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     ArrayUtils::prefixSumExclusive(&edgePrefixes[part]);
   }
 
-  // allocate graph data
+  // allocate graph builder
   for (pid_type part = 0; part < numParts; ++part) {
     vtx_type const partVertices = vertexCounts[part];
-    data.emplace_back(partVertices, edgePrefixes[part][partVertices]);
+    builder.emplace_back(partVertices, edgePrefixes[part][partVertices]);
   }
 
   // fill vertex weights
@@ -102,23 +98,32 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     vtx_type const vSub = subMap[vSuper];
     
     pid_type const part = part->getAssignment(vSuper);
-    data[part].setVertexWeight(vSub, vertex.getWeight());
+    builder[part].setVertexWeight(vSub, vertex.getWeight());
   }
 
   // fill edges 
   for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const vSuper = vertex.getIndex();
-    vtx_type const vSub = subMap[vSuper];
-    
-    pid_type const part = part->getAssignment(vSuper);
-    data[part].setVertexWeight(vSub, vertex.getWeight());
+    vtx_type const v = vertex.getIndex();
+    vtx_type const subV = subMap[v];
+    pid_type const vPart = part->getAssignment(v);
+
+    for (Edge const & edge : vertex.getEdges()) {
+      vtx_type const u = edge.getVertex();
+      pid_type const uPart = part->getAssignment(u);
+
+      // this edge will exist in the subgraph
+      if (vPart == uPart) {
+        vtx_type const subU = subMap[u];
+        builder[vPart].addEdgeToVertex(subV, subU, Edge.getWeight());
+      }
+    }
   }
 
   // assemble subgraphs
   std::vector<Subgraph> subgraphs;
   subgraphs.reserve(numParts);
   for (pid_type part = 0; part < numParts; ++part) {
-    ConstantGraph graph = data[part].toGraph();
+    ConstantGraph graph = builder[part].finish();
     subgraphs.emplace_back(&graph, &map[part]);
   }
 
