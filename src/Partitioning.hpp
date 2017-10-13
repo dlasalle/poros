@@ -174,6 +174,17 @@ class Partitioning
       return m_assignment[vertex];
     }
 
+
+    /**
+     * @brief Get the raw assignment vector.
+     *
+     * @return The raw assignment vector.
+     */
+    inline pid_type * getAssignmentData() noexcept
+    {
+      return m_assignment.data();
+    }
+
     /**
      * @brief Check if a vertex has been assigned yet.
      *
