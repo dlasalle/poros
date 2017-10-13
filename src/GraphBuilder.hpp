@@ -15,7 +15,7 @@
 
 
 #include "Base.hpp"
-#include "GraphData.hpp"
+#include "Array.hpp"
 #include "ConstantGraph.hpp"
 
 
@@ -79,8 +79,8 @@ class GraphBuilder
     * @param numEdges The number of edges.
     */
     inline void setVertexNumEdges(
-        vtx_type vertex,
-        adj_type numEdges) noexcept
+        vtx_type const vertex,
+        adj_type const numEdges) noexcept
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
 
@@ -96,7 +96,7 @@ class GraphBuilder
     * @param vertex The vertex.
     */
     inline void incVertexNumEdges(
-        vtx_type vertex) noexcept
+        vtx_type const vertex) noexcept
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
 

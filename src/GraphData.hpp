@@ -28,7 +28,7 @@ class GraphData :
 {
   public:
     /**
-    * @brief Allocate new graph data
+    * @brief Allocate new graph data.
     *
     * @param numVertices The number of vertices in the graph.
     * @param numEdges The number of edges in the graph.
@@ -36,6 +36,21 @@ class GraphData :
     GraphData(
         vtx_type numVertices,
         adj_type numEdges);
+
+
+    /**
+    * @brief Create a new graph data from an existing set of arrays.
+    *
+    * @param edgePrefix The edge prefix array.
+    * @param edgeList The edge list array.
+    * @param vertexWeight The vertex weight array.
+    * @param edgeWeight The edge weight array.
+    */
+    GraphData(
+        Array<adj_type> * edgePrefix,
+        Array<vtx_type> * edgeList,
+        Array<wgt_type> * vertexWeight,
+        Array<wgt_type> * edgeWeight);
 
 
     /**

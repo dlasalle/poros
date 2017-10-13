@@ -84,6 +84,26 @@ class Array
 
 
     /**
+    * @brief Resize the array.
+    *
+    * @param size The new size.
+    */
+    void resize(
+        size_t const size)
+    {
+      if (m_size > 0) {
+        // actually resize
+        m_size = size;
+        Alloc::resize<T>(&m_data, size);
+      } else {
+        // initialize allocation
+        m_size = size;
+        m_data = Alloc::uninitialized<T>(size);
+      }
+    }
+
+
+    /**
     * @brief Set all entries in the array to the given value.
     *
     * @param val The value to set.
@@ -105,7 +125,7 @@ class Array
     * @return A reference to the element.
     */
     T & operator[](
-        size_t index) noexcept
+        size_t const index) noexcept
     {
       ASSERT_LESS(index, m_size);
       return m_data[index];
@@ -120,7 +140,7 @@ class Array
     * @return A reference to the element.
     */
     T const & operator[](
-        size_t index) const noexcept
+        size_t const index) const noexcept
     {
       ASSERT_LESS(index, m_size);
       return m_data[index];

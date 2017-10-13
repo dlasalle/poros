@@ -39,16 +39,18 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
 
   // map of sub graph vertices to super graph vertices 
   std::vector<Array<vtx_type>> map;
-  for (pid_type part = 0; part < numParts; ++part) {
-    ASSERT_EQUAL(map.size(), part);
+  for (pid_type pid = 0; pid < numParts; ++pid) {
+    ASSERT_EQUAL(map.size(), pid);
 
     // allocate arrays for this subgraph
-    map.emplace_back(vertexCounts[part]);
+    map.emplace_back(vertexCounts[pid]);
 
-    // create builder for this partition
+    // set number of vertices on builder 
+    builder[pid].setNumVertices(vertexCounts[pid]);
+    builder[pid].beginVertexPhase();
 
     // reset so we can populate the super-map
-    vertexCounts[part] = 0;
+    vertexCounts[pid] = 0;
   }
 
   // populate super-map and submap
@@ -64,57 +66,51 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     subMap[v] = subV;
   }
 
-  // calculate number of edges
-  for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const v = vertex.getIndex();
-    vtx_type const subV = subMap[v];
-    pid_type const vPart = part->getAssignment(v);
-
-    for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getVertex();
-      pid_type const uPart = part->getAssignment(u);
-
-      // this edge will exist in the subgraph
-      if (vPart == uPart) {
-        ++edgePrefixes[vPart][subV]; 
-      }
-    }
-  }
-
-  // prefix sum edge counts for each partition
-  for (pid_type part = 0; part < numParts; ++part) {
-    ArrayUtils::prefixSumExclusive(&edgePrefixes[part]);
-  }
-
-  // allocate graph builder
-  for (pid_type part = 0; part < numParts; ++part) {
-    vtx_type const partVertices = vertexCounts[part];
-    builder.emplace_back(partVertices, edgePrefixes[part][partVertices]);
-  }
-
   // fill vertex weights
   for (Vertex const & vertex : graph->getVertices()) {
     vtx_type const vSuper = vertex.getIndex();
     vtx_type const vSub = subMap[vSuper];
     
-    pid_type const part = part->getAssignment(vSuper);
-    builder[part].setVertexWeight(vSub, vertex.getWeight());
+    pid_type const pid = part->getAssignment(vSuper);
+    builder[pid].setVertexWeight(vSub, vertex.getWeight());
+  }
+
+  // calculate number of edges
+  for (Vertex const & vertex : graph->getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    vtx_type const subV = subMap[v];
+    pid_type const vPid = part->getAssignment(v);
+
+    for (Edge const & edge : vertex.getEdges()) {
+      vtx_type const u = edge.getVertex();
+      pid_type const uPid = part->getAssignment(u);
+
+      // this edge will exist in the subgraph
+      if (vPid == uPid) {
+        builder[vPid].incVertexNumEdges(subV);
+      }
+    }
+  }
+
+  // start edge phase
+  for (pid_type pid = 0; pid < numParts; ++pid) {
+    builder[pid].beginEdgePhase();
   }
 
   // fill edges 
   for (Vertex const & vertex : graph->getVertices()) {
     vtx_type const v = vertex.getIndex();
     vtx_type const subV = subMap[v];
-    pid_type const vPart = part->getAssignment(v);
+    pid_type const vPid = part->getAssignment(v);
 
     for (Edge const & edge : vertex.getEdges()) {
       vtx_type const u = edge.getVertex();
-      pid_type const uPart = part->getAssignment(u);
+      pid_type const uPid = part->getAssignment(u);
 
       // this edge will exist in the subgraph
-      if (vPart == uPart) {
+      if (vPid == uPid) {
         vtx_type const subU = subMap[u];
-        builder[vPart].addEdgeToVertex(subV, subU, Edge.getWeight());
+        builder[vPid].addEdgeToVertex(subV, subU, edge.getWeight());
       }
     }
   }
@@ -122,9 +118,9 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   // assemble subgraphs
   std::vector<Subgraph> subgraphs;
   subgraphs.reserve(numParts);
-  for (pid_type part = 0; part < numParts; ++part) {
-    ConstantGraph graph = builder[part].finish();
-    subgraphs.emplace_back(&graph, &map[part]);
+  for (pid_type pid = 0; pid < numParts; ++pid) {
+    ConstantGraph graph = builder[pid].finish();
+    subgraphs.emplace_back(&graph, &map[pid]);
   }
 
   return subgraphs;

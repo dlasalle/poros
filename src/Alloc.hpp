@@ -110,36 +110,6 @@ class Alloc
     }
 
     /**
-    * @brief Allocate and initialized memory a block of memory to a stepped
-    * sequence: 
-    *    {start, start+inc, start+(inc*2), ... start+(inc*(num-1))}
-    *
-    * @tparam T The type of memory to allocate.
-    * @param num The number of elements.
-    * @param start The starting value.
-    * @param inc The increment between successive elements.
-    *
-    * @return The memory.
-    *
-    * @throws std::bad_alloc If the amount of memory fails to get allocated.
-    */
-    template<typename T>
-    static T * initStepped(
-        size_t const num,
-        T const start = 0,
-        T const inc = 1)
-    {
-      T * const data = uninitialized<T>(num);
-      T val = start;
-      for (size_t i = 0; i < num; ++i) {
-        data[i] = val;
-        val += inc;
-      }
-
-      return data;
-    }
-
-    /**
     * @brief Allocate and and fill a block of memory from another block.
     *
     * @tparam T The type of memory to allocate.
@@ -164,6 +134,29 @@ class Alloc
     }
 
 
+    /**
+    * @brief Resize an allocation.
+    *
+    * @tparam T The type of element.
+    * @param ptr The pointer to resize.
+    * @param num The number of elements.
+    *
+    * @throws std::bad_alloc If the amount of memory fails to get allocated.
+    */
+    template<typename T>
+    static void resize(
+        T ** const ptr,
+        size_t const num)
+    {
+      constexpr size_t const chunkSize = sizeof(T);
+      T * const newPtr = reinterpret_cast<T*>( \
+          std::realloc(*ptr, num*chunkSize));
+      if (newPtr == nullptr) {
+          throw NotEnoughMemoryException(num, chunkSize);
+      }
+
+      *ptr = newPtr;
+    }
 
 
     /**

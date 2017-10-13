@@ -34,6 +34,20 @@ GraphData::GraphData(
 }
 
 
+GraphData::GraphData(
+    Array<adj_type> * const edgePrefix,
+    Array<vtx_type> * const edgeList,
+    Array<wgt_type> * const vertexWeight,
+    Array<wgt_type> * const edgeWeight) :
+  m_edgePrefix(std::move(*edgePrefix)),
+  m_edgeList(std::move(*edgeList)),
+  m_vertexWeight(std::move(*vertexWeight)),
+  m_edgeWeight(std::move(*edgeWeight))
+{
+  // do nothing  
+}
+
+
 // while the default would suit us just fine (aside from the missing noexcept),
 // debugging generated constructors is not really do-able. One reason to go
 // back to the default, is that any added fields to this class will require
