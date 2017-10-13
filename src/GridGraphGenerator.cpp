@@ -11,6 +11,7 @@
 
 #include "GridGraphGenerator.hpp"
 
+#include <vector>
 #include "Random.hpp"
 #include "Debug.hpp"
 #include "GraphData.hpp"
@@ -102,6 +103,7 @@ GridGraphGenerator::GridGraphGenerator(
   m_edgeWeightMin(1),
   m_edgeWeightMax(1)
 {
+  // do nothing
 }
 
 
@@ -121,6 +123,15 @@ void GridGraphGenerator::setRandomVertexWeight(
 }
 
 
+void GridGraphGenerator::setRandomEdgeWeight(
+    wgt_type const min,
+    wgt_type const max)
+{
+  m_edgeWeightMin = min;
+  m_edgeWeightMax = max;
+}
+
+
 ConstantGraph GridGraphGenerator::generate()
 {
   vtx_type const numVertices = m_grid->getNumVertices();
@@ -136,6 +147,11 @@ ConstantGraph GridGraphGenerator::generate()
   vtx_type const numX = m_grid->getNumVerticesX();
   vtx_type const numY = m_grid->getNumVerticesY();
   vtx_type const numZ = m_grid->getNumVerticesZ();
+
+  // each vertex can be the root of up to 3 edges
+  std::vector<wgt_type> srcEdgeWeights(numVertices*3);
+  Random::fillWithRange(srcEdgeWeights.data(), srcEdgeWeights.size(), \
+      m_edgeWeightMin, m_edgeWeightMax);
   
   adj_type edge = 0;
   vtx_type vertex = 0;
@@ -143,42 +159,49 @@ ConstantGraph GridGraphGenerator::generate()
   for (vtx_type z = 0; z < numZ; ++z) {
     for (vtx_type y = 0; y < numY; ++y) {
       for (vtx_type x = 0; x < numX; ++x) {
+        vtx_type const source = m_grid->get(x, y, z);
         if (x > 0) {
           // place an edge facing back
-          edgeList[edge] = m_grid->get(x-1, y, z); 
-          edgeWeight[edge] = 1;
+          vtx_type const dest = m_grid->get(x-1, y, z);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[dest*3];
           ++edge;
         }
         if (x < numX-1) {
           // place an edge facing forward 
-          edgeList[edge] = m_grid->get(x+1, y, z); 
-          edgeWeight[edge] = 1;
+          vtx_type const dest = m_grid->get(x+1, y, z);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[source*3];
           ++edge;
         }
 
         if (y > 0) {
-          // place an edge left back
-          edgeList[edge] = m_grid->get(x, y-1, z); 
-          edgeWeight[edge] = 1;
+          // place an edge facing back
+          vtx_type const dest = m_grid->get(x, y-1, z);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[(dest*3) + 1];
           ++edge;
         }
         if (y < numY-1) {
-          // place an edge right back
-          edgeList[edge] = m_grid->get(x, y+1, z); 
-          edgeWeight[edge] = 1;
+          // place an edge facing forward 
+          vtx_type const dest = m_grid->get(x, y+1, z);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[(source*3) + 1];
           ++edge;
         }
 
         if (z > 0) {
-          // place an edge down back
-          edgeList[edge] = m_grid->get(x, y, z-1); 
-          edgeWeight[edge] = 1;
+          // place an edge facing back
+          vtx_type const dest = m_grid->get(x, y, z-1);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[(dest*3) + 2];
           ++edge;
         }
         if (z < numZ-1) {
-          // place an edge up back
-          edgeList[edge] = m_grid->get(x, y, z+1); 
-          edgeWeight[edge] = 1;
+          // place an edge facing forward 
+          vtx_type const dest = m_grid->get(x, y, z+1);
+          edgeList[edge] = dest;
+          edgeWeight[edge] = srcEdgeWeights[(source*3) + 2];
           ++edge;
         }
 

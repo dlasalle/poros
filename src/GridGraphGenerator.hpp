@@ -55,6 +55,17 @@ class GridGraphGenerator
 
 
     /**
+    * @brief Set the random parameters of the edge weights.
+    *
+    * @param min The minimum edge weight.
+    * @param max The maximum edge weight.
+    */
+    void setRandomEdgeWeight(
+        wgt_type min,
+        wgt_type max);
+
+
+    /**
     * @brief Generate the graph.
     *
     * @return The generated graph.
