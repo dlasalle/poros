@@ -13,7 +13,6 @@
 #include "dolos.h"
 #include "GridGraphGenerator.hpp"
 #include "Partitioning.hpp"
-#include "PartitioningAnalyzer.hpp"
 
 
 namespace dolos
@@ -29,20 +28,19 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   ConstantGraph g = gen.generate();
 
   wgt_type cutEdgeWeight;
-  Partitioning part(7, g.getNumVertices());
 
+  Partitioning part(7, &g); 
+
+  std::vector<pid_type> where(g.getNumVertices());
   int r = DOLOS_PartGraphRecursive(g.getNumVertices(), g.getEdgePrefix(), \
       g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
-      part.getNumPartitions(), nullptr, &cutEdgeWeight, \
-      part.getAssignmentData());
+      part.getNumPartitions(), nullptr, &cutEdgeWeight, where.data());
 
   testEqual(r, 1);
 
-  part.sync();
-  
-  
-
-
+  for (size_t v = 0; v < where.size(); ++v) {
+    part.move(v, where[v]);
+  }
 }
 
 

@@ -13,7 +13,6 @@
 #include "RandomBisector.hpp"
 #include "PartitionParameters.hpp"
 #include "GridGraphGenerator.hpp"
-#include "PartitioningAnalyzer.hpp"
 
 
 namespace dolos
@@ -45,11 +44,8 @@ UNITTEST(RandomBisector, Execute4Way)
   Partitioning part = rb.execute(&params, &graph);
   testEqual(part.getNumPartitions(), targets.size());
 
-  // verify its balanced
-  PartitioningAnalyzer analyzer(&graph, &part);
-
   double imbalance = \
-      analyzer.calcMaxImbalance(params.getTargetPartitionFractions());
+      part.calcMaxImbalance(params.getTargetPartitionFractions());
   testLess(imbalance, 0.03);
 }
 
@@ -75,11 +71,8 @@ UNITTEST(RandomBisector, Execute7WayEven)
   Partitioning part = rb.execute(&params, &graph);
   testEqual(part.getNumPartitions(), 7);
 
-  // verify its balanced
-  PartitioningAnalyzer analyzer(&graph, &part);
-
   double imbalance = \
-      analyzer.calcMaxImbalance(params.getTargetPartitionFractions());
+      part.calcMaxImbalance(params.getTargetPartitionFractions());
   testLess(imbalance, 0.01);
 }
 

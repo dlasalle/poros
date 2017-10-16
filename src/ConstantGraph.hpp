@@ -499,6 +499,20 @@ class ConstantGraph
 
 
     /**
+    * @brief Get the weight of an individual vertex.
+    *
+    * @param vertex The vertex.
+    *
+    * @return The weight of the vertex.
+    */
+    inline wgt_type getVertexWeight(
+        vtx_type const vertex) const noexcept
+    {
+      return m_vertexWeight[vertex];
+    }
+
+
+    /**
     * @brief Get the vertex weight array.
     *
     * @return The vertex weight array.

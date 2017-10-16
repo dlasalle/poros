@@ -13,7 +13,6 @@
 
 #include <cmath>
 #include "SubgraphExtractor.hpp"
-#include "PartitioningAnalyzer.hpp"
 
 
 
@@ -33,8 +32,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
     PartitionParameters const * params,
     ConstantGraph const * graph) const
 {
-  Partitioning partitioning(params->getNumPartitions(), \
-      graph->getNumVertices());
+  Partitioning partitioning(params->getNumPartitions(), graph);
 
   // build parameters for bisection
   BisectionParameters bisectParams;
@@ -63,15 +61,19 @@ Partitioning RecursiveBisectionPartitioner::execute(
 
   // recursively call execute
   for (pid_type part = 0; part < parts.size(); ++part) {
-    double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
-        static_cast<double>(graph->getTotalVertexWeight())) ;
+    if (numHalfParts[part] > 1) {
+      double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
+          static_cast<double>(graph->getTotalVertexWeight())) ;
 
-    double const ratio = \
-        bisectParams.getTargetPartitionFractions()[part] / weightFrac;
-    
-    PartitionParameters subParams(numHalfParts[part]);
+      double const ratio = \
+          bisectParams.getTargetPartitionFractions()[part] / weightFrac;
+      
+      PartitionParameters subParams(numHalfParts[part]);
 
-    subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
+      subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
+
+      Partitioning subPart = execute(&subParams, parts[part].getGraph());
+    }
   }
 
   return partitioning;

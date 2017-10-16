@@ -15,6 +15,7 @@
 #include <vector>
 #include "Base.hpp"
 #include "Debug.hpp"
+#include "ConstantGraph.hpp"
 
 
 namespace dolos
@@ -27,15 +28,16 @@ class Partitioning
       wgt_type weight;
     };
 
+
     /**
      * @brief Create a new partitioning with the given number of partitions.
      *
      * @param numParts The number of partitions.
-     * @param numVertices The number of vertices.
+     * @param graph The graph that this is a partitioning of.
      */
     Partitioning(
         pid_type numParts,
-        vtx_type numVertices);
+        ConstantGraph const * graph);
 
 
     /**
@@ -56,6 +58,28 @@ class Partitioning
 
 
     /**
+    * @brief Get the maximum imbalance as a fraction. That is, if a partition
+    * is 5% overweight, this function will return 0.05.
+    *
+    * @param fractions The target weight fraction for each partition.
+    *
+    * @return The maximum imbalance.
+    */
+    double calcMaxImbalance(
+        double const * const fractions) const;
+
+
+    /**
+    * @brief Parse a vector and alter this partitioning to match its
+    * assignment.
+    *
+    * @param partitionAssignment The vertex assignment to partitions.
+    */
+    void input(
+        pid_type const * partitionAssignment);
+
+
+    /**
      * @brief Output the partition to a given memory location.
      *
      * @param totalCutEdgeWeight The location to write the total cut
@@ -72,11 +96,9 @@ class Partitioning
     * called regardless of the current state of the partitioning.
     *
     * @param partition The partition to assign all vertices to.
-    * @param totalVertexWeight The total weight of all vertices.
     */
     void assignAll(
-        pid_type partition,
-        wgt_type const totalVertexWeight);
+        pid_type partition);
 
 
     /**
@@ -140,17 +162,17 @@ class Partitioning
      * @brief Move a vertex between partitions.
      *
      * @param vertex The vertex to move.
-     * @param weight The weight of the vertex.
      * @param partition The partition to move the vertex to.
      */
     inline void move(
         vtx_type const vertex,
-        wgt_type const weight,
         pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
       ASSERT_LESS(partition, m_partitions.size());
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
+
+      wgt_type const weight = m_graph->getVertexWeight(vertex);
 
       // remove from previous partition
       pid_type const current = getAssignment(vertex);
@@ -169,8 +191,7 @@ class Partitioning
      * @param weight The weight of the vertex.
      */
     inline void unassign(
-        vtx_type const vertex,
-        wgt_type const weight) noexcept
+        vtx_type const vertex) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
 
@@ -178,7 +199,7 @@ class Partitioning
 
       ASSERT_NOTEQUAL(current, NULL_PID);
 
-      m_partitions[current].weight -= weight;
+      m_partitions[current].weight -= m_graph->getVertexWeight(vertex);
       m_assignment[vertex] = NULL_PID;
     }
 
@@ -198,16 +219,6 @@ class Partitioning
       return m_assignment[vertex];
     }
 
-
-    /**
-     * @brief Get the raw assignment vector.
-     *
-     * @return The raw assignment vector.
-     */
-    inline pid_type * getAssignmentData() noexcept
-    {
-      return m_assignment.data();
-    }
 
     /**
      * @brief Check if a vertex has been assigned yet.
@@ -231,7 +242,7 @@ class Partitioning
     * @return The weight of the partition.
     */
     inline pid_type getWeight(
-        pid_type partition) const noexcept
+        pid_type const partition) const noexcept
     {
       ASSERT_LESS(partition, m_partitions.size());
       return m_partitions[partition].weight;
@@ -243,6 +254,8 @@ class Partitioning
 
     std::vector<partition_struct> m_partitions;
     std::vector<pid_type> m_assignment;
+
+    ConstantGraph const * m_graph;
 
     // disable copying
     Partitioning(

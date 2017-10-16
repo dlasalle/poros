@@ -54,14 +54,14 @@ Partitioning RandomBisector::execute(
   wgt_type const * const vertexWeight = graph->getVertexWeight();
 
   // start with all vertices in the right partition
-  Partitioning partitioning(NUM_BISECTION_PARTS, graph->getNumVertices());
-  partitioning.assignAll(RIGHT_PARTITION, graph->getTotalVertexWeight());
+  Partitioning partitioning(NUM_BISECTION_PARTS, graph);
+  partitioning.assignAll(RIGHT_PARTITION);
 
   while (traverser.next()) {
     vtx_type const vtx = traverser.get();
     if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] <= \
         maxPartitionWeight[LEFT_PARTITION]) {
-      partitioning.move(vtx, vertexWeight[vtx], LEFT_PARTITION);
+      partitioning.move(vtx, LEFT_PARTITION);
     }
   }
 

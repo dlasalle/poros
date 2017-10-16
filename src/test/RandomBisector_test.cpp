@@ -9,9 +9,9 @@
 
 
 #include "DomTest.hpp"
+#include "Partitioning.hpp"
 #include "RandomBisector.hpp"
 #include "GridGraphGenerator.hpp"
-#include "PartitioningAnalyzer.hpp"
 
 
 namespace dolos
@@ -39,10 +39,7 @@ UNITTEST(RandomBisector, Execute)
   // perform bisection
   Partitioning part = b.execute(&params, &graph);
 
-  // verify its balanced
-  PartitioningAnalyzer analyzer(&graph, &part);
-
-  double imbalance = analyzer.calcMaxImbalance(targets.data());
+  double imbalance = part.calcMaxImbalance(targets.data());
   testLess(imbalance, 0.001);
 }
 

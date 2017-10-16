@@ -21,13 +21,16 @@ namespace dolos
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    vtx_type const numVertices) :
+    ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitions(numParts, {0}),
-  m_assignment(numVertices, NULL_PID)
+  m_assignment(graph->getNumVertices(), 0),
+  m_graph(graph)
 {
   ASSERT_GREATER(numParts, 0);
-  ASSERT_GREATER(numVertices, 0);
+
+  // set all graph weight to the first partition
+  m_partitions[0].weight = m_graph->getTotalVertexWeight();
 }
 
 
@@ -52,9 +55,32 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
 }
 
 
+double Partitioning::calcMaxImbalance(
+    double const * const targetFractions) const
+{
+  pid_type const numParts = getNumPartitions();  
+
+  wgt_type const totalWeight = m_graph->getTotalVertexWeight();
+
+  double max = 0.0;
+
+  for (pid_type part = 0; part < numParts; ++part) {
+    double const fraction = \
+        static_cast<double>(getWeight(part)) / \
+        static_cast<double>(totalWeight);
+    double const imbalance = (fraction / targetFractions[part]) - 1.0;
+
+    if (imbalance > max) {
+      max = imbalance; 
+    }
+  }
+
+  return max;
+}
+
+
 void Partitioning::assignAll(
-    pid_type const partition,
-    wgt_type const totalVertexWeight)
+    pid_type const partition)
 {
   ASSERT_LESS(partition, m_partitions.size());
 
@@ -71,7 +97,7 @@ void Partitioning::assignAll(
   }
 
   // fix the one odd partition
-  m_partitions[partition].weight = totalVertexWeight;
+  m_partitions[partition].weight = m_graph->getTotalVertexWeight();
 }
 
 void Partitioning::output(
