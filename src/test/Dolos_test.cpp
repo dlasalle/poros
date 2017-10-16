@@ -16,6 +16,10 @@
 #include "PartitioningAnalyzer.hpp"
 
 
+namespace dolos
+{
+
+
 UNITTEST(Dolos, PartGraphRecursiveSeven)
 {
   GridGraphGenerator gen(25, 25, 25);
@@ -25,7 +29,7 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   ConstantGraph g = gen.generate();
 
   wgt_type cutEdgeWeight;
-  Partitioning part(7, g.getNumVertices);
+  Partitioning part(7, g.getNumVertices());
 
   int r = DOLOS_PartGraphRecursive(g.getNumVertices(), g.getEdgePrefix(), \
       g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
@@ -33,8 +37,13 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
       part.getAssignmentData());
 
   testEqual(r, 1);
+
+  part.sync();
   
   
+
+
+}
 
 
 }

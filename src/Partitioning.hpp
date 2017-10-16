@@ -80,6 +80,30 @@ class Partitioning
 
 
     /**
+    * @brief Set the cut edge weight.
+    *
+    * @param weight The cut edge weight.
+    */
+    inline void setCutEdgeWeight(
+        wgt_type const weight) noexcept
+    {
+      m_cutEdgeWeight = weight;
+    }
+
+
+    /**
+    * @brief Modify the cut edge weight.
+    *
+    * @param weightDelta The cut edge weight delta.
+    */
+    inline void addCutEdgeWeight(
+        wgt_type const weightDelta) noexcept
+    {
+      m_cutEdgeWeight += weightDelta;
+    }
+
+
+    /**
      * @brief Get the number of partitions.
      *
      * @return The number of partitions. 
