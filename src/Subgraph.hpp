@@ -52,6 +52,33 @@ class Subgraph
     vtx_type const * getSuperMap() const;
 
 
+    /**
+     * @brief Map a sub partitioning of this graph to some other super
+     * partitioning.
+     *
+     * @param subPartitioning The partitioning of this graph.
+     * @param superPartitioning The partitioning of the super graph (output).
+     */
+    void mapPartitioning(
+        Partitioning const * subPartitioning,
+        Partitioning * superPartitioning) const;
+
+
+    /**
+     * @brief Get the vertex index in the super graph of a vertex in this
+     * subgraph.
+     *
+     * @param vertex The vertex this subgraph.
+     *
+     * @return The vertex id in the super graph.
+     */
+    vtx_type getSuperMap(
+        vtx_type const vertex) const noexcept
+    {
+      return m_superMap[vertex];
+    }
+
+
   private:
     Array<vtx_type> m_superMap;
     ConstantGraph m_graph;

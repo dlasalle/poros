@@ -50,6 +50,21 @@ class RecursiveBisectionPartitioner :
   private:
     IBisector const * m_bisector;
 
+    /**
+     * @brief Recursively execute on a subgraph.
+     *
+     * @param superPartitioning The partitioning to populate.
+     * @param params THe parameters to use.
+     * @param subGraph The subgraph to recursively partition.
+     * @param offset The partition ID offset to assign.
+     */
+    recurse(
+        Partitioning * const superPartitioning,
+        PartitionParameters const * const params,
+        Subgraph const * subGraph,
+        pid_type const offset) const;
+
+
     // disable copying
     RecursiveBisectionPartitioner(
         RecursiveBisectionPartitioner const & lhs);

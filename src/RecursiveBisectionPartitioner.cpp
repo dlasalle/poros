@@ -20,22 +20,20 @@ namespace dolos
 {
 
 
-RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
-    IBisector const * const bisector) :
-  m_bisector(bisector)
+/******************************************************************************
+* PRIVATE METHODS *************************************************************
+******************************************************************************/
+
+void RecursiveBisectionPartitioninger::recurse(
+    Partitioning * const superPartitioning,
+    PartitionParameters const * const params,
+    Subgraph const * subGraph,
+    pid_type const offset) const
 {
-  // do nothing
-}
-
-
-Partitioning RecursiveBisectionPartitioner::execute(
-    PartitionParameters const * params,
-    ConstantGraph const * graph) const
-{
-  Partitioning partitioning(params->getNumPartitions(), graph);
-
   // build parameters for bisection
   BisectionParameters bisectParams;
+
+  pid_type const numParts = params->getNumPartitions();
 
   // We don't want to use the k-way imbalance tolerance, as if one half of the
   // bisection is at maximum weight, then each partition with in that half must
@@ -47,34 +45,78 @@ Partitioning RecursiveBisectionPartitioner::execute(
   bisectParams.setImbalanceTolerance(tolerance);
 
   // calculate the target weight for each side
-  std::vector<pid_type> numHalfParts(2);
-  numHalfParts[0] = params->getNumPartitions() / 2;
-  numHalfParts[1] = params->getNumPartitions() - numHalfParts[0];
-
   // bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
 
-  // extract graph parts
-  std::vector<Subgraph> parts = SubgraphExtractor::partitions(graph, \
-      &bisection);
-  ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
+  if (numParts > 2) {
+    std::vector<pid_type> numHalfParts(2);
+    numHalfParts[0] = numParts / 2;
+    numHalfParts[1] = numParts - numHalfParts[0];
 
-  // recursively call execute
-  for (pid_type part = 0; part < parts.size(); ++part) {
-    if (numHalfParts[part] > 1) {
-      double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
-          static_cast<double>(graph->getTotalVertexWeight())) ;
+    // extract graph parts
+    std::vector<Subgraph> parts = SubgraphExtractor::partitions(graph, \
+        &bisection);
+    ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
 
-      double const ratio = \
-          bisectParams.getTargetPartitionFractions()[part] / weightFrac;
-      
-      PartitionParameters subParams(numHalfParts[part]);
+    // recursively call execute
+    for (pid_type part = 0; part < parts.size(); ++part) {
+      if (numHalfParts[part] > 1) {
+        double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
+            static_cast<double>(graph->getTotalVertexWeight())) ;
 
-      subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
+        double const ratio = \
+            bisectParams.getTargetPartitionFractions()[part] / weightFrac;
+        
+        PartitionParameters subParams(numHalfParts[part]);
 
-      Partitioning subPart = execute(&subParams, parts[part].getGraph());
+        subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
+
+        Partitioning subPart = execute(&subParams, parts[part].getGraph());
+
+        // translate partitioning
+        for (Vertex const & vertex : parts[part].getGraph()->getVertices()) {
+          vtx_type const sub = vertex.getIndex();
+          pid_type const assignment = subPart.getAssignment(sub);
+          vtx_type const super = parts[part].getSuperMap(sub);
+          partitioning.move(super, assignment + offset);
+        }
+      }
     }
+  } else {
+    subGraph->mapPartitioning();
   }
+}
+
+
+/******************************************************************************
+* CONSTRUCTORS / DESTRUCTOR ***************************************************
+******************************************************************************/
+
+
+RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
+    IBisector const * const bisector) :
+  m_bisector(bisector)
+{
+  // do nothing
+}
+
+
+
+/******************************************************************************
+* PUBLIC METHODS **************************************************************
+******************************************************************************/
+
+
+Partitioning RecursiveBisectionPartitioner::execute(
+    PartitionParameters const * params,
+    ConstantGraph const * graph) const
+{
+  // ideally we'd like this function to use something close to tail recursion,
+  // where its last invocation will write the correct partition id's to the
+  // assignment vector
+
+
+  Partitioning partitioning(params->getNumPartitions(), graph);
 
   return partitioning;
 }
