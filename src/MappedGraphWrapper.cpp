@@ -8,7 +8,7 @@
  */
 
 
-#include "MappedGraph.hpp"
+#include "MappedGraphWrapper.hpp"
 
 namespace dolos
 {
@@ -18,7 +18,7 @@ namespace dolos
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
-MappedGraph::MappedGraph(
+MappedGraphWrapper::MappedGraphWrapper(
     ConstantGraph const * graph) :
   m_graph(graph)
 {
@@ -31,13 +31,13 @@ MappedGraph::MappedGraph(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-ConstantGraph const *MappedGraphWrapper::getGraph() const
+ConstantGraph const * MappedGraphWrapper::getGraph() const
 {
   return m_graph;
 }
 
 
-voidMappedGraphWrapper::mapPartitioning(
+void MappedGraphWrapper::mapPartitioning(
     Partitioning const * const subPart,
     Partitioning * const superPart,
     pid_type const offset) const

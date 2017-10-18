@@ -12,10 +12,11 @@
 #include "RecursiveBisectionPartitioner.hpp"
 
 #include <cmath>
-#include "MappedGraph.hpp"
+#include "MappedGraphWrapper.hpp"
 #include "SubgraphExtractor.hpp"
 
-
+// delete me
+#include <cstdio>
 
 namespace dolos
 {
@@ -46,6 +47,9 @@ void RecursiveBisectionPartitioner::recurse(
   double const tolerance = params->getImbalanceTolerance() / \
       std::log2(params->getNumPartitions());
   bisectParams.setImbalanceTolerance(tolerance);
+
+  printf("Using tolerance of %f for bisection (%f with %u parts).\n", \
+      tolerance, params->getImbalanceTolerance(), numParts);
 
   // calculate the target weight for each side
   // bisect

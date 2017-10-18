@@ -18,7 +18,7 @@
 namespace dolos
 {
 
-classMappedGraphWrapper :
+class MappedGraphWrapper :
     public IMappedGraph
 {
   public:
