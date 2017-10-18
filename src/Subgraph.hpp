@@ -16,7 +16,7 @@
 
 #include "ConstantGraph.hpp"
 #include "Array.hpp"
-
+#include "Partitioning.hpp"
 
 
 namespace dolos
@@ -58,10 +58,13 @@ class Subgraph
      *
      * @param subPartitioning The partitioning of this graph.
      * @param superPartitioning The partitioning of the super graph (output).
+     * @param offset The offset of partition IDs in the subgraph compared to
+     * the super graph.
      */
     void mapPartitioning(
         Partitioning const * subPartitioning,
-        Partitioning * superPartitioning) const;
+        Partitioning * superPartitioning,
+        pid_type offset) const;
 
 
     /**

@@ -24,12 +24,14 @@ namespace dolos
 * PRIVATE METHODS *************************************************************
 ******************************************************************************/
 
-void RecursiveBisectionPartitioninger::recurse(
+void RecursiveBisectionPartitioner::recurse(
     Partitioning * const superPartitioning,
     PartitionParameters const * const params,
     Subgraph const * subGraph,
     pid_type const offset) const
 {
+  ConstantGraph const * const graph = subGraph->getGraph();
+  
   // build parameters for bisection
   BisectionParameters bisectParams;
 
@@ -47,11 +49,13 @@ void RecursiveBisectionPartitioninger::recurse(
   // calculate the target weight for each side
   // bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
+  subGraph->mapPartitioning(&bisection, superPartitioning, offset);
 
   if (numParts > 2) {
-    std::vector<pid_type> numHalfParts(2);
-    numHalfParts[0] = numParts / 2;
-    numHalfParts[1] = numParts - numHalfParts[0];
+    std::vector<pid_type> numPartsPrefix(3);
+    numPartsPrefix[0] = 0;
+    numPartsPrefix[1] = numParts / 2;
+    numPartsPrefix[2] = numParts;
 
     // extract graph parts
     std::vector<Subgraph> parts = SubgraphExtractor::partitions(graph, \
@@ -60,30 +64,25 @@ void RecursiveBisectionPartitioninger::recurse(
 
     // recursively call execute
     for (pid_type part = 0; part < parts.size(); ++part) {
-      if (numHalfParts[part] > 1) {
+      pid_type const numHalfParts = numPartsPrefix[part+1] - \
+          numPartsPrefix[part];
+      if (numHalfParts > 1) {
         double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
             static_cast<double>(graph->getTotalVertexWeight())) ;
 
         double const ratio = \
             bisectParams.getTargetPartitionFractions()[part] / weightFrac;
         
-        PartitionParameters subParams(numHalfParts[part]);
+        PartitionParameters subParams(numHalfParts);
 
-        subParams.setImbalanceTolerance(params->getImbalanceTolerance() * ratio);
+        subParams.setImbalanceTolerance(params->getImbalanceTolerance() * \
+            ratio);
 
-        Partitioning subPart = execute(&subParams, parts[part].getGraph());
-
-        // translate partitioning
-        for (Vertex const & vertex : parts[part].getGraph()->getVertices()) {
-          vtx_type const sub = vertex.getIndex();
-          pid_type const assignment = subPart.getAssignment(sub);
-          vtx_type const super = parts[part].getSuperMap(sub);
-          partitioning.move(super, assignment + offset);
-        }
+        recurse(superPartitioning, &subParams, &(parts[part]), \
+            offset+numPartsPrefix[part]);
       }
     }
   } else {
-    subGraph->mapPartitioning();
   }
 }
 

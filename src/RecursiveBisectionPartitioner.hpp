@@ -15,6 +15,7 @@
 
 #include "IPartitioner.hpp"
 #include "IBisector.hpp"
+#include "Subgraph.hpp"
 
 
 namespace dolos
@@ -58,7 +59,7 @@ class RecursiveBisectionPartitioner :
      * @param subGraph The subgraph to recursively partition.
      * @param offset The partition ID offset to assign.
      */
-    recurse(
+    void recurse(
         Partitioning * const superPartitioning,
         PartitionParameters const * const params,
         Subgraph const * subGraph,
