@@ -33,7 +33,7 @@ class ArrayUtils
     template <typename T>
     static void increment(
         Array<T> * const array,
-        T const start,
+        T const start = 0,
         T const inc = 1) noexcept
     {
       T val = start;

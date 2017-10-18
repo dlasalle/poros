@@ -12,6 +12,7 @@
 #include "RecursiveBisectionPartitioner.hpp"
 
 #include <cmath>
+#include "MappedGraph.hpp"
 #include "SubgraphExtractor.hpp"
 
 
@@ -27,10 +28,10 @@ namespace dolos
 void RecursiveBisectionPartitioner::recurse(
     Partitioning * const superPartitioning,
     PartitionParameters const * const params,
-    Subgraph const * subGraph,
+    IMappedGraph const * mappedGraph,
     pid_type const offset) const
 {
-  ConstantGraph const * const graph = subGraph->getGraph();
+  ConstantGraph const * const graph = mappedGraph->getGraph();
   
   // build parameters for bisection
   BisectionParameters bisectParams;
@@ -49,7 +50,7 @@ void RecursiveBisectionPartitioner::recurse(
   // calculate the target weight for each side
   // bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
-  subGraph->mapPartitioning(&bisection, superPartitioning, offset);
+  mappedGraph->mapPartitioning(&bisection, superPartitioning, offset);
 
   if (numParts > 2) {
     std::vector<pid_type> numPartsPrefix(3);
@@ -82,7 +83,6 @@ void RecursiveBisectionPartitioner::recurse(
             offset+numPartsPrefix[part]);
       }
     }
-  } else {
   }
 }
 
@@ -110,12 +110,10 @@ Partitioning RecursiveBisectionPartitioner::execute(
     PartitionParameters const * params,
     ConstantGraph const * graph) const
 {
-  // ideally we'd like this function to use something close to tail recursion,
-  // where its last invocation will write the correct partition id's to the
-  // assignment vector
-
-
   Partitioning partitioning(params->getNumPartitions(), graph);
+
+ MappedGraphWrapper mappedGraph(graph);
+  recurse(&partitioning, params, &mappedGraph, 0);
 
   return partitioning;
 }

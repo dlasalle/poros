@@ -9,7 +9,7 @@
 
 
 #include "Subgraph.hpp"
-
+#include "ArrayUtils.hpp"
 
 
 namespace dolos
@@ -22,12 +22,21 @@ namespace dolos
 
 
 Subgraph::Subgraph(
-    ConstantGraph * graph,
-    Array<vtx_type> * superMap) :
+    ConstantGraph * const graph,
+    Array<vtx_type> * const superMap) :
   m_superMap(std::move(*superMap)),
   m_graph(std::move(*graph))
 {
   // do nothing
+}
+
+
+Subgraph::Subgraph(
+    ConstantGraph * const graph) :
+  m_superMap(graph->getNumVertices()),
+  m_graph(std::move(*graph))
+{
+  ArrayUtils::increment(&m_superMap);
 }
 
 

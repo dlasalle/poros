@@ -18,6 +18,34 @@
 namespace dolos
 {
 
+UNITTEST(RandomBisector, ExecuteKWay)
+{
+  // create bisector
+  RandomBisector b;
+
+  // create partitioner
+  RecursiveBisectionPartitioner rb(&b);
+
+  for (pid_type k = 2; k < 10; ++k) {
+    // create partition parameters
+    PartitionParameters params(k);
+    params.setImbalanceTolerance(0.03);
+
+    // generate graph
+    GridGraphGenerator gen(10, 20, 30);
+    gen.setRandomVertexWeight(1, 5);
+
+    ConstantGraph graph = gen.generate();
+
+    // partition 
+    Partitioning part = rb.execute(&params, &graph);
+    testEqual(part.getNumPartitions(), k);
+
+    double imbalance = \
+        part.calcMaxImbalance(params.getTargetPartitionFractions());
+    testLess(imbalance, 0.03);
+  }
+}
 
 UNITTEST(RandomBisector, Execute4Way)
 {

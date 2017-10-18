@@ -17,12 +17,14 @@
 #include "ConstantGraph.hpp"
 #include "Array.hpp"
 #include "Partitioning.hpp"
+#include "IMappedGraph.hpp"
 
 
 namespace dolos
 {
 
-class Subgraph
+class Subgraph :
+    public IMappedGraph
 {
   public:
     /**
@@ -37,11 +39,21 @@ class Subgraph
 
 
     /**
+    * @brief Create a new subgraph with a mapping which maps vertices to
+    * themselves.
+    *
+    * @param superGraph The super graph.
+    */
+    Subgraph(
+        ConstantGraph * graph);
+
+
+    /**
     * @brief Get the underlying graph.
     *
     * @return The graph.
     */
-    ConstantGraph const * getGraph() const;
+    ConstantGraph const * getGraph() const override;
 
 
     /**
@@ -64,7 +76,7 @@ class Subgraph
     void mapPartitioning(
         Partitioning const * subPartitioning,
         Partitioning * superPartitioning,
-        pid_type offset) const;
+        pid_type offset) const override;
 
 
     /**
