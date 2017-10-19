@@ -51,4 +51,32 @@ UNITTEST(Subgraph, GetSuperMap)
 }
 
 
+UNITTEST(Subgraph, MapPartitioning)
+{
+  GridGraphGenerator gen(2,2,1);
+  ConstantGraph tempG = gen.generate();
+
+  Array<vtx_type> superMap(tempG.getNumVertices());
+  ArrayUtils::increment(&superMap, 0U);
+
+  Subgraph s(&tempG, &superMap);
+
+  ConstantGraph const * const g = s.getGraph();
+
+  Partitioning subPart(2, g);
+  subPart.move(2, 1);
+  subPart.move(3, 1);
+
+  Partitioning superPart(5, g);
+  superPart.assignAll(0);
+
+  s.mapPartitioning(&subPart, &superPart, 3);
+
+  testEqual(superPart.getAssignment(0), 3);
+  testEqual(superPart.getAssignment(1), 3);
+  testEqual(superPart.getAssignment(2), 4);
+  testEqual(superPart.getAssignment(3), 4);
+}
+
+
 }
