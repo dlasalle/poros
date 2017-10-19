@@ -157,6 +157,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
 
   Partitioning part(params->getNumPartitions(), &partitionLabels, \
       graph);
+  part.recalcCutEdgeWeight();
 
   return part;
 }

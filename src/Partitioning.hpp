@@ -84,6 +84,12 @@ class Partitioning
 
 
     /**
+    * @brief Recalculate the cut edgeweight.
+    */
+    void recalcCutEdgeWeight();
+
+
+    /**
     * @brief Parse a vector and alter this partitioning to match its
     * assignment.
     *

@@ -99,6 +99,26 @@ double Partitioning::calcMaxImbalance(
 }
 
 
+void Partitioning::recalcCutEdgeWeight()
+{
+  double twoWayCutEdgeWeight = 0;
+  for (Vertex const & vertex : m_graph->getVertices()) {
+    vtx_type const v = vertex.getIndex();
+
+    pid_type const home = m_assignment[v];
+    for (Edge const & edge : vertex.getEdges()) {
+      vtx_type const u = edge.getVertex();
+      pid_type const other = m_assignment[u];
+      if (other != home) {
+        twoWayCutEdgeWeight += edge.getWeight();
+      }
+    }
+  }
+
+  m_cutEdgeWeight = twoWayCutEdgeWeight / 2;
+}
+
+
 void Partitioning::assignAll(
     pid_type const partition)
 {

@@ -40,6 +40,7 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   Partitioning part(7, &where, &g); 
 
   testLess(part.calcMaxImbalance(), 0.03);
+  testLessOrEqual(cutEdgeWeight, g.getTotalEdgeWeight());
 }
 
 
