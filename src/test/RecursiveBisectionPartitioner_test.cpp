@@ -18,7 +18,7 @@
 namespace dolos
 {
 
-UNITTEST(RandomBisector, ExecuteKWay)
+UNITTEST(RandomBisector, ExecuteKWayUniform)
 {
   // create bisector
   RandomBisector b;
@@ -26,14 +26,42 @@ UNITTEST(RandomBisector, ExecuteKWay)
   // create partitioner
   RecursiveBisectionPartitioner rb(&b);
 
+  // generate graph
+  GridGraphGenerator gen(10, 20, 30);
+
   for (pid_type k = 2; k < 10; ++k) {
     // create partition parameters
     PartitionParameters params(k);
     params.setImbalanceTolerance(0.03);
 
-    // generate graph
-    GridGraphGenerator gen(10, 20, 30);
-    gen.setRandomVertexWeight(1, 5);
+    ConstantGraph graph = gen.generate();
+
+    // partition 
+    Partitioning part = rb.execute(&params, &graph);
+    testEqual(part.getNumPartitions(), k);
+
+    double imbalance = \
+        part.calcMaxImbalance(params.getTargetPartitionFractions());
+    testLess(imbalance, 0.03005);
+  }
+}
+
+UNITTEST(RandomBisector, ExecuteKWay1To5)
+{
+  // create bisector
+  RandomBisector b;
+
+  // create partitioner
+  RecursiveBisectionPartitioner rb(&b);
+
+  // generate graph
+  GridGraphGenerator gen(10, 20, 30);
+  gen.setRandomVertexWeight(1,5);
+
+  for (pid_type k = 2; k < 10; ++k) {
+    // create partition parameters
+    PartitionParameters params(k);
+    params.setImbalanceTolerance(0.03);
 
     ConstantGraph graph = gen.generate();
 

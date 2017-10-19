@@ -63,6 +63,15 @@ class BisectionParameters
 
 
     /**
+     * @brief Set the maximum number of refinement iterations to perform.
+     *
+     * @param maxIters The maximum number of iterations.
+     */
+    void setMaxRefinementIterations(
+        int const maxIters);
+
+
+    /**
     * @brief Get the amount of imbalance allowed by these parameters.
     *
     * @return The imbalance fraction.
@@ -88,10 +97,19 @@ class BisectionParameters
     double const * getMaxPartitionFractions() const;
 
 
+    /**
+     * @brief Get the maximum number of refinement iterations to use.
+     *
+     * @return The maximum number of iterations.
+     */
+    int getMaxRefinementIterations() const;
+
+
   private:
     double m_imbalanceTolerance;
     double m_targetPartitionFractions[2];
     double m_maxPartitionFractions[2];
+    int m_maxRefinementIterations;
 };
 
 

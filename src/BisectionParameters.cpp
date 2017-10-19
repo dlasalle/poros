@@ -32,7 +32,8 @@ double const MAX_FRACTION_SUM = 1.0 + FRACTION_SUM_TOLERANCE;
 BisectionParameters::BisectionParameters() :
     m_imbalanceTolerance(0.0),
     m_targetPartitionFractions{0.5, 0.5},
-    m_maxPartitionFractions{0.5, 0.5}
+    m_maxPartitionFractions{0.5, 0.5},
+    m_maxRefinementIterations(8)
 {
   // do nothing
 }
@@ -82,6 +83,13 @@ void BisectionParameters::setTargetPartitionFractions(
 }
 
 
+void BisectionParameters::setMaxRefinementIterations(
+    int const maxIters)
+{
+  m_maxRefinementIterations = maxIters;
+}
+
+
 double BisectionParameters::getImbalanceTolerance() const
 {
   return m_imbalanceTolerance;
@@ -96,6 +104,12 @@ double const * BisectionParameters::getTargetPartitionFractions() const
 double const * BisectionParameters::getMaxPartitionFractions() const
 {
   return m_maxPartitionFractions;
+}
+
+
+int BisectionParameters::getMaxRefinementIterations() const
+{
+  return m_maxRefinementIterations;
 }
 
 

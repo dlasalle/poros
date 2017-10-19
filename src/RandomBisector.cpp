@@ -10,11 +10,130 @@
 
 #include "RandomBisector.hpp"
 #include "RandomTraverser.hpp"
-#include "PureBalanceRefiner.hpp"
 
+
+// delete me
+#include <cstdio>
 
 namespace dolos
 {
+
+
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+struct vertex_struct
+{
+  vtx_type vertex; 
+  wgt_type weight;
+
+  bool operator<(
+      vertex_struct const & lhs) const noexcept
+  {
+    return weight < lhs.weight;
+  }
+
+
+  bool operator<(
+      wgt_type const weight) const noexcept
+  {
+    return this->weight < weight;
+  }
+ 
+
+  bool operator<=(
+      wgt_type const weight) const noexcept
+  {
+    return this->weight <= weight;
+  }
+
+
+  bool operator>(
+      wgt_type const weight) const noexcept
+  {
+    return this->weight > weight;
+  }
+ 
+    
+};
+
+/**
+* @brief Swap vertices to achieve balance where the right side is overweight.
+*
+* @param maxLeftWeight The maximum weight of the left partition.
+* @param maxRightWeight The maximum weight of the right partition.
+* @param partitioning The partitioning.
+* @param graph The graph.
+*/
+void swapBalanceRight(
+    wgt_type const maxLeftWeight,
+    wgt_type const maxRightWeight,
+    Partitioning * const partitioning,
+    ConstantGraph const * const graph)
+{
+  std::vector<vertex_struct> vertices(graph->getNumVertices());
+
+  size_t left = 0;
+  size_t right = vertices.size()-1;
+  for (Vertex const & vertex : graph->getVertices()) {
+    vertex_struct pair;
+    pair.vertex = vertex.getIndex();
+    pair.weight = vertex.getWeight();
+
+    if (partitioning->getAssignment(pair.vertex) == LEFT_PARTITION) {
+      vertices[left] = pair;
+      ++left;
+    } else {
+      vertices[right] = pair;
+      --right;
+    }
+  }
+  ASSERT_EQUAL(left, right+1);
+
+  // sort
+  std::sort(vertices.begin(), vertices.begin()+left);
+  std::sort(vertices.begin()+left, vertices.end());
+
+  // how much weight we need to fix
+  wgt_type const minDelta = \
+      partitioning->getWeight(RIGHT_PARTITION) - maxRightWeight;
+  wgt_type const maxDelta = \
+      maxLeftWeight - partitioning->getWeight(LEFT_PARTITION);
+
+  // reset pointers -- start the heaviest right-side vertex and lightest
+  // left-side vertex
+  size_t const middle = left;
+  right = vertices.size()-1;
+  left = 0;
+
+  wgt_type const weight = vertices[right].weight;
+
+  wgt_diff_type const minOffset = weight - maxDelta;
+  wgt_diff_type const maxOffset = weight - minDelta;
+
+  // binary search the left array for the right weight vertex to swap with
+  std::vector<vertex_struct>::iterator lower = \
+      std::lower_bound(vertices.begin(), vertices.begin()+middle, minOffset);
+  std::vector<vertex_struct>::iterator upper = \
+      std::lower_bound(vertices.begin(), vertices.begin()+middle, maxOffset);
+
+  if (lower <= upper) {
+    // perform swap
+    partitioning->move(vertices[right].vertex, RIGHT_PARTITION);
+    partitioning->move((*lower).vertex, LEFT_PARTITION);
+
+    // delete me
+    printf("Swapped: %u/%u", \
+        partitioning->getWeight(RIGHT_PARTITION), maxRightWeight);
+  }
+}
+
+}
 
 
 /******************************************************************************
@@ -68,12 +187,19 @@ Partitioning RandomBisector::execute(
   }
 
   // by construction the left partition cannot be overweight at this point
+  ASSERT_LESSEQUAL(partitioning.getWeight(LEFT_PARTITION), \
+      maxPartitionWeight[LEFT_PARTITION]);
   if (partitioning.getWeight(RIGHT_PARTITION) > \
       maxPartitionWeight[RIGHT_PARTITION]) {
-    // rebalance as neccessary
-    PureBalanceRefiner refiner;
-    
-    refiner.refine(params, &partitioning, graph);
+
+    // delete me
+    printf("Right partition is overweight: %u/%u", \
+        partitioning.getWeight(RIGHT_PARTITION), \
+        maxPartitionWeight[RIGHT_PARTITION]);
+
+    // if the right partition is still overweight try to find a pair two swap 
+    swapBalanceRight(maxPartitionWeight[LEFT_PARTITION], \
+        maxPartitionWeight[RIGHT_PARTITION], &partitioning, graph);
   }
 
   return partitioning;

@@ -26,6 +26,7 @@ typedef dolos_adj_type adj_type;
 typedef dolos_wgt_type wgt_type;
 typedef dolos_pid_type pid_type;
 
+typedef int32_t wgt_diff_type; 
 
 
 /******************************************************************************
