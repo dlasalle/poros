@@ -69,13 +69,13 @@ class Subgraph :
      * partitioning.
      *
      * @param subPartitioning The partitioning of this graph.
-     * @param superPartitioning The partitioning of the super graph (output).
+     * @param partitionLabels The partition labels of the super graph (output).
      * @param offset The offset of partition IDs in the subgraph compared to
      * the super graph.
      */
     void mapPartitioning(
         Partitioning const * subPartitioning,
-        Partitioning * superPartitioning,
+        pid_type * partitionLabels,
         pid_type offset) const override;
 
 

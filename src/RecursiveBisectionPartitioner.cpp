@@ -28,7 +28,7 @@ namespace dolos
 ******************************************************************************/
 
 void RecursiveBisectionPartitioner::recurse(
-    Partitioning * const superPartitioning,
+    pid_type * const partitionLabels,
     PartitionParameters const * const params,
     IMappedGraph const * mappedGraph,
     pid_type const offset) const
@@ -74,7 +74,8 @@ void RecursiveBisectionPartitioner::recurse(
   // NOTE: this requires that for uneven number of parts, latter half has more
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
     numPartsPrefix[1]-numPartsPrefix[0]);
-  mappedGraph->mapPartitioning(&bisection, superPartitioning, offset);
+  mappedGraph->mapPartitioning(&bisection, partitionLabels, offset);
+  printf("Mapping to %u and %u.\n", offset, offset+1); 
 
   // delete me
   printf("Bisection of %u:%u / %u made.\n", bisection.getWeight(0), \
@@ -118,7 +119,7 @@ void RecursiveBisectionPartitioner::recurse(
             ratio);
         subParams.setTargetPartitionFractions(subTargetFractions.data());
 
-        recurse(superPartitioning, &subParams, &(parts[part]), \
+        recurse(partitionLabels, &subParams, &(parts[part]), \
             offset+numPartsPrefix[part]);
       }
     }
@@ -149,12 +150,15 @@ Partitioning RecursiveBisectionPartitioner::execute(
     PartitionParameters const * params,
     ConstantGraph const * graph) const
 {
-  Partitioning partitioning(params->getNumPartitions(), graph);
+  Array<pid_type> partitionLabels(graph->getNumVertices());
 
   MappedGraphWrapper mappedGraph(graph);
-  recurse(&partitioning, params, &mappedGraph, 0);
+  recurse(partitionLabels.data(), params, &mappedGraph, 0);
 
-  return partitioning;
+  Partitioning part(params->getNumPartitions(), &partitionLabels, \
+      graph);
+
+  return part;
 }
 
 }

@@ -64,13 +64,14 @@ UNITTEST(Subgraph, MapPartitioning)
   ConstantGraph const * const g = s.getGraph();
 
   Partitioning subPart(2, g);
-  subPart.move(2, 1);
-  subPart.move(3, 1);
+  subPart.assign(0, 0);
+  subPart.assign(1, 0);
+  subPart.assign(2, 1);
+  subPart.assign(3, 1);
 
-  Partitioning superPart(5, g);
-  superPart.assignAll(0);
-
-  s.mapPartitioning(&subPart, &superPart, 3);
+  Array<pid_type> superLabels(g->getNumVertices());
+  s.mapPartitioning(&subPart, superLabels.data(), 3);
+  Partitioning superPart(5, &superLabels, g);
 
   testEqual(superPart.getAssignment(0), 3);
   testEqual(superPart.getAssignment(1), 3);

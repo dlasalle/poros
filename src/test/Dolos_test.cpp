@@ -11,6 +11,7 @@
 
 #include "DomTest.hpp"
 #include "dolos.h"
+#include "Array.hpp"
 #include "GridGraphGenerator.hpp"
 #include "Partitioning.hpp"
 
@@ -29,18 +30,16 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
 
   wgt_type cutEdgeWeight;
 
-  Partitioning part(7, &g); 
-
-  std::vector<pid_type> where(g.getNumVertices());
+  Array<pid_type> where(g.getNumVertices());
   int r = DOLOS_PartGraphRecursive(g.getNumVertices(), g.getEdgePrefix(), \
       g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
-      part.getNumPartitions(), nullptr, &cutEdgeWeight, where.data());
+      7, nullptr, &cutEdgeWeight, where.data());
 
   testEqual(r, 1);
 
-  for (size_t v = 0; v < where.size(); ++v) {
-    part.move(v, where[v]);
-  }
+  Partitioning part(7, &where, &g); 
+
+  testLess(part.calcMaxImbalance(), 0.03);
 }
 
 

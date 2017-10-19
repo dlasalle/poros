@@ -60,7 +60,7 @@ vtx_type const * Subgraph::getSuperMap() const
 
 void Subgraph::mapPartitioning(
     Partitioning const * const subPart,
-    Partitioning * const superPart,
+    pid_type * const partitionLabels,
     pid_type const offset) const
 {
   // translate partitioning
@@ -68,7 +68,7 @@ void Subgraph::mapPartitioning(
     vtx_type const sub = vertex.getIndex();
     pid_type const assignment = subPart->getAssignment(sub);
     vtx_type const super = getSuperMap(sub);
-    superPart->move(super, assignment + offset);
+    partitionLabels[super] = assignment + offset;
   }
 }
 

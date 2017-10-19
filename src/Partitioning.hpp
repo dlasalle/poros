@@ -15,6 +15,7 @@
 #include <vector>
 #include "Base.hpp"
 #include "Debug.hpp"
+#include "Array.hpp"
 #include "ConstantGraph.hpp"
 
 
@@ -37,6 +38,19 @@ class Partitioning
      */
     Partitioning(
         pid_type numParts,
+        ConstantGraph const * graph);
+
+
+    /**
+    * @brief Create a new partitioning from an existing partition vector.
+    *
+    * @param numParts The number of parittions.
+    * @param partitionLabels The vector of partition labels (will be moved).
+    * @param graph The graph.
+    */
+    Partitioning(
+        pid_type numParts,
+        Array<pid_type> * partitionLabels,
         ConstantGraph const * graph);
 
 
@@ -66,7 +80,7 @@ class Partitioning
     * @return The maximum imbalance.
     */
     double calcMaxImbalance(
-        double const * const fractions) const;
+        double const * const fractions = nullptr) const;
 
 
     /**
@@ -99,6 +113,12 @@ class Partitioning
     */
     void assignAll(
         pid_type partition);
+
+
+    /**
+    * @brief Set all vertices as unassigned.
+    */
+    void unassignAll();
 
 
     /**
@@ -141,17 +161,17 @@ class Partitioning
      * assigned.
      *
      * @param vertex The vertex.
-     * @param weight The weight of the vertex.
      * @param partition The partition to assign it to.
      */
     inline void assign(
         vtx_type const vertex,
-        wgt_type const weight,
         pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
       ASSERT_LESS(partition, m_partitions.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
+
+      wgt_type const weight = m_graph->getVertexWeight(vertex);
 
       m_partitions[partition].weight += weight;
       m_assignment[vertex] = partition;
@@ -253,7 +273,7 @@ class Partitioning
     wgt_type m_cutEdgeWeight;
 
     std::vector<partition_struct> m_partitions;
-    std::vector<pid_type> m_assignment;
+    Array<pid_type> m_assignment;
 
     ConstantGraph const * m_graph;
 

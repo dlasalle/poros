@@ -40,12 +40,27 @@ class Array
 
 
     /**
+    * @brief Create a new mutable array with a default value for each element.
+    *
+    * @param size The size of the array.
+    */
+    Array(
+        size_t const size,
+        T const value) :
+      m_size(size),
+      m_data(Alloc::initialized<T>(size, value))
+    {
+      // do nothing
+    }
+
+
+    /**
     * @brief Move constructor.
     *
     * @param lhs The array to move.
     */
     Array(
-        Array && lhs) :
+        Array && lhs) noexcept :
       m_size(lhs.m_size),
       m_data(lhs.m_data)
     {
@@ -177,6 +192,28 @@ class Array
     size_t size() const noexcept
     {
       return m_size;
+    }
+
+
+    /**
+    * @brief Get the beginning iterator.
+    *
+    * @return The iterator/pointer.
+    */
+    T * begin() const noexcept
+    {
+      return m_data;
+    }
+
+
+    /**
+    * @brief Get the end iterator.
+    *
+    * @return The iterator/pointer.
+    */
+    T * end() const noexcept
+    {
+      return m_data + m_size;
     }
 
 

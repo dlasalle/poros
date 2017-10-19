@@ -26,13 +26,23 @@ Partitioning::Partitioning(
     ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitions(numParts, {0}),
-  m_assignment(graph->getNumVertices(), 0),
+  m_assignment(graph->getNumVertices(), NULL_PID),
   m_graph(graph)
 {
   ASSERT_GREATER(numParts, 0);
+}
 
-  // set all graph weight to the first partition
-  m_partitions[0].weight = m_graph->getTotalVertexWeight();
+
+Partitioning::Partitioning(
+    pid_type const numParts,
+    Array<pid_type> * const partitionLabels,
+    ConstantGraph const * const graph) :
+  m_cutEdgeWeight(0),
+  m_partitions(numParts, {0}),
+  m_assignment(std::move(*partitionLabels)),
+  m_graph(graph)
+{
+  ASSERT_GREATER(numParts, 0);
 }
 
 
@@ -70,11 +80,15 @@ double Partitioning::calcMaxImbalance(
     double const fraction = \
         static_cast<double>(getWeight(part)) / \
         static_cast<double>(totalWeight);
-    double const imbalance = (fraction / targetFractions[part]) - 1.0;
+
+    double const targetFraction = targetFractions ? targetFractions[part] : \
+        1.0 / static_cast<double>(numParts);
+
+    double const imbalance = (fraction / targetFraction) - 1.0;
 
     // delete me
     printf("Partition %u at %u/%u (%f/%f)\n", part, getWeight(part), \
-        totalWeight, fraction, targetFractions[part]);
+        totalWeight, fraction, targetFraction);
 
     if (imbalance > max) {
       max = imbalance; 
@@ -105,6 +119,19 @@ void Partitioning::assignAll(
   // fix the one odd partition
   m_partitions[partition].weight = m_graph->getTotalVertexWeight();
 }
+
+
+void Partitioning::unassignAll()
+{
+  for (pid_type & where : m_assignment) {
+    where = NULL_PID;
+  }
+
+  for (partition_struct & p : m_partitions) {
+    p.weight = 0;
+  }
+}
+
 
 void Partitioning::output(
     wgt_type * const totalCutEdgeWeight,

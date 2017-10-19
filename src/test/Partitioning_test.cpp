@@ -36,7 +36,10 @@ UNITTEST(Partitioning, CalcMaxImbalance)
 
   Partitioning part(2, &graph);
 
-  part.move(0, 1);
+  part.assign(0, 1);
+  part.assign(1, 0);
+  part.assign(2, 0);
+  part.assign(3, 0);
 
   double imbalance = part.calcMaxImbalance(targets.data());
   testEqual(imbalance, 0.5);

@@ -85,6 +85,7 @@ class Alloc
       }
     }
 
+
     /**
     * @brief Allocate and initialize a block of memory to a constant value.
     *
@@ -97,7 +98,7 @@ class Alloc
     * @throws std::bad_alloc If the amount of memory fails to get allocated.
     */
     template<typename T>
-    static T * initizialized(
+    static T * initialized(
         size_t const num,
         T const val = 0)
     {

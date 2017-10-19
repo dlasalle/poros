@@ -55,13 +55,13 @@ class RecursiveBisectionPartitioner :
     /**
      * @brief Recursively execute on a subgraph.
      *
-     * @param superPartitioning The partitioning to populate.
+     * @param partitionLabels The partitioning to populate.
      * @param params THe parameters to use.
      * @param subGraph The subgraph to recursively partition.
      * @param offset The partition ID offset to assign.
      */
     void recurse(
-        Partitioning * const superPartitioning,
+        pid_type * partitionLabels,
         PartitionParameters const * const params,
         IMappedGraph const * subGraph,
         pid_type const offset) const;
