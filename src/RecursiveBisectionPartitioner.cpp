@@ -48,8 +48,18 @@ void RecursiveBisectionPartitioner::recurse(
       std::log2(params->getNumPartitions());
   bisectParams.setImbalanceTolerance(tolerance);
 
+  double const * const targetFractions = params->getTargetPartitionFractions();
+
   printf("Using tolerance of %f for bisection (%f with %u parts).\n", \
       tolerance, params->getImbalanceTolerance(), numParts);
+
+  // calculate target fractions
+  std::vector<double> targetBisectionFractions(NUM_BISECTION_PARTS);
+  for (pid_type pid = 0; pid < numParts; ++pid) {
+    pid_type const half = static_cast<pid_type>(pid >= (numParts / 2));
+    targetBisectionFractions[half] += targetFractions[pid];
+  }
+  bisectParams.setTargetPartitionFractions(targetBisectionFractions.data());
 
   // calculate the target weight for each side
   // bisect
@@ -59,7 +69,7 @@ void RecursiveBisectionPartitioner::recurse(
   if (numParts > 2) {
     std::vector<pid_type> numPartsPrefix(3);
     numPartsPrefix[0] = 0;
-    numPartsPrefix[1] = numParts / 2;
+    numPartsPrefix[1] = numParts / NUM_BISECTION_PARTS;
     numPartsPrefix[2] = numParts;
 
     // extract graph parts
@@ -67,21 +77,34 @@ void RecursiveBisectionPartitioner::recurse(
         &bisection);
     ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
 
-    // recursively call execute
     for (pid_type part = 0; part < parts.size(); ++part) {
       pid_type const numHalfParts = numPartsPrefix[part+1] - \
           numPartsPrefix[part];
-      if (numHalfParts > 1) {
-        double weightFrac = (static_cast<double>(bisection.getWeight(part)) / \
-            static_cast<double>(graph->getTotalVertexWeight())) ;
 
-        double const ratio = \
-            bisectParams.getTargetPartitionFractions()[part] / weightFrac;
-        
+      double const halfTargetFraction = targetBisectionFractions[part];
+      double const weightFrac = \
+          static_cast<double>(bisection.getWeight(part)) / \
+          static_cast<double>(graph->getTotalVertexWeight()) ;
+
+      double const ratio = weightFrac / halfTargetFraction;
+
+      printf("Part %u has %f/%f weight.\n", part, weightFrac, \
+          halfTargetFraction);
+      printf("Made cut that is %f/%f overwieght.\n", ratio - 1.0, tolerance);
+
+
+      if (numHalfParts > 1) {
+        // recursively call execute
         PartitionParameters subParams(numHalfParts);
 
+        std::vector<double> subTargetFractions(numHalfParts);
+        for (pid_type pid = 0; pid < numHalfParts; ++pid) {
+          subTargetFractions[pid] = \
+              (targetFractions+numPartsPrefix[part])[pid] / halfTargetFraction;
+        }
         subParams.setImbalanceTolerance(params->getImbalanceTolerance() * \
             ratio);
+        subParams.setTargetPartitionFractions(subTargetFractions.data());
 
         recurse(superPartitioning, &subParams, &(parts[part]), \
             offset+numPartsPrefix[part]);
@@ -116,7 +139,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
 {
   Partitioning partitioning(params->getNumPartitions(), graph);
 
- MappedGraphWrapper mappedGraph(graph);
+  MappedGraphWrapper mappedGraph(graph);
   recurse(&partitioning, params, &mappedGraph, 0);
 
   return partitioning;

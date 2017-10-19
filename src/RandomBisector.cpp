@@ -10,6 +10,7 @@
 
 #include "RandomBisector.hpp"
 #include "RandomTraverser.hpp"
+#include "PureBalanceRefiner.hpp"
 
 
 namespace dolos
@@ -59,6 +60,7 @@ Partitioning RandomBisector::execute(
 
   while (traverser.next()) {
     vtx_type const vtx = traverser.get();
+    // balance to within 1 vertex
     if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] <= \
         maxPartitionWeight[LEFT_PARTITION]) {
       partitioning.move(vtx, LEFT_PARTITION);
@@ -68,7 +70,10 @@ Partitioning RandomBisector::execute(
   // by construction the left partition cannot be overweight at this point
   if (partitioning.getWeight(RIGHT_PARTITION) > \
       maxPartitionWeight[RIGHT_PARTITION]) {
-    // TODO: rebalance as neccessary
+    // rebalance as neccessary
+    PureBalanceRefiner refiner;
+    
+    refiner.refine(params, &partitioning, graph);
   }
 
   return partitioning;

@@ -1,33 +1,33 @@
 /**
-* @file IRefiner.hpp
-* @brief The IRefiner interface.
+* @file ITwoWayRefiner.hpp
+* @brief The ITwoWayRefiner interface.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
 * @version 1
-* @date 2017-10-09
+* @date 2017-10-18
 */
 
 
 
+#ifndef DOLOS_SRC_ITWOWAYREFINER_HPP
+#define DOLOS_SRC_ITWOWAYREFINER_HPP
 
-#ifndef DOLOS_SRC_IREFINER_HPP
-#define DOLOS_SRC_IREFINER_HPP
 
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
-#include "PartitionParameters.hpp"
+#include "BisectionParameters.hpp"
 
 
 namespace dolos
 {
 
-class IRefiner
+class ITwoWayRefiner
 {
   public:
     /**
     * @brief Virtual destructor to prevent memory leaks.
     */
-    virtual ~IRefiner()
+    virtual ~ITwoWayRefiner()
     {
       // do nothing
     }
@@ -36,17 +36,20 @@ class IRefiner
     /**
     * @brief Refine the partition for the given graph.
     *
-    * @param params The partition parameters.
+    * @param params The parameters of the bisection.
     * @param partitioning The partitioning (input and output).
     * @param graph The graph.
     */
     virtual void refine(
-        PartitioningParameters const * params,
+        BisectionParameters const * params,
         Partitioning * partitioning,
         ConstantGraph const * graph) const = 0;
 };
 
 
 }
+
+
+
 
 #endif

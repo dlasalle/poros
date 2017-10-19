@@ -10,6 +10,8 @@
 
 #include "Partitioning.hpp"
 
+// delete me
+#include <cstdio>
 
 namespace dolos
 {
@@ -69,6 +71,10 @@ double Partitioning::calcMaxImbalance(
         static_cast<double>(getWeight(part)) / \
         static_cast<double>(totalWeight);
     double const imbalance = (fraction / targetFractions[part]) - 1.0;
+
+    // delete me
+    printf("Partition %u at %u/%u (%f/%f)\n", part, getWeight(part), \
+        totalWeight, fraction, targetFractions[part]);
 
     if (imbalance > max) {
       max = imbalance; 
