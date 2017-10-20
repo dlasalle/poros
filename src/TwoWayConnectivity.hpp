@@ -15,6 +15,10 @@
 
 
 #include "FixedSet.hpp"
+#include "Array.hpp"
+#include "Base.hpp"
+#include "ConstantGraph.hpp"
+#include "Partitioning.hpp"
 
 
 namespace dolos
@@ -30,12 +34,14 @@ class TwoWayConnectivity
       wgt_type internal;
     };
 
+  
+    TwoWayConnectivity(
+        ConstantGraph const * graph,
+        Partitioning const * partitioning);
+
 
     void move(
         vtx_type const vertex);
-
-    
-     
 
 
   private:
