@@ -15,6 +15,7 @@
 
 
 #include <vector>
+#include "Debug.hpp"
 
 namespace dolos
 {
@@ -46,7 +47,7 @@ class BitArray
     */
     void mark(
         size_t const index,
-        bool const value) noexcept
+        bool const value = true) noexcept
     {
       ASSERT_LESS(index, m_data.size());
       m_data[index] = value;
@@ -89,7 +90,18 @@ class BitArray
     void clear(
         bool const value = false) noexcept
     {
-      m_data.reassign(m_data.size(), value);
+      m_data.assign(m_data.size(), value);
+    }
+
+
+    /**
+    * @brief Get the size of the array.
+    *
+    * @return The size of the array.
+    */
+    size_t size() const noexcept
+    {
+      return m_data.size();
     }
 
     private:

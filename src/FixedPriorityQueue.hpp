@@ -25,7 +25,7 @@ class FixedPriorityQueue
   public:
     static constexpr size_t const NULL_INDEX = static_cast<size_t>(-1);
 
-    FixedPriorityQeueu(
+    FixedPriorityQueue(
         V const min,
         V const max) :
       m_min(min),
@@ -48,7 +48,7 @@ class FixedPriorityQueue
     void remove(
         V const value) noexcept
     {
-      ASSERT_LESS(value, m_index.size());
+      ASSERT_LESS(static_cast<size_t>(value), m_index.size());
       ASSERT_NOTEQUAL(m_index[value], NULL_INDEX);
 
       // remove item from heap and sort up
@@ -68,7 +68,7 @@ class FixedPriorityQueue
         K const key,
         V const value) noexcept
     {
-      ASSERT_LESS(value, m_index.size());
+      ASSERT_LESS(static_cast<size_t>(value), m_index.size());
       ASSERT_EQUAL(m_index[value], NULL_INDEX);
 
       size_t const index = m_size++;
