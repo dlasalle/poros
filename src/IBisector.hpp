@@ -18,15 +18,6 @@
 namespace dolos
 {
 
-namespace
-{
-
-pid_type const LEFT_PARTITION = 0;
-pid_type const RIGHT_PARTITION = 1;
-pid_type const NUM_BISECTION_PARTS = 2;
-
-}
-
 class IBisector
 {
   public:

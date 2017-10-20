@@ -35,7 +35,7 @@ FMRefiner::FMRefiner()
 
 void FMRefiner::refine(
     BisectionParameters const * params,
-    Partitioning * partitioning,
+    TwoWayConnectivity * connectivity,
     ConstantGraph const * graph) const
 {
 

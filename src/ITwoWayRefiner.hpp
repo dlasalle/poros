@@ -16,6 +16,7 @@
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
 #include "BisectionParameters.hpp"
+#include "TwoWayConnectivity.hpp"
 
 
 namespace dolos

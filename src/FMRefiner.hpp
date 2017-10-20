@@ -35,12 +35,12 @@ class FMRefiner
     * @brief Perform FM refinement on the bisection.
     *
     * @param params The parameters of the bisection.
-    * @param partitioning The partitioning.
+    * @param connectivity The connectivity.
     * @param graph The graph.
     */
     void refine(
         BisectionParameters const * params,
-        Partitioning * partitioning,
+        TwoWayConnectivity * connectivity,
         ConstantGraph const * graph) const;
 };
 
