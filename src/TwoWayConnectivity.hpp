@@ -52,12 +52,12 @@ class TwoWayConnectivity
     *
     * @param vertex The vertex to move.
     */
-    void move(
+    inline void move(
         vtx_type const vertex)
     {
-      wgt_diff_type const delta = vertex_delta(vertex);
+      wgt_diff_type const delta = getVertexDelta(vertex);
 
-      pid_type const home = partitioning->getAssignment(vertex);
+      pid_type const home = m_partitioning->getAssignment(vertex);
       pid_type const dest = (home + 1) % NUM_BISECTION_PARTS;
       
       m_partitioning->move(vertex, dest);
@@ -80,14 +80,6 @@ class TwoWayConnectivity
     }
 
 
-  private:
-    FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
-    Array<vertex_struct> m_connectivity;
-    ConstantGraph const * const m_graph;
-    Partitioning * const m_partitioning;
-
-
-
     /**
     * @brief Get the delta that would result from moving this vertex (negative
     * means fewer edges would be cut).
@@ -96,13 +88,27 @@ class TwoWayConnectivity
     *
     * @return The edge weight delta.
     */
-    wgt_diff_type vertex_delta(
+    inline wgt_diff_type getVertexDelta(
         vtx_type const vertex) const noexcept
     {
       ASSERT_LESS(vertex, m_connectivity.size());
       return static_cast<wgt_diff_type>(m_connectivity[vertex].internal) - \
           static_cast<wgt_diff_type>(m_connectivity[vertex].external);
     }
+
+
+  private:
+    FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
+    Array<vertex_struct> m_connectivity;
+    ConstantGraph const * const m_graph;
+    Partitioning * const m_partitioning;
+
+
+    // disable copying
+    TwoWayConnectivity(
+        TwoWayConnectivity const & rhs);
+    TwoWayConnectivity & operator=(
+        TwoWayConnectivity const & rhs);
 };
 
 }

@@ -11,10 +11,11 @@
 
 #include "DomTest.hpp"
 #include "TwoWayConnectivity.hpp"
+#include "GridGraphGenerator.hpp"
 
 
 
-namespace
+namespace dolos
 {
 
 UNITTEST(TwoWayConnectivity, Move)
@@ -22,7 +23,7 @@ UNITTEST(TwoWayConnectivity, Move)
   GridGraphGenerator gen(2,2,2);
   ConstantGraph g = gen.generate();
 
-  Partitioning part(2, &g);
+  Partitioning p(2, &g);
   p.assign(0, 0);
   p.assign(1, 0);
   p.assign(4, 0);
@@ -37,8 +38,28 @@ UNITTEST(TwoWayConnectivity, Move)
 
   TwoWayConnectivity conn(&g, &p);
 
-  testEqual(p.get
+  testEqual(conn.getVertexDelta(0), 1);
+  testEqual(conn.getVertexDelta(1), 1);
+  testEqual(conn.getVertexDelta(2), 1);
+  testEqual(conn.getVertexDelta(3), 1);
 
+  testEqual(conn.getVertexDelta(4), 1);
+  testEqual(conn.getVertexDelta(5), 1);
+  testEqual(conn.getVertexDelta(6), 1);
+  testEqual(conn.getVertexDelta(7), 1);
+
+  testEqual(p.getCutEdgeWeight(), 4);
+
+  conn.move(0);
+  conn.move(7);
+
+  testEqual(p.getCutEdgeWeight(), 6);
+
+  conn.move(0);
+  conn.move(1);
+  conn.move(7);
+
+  testEqual(p.getCutEdgeWeight(), 5);
 }
 
 
