@@ -38,16 +38,6 @@ UNITTEST(TwoWayConnectivity, Move)
 
   TwoWayConnectivity conn(&g, &p);
 
-  testEqual(conn.getVertexDelta(0), 1);
-  testEqual(conn.getVertexDelta(1), 1);
-  testEqual(conn.getVertexDelta(2), 1);
-  testEqual(conn.getVertexDelta(3), 1);
-
-  testEqual(conn.getVertexDelta(4), 1);
-  testEqual(conn.getVertexDelta(5), 1);
-  testEqual(conn.getVertexDelta(6), 1);
-  testEqual(conn.getVertexDelta(7), 1);
-
   testEqual(p.getCutEdgeWeight(), 4);
 
   conn.move(0);
@@ -60,6 +50,50 @@ UNITTEST(TwoWayConnectivity, Move)
   conn.move(7);
 
   testEqual(p.getCutEdgeWeight(), 5);
+}
+
+
+UNITTEST(TwoWayConnectivity, GetVertexDelta)
+{
+  GridGraphGenerator gen(2,2,2);
+  ConstantGraph g = gen.generate();
+
+  Partitioning p(2, &g);
+  p.assign(0, 0);
+  p.assign(1, 0);
+  p.assign(4, 0);
+  p.assign(5, 0);
+
+  p.assign(2, 1);
+  p.assign(3, 1);
+  p.assign(6, 1);
+  p.assign(7, 1);
+
+  p.recalcCutEdgeWeight();
+
+  TwoWayConnectivity conn(&g, &p);
+
+  testEqual(conn.getVertexDelta(0), 1);
+  testEqual(conn.getVertexDelta(1), 1);
+  testEqual(conn.getVertexDelta(2), 1);
+  testEqual(conn.getVertexDelta(3), 1);
+
+  testEqual(conn.getVertexDelta(4), 1);
+  testEqual(conn.getVertexDelta(5), 1);
+  testEqual(conn.getVertexDelta(6), 1);
+  testEqual(conn.getVertexDelta(7), 1);
+
+  conn.move(0);
+
+  testEqual(conn.getVertexDelta(0), -1);
+  testEqual(conn.getVertexDelta(1), -1);
+  testEqual(conn.getVertexDelta(2), 3);
+  testEqual(conn.getVertexDelta(3), 1);
+
+  testEqual(conn.getVertexDelta(4), -1);
+  testEqual(conn.getVertexDelta(5), 1);
+  testEqual(conn.getVertexDelta(6), 1);
+  testEqual(conn.getVertexDelta(7), 1);
 }
 
 

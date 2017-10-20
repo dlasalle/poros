@@ -10,6 +10,7 @@
 
 
 #include "FMRefiner.hpp"
+#include "BitArray.hpp" 
 
 
 namespace dolos
@@ -38,9 +39,17 @@ void FMRefiner::refine(
     TwoWayConnectivity * connectivity,
     ConstantGraph const * graph) const
 {
+  BitArray visited(graph->getNumVertices());
 
   int const maxRefIters = params->getMaxRefinementIterations();
   for (int refIter = 0; refIter < maxRefIters; ++refIter) {
+    // fill priority queue with boundary vertices
+    
+
+    if (refIter+1 < maxRefIters) {
+      // we'll do another loop
+      visited.clear();
+    }
   }
    
 }
