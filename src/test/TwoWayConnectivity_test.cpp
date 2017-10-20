@@ -17,8 +17,28 @@
 namespace
 {
 
-UNITTEST(TwoWayConnectivity, )
+UNITTEST(TwoWayConnectivity, Move)
 {
+  GridGraphGenerator gen(2,2,2);
+  ConstantGraph g = gen.generate();
+
+  Partitioning part(2, &g);
+  p.assign(0, 0);
+  p.assign(1, 0);
+  p.assign(4, 0);
+  p.assign(5, 0);
+
+  p.assign(2, 1);
+  p.assign(3, 1);
+  p.assign(6, 1);
+  p.assign(7, 1);
+
+  p.recalcCutEdgeWeight();
+
+  TwoWayConnectivity conn(&g, &p);
+
+  testEqual(p.get
+
 }
 
 

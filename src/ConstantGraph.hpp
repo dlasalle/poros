@@ -557,6 +557,23 @@ class ConstantGraph
     }
 
 
+    /**
+    * @brief Get the set of edges of the vertex for traversal.
+    *
+    * @param v The vertex.
+    *
+    * @return The edge set of the vertex.
+    */
+    inline EdgeSet getEdges(
+        vtx_type const v) const noexcept
+    {
+      return EdgeSet(m_edgePrefix[v], m_edgePrefix[v+1], m_edgeList, \
+          m_edgeWeight);
+    }
+
+
+
+
   private:
     vtx_type m_numVertices;
     adj_type m_numEdges;

@@ -22,6 +22,8 @@
 namespace dolos
 {
 
+// TODO: This should be split into two classes -- a parittion builder which
+// allows assignment, and then a partitioning which only allows movement
 class Partitioning
 {
   public:
@@ -148,6 +150,17 @@ class Partitioning
         wgt_type const weightDelta) noexcept
     {
       m_cutEdgeWeight += weightDelta;
+    }
+
+
+    /**
+    * @brief Get the current weight of cut edges.
+    *
+    * @return The weight.
+    */
+    inline wgt_type getCutEdgeWeight() const noexcept
+    {
+      return m_cutEdgeWeight;
     }
 
 
