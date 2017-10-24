@@ -101,6 +101,28 @@ class FixedSet
 
 
     /**
+    * @brief Get the underlying array.
+    *
+    * @return The data.
+    */
+    T * data() noexcept
+    {
+      return m_data.data();
+    }
+
+
+    /**
+    * @brief Get the underlying array.
+    *
+    * @return The data.
+    */
+    T const * data() const noexcept
+    {
+      return m_data.data();
+    }
+
+
+    /**
     * @brief Get the number of elements in the set.
     *
     * @return The number of elements.

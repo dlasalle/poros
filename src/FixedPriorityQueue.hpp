@@ -25,6 +25,12 @@ class FixedPriorityQueue
   public:
     static constexpr size_t const NULL_INDEX = static_cast<size_t>(-1);
 
+    /**
+    * @brief Create a new priority with the given min and max.
+    *
+    * @param min The min value in the priority queue.
+    * @param max The max value in the priority queue.
+    */
     FixedPriorityQueue(
         V const min,
         V const max) :

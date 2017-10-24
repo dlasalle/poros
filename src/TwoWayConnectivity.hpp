@@ -97,6 +97,38 @@ class TwoWayConnectivity
     }
 
 
+    /**
+    * @brief Get the set of border vertices for the given partition.
+    *
+    * @param side The partition.
+    *
+    * @return The set of border vertices.
+    */
+    inline vtx_type const * getBorderVertices(
+        pid_type const side) const noexcept
+    {
+      ASSERT_LESS(side, NUM_BISECTION_PARTS);
+
+      return m_border[side].data(); 
+    }
+
+
+    /**
+    * @brief Get the number of border vertices for a given partition.
+    *
+    * @param side The partition.
+    *
+    * @return The set of border vertices.
+    */
+    inline vtx_type getNumBorderVertices(
+        pid_type const side) const noexcept
+    {
+      ASSERT_LESS(side, NUM_BISECTION_PARTS);
+
+      return m_border[side].size(); 
+    }
+
+
   private:
     FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
     Array<vertex_struct> m_connectivity;
