@@ -55,6 +55,22 @@ class Array
 
 
     /**
+    * @brief Copy a memory location into a new array.
+    *
+    * @param ptr The memory location.
+    * @param size The number of elements.
+    */
+    Array(
+        T const * const ptr,
+        size_t const size) :
+      m_size(size),
+      m_data(Alloc::duplicate(ptr, size))
+    {
+      // do nothing
+    }
+
+
+    /**
     * @brief Move constructor.
     *
     * @param lhs The array to move.

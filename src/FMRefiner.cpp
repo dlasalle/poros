@@ -37,6 +37,7 @@ FMRefiner::FMRefiner()
 
 void FMRefiner::refine(
     BisectionParameters const * const params,
+    TargetPartitioning const * const target,
     TwoWayConnectivity * const connectivity,
     Partitioning * const partitioning,
     ConstantGraph const * const graph) const
@@ -86,8 +87,7 @@ void FMRefiner::refine(
           double const leftToRightBalance = \
               (partitioning->getWeight(0) + topLeftWeight)
 
-
-          if ( ) {
+          if (   ) {
           } else if ( ) {
           } else {
             // break the tie via a random number
