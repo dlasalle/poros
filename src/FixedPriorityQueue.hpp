@@ -74,7 +74,7 @@ class FixedPriorityQueue
       m_data[index].key = key;
       m_data[index].value = value;
 
-      place(index);
+      siftUp(index);
     }
 
 
@@ -128,6 +128,28 @@ class FixedPriorityQueue
       fill(0);
 
       return value;
+    }
+
+
+    /**
+    * @brief Get get the top of the priority queue's value.
+    *
+    * @return The value.
+    */
+    V const & peek() const noexcept
+    {
+      return m_data[0].value;
+    }
+
+
+    /**
+    * @brief Get get the top of the priority queue's value.
+    *
+    * @return The value.
+    */
+    K const & max() const noexcept
+    {
+      return m_data[0].key;
     }
 
 
@@ -198,6 +220,23 @@ class FixedPriorityQueue
     }
 
 
+    /**
+    * @brief Swap two items within the priority queue.
+    *
+    * @param indexA The first value.
+    * @param indexB The second value.
+    */
+    void swap(
+        size_t const indexA,
+        size_t const indexB) noexcept
+    {
+      V const valueA = m_data[indexA].value;
+      V const valueB = m_data[indexB].value;
+
+      std::swap(m_index[valueA], m_index[valueB]);
+      std::swap(m_data[indexA], m_data[indexB]);
+    }
+
 
     /**
     * @brief Fill a whole created in the heap.
@@ -207,9 +246,15 @@ class FixedPriorityQueue
     void fill(
         size_t const index) noexcept
     {
+      ASSERT_LESS(index, m_size);
+
+      --m_size;
+
       // what we'll do is move the bottom node to this position
-      m_data[index] = m_data[--m_size];
-      m_index[m_data[index]] = index;
+      m_data[index] = m_data[m_size];
+
+      V const value = m_data[index].value;
+      m_index[value] = index;
 
       siftDown(index); 
     }
@@ -229,13 +274,11 @@ class FixedPriorityQueue
           // reached a valid state
           break;
         }
-        V const currentValue = m_data[index].value;
-        V const parentValue = m_data[parent].value; 
-        std::swap(m_index[currentValue], m_index[parentValue]);
-        std::swap(m_data[index], m_data[parentIndex]);
+        swap(index, parent);
         index = parent;
       }
     }
+
 
     /**
     * @brief Correctly sink an item up into the heap.
@@ -243,14 +286,29 @@ class FixedPriorityQueue
     * @param index The index of the value to place.
     */
     void siftDown(
-        size_t const index) noexcept
+        size_t index) noexcept
     {
-      while (index < m_size) {
-        size_t const leftIndex = left
-        
+      K const key = m_data[index].key;
+      while (true) {
+        size_t const leftIndex = leftChildIndex(index);
+        size_t const rightIndex = rightChildIndex(index);
+        if (rightIndex < m_size && key < m_data[rightIndex].key) {
+          if (m_data[rightIndex].key >= m_data[leftIndex].key) {
+            swap(index, rightIndex);
+            index = rightIndex;
+          } else {
+            swap(index, leftIndex);
+            index = leftIndex;
+          }
+        } else if (leftIndex < m_size && key < m_data[leftIndex].key) {
+          swap(index, leftIndex);
+          index = leftIndex;
+        } else {
+          // life is good -- exit
+          break;
+        }
       }
     }
-
 };
 
 

@@ -31,6 +31,31 @@ UNITTEST(FixedPriortyQueue, AddPopInOrder)
   }
 }
 
+
+UNITTEST(FixedPriortyQueue, AddPeek)
+{
+  FixedPriorityQueue<float, int> pq(0, 10);
+
+  for (int i = 0; i < 10; ++i) {
+    pq.add(1.0/(i+1), i);    
+  }
+
+  testEqual(pq.peek(), 0);
+}
+
+
+UNITTEST(FixedPriortyQueue, AddMax)
+{
+  FixedPriorityQueue<float, int> pq(0, 10);
+
+  for (int i = 0; i < 10; ++i) {
+    pq.add(1.0/(i+1), i);    
+  }
+
+  testEqual(pq.max(), 1.0);
+}
+
+
 UNITTEST(FixedPriortyQueue, AddPopReverseOrder)
 {
   FixedPriorityQueue<float, int> pq(0, 10);
