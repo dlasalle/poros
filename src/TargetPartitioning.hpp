@@ -15,8 +15,8 @@
 
 
 #include "Base.hpp"
-#include "Partitioning.hpp"
 #include "Debug.hpp"
+#include "Array.hpp"
 
 
 namespace dolos
@@ -73,19 +73,7 @@ class TargetPartitioning
     *
     * @return The maximum weights.
     */
-    double const * getMaxWeight() const;
-
-
-    /**
-    * @brief Get the maximum imbalance as a fraction. That is, if a partition
-    * is 5% overweight, this function will return 0.05.
-    *
-    * @param partitioning The partitioning to check.
-    *
-    * @return The maximum imbalance.
-    */
-    double calcMaxImbalance(
-        Partitioning const * partitioning) const;
+    wgt_type const * getMaxWeight() const;
 
 
     /**
@@ -95,12 +83,28 @@ class TargetPartitioning
     *
     * @return The maximum weight.
     */
-    inline double getMaxWeight(
+    inline wgt_type getMaxWeight(
         pid_type const part) const noexcept
     {
-      ASSERT_LESS(part, m_numParts);
+      ASSERT_LESS(part, m_numPartitions);
 
       m_maxWeight[part];
+    }
+
+
+    /**
+    * @brief Get the target weight for a given partition.
+    *
+    * @param part The partition.
+    *
+    * @return The target weight.
+    */
+    inline wgt_type getTargetWeight(
+         pid_type const part) const noexcept
+    {
+      ASSERT_LESS(part, m_numPartitions);
+
+      m_targetWeight[part];
     }
 
 
@@ -108,9 +112,9 @@ class TargetPartitioning
     pid_type m_numPartitions;
     wgt_type m_totalVertexWeight;
     double m_imbalanceTolerance;
-    Array<double> m_fractions;
-    Array<wgt_type> m_targetWeight; 
-    Array<wgt_type> m_maxWeight; 
+    solidutils::Array<double> m_fractions;
+    solidutils::Array<wgt_type> m_targetWeight; 
+    solidutils::Array<wgt_type> m_maxWeight; 
 };
 
 

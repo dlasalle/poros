@@ -1,0 +1,3 @@
+[submodule "solidutils"]
+	path = solidutils
+	url = git@github.com:solidlake/solidutils

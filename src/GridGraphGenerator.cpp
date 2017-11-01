@@ -150,8 +150,8 @@ ConstantGraph GridGraphGenerator::generate()
 
   // each vertex can be the root of up to 3 edges
   std::vector<wgt_type> srcEdgeWeights(numVertices*3);
-  Random::fillWithRange(srcEdgeWeights.data(), srcEdgeWeights.size(), \
-      m_edgeWeightMin, m_edgeWeightMax);
+  solidutils::Random::fillWithRange(srcEdgeWeights.data(), \
+      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax);
   
   adj_type edge = 0;
   vtx_type vertex = 0;
@@ -214,8 +214,8 @@ ConstantGraph GridGraphGenerator::generate()
   ASSERT_EQUAL(edge, numEdges);
 
   // set vertex weights
-  Random::fillWithRange(vertexWeight, numVertices, m_vertexWeightMin, \
-      m_vertexWeightMax);
+  solidutils::Random::fillWithRange(vertexWeight, numVertices, \
+      m_vertexWeightMin, m_vertexWeightMax);
 
   return data.toGraph();
 }

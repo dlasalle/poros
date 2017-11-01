@@ -72,7 +72,7 @@ void GraphBuilder::beginEdgePhase()
   m_phase = PHASE_EDGES;
 
   // prefix sum edge numbers
-  ArrayUtils::prefixSumExclusive(&m_edgePrefix);
+  solidutils::ArrayUtils::prefixSumExclusive(&m_edgePrefix);
   m_numEdges = m_edgePrefix[m_numVertices];
 
   // shift the edgeprefix so that we can insert

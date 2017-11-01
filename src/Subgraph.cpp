@@ -23,7 +23,7 @@ namespace dolos
 
 Subgraph::Subgraph(
     ConstantGraph * const graph,
-    Array<vtx_type> * const superMap) :
+    solidutils::Array<vtx_type> * const superMap) :
   m_superMap(std::move(*superMap)),
   m_graph(std::move(*graph))
 {
@@ -36,7 +36,7 @@ Subgraph::Subgraph(
   m_superMap(graph->getNumVertices()),
   m_graph(std::move(*graph))
 {
-  ArrayUtils::increment(&m_superMap);
+  solidutils::ArrayUtils::increment(&m_superMap);
 }
 
 

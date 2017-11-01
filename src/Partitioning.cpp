@@ -35,7 +35,7 @@ Partitioning::Partitioning(
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    Array<pid_type> * const partitionLabels,
+    solidutils::Array<pid_type> * const partitionLabels,
     ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitions(numParts, {0}),
@@ -64,38 +64,6 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
   }
 
   return vertexCounts;
-}
-
-
-double Partitioning::calcMaxImbalance(
-    double const * const targetFractions) const
-{
-  pid_type const numParts = getNumPartitions();  
-
-  wgt_type const totalWeight = m_graph->getTotalVertexWeight();
-
-  double max = 0.0;
-
-  for (pid_type part = 0; part < numParts; ++part) {
-    double const fraction = \
-        static_cast<double>(getWeight(part)) / \
-        static_cast<double>(totalWeight);
-
-    double const targetFraction = targetFractions ? targetFractions[part] : \
-        1.0 / static_cast<double>(numParts);
-
-    double const imbalance = (fraction / targetFraction) - 1.0;
-
-    // delete me
-    printf("Partition %u at %u/%u (%f/%f)\n", part, getWeight(part), \
-        totalWeight, fraction, targetFraction);
-
-    if (imbalance > max) {
-      max = imbalance; 
-    }
-  }
-
-  return max;
 }
 
 

@@ -14,11 +14,11 @@
 #define DOLOS_SRC_TWOWAYCONNECTIVITY_HPP
 
 
-#include "FixedSet.hpp"
 #include "Array.hpp"
 #include "Base.hpp"
 #include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
+#include "FixedSet.hpp"
 
 
 namespace dolos
@@ -130,8 +130,8 @@ class TwoWayConnectivity
 
 
   private:
-    FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
-    Array<vertex_struct> m_connectivity;
+    solidutils::FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
+    solidutils::Array<vertex_struct> m_connectivity;
     ConstantGraph const * const m_graph;
     Partitioning * const m_partitioning;
 

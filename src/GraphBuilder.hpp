@@ -152,10 +152,10 @@ class GraphBuilder
     int m_phase;
     vtx_type m_numVertices;
     adj_type m_numEdges;
-    Array<adj_type> m_edgePrefix;
-    Array<vtx_type> m_edgeList;
-    Array<wgt_type> m_vertexWeight;
-    Array<wgt_type> m_edgeWeight;
+    solidutils::Array<adj_type> m_edgePrefix;
+    solidutils::Array<vtx_type> m_edgeList;
+    solidutils::Array<wgt_type> m_vertexWeight;
+    solidutils::Array<wgt_type> m_edgeWeight;
 
     // prevent copying
     GraphBuilder(

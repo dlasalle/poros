@@ -68,6 +68,8 @@ if (DEFINED TESTS AND NOT TESTS EQUAL 0)
 endif()
 
 include_directories("include")
+include_directories("solidutils/include")
+include_directories(".")
 add_subdirectory("include")
 add_subdirectory("src")
 

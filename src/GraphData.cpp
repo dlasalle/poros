@@ -35,10 +35,10 @@ GraphData::GraphData(
 
 
 GraphData::GraphData(
-    Array<adj_type> * const edgePrefix,
-    Array<vtx_type> * const edgeList,
-    Array<wgt_type> * const vertexWeight,
-    Array<wgt_type> * const edgeWeight) :
+    solidutils::Array<adj_type> * const edgePrefix,
+    solidutils::Array<vtx_type> * const edgeList,
+    solidutils::Array<wgt_type> * const vertexWeight,
+    solidutils::Array<wgt_type> * const edgeWeight) :
   m_edgePrefix(std::move(*edgePrefix)),
   m_edgeList(std::move(*edgeList)),
   m_vertexWeight(std::move(*vertexWeight)),

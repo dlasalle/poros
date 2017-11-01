@@ -52,7 +52,7 @@ class Partitioning
     */
     Partitioning(
         pid_type numParts,
-        Array<pid_type> * partitionLabels,
+        solidutils::Array<pid_type> * partitionLabels,
         ConstantGraph const * graph);
 
 
@@ -268,7 +268,7 @@ class Partitioning
     *
     * @return The weight of the partition.
     */
-    inline pid_type getWeight(
+    inline wgt_type getWeight(
         pid_type const partition) const noexcept
     {
       ASSERT_LESS(partition, m_partitions.size());
@@ -280,7 +280,7 @@ class Partitioning
     wgt_type m_cutEdgeWeight;
 
     std::vector<partition_struct> m_partitions;
-    Array<pid_type> m_assignment;
+    solidutils::Array<pid_type> m_assignment;
 
     ConstantGraph const * m_graph;
 

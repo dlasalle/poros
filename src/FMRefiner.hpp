@@ -14,6 +14,7 @@
 
 
 #include "ITwoWayRefiner.hpp"
+#include "TargetPartitioning.hpp"
 
 
 namespace dolos
@@ -35,12 +36,16 @@ class FMRefiner
     * @brief Perform FM refinement on the bisection.
     *
     * @param params The parameters of the bisection.
+    * @param target The target partitioning.
     * @param connectivity The connectivity.
+    * @param partitioning The current partitioning.
     * @param graph The graph.
     */
     void refine(
         BisectionParameters const * params,
+        TargetPartitioning const * const target,
         TwoWayConnectivity * connectivity,
+        Partitioning * const partitioning,
         ConstantGraph const * graph) const;
 };
 
