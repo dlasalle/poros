@@ -38,7 +38,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   std::vector<vtx_type> vertexCounts = part->calcVertexCounts();
 
   // map of sub graph vertices to super graph vertices 
-  std::vector<solidutils::Array<vtx_type>> map;
+  std::vector<sl::Array<vtx_type>> map;
   for (pid_type pid = 0; pid < numParts; ++pid) {
     ASSERT_EQUAL(map.size(), pid);
 
@@ -54,7 +54,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   }
 
   // populate super-map and submap
-  solidutils::Array<vtx_type> subMap(numVertices);
+  sl::Array<vtx_type> subMap(numVertices);
   for (vtx_type v = 0; v < numVertices; ++v) {
     pid_type const where = part->getAssignment(v);
     vtx_type const subV = vertexCounts[where]++;

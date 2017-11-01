@@ -13,12 +13,12 @@
 #define DOLOS_SRC_CONSTANTGRAPH_HPP
 
 
-#include <cstdlib>
-#include "Debug.hpp"
 #include "Base.hpp"
 #include "IAllocatedData.hpp"
 #include "EdgeSet.hpp"
 #include "VertexSet.hpp"
+#include <cstdlib>
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos

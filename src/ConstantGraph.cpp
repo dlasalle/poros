@@ -10,7 +10,7 @@
 
 
 #include "Base.hpp"
-#include "Debug.hpp"
+#include "solidutils/Debug.hpp"
 #include "ConstantGraph.hpp"
 
 

@@ -55,7 +55,7 @@ void RecursiveBisectionPartitioner::recurse(
       tolerance, params->getImbalanceTolerance(), numParts);
 
   // calculate target fractions
-  solidutils::Array<pid_type> numPartsPrefix(3);
+  sl::Array<pid_type> numPartsPrefix(3);
   numPartsPrefix.set(0);
 
   std::vector<double> targetBisectionFractions(NUM_BISECTION_PARTS, 0);
@@ -66,7 +66,7 @@ void RecursiveBisectionPartitioner::recurse(
     ++numPartsPrefix[half];
   }
   bisectParams.setTargetPartitionFractions(targetBisectionFractions.data());
-  solidutils::ArrayUtils::prefixSumExclusive(&numPartsPrefix);
+  sl::ArrayUtils::prefixSumExclusive(&numPartsPrefix);
 
   // calculate the target weight for each side bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
@@ -150,7 +150,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
     PartitionParameters const * params,
     ConstantGraph const * graph) const
 {
-  solidutils::Array<pid_type> partitionLabels(graph->getNumVertices());
+  sl::Array<pid_type> partitionLabels(graph->getNumVertices());
 
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), params, &mappedGraph, 0);

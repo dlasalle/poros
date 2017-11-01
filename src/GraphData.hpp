@@ -47,10 +47,10 @@ class GraphData :
     * @param edgeWeight The edge weight array.
     */
     GraphData(
-        solidutils::Array<adj_type> * edgePrefix,
-        solidutils::Array<vtx_type> * edgeList,
-        solidutils::Array<wgt_type> * vertexWeight,
-        solidutils::Array<wgt_type> * edgeWeight);
+        sl::Array<adj_type> * edgePrefix,
+        sl::Array<vtx_type> * edgeList,
+        sl::Array<wgt_type> * vertexWeight,
+        sl::Array<wgt_type> * edgeWeight);
 
 
     /**
@@ -165,10 +165,10 @@ class GraphData :
 
 
   private:
-    solidutils::Array<adj_type> m_edgePrefix;
-    solidutils::Array<vtx_type> m_edgeList;
-    solidutils::Array<wgt_type> m_vertexWeight;
-    solidutils::Array<wgt_type> m_edgeWeight;
+    sl::Array<adj_type> m_edgePrefix;
+    sl::Array<vtx_type> m_edgeList;
+    sl::Array<wgt_type> m_vertexWeight;
+    sl::Array<wgt_type> m_edgeWeight;
 
     // prevent copying
     GraphData(

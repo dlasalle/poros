@@ -14,9 +14,9 @@
 
 #include <vector>
 #include "Base.hpp"
-#include "Debug.hpp"
-#include "Array.hpp"
 #include "ConstantGraph.hpp"
+#include "solidutils/Debug.hpp"
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -52,7 +52,7 @@ class Partitioning
     */
     Partitioning(
         pid_type numParts,
-        solidutils::Array<pid_type> * partitionLabels,
+        sl::Array<pid_type> * partitionLabels,
         ConstantGraph const * graph);
 
 
@@ -280,7 +280,7 @@ class Partitioning
     wgt_type m_cutEdgeWeight;
 
     std::vector<partition_struct> m_partitions;
-    solidutils::Array<pid_type> m_assignment;
+    sl::Array<pid_type> m_assignment;
 
     ConstantGraph const * m_graph;
 

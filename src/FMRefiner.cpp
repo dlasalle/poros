@@ -11,10 +11,10 @@
 
 #include <vector>
 #include "FMRefiner.hpp"
-#include "BitArray.hpp" 
-#include "FixedPriorityQueue.hpp"
 #include "PartitioningAnalyzer.hpp"
-#include "Random.hpp"
+#include "solidutils/Random.hpp"
+#include "solidutils/BitArray.hpp" 
+#include "solidutils/FixedPriorityQueue.hpp"
 
 namespace dolos
 {
@@ -27,55 +27,62 @@ namespace dolos
 namespace
 {
 
+
+struct refinement_info_struct {
+  sl::FixedPriorityQueue<wgt_diff_type, vtx_type> pqs[NUM_BISECTION_PARTS];
+  PartitioningAnalyzer analyzer;
+  sl::BitArray visited;
+};
+
 void performIter(
     ConstantGraph const * const graph,
     Partitioning * const partitioning,
-    solidutils::FixedPriorityQueue<wgt_diff_type, vtx_type> * const pqs,
-    PartitioningAnalyzer const * const analyzer,
-    BitArray * const visited)
+    TwoWayConnectivity * const connectivity,
+    refinement_info_struct * const info)
 {
   // fill priority queue with boundary vertices
   for (pid_type side = 0; side < NUM_BISECTION_PARTS; ++side) {
     vtx_type const numVertices = connectivity->getNumBorderVertices(side);
     for (vtx_type v = 0; v < numVertices; ++v) {
-      pqs[side].add(-connectivity->getVertexDelta(v), v);
+      info->pqs[side].add(-connectivity->getVertexDelta(v), v);
     }
   }
 
   // empty priority queues
-  while (pqs[0].size() > 0 || pqs[1].size() > 0) {
+  while (info->pqs[0].size() > 0 || info->pqs[1].size() > 0) {
 
     pid_type from;
     // decide our direction of movement
-    if (analyzer->isOverWeight(0)) {
+    if (info->analyzer.isOverWeight(0)) {
       // fix balance by moving vertices out of 0
       from = 0;
-    } else if (analyzer->isOverWeight(1)) {
+    } else if (info->analyzer.isOverWeight(1)) {
       // fix balance by moving vertices out of 1
       from = 1;
     } else {
       // if a priority queue is empty choose the other one
-      if (pqs[0].size() == 0) {
+      if (info->pqs[0].size() == 0) {
         from = 1;
-      } else if (pqs[1].size() == 0) {
+      } else if (info->pqs[1].size() == 0) {
         from = 0;
       } else { 
         // move from highest priority pq
-        if (pqs[0].max() > pqs[1].max()) {
+        if (info->pqs[0].max() > info->pqs[1].max()) {
           from = 0;
-        } else if (pqs[0].max() > pqs[1].max()) {
+        } else if (info->pqs[0].max() > info->pqs[1].max()) {
           from = 1;
         } else {
           // break the tie via a random number
-          from = solidutils::Random::inRange(0,1);
+          from = sl::Random::inRange(0,1);
         }
       }
     }
     pid_type const to = from ^ 0x01;
 
-    wgt_diff_type const gain = pqs[from].max(); 
-    vtx_type const vertex = pqs[from].pop();
+    wgt_diff_type const gain = info->pqs[from].max(); 
+    vtx_type const vertex = info->pqs[from].pop();
 
+    moveVertex();
 
   }
 }
@@ -107,20 +114,16 @@ void FMRefiner::refine(
     Partitioning * const partitioning,
     ConstantGraph const * const graph) const
 {
-  BitArray visited(graph->getNumVertices());
-
-  solidutils::FixedPriorityQueue<wgt_diff_type, vtx_type> \
-      pqs[NUM_BISECTION_PARTS] = { \
-          {0, graph->getNumVertices()}, \
-          {0, graph->getNumVertices()} \
-      };
-
-  PartitioningAnalyzer analyzer(partitioning, target);
+  refinement_info_struct info{
+    { {0, graph->getNumVertices()}, {0, graph->getNumVertices()} },
+    {partitioning, target},
+    {graph->getNumVertices()}
+  };
 
   int const maxRefIters = params->getMaxRefinementIterations();
   for (int refIter = 0; refIter < maxRefIters; ++refIter) {
      
-    performIter(graph, partitioning, pqs, &analyzer, visited);
+    performIter(graph, partitioning, connectivity, &info);
 
     if (refIter+1 < maxRefIters) {
       // we'll do another loop

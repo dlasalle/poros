@@ -35,7 +35,7 @@ Partitioning::Partitioning(
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    solidutils::Array<pid_type> * const partitionLabels,
+    sl::Array<pid_type> * const partitionLabels,
     ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitions(numParts, {0}),

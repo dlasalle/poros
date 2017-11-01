@@ -16,7 +16,7 @@
 #include "Base.hpp"
 #include "Partitioning.hpp"
 #include "TargetPartitioning.hpp"
-#include "Debug.hpp"
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos

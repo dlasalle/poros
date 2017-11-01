@@ -15,8 +15,8 @@
 
 
 #include "Base.hpp"
-#include "Debug.hpp"
-#include "Array.hpp"
+#include "solidutils/Array.hpp"
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos
@@ -112,9 +112,9 @@ class TargetPartitioning
     pid_type m_numPartitions;
     wgt_type m_totalVertexWeight;
     double m_imbalanceTolerance;
-    solidutils::Array<double> m_fractions;
-    solidutils::Array<wgt_type> m_targetWeight; 
-    solidutils::Array<wgt_type> m_maxWeight; 
+    sl::Array<double> m_fractions;
+    sl::Array<wgt_type> m_targetWeight; 
+    sl::Array<wgt_type> m_maxWeight; 
 };
 
 

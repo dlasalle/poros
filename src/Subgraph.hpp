@@ -17,7 +17,7 @@
 #include "ConstantGraph.hpp"
 #include "Partitioning.hpp"
 #include "IMappedGraph.hpp"
-#include "Array.hpp"
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -35,7 +35,7 @@ class Subgraph :
     */
     Subgraph(
         ConstantGraph * graph,
-        solidutils::Array<vtx_type> * superMap);
+        sl::Array<vtx_type> * superMap);
 
 
     /**
@@ -95,7 +95,7 @@ class Subgraph :
 
 
   private:
-    solidutils::Array<vtx_type> m_superMap;
+    sl::Array<vtx_type> m_superMap;
     ConstantGraph m_graph;
 };
 

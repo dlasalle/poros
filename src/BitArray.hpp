@@ -15,7 +15,7 @@
 
 
 #include <vector>
-#include "Debug.hpp"
+#include "solidutils/Debug.hpp"
 
 namespace dolos
 {
