@@ -100,16 +100,27 @@ class TwoWayConnectivity
     /**
     * @brief Get the set of border vertices for the given partition.
     *
-    * @param side The partition.
-    *
     * @return The set of border vertices.
     */
-    inline vtx_type const * getBorderVertices(
-        pid_type const side) const noexcept
+    inline vtx_type const * getBorderVertices() const noexcept
     {
       ASSERT_LESS(side, NUM_BISECTION_PARTS);
 
-      return m_border[side].data(); 
+      return m_border.data(); 
+    }
+
+
+    /**
+    * @brief Check whether or not a vertex is in the border.
+    *
+    * @param vertex The vertex.
+    *
+    * @return Whether or not it is in the border. 
+    */
+    inline bool isInBorder(
+        vtx_type const vertex) const noexcept
+    {
+      return m_border.has(vertex);
     }
 
 
