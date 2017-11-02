@@ -76,6 +76,11 @@ class TwoWayConnectivity
         wgt_diff_type const flow = ((other ^ home)<<1) - 1;
         m_connectivity[u].internal += flow*edge.getWeight();
         m_connectivity[u].external -= flow*edge.getWeight();
+
+        // insert into boundary
+        if (m_connectivity[u].external > 0 && !m_border.has(u)) {
+          m_border.mark(u);
+        }
       }
     }
 
