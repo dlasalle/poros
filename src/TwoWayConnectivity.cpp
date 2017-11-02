@@ -25,11 +25,10 @@ namespace dolos
 
 TwoWayConnectivity::TwoWayConnectivity(
     ConstantGraph const * const graph,
-    Partitioning * const partitioning) :
-  m_border{graph->getNumVertices(), graph->getNumVertices()},
+    Partitioning const * const partitioning) :
+  m_border(graph->getNumVertices()),
   m_connectivity(graph->getNumVertices()),
-  m_graph(graph),
-  m_partitioning(partitioning)
+  m_graph(graph)
 {
   // populate connectivity vector
   for (Vertex const & vertex : graph->getVertices()) {
@@ -47,7 +46,7 @@ TwoWayConnectivity::TwoWayConnectivity(
     }
 
     if (pair.external > 0) {
-      m_border[home].add(v);
+      m_border.add(v);
     }
 
     m_connectivity[v] = pair;
@@ -60,7 +59,21 @@ TwoWayConnectivity::TwoWayConnectivity(
 ******************************************************************************/
 
 
+vtx_type const * TwoWayConnectivity::getBorderVertices() const noexcept
+{
+  return m_border.data(); 
+}
 
 
+sl::FixedSet<vtx_type> * TwoWayConnectivity::getBorderVertexSet() noexcept
+{
+  return &m_border;
+}
+
+sl::FixedSet<vtx_type> const * TwoWayConnectivity::getBorderVertexSet()
+    const noexcept
+{
+  return &m_border;
+}
   
 }

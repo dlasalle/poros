@@ -8,9 +8,10 @@
 */
 
 
-#include "Alloc.hpp"
-#include "Debug.hpp"
 #include "GraphData.hpp"
+#include "solidutils/Alloc.hpp"
+#include "solidutils/Debug.hpp"
+
 
 namespace dolos
 {

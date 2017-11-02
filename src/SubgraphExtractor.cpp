@@ -12,7 +12,7 @@
 #include "SubgraphExtractor.hpp"
 
 #include "GraphBuilder.hpp"
-#include "ArrayUtils.hpp"
+#include "solidutils/VectorMath.hpp"
 
 
 namespace dolos

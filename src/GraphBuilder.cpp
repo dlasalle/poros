@@ -11,7 +11,7 @@
 
 #include "GraphBuilder.hpp"
 #include "GraphData.hpp"
-#include "ArrayUtils.hpp"
+#include "solidutils/VectorMath.hpp"
 
 
 namespace dolos
@@ -72,7 +72,7 @@ void GraphBuilder::beginEdgePhase()
   m_phase = PHASE_EDGES;
 
   // prefix sum edge numbers
-  sl::ArrayUtils::prefixSumExclusive(&m_edgePrefix);
+  sl::VectorMath::prefixSumExclusive(m_edgePrefix.data(), m_edgePrefix.size());
   m_numEdges = m_edgePrefix[m_numVertices];
 
   // shift the edgeprefix so that we can insert

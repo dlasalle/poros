@@ -17,7 +17,7 @@
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
-#include "Debug.hpp"
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos

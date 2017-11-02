@@ -12,6 +12,8 @@
 #include "Partitioning.hpp"
 #include "RandomBisector.hpp"
 #include "GridGraphGenerator.hpp"
+#include "TargetPartitioning.hpp"
+#include "PartitioningAnalyzer.hpp"
 
 
 namespace dolos
@@ -35,7 +37,11 @@ UNITTEST(RandomBisector, ExecuteUniform)
   Partitioning part = b.execute(&params, &graph);
 
   std::vector<double> targets{0.5, 0.5};
-  double imbalance = part.calcMaxImbalance(targets.data());
+  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
+      params.getImbalanceTolerance(), targets.data());
+  PartitioningAnalyzer analyzer(&part, &target);
+
+  double const imbalance = analyzer.calcMaxImbalance();
   testEqual(imbalance, 0.0);
 }
 
@@ -60,8 +66,11 @@ UNITTEST(RandomBisector, Execute1To5)
 
   // perform bisection
   Partitioning part = b.execute(&params, &graph);
+  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
+      params.getImbalanceTolerance(), targets.data());
+  PartitioningAnalyzer analyzer(&part, &target);
 
-  double imbalance = part.calcMaxImbalance(targets.data());
+  double const imbalance = analyzer.calcMaxImbalance();
   testLess(imbalance, 0.001);
 }
 

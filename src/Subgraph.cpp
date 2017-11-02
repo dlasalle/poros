@@ -9,7 +9,7 @@
 
 
 #include "Subgraph.hpp"
-#include "ArrayUtils.hpp"
+#include "solidutils/VectorMath.hpp"
 
 
 namespace dolos
@@ -36,7 +36,7 @@ Subgraph::Subgraph(
   m_superMap(graph->getNumVertices()),
   m_graph(std::move(*graph))
 {
-  sl::ArrayUtils::increment(&m_superMap);
+  sl::VectorMath::increment(m_superMap.data(), m_superMap.size());
 }
 
 

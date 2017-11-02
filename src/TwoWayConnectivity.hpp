@@ -28,13 +28,28 @@ namespace dolos
 class TwoWayConnectivity
 {
   public:
-    struct vertex_struct
-    {
-      wgt_type external;
-      wgt_type internal;
+    enum move_direction_enum {
+      MOVE_TOWARDS = 1,
+      MOVE_AWAY = -1
     };
 
-  
+    /**
+    * @brief Determine the direction enum given the partition a vertex is
+    * moving to, and the partition of the other vertex.
+    *
+    * @param destVertexA The partition the vertex in moving to.
+    * @param homeVertexB The partition of one of its neighbors.
+    *
+    * @return The appropriate value from move_direction_enum.
+    */
+    static inline int getDirection(
+        pid_type const destVertexA,
+        pid_type const homeVertexB) noexcept
+    {
+      return -(((destVertexA ^ homeVertexB)<<1)-1);
+    }
+        
+
     /**
     * @brief Create a new two-way connectivity.
     *
@@ -43,44 +58,80 @@ class TwoWayConnectivity
     */
     TwoWayConnectivity(
         ConstantGraph const * graph,
-        Partitioning * partitioning);
+        Partitioning const * partitioning);
 
 
     /**
-    * @brief Move a vertex to the opposite partition. This updates the
-    * partitioning as well as the connectivity.
+    * @brief Get the set of border vertices for the given partition. This does
+    * not have a non-constant equivalent as any modification would break the
+    * underlying FixedSet.
+    *
+    * @return The set of border vertices.
+    */
+    vtx_type const * getBorderVertices() const noexcept;
+
+
+    /**
+    * @brief Get the set of border vertices.
+    *
+    * @return The set of border vertices.
+    */
+    sl::FixedSet<vtx_type> const * getBorderVertexSet() const noexcept;
+
+
+    /**
+    * @brief Get the set of border vertices.
+    *
+    * @return The set of border vertices.
+    */
+    sl::FixedSet<vtx_type> * getBorderVertexSet() noexcept;
+
+
+    /**
+    * @brief Move a vertex to the opposite partition. 
     *
     * @param vertex The vertex to move.
     */
     inline void move(
-        vtx_type const vertex)
+        vtx_type const vertex) noexcept
     {
-      wgt_diff_type const delta = getVertexDelta(vertex);
-
-      pid_type const home = m_partitioning->getAssignment(vertex);
-      pid_type const dest = (home + 1) % NUM_BISECTION_PARTS;
-      
-      m_partitioning->move(vertex, dest);
-      m_partitioning->addCutEdgeWeight(delta);
-
       // flip our connectivity
       std::swap(m_connectivity[vertex].internal, \
           m_connectivity[vertex].external);
+    }
 
-      // update neighbor connectivity
-      for (Edge const & edge : m_graph->getEdges(vertex)) {
-        vtx_type const u = edge.getVertex();
-        pid_type const other = m_partitioning->getAssignment(u);
 
-        // branchless calculation
-        wgt_diff_type const flow = ((other ^ home)<<1) - 1;
-        m_connectivity[u].internal += flow*edge.getWeight();
-        m_connectivity[u].external -= flow*edge.getWeight();
+    /**
+    * @brief Update the neighbor of a vertex that is being moved.
+    *
+    * @param edge The edge connecting the neighbor.
+    * @param direction The destination partition of the vertex -- must be a
+    * member of the move_direction_enum (1 or -1).
+    *
+    * @return True if the neighbor is being added to the boundary.
+    */
+    inline bool updateNeighbor(
+        Edge const * const edge,
+        int const direction) noexcept
+    {
+      // ensure it is 1 or -1
+      ASSERT_EQUAL(1, direction*direction);
 
-        // insert into boundary
-        if (m_connectivity[u].external > 0 && !m_border.has(u)) {
-          m_border.mark(u);
-        }
+      vtx_type const u = edge->getVertex();
+
+      // branchless calculation -- flow will be 1 when the vertex is being
+      // moved to the same partition as this one, and -1 when it is being moved
+      // away.
+      wgt_diff_type const flow = static_cast<wgt_diff_type>(direction);
+      m_connectivity[u].internal += flow*edge->getWeight();
+      m_connectivity[u].external -= flow*edge->getWeight();
+
+      // insert into boundary
+      if (m_connectivity[u].external > 0 && !m_border.has(u)) {
+        m_border.add(u);
+        return true;
+      } else {
+        return false;
       }
     }
 
@@ -103,19 +154,6 @@ class TwoWayConnectivity
 
 
     /**
-    * @brief Get the set of border vertices for the given partition.
-    *
-    * @return The set of border vertices.
-    */
-    inline vtx_type const * getBorderVertices() const noexcept
-    {
-      ASSERT_LESS(side, NUM_BISECTION_PARTS);
-
-      return m_border.data(); 
-    }
-
-
-    /**
     * @brief Check whether or not a vertex is in the border.
     *
     * @param vertex The vertex.
@@ -130,26 +168,27 @@ class TwoWayConnectivity
 
 
     /**
-    * @brief Get the number of border vertices for a given partition.
+    * @brief Get the number of border vertices.
     *
-    * @param side The partition.
-    *
-    * @return The set of border vertices.
+    * @return The number of border vertices.
     */
-    inline vtx_type getNumBorderVertices(
-        pid_type const side) const noexcept
+    inline vtx_type getNumBorderVertices() const noexcept
     {
-      ASSERT_LESS(side, NUM_BISECTION_PARTS);
-
-      return m_border[side].size(); 
+      return m_border.size(); 
     }
 
 
   private:
-    sl::FixedSet<vtx_type> m_border[NUM_BISECTION_PARTS];
+    struct vertex_struct
+    {
+      wgt_type external;
+      wgt_type internal;
+    };
+
+ 
+    sl::FixedSet<vtx_type> m_border;
     sl::Array<vertex_struct> m_connectivity;
     ConstantGraph const * const m_graph;
-    Partitioning * const m_partitioning;
 
 
     // disable copying

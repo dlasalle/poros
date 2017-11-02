@@ -10,7 +10,8 @@
 
 
 #include "TargetPartitioning.hpp"
-#include "Debug.hpp"
+
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos
@@ -36,6 +37,8 @@ double const MAX_FRACTION_SUM = 1.0 + FRACTION_SUM_TOLERANCE;
 * HELPER FUNCTIONS ************************************************************
 ******************************************************************************/
 
+namespace
+{
 
 void calcTargetWeight(
     pid_type const numPartitions,
@@ -77,6 +80,8 @@ void calcMaxWeight(
   }
 }
 
+}
+
 
 /******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
@@ -90,7 +95,7 @@ TargetPartitioning::TargetPartitioning(
   m_numPartitions(numPartitions),
   m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
-  m_fractions(1.0 / numPartitions, numPartitions),
+  m_fractions(numPartitions, 1.0 / numPartitions),
   m_targetWeight(numPartitions),
   m_maxWeight(numPartitions)
 {

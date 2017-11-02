@@ -8,13 +8,13 @@
 */
 
 
-
 #include "GridGraphGenerator.hpp"
 
+
 #include <vector>
-#include "Random.hpp"
-#include "Debug.hpp"
 #include "GraphData.hpp"
+#include "solidutils/Random.hpp"
+#include "solidutils/Debug.hpp"
 
 
 namespace dolos

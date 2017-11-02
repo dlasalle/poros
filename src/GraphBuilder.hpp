@@ -15,8 +15,8 @@
 
 
 #include "Base.hpp"
-#include "Array.hpp"
 #include "ConstantGraph.hpp"
+#include "solidutils/Array.hpp"
 
 
 namespace dolos

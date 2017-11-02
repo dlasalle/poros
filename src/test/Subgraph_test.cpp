@@ -11,8 +11,8 @@
 #include "Subgraph.hpp"
 #include "ConstantGraph.hpp"
 #include "GridGraphGenerator.hpp"
-#include "ArrayUtils.hpp"
-#include "Array.hpp"
+#include "solidutils/Array.hpp"
+#include "solidutils/VectorMath.hpp"
 
 
 namespace dolos
@@ -25,8 +25,8 @@ UNITTEST(Subgraph, GetGraph)
 
   ConstantGraph g = gen.generate();
 
-  Array<vtx_type> superMap(g.getNumVertices());
-  ArrayUtils::increment(&superMap, 1U);
+  sl::Array<vtx_type> superMap(g.getNumVertices());
+  sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
   Subgraph s(&g, &superMap);
 
@@ -40,8 +40,8 @@ UNITTEST(Subgraph, GetSuperMap)
 
   ConstantGraph g = gen.generate();
 
-  Array<vtx_type> superMap(g.getNumVertices());
-  ArrayUtils::increment(&superMap, 1U);
+  sl::Array<vtx_type> superMap(g.getNumVertices());
+  sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
   Subgraph s(&g, &superMap);
 
@@ -56,8 +56,8 @@ UNITTEST(Subgraph, MapPartitioning)
   GridGraphGenerator gen(2,2,1);
   ConstantGraph tempG = gen.generate();
 
-  Array<vtx_type> superMap(tempG.getNumVertices());
-  ArrayUtils::increment(&superMap, 0U);
+  sl::Array<vtx_type> superMap(tempG.getNumVertices());
+  sl::VectorMath::increment(superMap.data(), superMap.size(), 0U);
 
   Subgraph s(&tempG, &superMap);
 
@@ -69,7 +69,7 @@ UNITTEST(Subgraph, MapPartitioning)
   subPart.assign(2, 1);
   subPart.assign(3, 1);
 
-  Array<pid_type> superLabels(g->getNumVertices());
+  sl::Array<pid_type> superLabels(g->getNumVertices());
   s.mapPartitioning(&subPart, superLabels.data(), 3);
   Partitioning superPart(5, &superLabels, g);
 

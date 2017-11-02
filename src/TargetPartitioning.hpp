@@ -65,7 +65,7 @@ class TargetPartitioning
         pid_type numPartitions,
         wgt_type totalVertexWeight,
         double imbalanceTolerance,
-        double const * fractions = nullptr);
+        double const * fractions);
 
 
     /**
@@ -88,7 +88,7 @@ class TargetPartitioning
     {
       ASSERT_LESS(part, m_numPartitions);
 
-      m_maxWeight[part];
+      return m_maxWeight[part];
     }
 
 
@@ -104,7 +104,7 @@ class TargetPartitioning
     {
       ASSERT_LESS(part, m_numPartitions);
 
-      m_targetWeight[part];
+      return m_targetWeight[part];
     }
 
 

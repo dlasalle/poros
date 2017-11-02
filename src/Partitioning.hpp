@@ -93,7 +93,7 @@ class Partitioning
      * @brief Output the partition to a given memory location.
      *
      * @param totalCutEdgeWeight The location to write the total cut
-     * edgeweight. 
+     * edgeweight.
      * @param partitionAssignment The location to write vertex assignments to.
      */
     void output(

@@ -28,16 +28,30 @@ namespace
 {
 
 
-void pickSide(
+/**
+* @brief Alias our VertexQueue to be a FixedPriorityQueue.
+*/
+typedef sl::FixedPriorityQueue<wgt_diff_type, vtx_type> VertexQueue;
+
+
+/**
+* @brief Choose the side to move a vertex from.
+*
+* @param analyzer The PartitioningAnalyzer.
+* @param pqs The priority queues (must be of length 2).
+*
+* @return The side to move a vertex from.
+*/
+pid_type pickSide(
     PartitioningAnalyzer const * const analyzer,
-    FixedPriorityQueue const * const pqs)
+    VertexQueue const * const pqs)
 {
   pid_type from;
   // decide our direction of movement
-  if (analyzer.isOverWeight(0)) {
+  if (analyzer->isOverWeight(0)) {
     // fix balance by moving vertices out of 0
     from = 0;
-  } else if (analyzer.isOverWeight(1)) {
+  } else if (analyzer->isOverWeight(1)) {
     // fix balance by moving vertices out of 1
     from = 1;
   } else {
@@ -89,12 +103,12 @@ void FMRefiner::refine(
     Partitioning * const partitioning,
     ConstantGraph const * const graph) const
 {
-  FixedPriorityQueue[] pqs{ \
+  VertexQueue pqs[]{ \
     {0, graph->getNumVertices()}, \
     {0, graph->getNumVertices()} \
   };
   PartitioningAnalyzer analyzer(partitioning, target);
-  BitArray visited(graph->getNumVertices());
+  sl::BitArray visited(graph->getNumVertices());
 
   std::vector<vtx_type> moves;
   moves.reserve(graph->getNumVertices());
@@ -103,11 +117,9 @@ void FMRefiner::refine(
   for (int refIter = 0; refIter < maxRefIters; ++refIter) {
      
     // fill priority queue with boundary vertices
-    for (pid_type side = 0; side < NUM_BISECTION_PARTS; ++side) {
-      vtx_type const numVertices = connectivity->getNumBorderVertices(side);
-      for (vtx_type v = 0; v < numVertices; ++v) {
-        pqs[side].add(-connectivity->getVertexDelta(v), v);
-      }
+    for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
+      pid_type const side = partitioning->getAssignment(vertex);
+      pqs[side].add(-connectivity->getVertexDelta(vertex), vertex);
     }
 
     moves.clear();
@@ -118,15 +130,36 @@ void FMRefiner::refine(
       pid_type const from = pickSide(&analyzer, pqs); 
       pid_type const to = from ^ 1;
 
-      wgt_diff_type const gain = pqs[from].max();
       vtx_type const vertex = pqs[from].pop();
+      wgt_diff_type const delta = connectivity->getVertexDelta(vertex);
 
       // update connectivity
-      connectivity.move(vertex);
+      connectivity->move(vertex);
+      for (Edge const & edge : graph->getEdges(vertex)) {
+        bool const addedToBorder = connectivity->updateNeighbor(&edge, to);
+        if (addedToBorder && !visited.check(vertex)) {
+          vtx_type const u = edge.getVertex();
+          pid_type const other = partitioning->getAssignment(u);
+          // insert into priority queue
+          // TODO: repeating this add '-' getVertexDelta() in two places seems prone
+          // to error -- combine in the future.
+          pqs[other].add(-connectivity->getVertexDelta(u), u);
+        }
+      }
 
-      moves.emplace_back(vertex); 
+      // update partitioning
+      partitioning->move(vertex, to);
+      partitioning->addCutEdgeWeight(delta);
 
-      visited[vertex] = true;
+      wgt_type const currentCut = partitioning->getCutEdgeWeight();
+      if (currentCut < bestCut) {
+        bestCut = currentCut;
+        moves.clear();
+      } else {
+        moves.emplace_back(vertex); 
+      }
+
+      visited.mark(vertex);
     }
 
     // undo bad moves
@@ -135,7 +168,7 @@ void FMRefiner::refine(
 
       vtx_type const vertex = moves[i];
 
-      connectivity.move(vertex);
+      connectivity->move(vertex);
     }
 
 

@@ -8,16 +8,13 @@
 */
 
 
-
 #include "RecursiveBisectionPartitioner.hpp"
 
 #include <cmath>
 #include "MappedGraphWrapper.hpp"
 #include "SubgraphExtractor.hpp"
-#include "ArrayUtils.hpp"
+#include "solidutils/VectorMath.hpp"
 
-// delete me
-#include <cstdio>
 
 namespace dolos
 {
@@ -51,9 +48,6 @@ void RecursiveBisectionPartitioner::recurse(
 
   double const * const targetFractions = params->getTargetPartitionFractions();
 
-  printf("Using tolerance of %f for bisection (%f with %u parts).\n", \
-      tolerance, params->getImbalanceTolerance(), numParts);
-
   // calculate target fractions
   sl::Array<pid_type> numPartsPrefix(3);
   numPartsPrefix.set(0);
@@ -66,7 +60,8 @@ void RecursiveBisectionPartitioner::recurse(
     ++numPartsPrefix[half];
   }
   bisectParams.setTargetPartitionFractions(targetBisectionFractions.data());
-  sl::ArrayUtils::prefixSumExclusive(&numPartsPrefix);
+  sl::VectorMath::prefixSumExclusive(numPartsPrefix.data(), \
+      numPartsPrefix.size());
 
   // calculate the target weight for each side bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
@@ -75,11 +70,6 @@ void RecursiveBisectionPartitioner::recurse(
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
     numPartsPrefix[1]-numPartsPrefix[0]);
   mappedGraph->mapPartitioning(&bisection, partitionLabels, offset);
-  printf("Mapping to %u and %u.\n", offset, offset+1); 
-
-  // delete me
-  printf("Bisection of %u:%u / %u made.\n", bisection.getWeight(0), \
-      bisection.getWeight(1), graph->getTotalVertexWeight());
 
   if (numParts > 2) {
     // extract graph parts
@@ -97,13 +87,6 @@ void RecursiveBisectionPartitioner::recurse(
           static_cast<double>(graph->getTotalVertexWeight()) ;
 
       double const ratio = (weightFrac / halfTargetFraction) - 1.0;
-
-      // delete me
-      printf("Part %u has %f/%f weight.\n", part, weightFrac, \
-          halfTargetFraction);
-      printf("Made cut that is %f/%f overwieght.\n", ratio, tolerance);
-      printf("Preparing to partition %u through %u\n", numPartsPrefix[part]+offset, \
-        numPartsPrefix[part+1]+offset);
 
       if (numHalfParts > 1) {
         // recursively call execute

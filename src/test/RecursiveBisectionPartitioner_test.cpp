@@ -12,6 +12,8 @@
 #include "RecursiveBisectionPartitioner.hpp"
 #include "RandomBisector.hpp"
 #include "PartitionParameters.hpp"
+#include "TargetPartitioning.hpp"
+#include "PartitioningAnalyzer.hpp"
 #include "GridGraphGenerator.hpp"
 
 
@@ -40,8 +42,11 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
     Partitioning part = rb.execute(&params, &graph);
     testEqual(part.getNumPartitions(), k);
 
-    double imbalance = \
-        part.calcMaxImbalance(params.getTargetPartitionFractions());
+    TargetPartitioning target(part.getNumPartitions(), \
+        graph.getTotalVertexWeight(), params.getImbalanceTolerance());
+    PartitioningAnalyzer analyzer(&part, &target);
+
+    double const imbalance = analyzer.calcMaxImbalance();
     testLess(imbalance, 0.03005);
   }
 }
@@ -69,8 +74,11 @@ UNITTEST(RandomBisector, ExecuteKWay1To5)
     Partitioning part = rb.execute(&params, &graph);
     testEqual(part.getNumPartitions(), k);
 
-    double imbalance = \
-        part.calcMaxImbalance(params.getTargetPartitionFractions());
+    TargetPartitioning target(part.getNumPartitions(), \
+        graph.getTotalVertexWeight(), params.getImbalanceTolerance());
+    PartitioningAnalyzer analyzer(&part, &target);
+
+    double const imbalance = analyzer.calcMaxImbalance();
     testLess(imbalance, 0.03);
   }
 }
@@ -99,9 +107,11 @@ UNITTEST(RandomBisector, Execute4Way)
   // partition 
   Partitioning part = rb.execute(&params, &graph);
   testEqual(part.getNumPartitions(), targets.size());
+  TargetPartitioning target(part.getNumPartitions(), \
+      graph.getTotalVertexWeight(), params.getImbalanceTolerance());
+  PartitioningAnalyzer analyzer(&part, &target);
 
-  double imbalance = \
-      part.calcMaxImbalance(params.getTargetPartitionFractions());
+  double const imbalance = analyzer.calcMaxImbalance();
   testLess(imbalance, 0.03);
 }
 
@@ -126,9 +136,11 @@ UNITTEST(RandomBisector, Execute7WayEven)
   // partition 
   Partitioning part = rb.execute(&params, &graph);
   testEqual(part.getNumPartitions(), 7);
+  TargetPartitioning target(part.getNumPartitions(), \
+      graph.getTotalVertexWeight(), params.getImbalanceTolerance());
+  PartitioningAnalyzer analyzer(&part, &target);
 
-  double imbalance = \
-      part.calcMaxImbalance(params.getTargetPartitionFractions());
+  double const imbalance = analyzer.calcMaxImbalance();
   testLess(imbalance, 0.01);
 }
 

@@ -11,9 +11,11 @@
 
 #include "DomTest.hpp"
 #include "dolos.h"
-#include "Array.hpp"
 #include "GridGraphGenerator.hpp"
 #include "Partitioning.hpp"
+#include "TargetPartitioning.hpp"
+#include "PartitioningAnalyzer.hpp"
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -30,7 +32,7 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
 
   wgt_type cutEdgeWeight;
 
-  Array<pid_type> where(g.getNumVertices());
+  sl::Array<pid_type> where(g.getNumVertices());
   int r = DOLOS_PartGraphRecursive(g.getNumVertices(), g.getEdgePrefix(), \
       g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
       7, nullptr, &cutEdgeWeight, where.data());
@@ -38,8 +40,13 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   testEqual(r, 1);
 
   Partitioning part(7, &where, &g); 
+  TargetPartitioning target(part.getNumPartitions(), \
+      g.getTotalVertexWeight(), 0.03);
+  PartitioningAnalyzer analyzer(&part, &target);
 
-  testLess(part.calcMaxImbalance(), 0.03);
+  double const imbalance = analyzer.calcMaxImbalance();
+
+  testLess(imbalance, 0.03);
   testLessOrEqual(cutEdgeWeight, g.getTotalEdgeWeight());
 }
 

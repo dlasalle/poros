@@ -7,9 +7,12 @@
 * @date 2017-10-05
 */
 
+
 #include "DomTest.hpp"
 #include "Partitioning.hpp"
 #include "GridGraphGenerator.hpp"
+#include "TargetPartitioning.hpp"
+#include "PartitioningAnalyzer.hpp"
 
 
 namespace dolos
@@ -41,7 +44,11 @@ UNITTEST(Partitioning, CalcMaxImbalance)
   part.assign(2, 0);
   part.assign(3, 0);
 
-  double imbalance = part.calcMaxImbalance(targets.data());
+  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
+      0.03);
+  PartitioningAnalyzer analyzer(&part, &target);
+
+  double const imbalance = analyzer.calcMaxImbalance();
   testEqual(imbalance, 0.5);
 }
 
