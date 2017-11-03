@@ -170,6 +170,21 @@ class ConstantGraph
 
 
     /**
+    * @brief Get an indvidiaul vertex.
+    *
+    * @param v The vertex to get.
+    *
+    * @return The vertex.
+    */
+    inline Vertex getVertex(
+        vtx_type const v) const noexcept
+    {
+      return Vertex(v, m_vertexWeight, m_edgePrefix, \
+          m_edgeList, m_edgeWeight);
+    }
+
+
+    /**
     * @brief Get the set of vertices in the graph for traversal. 
     *
     * @return The vertex set.
