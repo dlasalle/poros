@@ -15,6 +15,9 @@
 #include "SubgraphExtractor.hpp"
 #include "solidutils/VectorMath.hpp"
 
+#include "TargetPartitioning.hpp"
+#include "PartitioningAnalyzer.hpp"
+
 
 namespace dolos
 {
@@ -66,15 +69,26 @@ void RecursiveBisectionPartitioner::recurse(
   // calculate the target weight for each side bisect
   Partitioning bisection = m_bisector->execute(&bisectParams, graph);
 
+  TargetPartitioning target(bisection.getNumPartitions(), \
+      graph->getTotalVertexWeight(), bisectParams.getImbalanceTolerance(), \
+      targetBisectionFractions.data());
+  PartitioningAnalyzer analyzer(&bisection, &target);
+
   // NOTE: this requires that for uneven number of parts, latter half has more
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
-    numPartsPrefix[1]-numPartsPrefix[0]);
+      numPartsPrefix[1]-numPartsPrefix[0]);
   mappedGraph->mapPartitioning(&bisection, partitionLabels, offset);
 
   if (numParts > 2) {
     // extract graph parts
+    Subgraph const * subgraphPtr;
+    vtx_type const * superMap = nullptr;
+    if ( (subgraphPtr = dynamic_cast<Subgraph const *>(mappedGraph)) ) {
+      superMap = subgraphPtr->getSuperMap();
+    }
     std::vector<Subgraph> parts = SubgraphExtractor::partitions(graph, \
-        &bisection);
+        &bisection, superMap);
+
     ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
 
     for (pid_type part = 0; part < parts.size(); ++part) {
@@ -82,11 +96,8 @@ void RecursiveBisectionPartitioner::recurse(
           numPartsPrefix[part];
 
       double const halfTargetFraction = targetBisectionFractions[part];
-      double const weightFrac = \
-          static_cast<double>(bisection.getWeight(part)) / \
-          static_cast<double>(graph->getTotalVertexWeight()) ;
 
-      double const ratio = (weightFrac / halfTargetFraction) - 1.0;
+      double const ratio = analyzer.getImbalance(part);
 
       if (numHalfParts > 1) {
         // recursively call execute

@@ -30,12 +30,15 @@ class SubgraphExtractor
     *
     * @param graph The graph.
     * @param part The partitioning.
+    * @param labels The labels of the vertices in the graph (may be null if
+    * they are not aliased).
     *
     * @return The subgraphs.
     */
     static std::vector<Subgraph> partitions(
         ConstantGraph const * graph,
-        Partitioning const * part);
+        Partitioning const * part,
+        vtx_type const * const labels = nullptr);
 };
 
 

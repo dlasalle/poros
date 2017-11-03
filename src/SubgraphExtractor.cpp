@@ -26,7 +26,8 @@ namespace dolos
 
 std::vector<Subgraph> SubgraphExtractor::partitions(
     ConstantGraph const * const graph,
-    Partitioning const * const part)
+    Partitioning const * const part,
+    vtx_type const * const labels)
 {
   pid_type const numParts = part->getNumPartitions();
   vtx_type const numVertices = graph->getNumVertices();
@@ -38,12 +39,12 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   std::vector<vtx_type> vertexCounts = part->calcVertexCounts();
 
   // map of sub graph vertices to super graph vertices 
-  std::vector<sl::Array<vtx_type>> map;
+  std::vector<sl::Array<vtx_type>> superMaps;
   for (pid_type pid = 0; pid < numParts; ++pid) {
-    ASSERT_EQUAL(map.size(), pid);
+    ASSERT_EQUAL(superMaps.size(), pid);
 
     // allocate arrays for this subgraph
-    map.emplace_back(vertexCounts[pid]);
+    superMaps.emplace_back(vertexCounts[pid]);
 
     // set number of vertices on builder 
     builder[pid].setNumVertices(vertexCounts[pid]);
@@ -60,7 +61,11 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     vtx_type const subV = vertexCounts[where]++;
 
     // assign sub to super
-    map[where][subV] = v;
+    if (labels) {
+      superMaps[where][subV] = labels[v];
+    } else {
+      superMaps[where][subV] = v;
+    }
 
     // assign super to sub
     subMap[v] = subV;
@@ -120,7 +125,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   subgraphs.reserve(numParts);
   for (pid_type pid = 0; pid < numParts; ++pid) {
     ConstantGraph graph = builder[pid].finish();
-    subgraphs.emplace_back(&graph, &map[pid]);
+    subgraphs.emplace_back(&graph, &superMaps[pid]);
   }
 
   return subgraphs;
