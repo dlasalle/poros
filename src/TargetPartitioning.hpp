@@ -116,11 +116,35 @@ class TargetPartitioning
     }
 
 
+    /**
+    * @brief Get the target fraction for all partitions.
+    *
+    * @return The target fractions.
+    */
+    double const * getTargetFraction() const;
+
+
+    /**
+    * @brief Get the target fraction for a given partition.
+    *
+    * @param part The partition.
+    *
+    * @return The target fraction.
+    */
+    inline double getTargetFraction(
+         pid_type const part) const noexcept
+    {
+      ASSERT_LESS(part, m_numPartitions);
+
+      return m_targetFraction[part];
+    }
+
+
   private:
     pid_type m_numPartitions;
     wgt_type m_totalVertexWeight;
     double m_imbalanceTolerance;
-    sl::Array<double> m_fractions;
+    sl::Array<double> m_targetFraction;
     sl::Array<wgt_type> m_targetWeight; 
     sl::Array<wgt_type> m_maxWeight; 
 };

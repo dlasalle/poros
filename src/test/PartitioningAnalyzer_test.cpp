@@ -43,8 +43,8 @@ UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 
   PartitioningAnalyzer analyzer(&part, &target);
 
-  // the imbalance should be very nearly 0.515
-  testLess(std::abs(analyzer.calcMaxImbalance() - 0.515), 0.001);
+  // the imbalance should be very nearly 0.5
+  testLess(std::abs(analyzer.calcMaxImbalance() - 0.5), 0.001);
 }
 
 
@@ -70,12 +70,12 @@ UNITTEST(PartitioningAnalyzer, GetImbalance)
 
   PartitioningAnalyzer analyzer(&part, &target);
 
-  // the imbalance should be very nearly -0.091
-  testLess(std::abs(analyzer.getImbalance(0) + 0.091), 0.001);
-  // the imbalance should be very nearly -0.242 
-  testLess(std::abs(analyzer.getImbalance(1) + 0.242), 0.001);
-  // the imbalance should be very nearly 0.515
-  testLess(std::abs(analyzer.getImbalance(2) - 0.515), 0.001);
+  // the imbalance should be very nearly -0.1
+  testLess(std::abs(analyzer.getImbalance(0) + 0.1), 0.001);
+  // the imbalance should be very nearly -0.4
+  testLess(std::abs(analyzer.getImbalance(1) + 0.4), 0.001);
+  // the imbalance should be very nearly 0.5
+  testLess(std::abs(analyzer.getImbalance(2) - 0.5), 0.001);
 }
 
 UNITTEST(PartitioningAnalyzer, IsOverWeight)

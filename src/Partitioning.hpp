@@ -314,6 +314,22 @@ class Partitioning
 
 
     /**
+    * @brief Get the fraction of weight made up by the given partition.
+    *
+    * @param partition The partition.
+    *
+    * @return The fraction of weight.
+    */
+    inline double getFraction(
+        pid_type const partition) const noexcept
+    {
+      ASSERT_LESS(partition, m_partitionWeight.size());
+      return static_cast<double>(m_partitionWeight[partition]) / \
+          static_cast<double>(m_graph->getTotalVertexWeight());
+    }
+
+
+    /**
     * @brief Get the begining iterator to the partitions.
     *
     * @return The iterator.

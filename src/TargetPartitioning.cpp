@@ -95,11 +95,11 @@ TargetPartitioning::TargetPartitioning(
   m_numPartitions(numPartitions),
   m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
-  m_fractions(numPartitions, 1.0 / numPartitions),
+  m_targetFraction(numPartitions, 1.0 / numPartitions),
   m_targetWeight(numPartitions),
   m_maxWeight(numPartitions)
 {
-  calcTargetWeight(numPartitions, totalVertexWeight, m_fractions.data(), \
+  calcTargetWeight(numPartitions, totalVertexWeight, m_targetFraction.data(), \
       m_targetWeight.data());
   calcMaxWeight(numPartitions, imbalanceTolerance, \
       m_targetWeight.data(), m_maxWeight.data());
@@ -114,27 +114,28 @@ TargetPartitioning::TargetPartitioning(
   m_numPartitions(numPartitions),
   m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
-  m_fractions(fractions, numPartitions),
+  m_targetFraction(fractions, numPartitions),
   m_targetWeight(numPartitions),
   m_maxWeight(numPartitions)
 {
   double fractionSum = 0;
   for (size_t i = 0; i < m_numPartitions; ++i) {
-    if (m_fractions[i] < 0.0 || m_fractions[i] > 1.0) {
+    if (m_targetFraction[i] < 0.0 || m_targetFraction[i] > 1.0) {
       throw InvalidPartitionFractionsException(std::string("Invalid target " \
-          "fractions {") + std::to_string(m_fractions[0]) + \
-          std::string(", ") + std::to_string(m_fractions[1]) + \
+          "fractions {") + std::to_string(m_targetFraction[0]) + \
+          std::string(", ") + std::to_string(m_targetFraction[1]) + \
           std::string("} . Must be between 0.0 and 1.0."));
     }
-    fractionSum += m_fractions[i];
+    fractionSum += m_targetFraction[i];
   }
   if (fractionSum < MIN_FRACTION_SUM || fractionSum > MAX_FRACTION_SUM) {
     throw InvalidPartitionFractionsException(std::string("Invalid target " \
-        "fractions {") + std::to_string(m_fractions[0]) + std::string(", ") + \
-        std::to_string(m_fractions[1]) + std::string("} . Must sum to 1.0."));
+        "fractions {") + std::to_string(m_targetFraction[0]) + \
+        std::string(", ") + std::to_string(m_targetFraction[1]) + \
+        std::string("} . Must sum to 1.0."));
   }
 
-  calcTargetWeight(numPartitions, totalVertexWeight, m_fractions.data(), \
+  calcTargetWeight(numPartitions, totalVertexWeight, m_targetFraction.data(), \
       m_targetWeight.data());
   calcMaxWeight(numPartitions, imbalanceTolerance, m_targetWeight.data(), \
       m_maxWeight.data());
@@ -155,6 +156,12 @@ wgt_type const * TargetPartitioning::getMaxWeight() const
 wgt_type const * TargetPartitioning::getTargetWeight() const
 {
   return m_targetWeight.data();
+}
+
+
+double const * TargetPartitioning::getTargetFraction() const
+{
+  return m_targetFraction.data();
 }
 
 

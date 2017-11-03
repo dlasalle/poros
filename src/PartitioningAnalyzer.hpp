@@ -56,8 +56,10 @@ class PartitioningAnalyzer
     inline double getImbalance(
         pid_type const part) const noexcept
     {
-      return (static_cast<double>(m_partitioning->getWeight(part)) / \
-          static_cast<double>(m_target->getTargetWeight(part))) - 1.0;
+      double const target = m_target->getTargetFraction(part);
+      ASSERT_GREATER(target, 0.0);
+      return (static_cast<double>(m_partitioning->getFraction(part)) / \
+          static_cast<double>(target)) - 1.0;
     }
 
 
