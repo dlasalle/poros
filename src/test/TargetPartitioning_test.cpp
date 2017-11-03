@@ -11,6 +11,7 @@
 
 #include "TargetPartitioning.hpp"
 #include "solidutils/UnitTest.hpp"
+#include <vector>
 
 namespace dolos
 {
@@ -41,7 +42,7 @@ UNITTEST(TargetPartitioning, GetTargetWeight)
 
 UNITTEST(TargetPartitioning, GetMaxWeightFractions)
 {
-  std::vector<double> factions{0.3, 0.3, 0.4};
+  std::vector<double> fractions{0.3, 0.3, 0.4};
   TargetPartitioning target(fractions.size(), 100, 0.05, fractions.data()); 
 
   testEqual(target.getMaxWeight(0), 31);
@@ -56,7 +57,7 @@ UNITTEST(TargetPartitioning, GetMaxWeightFractions)
 
 UNITTEST(TargetPartitioning, GetTargetWeightFractions)
 {
-  std::vector<double> factions{0.3, 0.3, 0.4};
+  std::vector<double> fractions{0.3, 0.3, 0.4};
   TargetPartitioning target(fractions.size(), 100, 0.05, fractions.data()); 
 
   testEqual(target.getTargetWeight(0), 30);

@@ -43,6 +43,14 @@ Partitioning::Partitioning(
   m_graph(graph)
 {
   ASSERT_GREATER(numParts, 0);
+
+  // calculate partition weights
+  for (Vertex const & vertex : graph->getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    pid_type const part = m_assignment[v];
+    ASSERT_LESS(part, numParts);
+    m_partitions[part].weight += vertex.getWeight();
+  }
 }
 
 

@@ -47,14 +47,29 @@ class PartitioningAnalyzer
 
 
     /**
+    * @brief Get the current imbalance of a partition.
+    *
+    * @param part The partition.
+    *
+    * @return The imbalance.
+    */
+    inline double getImbalance(
+        pid_type const part) const noexcept
+    {
+      return (static_cast<double>(m_partitioning->getWeight(part)) / \
+          static_cast<double>(m_target->getTargetWeight(part))) - 1.0;
+    }
+
+
+    /**
     * @brief Get whether the given partition is overweight.
     *
     * @param part The partition.
     *
     * @return Whether or not the partition is overweight.
     */
-    bool isOverWeight(
-        pid_type part) const noexcept
+    inline bool isOverWeight(
+        pid_type const part) const noexcept
     {
       return m_target->getMaxWeight(part) < m_partitioning->getWeight(part);
     }

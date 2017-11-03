@@ -27,11 +27,6 @@ namespace dolos
 class Partitioning
 {
   public:
-    struct partition_struct {
-      wgt_type weight;
-    };
-
-
     /**
      * @brief Create a new partitioning with the given number of partitions.
      *
@@ -277,6 +272,10 @@ class Partitioning
 
 
   private:
+    struct partition_struct {
+      wgt_type weight;
+    };
+
     wgt_type m_cutEdgeWeight;
 
     std::vector<partition_struct> m_partitions;

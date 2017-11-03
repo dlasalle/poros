@@ -40,9 +40,7 @@ double PartitioningAnalyzer::calcMaxImbalance() const
   pid_type const numPartitions = m_partitioning->getNumPartitions();
 
   for (pid_type part = 0; part < numPartitions; ++part) {
-    double const frac = \
-        static_cast<double>(m_partitioning->getWeight(part)) / \
-        static_cast<double>(m_target->getTargetWeight(part));
+    double const frac = getImbalance(part);
     if (frac > max) {
       max = frac;
     }
