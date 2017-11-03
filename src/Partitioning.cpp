@@ -25,7 +25,7 @@ Partitioning::Partitioning(
     pid_type const numParts,
     ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
-  m_partitions(numParts, {0}),
+  m_partitionWeight(numParts, 0),
   m_assignment(graph->getNumVertices(), NULL_PID),
   m_graph(graph)
 {
@@ -35,10 +35,10 @@ Partitioning::Partitioning(
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    sl::Array<pid_type> * const partitionLabels,
-    ConstantGraph const * const graph) :
+    ConstantGraph const * const graph,
+    sl::Array<pid_type> * const partitionLabels) :
   m_cutEdgeWeight(0),
-  m_partitions(numParts, {0}),
+  m_partitionWeight(numParts, 0),
   m_assignment(std::move(*partitionLabels)),
   m_graph(graph)
 {
@@ -49,7 +49,7 @@ Partitioning::Partitioning(
     vtx_type const v = vertex.getIndex();
     pid_type const part = m_assignment[v];
     ASSERT_LESS(part, numParts);
-    m_partitions[part].weight += vertex.getWeight();
+    m_partitionWeight[part] += vertex.getWeight();
   }
 }
 
@@ -98,7 +98,7 @@ void Partitioning::recalcCutEdgeWeight()
 void Partitioning::assignAll(
     pid_type const partition)
 {
-  ASSERT_LESS(partition, m_partitions.size());
+  ASSERT_LESS(partition, getNumPartitions());
 
   m_cutEdgeWeight = 0;
 
@@ -108,12 +108,12 @@ void Partitioning::assignAll(
   }
 
   // set weights to zero
-  for (partition_struct & p : m_partitions) {
-    p.weight = 0;
+  for (wgt_type & partWeight : m_partitionWeight) {
+    partWeight = 0;
   }
 
   // fix the one odd partition
-  m_partitions[partition].weight = m_graph->getTotalVertexWeight();
+  m_partitionWeight[partition] = m_graph->getTotalVertexWeight();
 }
 
 
@@ -123,8 +123,9 @@ void Partitioning::unassignAll()
     where = NULL_PID;
   }
 
-  for (partition_struct & p : m_partitions) {
-    p.weight = 0;
+  // set weights to zero
+  for (wgt_type & partWeight : m_partitionWeight) {
+    partWeight = 0;
   }
 }
 

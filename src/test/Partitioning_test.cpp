@@ -18,6 +18,67 @@
 namespace dolos
 {
 
+
+UNITTEST(Partitioning, BlankConstructor)
+{
+  GridGraphGenerator gen(9, 7, 5);
+
+  ConstantGraph graph = gen.generate(); 
+  Partitioning p(5, &graph);
+
+  for (Vertex const & vertex : graph.getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    p.assign(v, v % 5);
+  }
+
+  // check partition weights -- should all be 9x7
+  for (Partition const & part : p) {
+    testEqual(part.getWeight(), 9*7);
+  }
+}
+
+
+UNITTEST(Partitioning, VectorConstructor)
+{
+  GridGraphGenerator gen(9, 7, 5);
+  ConstantGraph graph = gen.generate(); 
+  
+  sl::Array<pid_type> labels(graph.getNumVertices());
+  for (Vertex const & vertex : graph.getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    labels[v] = v % 5;
+  }
+
+  Partitioning p(5, &graph, &labels);
+
+  // check partition weights -- should all be 9x7
+  for (Partition const & part : p) {
+    testEqual(part.getWeight(), 9*7);
+  }
+}
+
+
+UNITTEST(Partitioning, MoveConstructor)
+{
+  GridGraphGenerator gen(9, 7, 5);
+  ConstantGraph graph = gen.generate(); 
+  
+  sl::Array<pid_type> labels(graph.getNumVertices());
+  for (Vertex const & vertex : graph.getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    labels[v] = v % 5;
+  }
+
+  Partitioning p1(5, &graph, &labels);
+  Partitioning p2(std::move(p1));
+
+  // check partition weights -- should all be 9x7
+  for (Partition const & part : p2) {
+    testEqual(part.getWeight(), 9*7);
+  }
+}
+
+
 UNITTEST(Partitioning, NumberOfPartitions)
 {
   GridGraphGenerator gen(9, 7, 5);
@@ -28,30 +89,37 @@ UNITTEST(Partitioning, NumberOfPartitions)
   testEqual(5, p.getNumPartitions());
 }
 
-UNITTEST(Partitioning, CalcMaxImbalance)
+
+UNITTEST(Partitioning, CalcVertexCounts)
 {
-  std::vector<double> targets{0.5, 0.5};
+  GridGraphGenerator gen(9, 7, 5);
+  ConstantGraph graph = gen.generate(); 
+  
+  sl::Array<pid_type> labels(graph.getNumVertices());
+  for (Vertex const & vertex : graph.getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    if (v < 15) {
+      labels[v] = 0;
+    } else if (v < 40) {
+      labels[v] = 1;
+    } else if (v < 148) {
+      labels[v] = 2;
+    } else if (v < 160) {
+      labels[v] = 3;
+    } else {
+      labels[v] = 4;
+    }
+  }
 
-  // generate graph
-  GridGraphGenerator gen(2, 2, 1);
+  Partitioning p(5, &graph, &labels);
 
-  ConstantGraph graph = gen.generate();
+  std::vector<vtx_type> counts = p.calcVertexCounts();
 
-  Partitioning part(2, &graph);
-
-  part.assign(0, 1);
-  part.assign(1, 0);
-  part.assign(2, 0);
-  part.assign(3, 0);
-
-  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
-      0.03);
-  PartitioningAnalyzer analyzer(&part, &target);
-
-  double const imbalance = analyzer.calcMaxImbalance();
-  testEqual(imbalance, 0.5);
+  // check counts
+  for (Partition const & part : p) {
+    testEqual(counts[part.getIndex()], part.getWeight());
+  }
 }
-
 
 
 }

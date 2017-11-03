@@ -71,7 +71,7 @@ UNITTEST(Subgraph, MapPartitioning)
 
   sl::Array<pid_type> superLabels(g->getNumVertices());
   s.mapPartitioning(&subPart, superLabels.data(), 3);
-  Partitioning superPart(5, &superLabels, g);
+  Partitioning superPart(5, g, &superLabels);
 
   testEqual(superPart.getAssignment(0), 3);
   testEqual(superPart.getAssignment(1), 3);

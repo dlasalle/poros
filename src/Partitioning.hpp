@@ -15,6 +15,7 @@
 #include <vector>
 #include "Base.hpp"
 #include "ConstantGraph.hpp"
+#include "Partition.hpp"
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
 
@@ -27,6 +28,47 @@ namespace dolos
 class Partitioning
 {
   public:
+    class Iterator
+    {
+      public:
+        Iterator(
+            vtx_type const index,
+            wgt_type const * const partitionWeight) noexcept :
+          m_index(index),
+          m_partitionWeight(partitionWeight)
+        {
+          // do nothing
+        }
+
+        inline Partition operator*() const
+        {
+          return Partition(m_index, m_partitionWeight);
+        }
+
+        inline Iterator const & operator++()
+        {
+          ++m_index;
+          return *this;
+        }
+
+        inline bool operator==(
+            Iterator const & other) const
+        {
+          return m_index == other.m_index;
+        }
+
+        inline bool operator!=(
+            Iterator const & other) const
+        {
+          return m_index != other.m_index;
+        }
+
+      private:
+        adj_type m_index;
+        wgt_type const * const m_partitionWeight;
+    };
+
+
     /**
      * @brief Create a new partitioning with the given number of partitions.
      *
@@ -42,13 +84,13 @@ class Partitioning
     * @brief Create a new partitioning from an existing partition vector.
     *
     * @param numParts The number of parittions.
-    * @param partitionLabels The vector of partition labels (will be moved).
     * @param graph The graph.
+    * @param partitionLabels The vector of partition labels (will be moved).
     */
     Partitioning(
         pid_type numParts,
-        sl::Array<pid_type> * partitionLabels,
-        ConstantGraph const * graph);
+        ConstantGraph const * graph,
+        sl::Array<pid_type> * partitionLabels);
 
 
     /**
@@ -154,7 +196,7 @@ class Partitioning
      */
     inline pid_type getNumPartitions() const noexcept
     {
-      return static_cast<pid_type>(m_partitions.size());
+      return static_cast<pid_type>(m_partitionWeight.size());
     }
 
 
@@ -170,12 +212,12 @@ class Partitioning
         pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
-      ASSERT_LESS(partition, m_partitions.size());
+      ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
 
       wgt_type const weight = m_graph->getVertexWeight(vertex);
 
-      m_partitions[partition].weight += weight;
+      m_partitionWeight[partition] += weight;
       m_assignment[vertex] = partition;
     }
 
@@ -191,17 +233,17 @@ class Partitioning
         pid_type const partition) noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
-      ASSERT_LESS(partition, m_partitions.size());
+      ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
 
       wgt_type const weight = m_graph->getVertexWeight(vertex);
 
       // remove from previous partition
       pid_type const current = getAssignment(vertex);
-      m_partitions[current].weight -= weight;
+      m_partitionWeight[current] -= weight;
 
       // add to new partition
-      m_partitions[partition].weight += weight;
+      m_partitionWeight[partition] += weight;
       m_assignment[vertex] = partition;
     }
 
@@ -221,7 +263,7 @@ class Partitioning
 
       ASSERT_NOTEQUAL(current, NULL_PID);
 
-      m_partitions[current].weight -= m_graph->getVertexWeight(vertex);
+      m_partitionWeight[current] -= m_graph->getVertexWeight(vertex);
       m_assignment[vertex] = NULL_PID;
     }
 
@@ -266,9 +308,33 @@ class Partitioning
     inline wgt_type getWeight(
         pid_type const partition) const noexcept
     {
-      ASSERT_LESS(partition, m_partitions.size());
-      return m_partitions[partition].weight;
+      ASSERT_LESS(partition, m_partitionWeight.size());
+      return m_partitionWeight[partition];
     }
+
+
+    /**
+    * @brief Get the begining iterator to the partitions.
+    *
+    * @return The iterator.
+    */
+    inline Iterator begin() const noexcept
+    {
+      return Iterator(0, m_partitionWeight.data());
+    }
+
+
+    /**
+    * @brief Get the ending iterator to the partitions.
+    *
+    * @return The iterator.
+    */
+    inline Iterator end() const noexcept
+    {
+      return Iterator(m_partitionWeight.size(), m_partitionWeight.data());
+    }
+
+
 
 
   private:
@@ -278,7 +344,7 @@ class Partitioning
 
     wgt_type m_cutEdgeWeight;
 
-    std::vector<partition_struct> m_partitions;
+    sl::Array<wgt_type> m_partitionWeight;
     sl::Array<pid_type> m_assignment;
 
     ConstantGraph const * m_graph;

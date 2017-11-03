@@ -23,6 +23,16 @@ namespace dolos
 class Vertex
 {
   public:
+    /**
+    * @brief Create a new vertex.
+    *
+    * @param index The vertex's index (ID). This is used index into the
+    * following vectors.
+    * @param vertexWeight The vector of vertex weights.
+    * @param edgePrefix The vector of edge prefixes.
+    * @param edgeList The vector of edge endpoints.
+    * @param edgeWeight The vector of edge weights.
+    */
     Vertex(
         vtx_type const index,
         wgt_type const * const vertexWeight,

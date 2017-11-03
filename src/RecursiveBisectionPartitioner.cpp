@@ -138,8 +138,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), params, &mappedGraph, 0);
 
-  Partitioning part(params->getNumPartitions(), &partitionLabels, \
-      graph);
+  Partitioning part(params->getNumPartitions(), graph, &partitionLabels);
   part.recalcCutEdgeWeight();
 
   return part;
