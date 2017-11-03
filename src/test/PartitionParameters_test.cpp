@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <cstdlib>
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "PartitionParameters.hpp"
 
 

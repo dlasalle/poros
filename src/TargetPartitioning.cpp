@@ -76,7 +76,7 @@ void calcMaxWeight(
     wgt_type * const maxWeight) noexcept
 {
   for (pid_type part = 0; part < numPartitions; ++part) {
-    maxWeight[part] = targetWeight[part] * imbalanceTolerance;
+    maxWeight[part] = targetWeight[part] * (1.0+imbalanceTolerance);
   }
 }
 
@@ -149,6 +149,12 @@ TargetPartitioning::TargetPartitioning(
 wgt_type const * TargetPartitioning::getMaxWeight() const
 {
   return m_maxWeight.data();
+}
+
+
+wgt_type const * TargetPartitioning::getTargetWeight() const
+{
+  return m_targetWeight.data();
 }
 
 

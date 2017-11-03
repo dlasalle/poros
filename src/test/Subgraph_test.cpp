@@ -7,7 +7,7 @@
 * @date 2017-10-12
 */
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "Subgraph.hpp"
 #include "ConstantGraph.hpp"
 #include "GridGraphGenerator.hpp"

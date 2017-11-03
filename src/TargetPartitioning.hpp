@@ -93,6 +93,14 @@ class TargetPartitioning
 
 
     /**
+    * @brief Get the target weight for all partitions.
+    *
+    * @return The target weights.
+    */
+    wgt_type const * getTargetWeight() const;
+
+
+    /**
     * @brief Get the target weight for a given partition.
     *
     * @param part The partition.

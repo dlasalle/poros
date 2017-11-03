@@ -11,7 +11,7 @@
 #include <vector>
 #include "GraphData.hpp"
 #include "ConstantGraph.hpp"
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 
 
 namespace dolos

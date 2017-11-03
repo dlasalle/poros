@@ -9,7 +9,7 @@
 
 
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "TwoWayConnectivity.hpp"
 #include "GridGraphGenerator.hpp"
 

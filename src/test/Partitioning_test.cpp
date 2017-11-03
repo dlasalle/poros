@@ -8,7 +8,7 @@
 */
 
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "Partitioning.hpp"
 #include "GridGraphGenerator.hpp"
 #include "TargetPartitioning.hpp"

@@ -9,7 +9,7 @@
 
 
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "SubgraphExtractor.hpp"
 #include "GridGraphGenerator.hpp"
 

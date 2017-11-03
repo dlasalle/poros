@@ -9,7 +9,7 @@
 
 
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "dolos.h"
 #include "GridGraphGenerator.hpp"
 #include "Partitioning.hpp"

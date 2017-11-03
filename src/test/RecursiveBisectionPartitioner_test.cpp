@@ -8,7 +8,7 @@
 */
 
 
-#include "DomTest.hpp"
+#include "solidutils/UnitTest.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
 #include "RandomBisector.hpp"
 #include "PartitionParameters.hpp"
