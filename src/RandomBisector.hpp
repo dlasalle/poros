@@ -11,11 +11,14 @@
 #ifndef DOLOS_SRC_RANDOMBISECTOR_HPP
 #define DOLOS_SRC_RANDOMBISECTOR_HPP
 
+
 #include "IBisector.hpp"
-#include "BisectionParameters.hpp"
+#include "PartitionParameters.hpp"
+
 
 namespace dolos
 {
+
 
 class RandomBisector :
   public IBisector
@@ -36,13 +39,13 @@ class RandomBisector :
     /**
      * @brief Randomly assign vertices to partitions.
      *
-     * @param params The parameters.
+     * @param target The target partitioning to achieve.
      * @param graph The graph.
      *
      * @return The assigned partitioning.
      */
     virtual Partitioning execute(
-        BisectionParameters const * params,
+        TargetPartitioning const * target,
         ConstantGraph const * graph) const override;
 
 

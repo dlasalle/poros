@@ -13,9 +13,9 @@
 #define DOLOS_SRC_ITWOWAYREFINER_HPP
 
 
+#include "PartitionParameters.hpp"
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
-#include "BisectionParameters.hpp"
 #include "TwoWayConnectivity.hpp"
 
 
@@ -42,7 +42,7 @@ class ITwoWayRefiner
     * @param graph The graph.
     */
     virtual void refine(
-        BisectionParameters const * params,
+        PartitionParameters const * params,
         Partitioning * partitioning,
         ConstantGraph const * graph) const = 0;
 };

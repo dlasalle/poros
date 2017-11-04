@@ -18,38 +18,6 @@ namespace dolos
 
 
 /******************************************************************************
-* HELPER FUNCTIONS ************************************************************
-******************************************************************************/
-
-namespace
-{
-
-
-/**
-* @brief This function is the single place max partition fractions are
-* calculated.
-*
-* @param numPartitions The number of partitions.
-* @param max The memory location to output the maximums at.
-* @param target The memory location of the current target fractions.
-* @param tolerance The fraction of allowable imbalance.
-*/
-inline void _fillMaxPartitionFractions(
-    pid_type const numPartitions,
-    double * const max,
-    double const * const target,
-    double const tolerance) noexcept
-{
-  for (pid_type i = 0; i < numPartitions; ++i) {
-    max[i] = target[i] * (1.0 + tolerance);
-  }
-}
-
-
-}
-
-
-/******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
@@ -58,17 +26,13 @@ PartitionParameters::PartitionParameters(
     pid_type const numPartitions) :
   m_numParts(numPartitions),
   m_imbalanceTolerance(0.03),
-  m_targetPartitionFractions(numPartitions),
-  m_maxPartitionFractions(numPartitions)
+  m_targetPartitionFractions(numPartitions)
 {
   // setup vectors
   double const target =  1.0 / static_cast<double>(numPartitions);
   for (pid_type i = 0; i < numPartitions; ++i) {
     m_targetPartitionFractions[i] = target;
   }
-
-  _fillMaxPartitionFractions(numPartitions, m_maxPartitionFractions.data(), \
-      m_targetPartitionFractions.data(), m_imbalanceTolerance);
 }
 
 
@@ -81,9 +45,6 @@ void PartitionParameters::setImbalanceTolerance(
     double const toleranceFraction)
 {
   m_imbalanceTolerance = toleranceFraction;
-
-  _fillMaxPartitionFractions(m_numParts, m_maxPartitionFractions.data(), \
-      m_targetPartitionFractions.data(), m_imbalanceTolerance);
 }
 
 
@@ -93,9 +54,6 @@ void PartitionParameters::setTargetPartitionFractions(
   for (pid_type i = 0; i < m_numParts; ++i) {
     m_targetPartitionFractions[i] = fractions[i];
   }
-
-  _fillMaxPartitionFractions(m_numParts, m_maxPartitionFractions.data(), \
-      m_targetPartitionFractions.data(), m_imbalanceTolerance);
 }
 
 
@@ -115,13 +73,6 @@ double const * PartitionParameters::getTargetPartitionFractions() const
 {
   return m_targetPartitionFractions.data();
 }
-
-
-double const * PartitionParameters::getMaxPartitionFractions() const
-{
-  return m_maxPartitionFractions.data();
-}
-
 
 
 }

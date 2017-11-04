@@ -11,14 +11,14 @@
 #define DOLOS_SRC_IBISECTOR_HPP
 
 
-#include "Partitioning.hpp"
-#include "ConstantGraph.hpp"
-#include "BisectionParameters.hpp"
+#include "IPartitioner.hpp"
+
 
 namespace dolos
 {
 
-class IBisector
+class IBisector :
+    public IPartitioner
 {
   public:
     /**
@@ -29,17 +29,6 @@ class IBisector
       // do nothing
     }
 
-    /**
-     * @brief Create a partitioning of the graph.
-     *
-     * @param parameters The bisection parameters.
-     * @param graph The graph to partition.
-     *
-     * @return The partitioning.
-     */
-    virtual Partitioning execute(
-        BisectionParameters const * parameters,
-        ConstantGraph const * graph) const = 0;
 
 };
 

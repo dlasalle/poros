@@ -85,9 +85,11 @@ pid_type pickSide(
 ******************************************************************************/
 
 
-FMRefiner::FMRefiner()
+FMRefiner::FMRefiner(
+    int const maxRefIters) :
+  m_maxRefinementIters(maxRefIters)
 {
-
+  // do nothing
 }
 
 
@@ -97,7 +99,6 @@ FMRefiner::FMRefiner()
 
 
 void FMRefiner::refine(
-    BisectionParameters const * const params,
     TargetPartitioning const * const target,
     TwoWayConnectivity * const connectivity,
     Partitioning * const partitioning,
@@ -113,8 +114,7 @@ void FMRefiner::refine(
   std::vector<vtx_type> moves;
   moves.reserve(graph->getNumVertices());
 
-  int const maxRefIters = params->getMaxRefinementIterations();
-  for (int refIter = 0; refIter < maxRefIters; ++refIter) {
+  for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
      
     // fill priority queue with boundary vertices
     for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
@@ -173,7 +173,7 @@ void FMRefiner::refine(
 
 
     // empty priority queues
-    if (refIter+1 < maxRefIters) {
+    if (refIter+1 < m_maxRefinementIters) {
       // we'll do another loop
       visited.clear();
     }

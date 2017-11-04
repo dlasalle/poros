@@ -15,8 +15,8 @@
 
 #include "IPartitioner.hpp"
 #include "IBisector.hpp"
-#include "Subgraph.hpp"
 #include "IMappedGraph.hpp"
+#include "PartitionParameters.hpp"
 
 
 namespace dolos
@@ -30,22 +30,24 @@ class RecursiveBisectionPartitioner :
     /**
     * @brief Create a new recursive bisection partitioner given the parameters.
     *
+    * @param params The parameters to use when partitioning.
     * @param bisector The bisector to use.
     */
     RecursiveBisectionPartitioner(
+        PartitionParameters const * params,
         IBisector const * bisector);
 
 
     /**
      * @brief Create a partitioning of the graph.
      *
-     * @param params The parameters to use.
+     * @param target The target partitioning to achieve.
      * @param graph The graph to partition.
      *
      * @return The partitioning.
      */
     Partitioning execute(
-        PartitionParameters const * params,
+        TargetPartitioning const * target,
         ConstantGraph const * graph) const override;
 
 
@@ -56,13 +58,13 @@ class RecursiveBisectionPartitioner :
      * @brief Recursively execute on a subgraph.
      *
      * @param partitionLabels The partitioning to populate.
-     * @param params THe parameters to use.
+     * @param target The target partitioning to achieve.
      * @param subGraph The subgraph to recursively partition.
      * @param offset The partition ID offset to assign.
      */
     void recurse(
         pid_type * partitionLabels,
-        PartitionParameters const * const params,
+        TargetPartitioning const * target,
         IMappedGraph const * subGraph,
         pid_type const offset) const;
 

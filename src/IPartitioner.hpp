@@ -13,7 +13,7 @@
 
 #include "Partitioning.hpp"
 #include "ConstantGraph.hpp"
-#include "PartitionParameters.hpp"
+#include "TargetPartitioning.hpp"
 
 namespace dolos
 {
@@ -32,13 +32,13 @@ class IPartitioner
     /**
      * @brief Create a partitioning of the graph.
      *
-     * @param params The parameters to use.
+     * @param target The target partitioning to achieve.
      * @param graph The graph to partition.
      *
      * @return The partitioning.
      */
     virtual Partitioning execute(
-        PartitionParameters const * params,
+        TargetPartitioning const * target,
         ConstantGraph const * graph) const = 0;
 
 };

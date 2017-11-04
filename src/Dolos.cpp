@@ -16,9 +16,8 @@
 #include "RandomBisector.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
 
-using namespace dolos;
 
-extern "C" {
+using namespace dolos;
 
 
 int DOLOS_PartGraphRecursive(
@@ -44,13 +43,17 @@ int DOLOS_PartGraphRecursive(
 
   // partition the graph
   RandomBisector bisector;
-  RecursiveBisectionPartitioner partitioner(&bisector);
-  Partitioning part = partitioner.execute(&params, &baseGraph);
+  RecursiveBisectionPartitioner partitioner(&params, &bisector);
+
+
+  TargetPartitioning target(params.getNumPartitions(), \
+      baseGraph.getTotalVertexWeight(), params.getImbalanceTolerance(), \
+      params.getTargetPartitionFractions());
+
+  Partitioning part = partitioner.execute(&target, &baseGraph);
 
   // output data
   part.output(totalCutEdgeWeight, partitionAssignment);
 
   return 1;
-}
-
 }

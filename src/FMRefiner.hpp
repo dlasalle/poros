@@ -28,8 +28,11 @@ class FMRefiner
   public:
     /**
     * @brief Create a new FM refiner.
+    *
+    * @param maxIters The maximum number of refinement iterations.
     */
-    FMRefiner(); 
+    FMRefiner(
+        int maxIters); 
 
 
     /**
@@ -42,11 +45,14 @@ class FMRefiner
     * @param graph The graph.
     */
     void refine(
-        BisectionParameters const * params,
         TargetPartitioning const * const target,
         TwoWayConnectivity * connectivity,
         Partitioning * const partitioning,
         ConstantGraph const * graph) const;
+
+  private:
+    int m_maxRefinementIters;
+
 };
 
 }

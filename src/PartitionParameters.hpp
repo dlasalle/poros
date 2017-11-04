@@ -46,6 +46,7 @@ class PartitionParameters
     PartitionParameters(
         pid_type numPartitions);
 
+
     /**
     * @brief The fraction of imbalance tolerance to accept (e.g., 0.03 is %3).
     *
@@ -53,6 +54,7 @@ class PartitionParameters
     */
     void setImbalanceTolerance(
         double toleranceFraction);
+
 
     /**
     * @brief Set the weight fraction targerts for each partition.
@@ -62,6 +64,7 @@ class PartitionParameters
     void setTargetPartitionFractions(
         double const * fractions);
 
+
     /**
      * @brief Get the maximum allowed imbalance (as a fraction). That is, 3%
      * imbalance would be a value of 0.03.
@@ -70,12 +73,14 @@ class PartitionParameters
      */
     double getImbalanceTolerance() const;
 
+
     /**
      * @brief Get the number of partitions.
      *
      * @return The number of partitions.
      */
     pid_type getNumPartitions() const;
+
 
     /**
      * @brief Get the target partition fractions.
@@ -84,20 +89,11 @@ class PartitionParameters
      */
     double const * getTargetPartitionFractions() const;
 
-    /**
-     * @brief Get the maximum partition fractions.
-     *
-     * @return The maximum partition fractions.
-     */
-    double const * getMaxPartitionFractions() const;
-
-
 
    private:
     pid_type m_numParts;
     double m_imbalanceTolerance;
     std::vector<double> m_targetPartitionFractions;
-    std::vector<double> m_maxPartitionFractions;
 };
 
 }

@@ -156,18 +156,9 @@ RandomBisector::~RandomBisector()
 ******************************************************************************/
 
 Partitioning RandomBisector::execute(
-    BisectionParameters const * const params,
+    TargetPartitioning const * const target,
     ConstantGraph const * const graph) const
 {
-  wgt_type const totalWeight = graph->getTotalVertexWeight();
-  double const * const maxFractions = params->getMaxPartitionFractions();
-
-  // construct maximum partition weights
-  std::vector<wgt_type> maxPartitionWeight(NUM_BISECTION_PARTS);
-  for (size_t i = 0; i < NUM_BISECTION_PARTS; ++i) {
-    maxPartitionWeight[i] = totalWeight * maxFractions[i];
-  }
-
   // random vertex order
   RandomTraverser traverser(graph->getNumVertices());
 
@@ -181,25 +172,20 @@ Partitioning RandomBisector::execute(
     vtx_type const vtx = traverser.get();
     // balance to within 1 vertex
     if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] <= \
-        maxPartitionWeight[LEFT_PARTITION]) {
+        target->getMaxWeight(LEFT_PARTITION)) {
       partitioning.move(vtx, LEFT_PARTITION);
     }
   }
 
   // by construction the left partition cannot be overweight at this point
   ASSERT_LESSEQUAL(partitioning.getWeight(LEFT_PARTITION), \
-      maxPartitionWeight[LEFT_PARTITION]);
+      target->getMaxWeight(LEFT_PARTITION));
   if (partitioning.getWeight(RIGHT_PARTITION) > \
-      maxPartitionWeight[RIGHT_PARTITION]) {
-
-    // delete me
-    printf("Right partition is overweight: %u/%u", \
-        partitioning.getWeight(RIGHT_PARTITION), \
-        maxPartitionWeight[RIGHT_PARTITION]);
+      target->getMaxWeight(RIGHT_PARTITION)) {
 
     // if the right partition is still overweight try to find a pair two swap 
-    swapBalanceRight(maxPartitionWeight[LEFT_PARTITION], \
-        maxPartitionWeight[RIGHT_PARTITION], &partitioning, graph);
+    swapBalanceRight(target->getMaxWeight(LEFT_PARTITION), \
+        target->getMaxWeight(RIGHT_PARTITION), &partitioning, graph);
   }
 
   return partitioning;

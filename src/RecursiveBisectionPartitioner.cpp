@@ -29,27 +29,27 @@ namespace dolos
 
 void RecursiveBisectionPartitioner::recurse(
     pid_type * const partitionLabels,
-    PartitionParameters const * const params,
+    TargetPartitioning const * const target,
     IMappedGraph const * mappedGraph,
     pid_type const offset) const
 {
   ConstantGraph const * const graph = mappedGraph->getGraph();
   
   // build parameters for bisection
-  BisectionParameters bisectParams;
+  TargetPartitioning bisectTarget;
 
-  pid_type const numParts = params->getNumPartitions();
+  pid_type const numParts = target->getNumPartitions();
 
   // We don't want to use the k-way imbalance tolerance, as if one half of the
   // bisection is at maximum weight, then each partition with in that half must
   // also be at maximum weight (in the case of non-uniform vertex weights we
   // may find it impossible to balance). So instead, what we do is use
   // \eps / \log_2(k)
-  double const tolerance = params->getImbalanceTolerance() / \
-      std::log2(params->getNumPartitions());
+  double const tolerance = target->getImbalanceTolerance() / \
+      std::log2(target->getNumPartitions());
   bisectParams.setImbalanceTolerance(tolerance);
 
-  double const * const targetFractions = params->getTargetPartitionFractions();
+  double const * const targetFractions = target->getTargetFractions();
 
   // calculate target fractions
   sl::Array<pid_type> numPartsPrefix(3);
@@ -109,7 +109,7 @@ void RecursiveBisectionPartitioner::recurse(
           subTargetFractions[pid] = \
               targetFractions[offsetPid] / halfTargetFraction;
         }
-        subParams.setImbalanceTolerance(params->getImbalanceTolerance() - \
+        subParams.setImbalanceTolerance(target->getImbalanceTolerance() - \
             ratio);
         subParams.setTargetPartitionFractions(subTargetFractions.data());
 
@@ -141,13 +141,13 @@ RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
 
 
 Partitioning RecursiveBisectionPartitioner::execute(
-    PartitionParameters const * params,
+    TargetPartitioning const * const target,
     ConstantGraph const * graph) const
 {
   sl::Array<pid_type> partitionLabels(graph->getNumVertices());
 
   MappedGraphWrapper mappedGraph(graph);
-  recurse(partitionLabels.data(), params, &mappedGraph, 0);
+  recurse(partitionLabels.data(), target, &mappedGraph, 0);
 
   Partitioning part(params->getNumPartitions(), graph, &partitionLabels);
   part.recalcCutEdgeWeight();
