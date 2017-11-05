@@ -77,43 +77,11 @@ class TargetPartitioning
 
 
     /**
-    * @brief Get the maximum weight allowed by a partition.
-    *
-    * @param part The partition.
-    *
-    * @return The maximum weight.
-    */
-    inline wgt_type getMaxWeight(
-        pid_type const part) const noexcept
-    {
-      ASSERT_LESS(part, m_numPartitions);
-
-      return m_maxWeight[part];
-    }
-
-
-    /**
     * @brief Get the target weight for all partitions.
     *
     * @return The target weights.
     */
     wgt_type const * getTargetWeight() const;
-
-
-    /**
-    * @brief Get the target weight for a given partition.
-    *
-    * @param part The partition.
-    *
-    * @return The target weight.
-    */
-    inline wgt_type getTargetWeight(
-         pid_type const part) const noexcept
-    {
-      ASSERT_LESS(part, m_numPartitions);
-
-      return m_targetWeight[part];
-    }
 
 
     /**
@@ -137,6 +105,60 @@ class TargetPartitioning
       ASSERT_LESS(part, m_numPartitions);
 
       return m_targetFraction[part];
+    }
+
+
+    /**
+    * @brief Get the maximum weight allowed by a partition.
+    *
+    * @param part The partition.
+    *
+    * @return The maximum weight.
+    */
+    inline wgt_type getMaxWeight(
+        pid_type const part) const noexcept
+    {
+      ASSERT_LESS(part, m_numPartitions);
+
+      return m_maxWeight[part];
+    }
+
+
+    /**
+    * @brief Get the target weight for a given partition.
+    *
+    * @param part The partition.
+    *
+    * @return The target weight.
+    */
+    inline wgt_type getTargetWeight(
+         pid_type const part) const noexcept
+    {
+      ASSERT_LESS(part, m_numPartitions);
+
+      return m_targetWeight[part];
+    }
+
+
+    /**
+    * @brief Get the imbalance tolerance.
+    *
+    * @return The tolerance.
+    */
+    inline double getImbalanceTolerance() const noexcept
+    {
+      return m_imbalanceTolerance;
+    }
+
+
+    /**
+    * @brief Get the number of partitions to create.
+    *
+    * @return The number of partitions.
+    */
+    inline pid_type getNumPartitions() const noexcept
+    {
+      return m_numPartitions;
     }
 
 

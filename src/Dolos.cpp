@@ -43,7 +43,7 @@ int DOLOS_PartGraphRecursive(
 
   // partition the graph
   RandomBisector bisector;
-  RecursiveBisectionPartitioner partitioner(&params, &bisector);
+  RecursiveBisectionPartitioner partitioner(&bisector);
 
 
   TargetPartitioning target(params.getNumPartitions(), \

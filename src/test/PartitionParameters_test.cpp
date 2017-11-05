@@ -18,22 +18,26 @@ namespace dolos
 {
 
 
-UNITTEST(BisectionParameters, SetGet)
+UNITTEST(BisectionParameters, SetGetTolerance)
+{
+  PartitionParameters params(2);
+  params.setImbalanceTolerance(0.015);
+
+  testEqual(params.getImbalanceTolerance(), 0.015);
+}
+
+
+UNITTEST(BisectionParameters, SetGetTargetFractions)
 {
   std::vector<double> targets{0.3, 0.5, 0.2};
 
   PartitionParameters params(targets.size());
   params.setTargetPartitionFractions(targets.data());
-  params.setImbalanceTolerance(0.015);
-
-  testEqual(params.getImbalanceTolerance(), 0.015);
 
   double const * testTargets = params.getTargetPartitionFractions();
-  double const * testMaxs = params.getMaxPartitionFractions();
 
   for (size_t i = 0; i < targets.size(); ++i) {
     testEqual(testTargets[i], targets[i]);
-    testEqual(testMaxs[i], targets[i]*1.015);
   }
 }
 

@@ -11,7 +11,6 @@
 #include "solidutils/UnitTest.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
 #include "RandomBisector.hpp"
-#include "PartitionParameters.hpp"
 #include "TargetPartitioning.hpp"
 #include "PartitioningAnalyzer.hpp"
 #include "GridGraphGenerator.hpp"
@@ -32,18 +31,15 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
   GridGraphGenerator gen(10, 20, 30);
 
   for (pid_type k = 2; k < 10; ++k) {
-    // create partition parameters
-    PartitionParameters params(k);
-    params.setImbalanceTolerance(0.03);
-
     ConstantGraph graph = gen.generate();
 
+    TargetPartitioning target(k, graph.getTotalVertexWeight(), \
+        0.03);
+
     // partition 
-    Partitioning part = rb.execute(&params, &graph);
+    Partitioning part = rb.execute(&target, &graph);
     testEqual(part.getNumPartitions(), k);
 
-    TargetPartitioning target(part.getNumPartitions(), \
-        graph.getTotalVertexWeight(), params.getImbalanceTolerance());
     PartitioningAnalyzer analyzer(&part, &target);
 
     double const imbalance = analyzer.calcMaxImbalance();
@@ -65,17 +61,15 @@ UNITTEST(RandomBisector, ExecuteKWay1To5)
 
   for (pid_type k = 2; k < 10; ++k) {
     // create partition parameters
-    PartitionParameters params(k);
-    params.setImbalanceTolerance(0.03);
-
     ConstantGraph graph = gen.generate();
 
+    TargetPartitioning target(k, graph.getTotalVertexWeight(), \
+        0.03);
+
     // partition 
-    Partitioning part = rb.execute(&params, &graph);
+    Partitioning part = rb.execute(&target, &graph);
     testEqual(part.getNumPartitions(), k);
 
-    TargetPartitioning target(part.getNumPartitions(), \
-        graph.getTotalVertexWeight(), params.getImbalanceTolerance());
     PartitioningAnalyzer analyzer(&part, &target);
 
     // delete me
@@ -101,30 +95,25 @@ UNITTEST(RandomBisector, Execute4Way)
   // create partitioner
   RecursiveBisectionPartitioner rb(&b);
 
-  // create partition parameters
-  PartitionParameters params(targets.size());
-  params.setTargetPartitionFractions(targets.data());
-  params.setImbalanceTolerance(0.03);
-
   // generate graph
   GridGraphGenerator gen(10, 20, 30);
   gen.setRandomVertexWeight(1, 5);
 
   ConstantGraph graph = gen.generate();
 
+  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
+      0.03, targets.data());
+
   // partition 
-  Partitioning part = rb.execute(&params, &graph);
+  Partitioning part = rb.execute(&target, &graph);
   testEqual(part.getNumPartitions(), targets.size());
-  TargetPartitioning target(part.getNumPartitions(), \
-      graph.getTotalVertexWeight(), params.getImbalanceTolerance(), \
-      targets.data());
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();
   testLess(imbalance, 0.03005);
 }
 
-UNITTEST(RandomBisector, Execute7WayEven)
+UNITTEST(RandomBisector, Execute7Way1To3)
 {
   // create bisector
   RandomBisector b;
@@ -141,12 +130,12 @@ UNITTEST(RandomBisector, Execute7WayEven)
   gen.setRandomVertexWeight(1, 3);
 
   ConstantGraph graph = gen.generate();
+  TargetPartitioning target(7, graph.getTotalVertexWeight(), \
+      0.01);
 
   // partition 
-  Partitioning part = rb.execute(&params, &graph);
+  Partitioning part = rb.execute(&target, &graph);
   testEqual(part.getNumPartitions(), 7);
-  TargetPartitioning target(part.getNumPartitions(), \
-      graph.getTotalVertexWeight(), params.getImbalanceTolerance());
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();

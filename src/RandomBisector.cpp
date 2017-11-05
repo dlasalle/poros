@@ -10,6 +10,7 @@
 
 #include "RandomBisector.hpp"
 #include "RandomTraverser.hpp"
+#include "PartitioningAnalyzer.hpp"
 
 
 // delete me
@@ -168,12 +169,25 @@ Partitioning RandomBisector::execute(
   Partitioning partitioning(NUM_BISECTION_PARTS, graph);
   partitioning.assignAll(RIGHT_PARTITION);
 
+  PartitioningAnalyzer analyzer(&partitioning, target);
+
   while (traverser.next()) {
-    vtx_type const vtx = traverser.get();
     // balance to within 1 vertex
-    if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] <= \
+    vtx_type const vtx = traverser.get();
+
+    if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] > \
         target->getMaxWeight(LEFT_PARTITION)) {
-      partitioning.move(vtx, LEFT_PARTITION);
+      break;
+    }
+
+    double const balance = analyzer.calcMaxImbalance();
+
+    partitioning.move(vtx, LEFT_PARTITION);
+
+    if (balance < analyzer.calcMaxImbalance()) {
+      // we hit the best balance undo move and exit loop 
+      partitioning.move(vtx, RIGHT_PARTITION);
+      break;
     }
   }
 

@@ -21,10 +21,6 @@ namespace dolos
 
 UNITTEST(RandomBisector, ExecuteUniform)
 {
-  // setup parameters
-  BisectionParameters params;
-  params.setImbalanceTolerance(0.0);
-
   // create bisector
   RandomBisector b;
 
@@ -33,12 +29,13 @@ UNITTEST(RandomBisector, ExecuteUniform)
 
   ConstantGraph graph = gen.generate();
 
+  // setup parameters
+  TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);
+
   // perform bisection
-  Partitioning part = b.execute(&params, &graph);
+  Partitioning part = b.execute(&target, &graph);
 
   std::vector<double> targets{0.5, 0.5};
-  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
-      params.getImbalanceTolerance(), targets.data());
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();
@@ -50,11 +47,6 @@ UNITTEST(RandomBisector, Execute1To5)
 {
   std::vector<double> targets{0.4, 0.6};
 
-  // setup parameters
-  BisectionParameters params;
-  params.setTargetPartitionFractions(targets.data());
-  params.setImbalanceTolerance(0.0);
-
   // create bisector
   RandomBisector b;
 
@@ -64,10 +56,12 @@ UNITTEST(RandomBisector, Execute1To5)
 
   ConstantGraph graph = gen.generate();
 
+  // setup parameters
+  TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0, \
+      targets.data());
+
   // perform bisection
-  Partitioning part = b.execute(&params, &graph);
-  TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
-      params.getImbalanceTolerance(), targets.data());
+  Partitioning part = b.execute(&target, &graph);
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();

@@ -35,9 +35,6 @@ void RecursiveBisectionPartitioner::recurse(
 {
   ConstantGraph const * const graph = mappedGraph->getGraph();
   
-  // build parameters for bisection
-  TargetPartitioning bisectTarget;
-
   pid_type const numParts = target->getNumPartitions();
 
   // We don't want to use the k-way imbalance tolerance, as if one half of the
@@ -47,9 +44,8 @@ void RecursiveBisectionPartitioner::recurse(
   // \eps / \log_2(k)
   double const tolerance = target->getImbalanceTolerance() / \
       std::log2(target->getNumPartitions());
-  bisectParams.setImbalanceTolerance(tolerance);
 
-  double const * const targetFractions = target->getTargetFractions();
+  double const * const targetFractions = target->getTargetFraction();
 
   // calculate target fractions
   sl::Array<pid_type> numPartsPrefix(3);
@@ -62,17 +58,17 @@ void RecursiveBisectionPartitioner::recurse(
     targetBisectionFractions[half] += targetFractions[pid];
     ++numPartsPrefix[half];
   }
-  bisectParams.setTargetPartitionFractions(targetBisectionFractions.data());
+
+  // build parameters for bisection
+  TargetPartitioning bisectTarget(2, graph->getTotalVertexWeight(), \
+      tolerance, targetBisectionFractions.data());
+
   sl::VectorMath::prefixSumExclusive(numPartsPrefix.data(), \
       numPartsPrefix.size());
 
   // calculate the target weight for each side bisect
-  Partitioning bisection = m_bisector->execute(&bisectParams, graph);
-
-  TargetPartitioning target(bisection.getNumPartitions(), \
-      graph->getTotalVertexWeight(), bisectParams.getImbalanceTolerance(), \
-      targetBisectionFractions.data());
-  PartitioningAnalyzer analyzer(&bisection, &target);
+  Partitioning bisection = m_bisector->execute(&bisectTarget, graph);
+  PartitioningAnalyzer analyzer(&bisection, &bisectTarget);
 
   // NOTE: this requires that for uneven number of parts, latter half has more
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
@@ -101,19 +97,18 @@ void RecursiveBisectionPartitioner::recurse(
 
       if (numHalfParts > 1) {
         // recursively call execute
-        PartitionParameters subParams(numHalfParts);
-
         std::vector<double> subTargetFractions(numHalfParts);
         for (pid_type pid = 0; pid < numHalfParts; ++pid) {
           pid_type const offsetPid = pid + numPartsPrefix[part];
           subTargetFractions[pid] = \
               targetFractions[offsetPid] / halfTargetFraction;
         }
-        subParams.setImbalanceTolerance(target->getImbalanceTolerance() - \
-            ratio);
-        subParams.setTargetPartitionFractions(subTargetFractions.data());
+        TargetPartitioning subTarget(numHalfParts, \
+            parts[part].getGraph()->getTotalVertexWeight(), \
+            target->getImbalanceTolerance() - ratio, \
+            subTargetFractions.data());
 
-        recurse(partitionLabels, &subParams, &(parts[part]), \
+        recurse(partitionLabels, &subTarget, &(parts[part]), \
             offset+numPartsPrefix[part]);
       }
     }
@@ -149,7 +144,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), target, &mappedGraph, 0);
 
-  Partitioning part(params->getNumPartitions(), graph, &partitionLabels);
+  Partitioning part(target->getNumPartitions(), graph, &partitionLabels);
   part.recalcCutEdgeWeight();
 
   return part;

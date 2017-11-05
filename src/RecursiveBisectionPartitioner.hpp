@@ -16,7 +16,6 @@
 #include "IPartitioner.hpp"
 #include "IBisector.hpp"
 #include "IMappedGraph.hpp"
-#include "PartitionParameters.hpp"
 
 
 namespace dolos
@@ -34,7 +33,6 @@ class RecursiveBisectionPartitioner :
     * @param bisector The bisector to use.
     */
     RecursiveBisectionPartitioner(
-        PartitionParameters const * params,
         IBisector const * bisector);
 
 
@@ -53,6 +51,7 @@ class RecursiveBisectionPartitioner :
 
   private:
     IBisector const * m_bisector;
+
 
     /**
      * @brief Recursively execute on a subgraph.
