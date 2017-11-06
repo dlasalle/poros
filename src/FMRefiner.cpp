@@ -77,6 +77,40 @@ pid_type pickSide(
 }
 
 
+void move(
+    vtx_type const vertex,
+    pid_type const to,
+    ConstantGraph const * const graph,
+    Partitioning * const partitioning,
+    TwoWayConnectivity * const connectivity,
+    VertexQueue * const pqs,
+    sl::BitArray * const visited)
+{
+  wgt_diff_type const delta = connectivity->getVertexDelta(vertex);
+
+  // update connectivity
+  connectivity->move(vertex);
+  for (Edge const & edge : graph->getEdges(vertex)) {
+    pid_type const neighborHome = \
+        partitioning->getAssignment(edge.getVertex());
+    bool const addedToBorder = connectivity->updateNeighbor(&edge, \
+    TwoWayConnectivity::getDirection(to, neighborHome));
+    if (addedToBorder && !visited->check(vertex)) {
+      vtx_type const u = edge.getVertex();
+      pid_type const other = partitioning->getAssignment(u);
+      // insert into priority queue
+      // TODO: repeating this add '-' getVertexDelta() in two places seems prone
+      // to error -- combine in the future.
+      pqs[other].add(-connectivity->getVertexDelta(u), u);
+    }
+  }
+
+  // update partitioning
+  partitioning->move(vertex, to);
+  partitioning->addCutEdgeWeight(delta);
+}
+
+
 }
 
 
@@ -105,8 +139,8 @@ void FMRefiner::refine(
     ConstantGraph const * const graph) const
 {
   VertexQueue pqs[]{ \
-    {0, graph->getNumVertices()}, \
-    {0, graph->getNumVertices()} \
+    {graph->getNumVertices()}, \
+    {graph->getNumVertices()} \
   };
   PartitioningAnalyzer analyzer(partitioning, target);
   sl::BitArray visited(graph->getNumVertices());
@@ -115,6 +149,10 @@ void FMRefiner::refine(
   moves.reserve(graph->getNumVertices());
 
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
+    
+    // delete me
+    std::cout << "Cut is " << partitioning->getCutEdgeWeight() << " at iter "
+        << refIter << std::endl;
      
     // fill priority queue with boundary vertices
     for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
@@ -125,31 +163,16 @@ void FMRefiner::refine(
     moves.clear();
     wgt_type bestCut = partitioning->getCutEdgeWeight();
 
+    vtx_type numMoved = 0;
+
     // move all possible vertices
     while (pqs[0].size() > 0 || pqs[1].size() > 0) {
       pid_type const from = pickSide(&analyzer, pqs); 
       pid_type const to = from ^ 1;
 
       vtx_type const vertex = pqs[from].pop();
-      wgt_diff_type const delta = connectivity->getVertexDelta(vertex);
 
-      // update connectivity
-      connectivity->move(vertex);
-      for (Edge const & edge : graph->getEdges(vertex)) {
-        bool const addedToBorder = connectivity->updateNeighbor(&edge, to);
-        if (addedToBorder && !visited.check(vertex)) {
-          vtx_type const u = edge.getVertex();
-          pid_type const other = partitioning->getAssignment(u);
-          // insert into priority queue
-          // TODO: repeating this add '-' getVertexDelta() in two places seems prone
-          // to error -- combine in the future.
-          pqs[other].add(-connectivity->getVertexDelta(u), u);
-        }
-      }
-
-      // update partitioning
-      partitioning->move(vertex, to);
-      partitioning->addCutEdgeWeight(delta);
+      move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
 
       wgt_type const currentCut = partitioning->getCutEdgeWeight();
       if (currentCut < bestCut) {
@@ -160,21 +183,32 @@ void FMRefiner::refine(
       }
 
       visited.mark(vertex);
+      ++numMoved;
     }
+
+    // delete me
+    std::cout << "Made " << numMoved << " moves." << std::endl;
 
     // undo bad moves
     for (size_t i = moves.size(); i > 0;) {
       --i;
 
       vtx_type const vertex = moves[i];
+      pid_type const from = partitioning->getAssignment(vertex);
+      pid_type const to = from ^ 1;
 
-      connectivity->move(vertex);
+      move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
     }
+    ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);
 
+    // delete me
+    std::cout << "Undoing " << moves.size() << " moves." << std::endl;
 
     // empty priority queues
     if (refIter+1 < m_maxRefinementIters) {
       // we'll do another loop
+      pqs[0].clear();
+      pqs[1].clear();
       visited.clear();
     }
   }

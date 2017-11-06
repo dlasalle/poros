@@ -69,4 +69,28 @@ UNITTEST(RandomBisector, Execute1To5)
 }
 
 
+UNITTEST(RandomBisector, ExecuteCut)
+{
+  // create bisector
+  RandomBisector b;
+
+  // generate graph
+  GridGraphGenerator gen(40, 40, 1);
+
+  ConstantGraph graph = gen.generate();
+
+  // setup parameters
+  TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);
+
+  // perform bisection
+  Partitioning part = b.execute(&target, &graph);
+
+  wgt_type maxCut = graph.getTotalEdgeWeight() / 2;
+  wgt_type minCut = 40;
+
+  testLessOrEqual(part.getCutEdgeWeight(), maxCut);
+  testGreaterOrEqual(part.getCutEdgeWeight(), minCut);
+}
+
+
 }

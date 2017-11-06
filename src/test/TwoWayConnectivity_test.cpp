@@ -212,5 +212,47 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   testEqual(conn.getVertexDelta(7), 1);
 }
 
+UNITTEST(TwoWayConnectivity, GetBorderSet)
+{
+  GridGraphGenerator gen(3,2,1);
+  /*
+   * 0---1---2
+   *  \   \   \
+   *   3---4---5
+   */
+
+
+  ConstantGraph g = gen.generate();
+
+  Partitioning p(2, &g);
+
+  p.assign(0, 0);
+  p.assign(1, 0);
+  p.assign(2, 1);
+  p.assign(3, 0);
+  p.assign(4, 1);
+  p.assign(5, 1);
+
+  p.recalcCutEdgeWeight();
+
+  TwoWayConnectivity conn(&g, &p);
+
+  sl::FixedSet<vtx_type> const * const bnd = conn.getBorderVertexSet();
+
+  testEqual(bnd->size(), 4);
+
+  std::vector<bool> map(6, false);
+
+  for (vtx_type const & v : *bnd) {
+    testFalse(map[v]);
+    map[v] = true;
+  }
+
+  testTrue(map[1]);
+  testTrue(map[2]);
+  testTrue(map[3]);
+  testTrue(map[4]);
+}
+
 
 }

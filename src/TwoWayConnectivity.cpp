@@ -59,12 +59,6 @@ TwoWayConnectivity::TwoWayConnectivity(
 ******************************************************************************/
 
 
-vtx_type const * TwoWayConnectivity::getBorderVertices() const noexcept
-{
-  return m_border.data(); 
-}
-
-
 sl::FixedSet<vtx_type> * TwoWayConnectivity::getBorderVertexSet() noexcept
 {
   return &m_border;

@@ -62,16 +62,6 @@ class TwoWayConnectivity
 
 
     /**
-    * @brief Get the set of border vertices for the given partition. This does
-    * not have a non-constant equivalent as any modification would break the
-    * underlying FixedSet.
-    *
-    * @return The set of border vertices.
-    */
-    vtx_type const * getBorderVertices() const noexcept;
-
-
-    /**
     * @brief Get the set of border vertices.
     *
     * @return The set of border vertices.
@@ -164,17 +154,6 @@ class TwoWayConnectivity
         vtx_type const vertex) const noexcept
     {
       return m_border.has(vertex);
-    }
-
-
-    /**
-    * @brief Get the number of border vertices.
-    *
-    * @return The number of border vertices.
-    */
-    inline vtx_type getNumBorderVertices() const noexcept
-    {
-      return m_border.size(); 
     }
 
 

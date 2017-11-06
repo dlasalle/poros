@@ -202,6 +202,8 @@ Partitioning RandomBisector::execute(
         target->getMaxWeight(RIGHT_PARTITION), &partitioning, graph);
   }
 
+  partitioning.recalcCutEdgeWeight();
+
   return partitioning;
 }
 
