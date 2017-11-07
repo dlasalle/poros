@@ -88,13 +88,17 @@ class TwoWayConnectivity
     * @brief Move a vertex to the opposite partition. 
     *
     * @param vertex The vertex to move.
+    *
+    * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline void move(
+    inline int move(
         vtx_type const vertex) noexcept
     {
       // flip our connectivity
       std::swap(m_connectivity[vertex].internal, \
           m_connectivity[vertex].external);
+
+      return updateBorderStatus(vertex);
     }
 
 
@@ -123,23 +127,7 @@ class TwoWayConnectivity
       m_connectivity[u].internal += flow*edge->getWeight();
       m_connectivity[u].external -= flow*edge->getWeight();
 
-      if (m_border.has(u)) {
-        if (m_connectivity[u].external == 0) {
-          // remove from boundary
-          m_border.remove(u);
-          return BORDER_REMOVED;
-        } else {
-          return BORDER_STILLIN; 
-        } 
-      } else {
-        if (m_connectivity[u].external > 0) {
-          // insert into boundary
-          m_border.add(u);
-          return BORDER_ADDED;
-        } else {
-          return BORDER_STILLOUT; 
-        } 
-      }
+      return updateBorderStatus(u);
     }
 
 
@@ -214,6 +202,37 @@ class TwoWayConnectivity
     */
     std::string getVertexDegreeString(
         vtx_type const v) const;
+
+
+    /**
+    * @brief Update the border status of vertex (whether it is in it or not).
+    *
+    * @param vertex The vertex.
+    *
+    * @return The state of the vertex in the bodrer (the border_status_enum). 
+    */
+    inline int updateBorderStatus(
+        vtx_type const vertex) noexcept
+    {
+      if (m_border.has(vertex)) {
+        if (m_connectivity[vertex].external == 0) {
+          // remove from boundary
+          m_border.remove(vertex);
+          return BORDER_REMOVED;
+        } else {
+          return BORDER_STILLIN; 
+        } 
+      } else {
+        if (m_connectivity[vertex].external > 0) {
+          // insert into boundary
+          m_border.add(vertex);
+          return BORDER_ADDED;
+        } else {
+          return BORDER_STILLOUT; 
+        } 
+      }
+
+    }
 };
 
 }

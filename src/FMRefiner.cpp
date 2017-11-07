@@ -47,12 +47,14 @@ pid_type pickSide(
     PartitioningAnalyzer const * const analyzer,
     VertexQueue const * const pqs)
 {
+  ASSERT_GREATER(pqs[0].size() + pqs[1].size(), 0);
+
   pid_type from;
   // decide our direction of movement
-  if (analyzer->isOverWeight(0)) {
+  if (analyzer->isOverWeight(0) && pqs[0].size() > 0) {
     // fix balance by moving vertices out of 0
     from = 0;
-  } else if (analyzer->isOverWeight(1)) {
+  } else if (analyzer->isOverWeight(1) && pqs[1].size() > 0) {
     // fix balance by moving vertices out of 1
     from = 1;
   } else {
@@ -153,6 +155,8 @@ void FMRefiner::refine(
   PartitioningAnalyzer analyzer(partitioning, target);
   sl::BitArray visited(graph->getNumVertices());
 
+  double const tolerance = target->getImbalanceTolerance();
+
   std::vector<vtx_type> moves;
   moves.reserve(graph->getNumVertices());
 
@@ -161,6 +165,8 @@ void FMRefiner::refine(
     // delete me
     DEBUG_MESSAGE(std::string("Cut is ") + \
         std::to_string(partitioning->getCutEdgeWeight()) + \
+        std::string(" with balance of ") + \
+        std::to_string(analyzer.calcMaxImbalance()) + \
         std::string(" at iter ") + std::to_string(refIter));
      
     // fill priority queue with boundary vertices
@@ -171,6 +177,7 @@ void FMRefiner::refine(
 
     moves.clear();
     wgt_type bestCut = partitioning->getCutEdgeWeight();
+    double bestBalance = analyzer.calcMaxImbalance();
 
     vtx_type numMoved = 0;
 
@@ -186,8 +193,16 @@ void FMRefiner::refine(
       move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
 
       wgt_type const currentCut = partitioning->getCutEdgeWeight();
-      if (currentCut < bestCut) {
+      double const balance = analyzer.calcMaxImbalance();
+
+      if (bestBalance > tolerance && balance < bestBalance) {
         bestCut = currentCut;
+        bestBalance = balance;
+        moves.clear();
+      } else if (currentCut < bestCut && (balance < tolerance || \
+          balance < bestBalance)) {
+        bestCut = currentCut;
+        bestBalance = balance;
         moves.clear();
       } else {
         moves.emplace_back(vertex); 

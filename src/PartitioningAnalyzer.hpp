@@ -76,6 +76,22 @@ class PartitioningAnalyzer
       return m_target->getMaxWeight(part) < m_partitioning->getWeight(part);
     }
 
+
+    /**
+    * @brief CHeck if the partitioning is balanced.
+    *
+    * @return True if it is balanced.
+    */
+    inline bool isBalanced() const noexcept
+    {
+      bool balanced = true;
+      for (Partition const & part : *m_partitioning) {
+        balanced = balanced && !isOverWeight(part.getIndex());
+      }
+
+      return balanced;
+    }
+
   private:
     Partitioning const * const m_partitioning;
     TargetPartitioning const * const m_target;

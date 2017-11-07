@@ -324,6 +324,7 @@ UNITTEST(TwoWayConnectivity, Verify)
     pid_type const where = p.getAssignment(edge.getVertex());
     conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
   }
+  testTrue(conn.verify(&p));
 
   conn.move(2);
   p.move(2, 0);
@@ -331,6 +332,7 @@ UNITTEST(TwoWayConnectivity, Verify)
     pid_type const where = p.getAssignment(edge.getVertex());
     conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
   }
+  testTrue(conn.verify(&p));
 
   conn.move(0);
   p.move(0, 0);
