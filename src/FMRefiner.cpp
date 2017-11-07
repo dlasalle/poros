@@ -12,6 +12,7 @@
 #include <vector>
 #include "FMRefiner.hpp"
 #include "PartitioningAnalyzer.hpp"
+#include "solidutils/Debug.hpp"
 #include "solidutils/Random.hpp"
 #include "solidutils/BitArray.hpp" 
 #include "solidutils/FixedPriorityQueue.hpp"
@@ -86,22 +87,29 @@ void move(
     VertexQueue * const pqs,
     sl::BitArray * const visited)
 {
+  ASSERT_NOTEQUAL(to, partitioning->getAssignment(vertex));
+
   wgt_diff_type const delta = connectivity->getVertexDelta(vertex);
 
   // update connectivity
   connectivity->move(vertex);
   for (Edge const & edge : graph->getEdges(vertex)) {
-    pid_type const neighborHome = \
-        partitioning->getAssignment(edge.getVertex());
-    bool const addedToBorder = connectivity->updateNeighbor(&edge, \
-    TwoWayConnectivity::getDirection(to, neighborHome));
-    if (addedToBorder && !visited->check(vertex)) {
-      vtx_type const u = edge.getVertex();
-      pid_type const other = partitioning->getAssignment(u);
-      // insert into priority queue
-      // TODO: repeating this add '-' getVertexDelta() in two places seems prone
-      // to error -- combine in the future.
-      pqs[other].add(-connectivity->getVertexDelta(u), u);
+    vtx_type const u = edge.getVertex();
+    pid_type const neighborHome = partitioning->getAssignment(u);
+    int const borderStatus = connectivity->updateNeighbor(&edge, \
+        TwoWayConnectivity::getDirection(to, neighborHome));
+
+    if (pqs && !visited->check(vertex)) {
+      if (borderStatus == TwoWayConnectivity::BORDER_ADDED) {
+          // insert into priority queue
+          // TODO: repeating this add '-' getVertexDelta() in two places seems
+          // prone to error -- combine in the future.
+          pqs[neighborHome].add(-connectivity->getVertexDelta(u), u);
+      } else if (borderStatus == TwoWayConnectivity::BORDER_REMOVED) {
+        vtx_type const u = edge.getVertex();
+        // insert into priority queue
+        pqs[neighborHome].remove(u);
+      }
     }
   }
 
@@ -151,8 +159,9 @@ void FMRefiner::refine(
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
     
     // delete me
-    std::cout << "Cut is " << partitioning->getCutEdgeWeight() << " at iter "
-        << refIter << std::endl;
+    DEBUG_MESSAGE(std::string("Cut is ") + \
+        std::to_string(partitioning->getCutEdgeWeight()) + \
+        std::string(" at iter ") + std::to_string(refIter));
      
     // fill priority queue with boundary vertices
     for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
@@ -171,6 +180,8 @@ void FMRefiner::refine(
       pid_type const to = from ^ 1;
 
       vtx_type const vertex = pqs[from].pop();
+      visited.mark(vertex);
+      ASSERT_EQUAL(from, partitioning->getAssignment(vertex));
 
       move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
 
@@ -182,12 +193,12 @@ void FMRefiner::refine(
         moves.emplace_back(vertex); 
       }
 
-      visited.mark(vertex);
       ++numMoved;
     }
 
-    // delete me
-    std::cout << "Made " << numMoved << " moves." << std::endl;
+    DEBUG_MESSAGE(std::string("Undoing ") + std::to_string(moves.size()) + \
+        std::string("/") + std::to_string(numMoved) + std::string(" moves."));
+    ASSERT_TRUE(connectivity->verify(partitioning));
 
     // undo bad moves
     for (size_t i = moves.size(); i > 0;) {
@@ -197,12 +208,16 @@ void FMRefiner::refine(
       pid_type const from = partitioning->getAssignment(vertex);
       pid_type const to = from ^ 1;
 
-      move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
+      move(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
     }
+    ASSERT_TRUE(connectivity->verify(partitioning));
     ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);
 
-    // delete me
-    std::cout << "Undoing " << moves.size() << " moves." << std::endl;
+    if (numMoved == moves.size()) {
+      // no improvement
+      DEBUG_MESSAGE("Kept zero moves, stopping refinement early.");
+      break;
+    }
 
     // empty priority queues
     if (refIter+1 < m_maxRefinementIters) {

@@ -17,6 +17,21 @@ namespace dolos
 {
 
 
+/******************************************************************************
+* PRIVATE FUNCTIONS ***********************************************************
+******************************************************************************/
+
+std::string TwoWayConnectivity::getVertexDegreeString(
+    vtx_type const v) const
+{
+  std::string str(std::string("Vertex ") + std::to_string(v) + \
+      std::string(" (i") + std::to_string(m_connectivity[v].internal) + \
+      std::string(":e") + std::to_string(m_connectivity[v].external) + \
+      std::string(")"));
+  return str;
+}
+
+
 
 /******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
@@ -68,6 +83,50 @@ sl::FixedSet<vtx_type> const * TwoWayConnectivity::getBorderVertexSet()
     const noexcept
 {
   return &m_border;
+}
+
+
+bool TwoWayConnectivity::verify(
+    Partitioning const * const part) const
+{
+  bool good = true;
+  // rebuild one and compare
+  TwoWayConnectivity baseLine(m_graph,  part);
+
+  // verify border
+  if (baseLine.m_border.size() != m_border.size()) {
+    DEBUG_MESSAGE(std::string("Incorrect border size: ") + \
+        std::to_string(m_border.size()) + std::string(" vs. ") + \
+        std::to_string(baseLine.m_border.size()));
+  }
+  for (vtx_type const & v : m_border) {
+    if (!baseLine.m_border.has(v)) {
+      DEBUG_MESSAGE(getVertexDegreeString(v) + \
+          std::string(" is in border, but not should be."));
+      good = false; 
+    }
+  }
+  for (vtx_type const & v : baseLine.m_border) {
+    if (!m_border.has(v)) {
+      DEBUG_MESSAGE(baseLine.getVertexDegreeString(v) + \
+          std::string(" is not in border, but should be."));
+      good = false; 
+    }
+  }
+
+  // verify connectivity
+  for (Vertex const & vertex : m_graph->getVertices()) {
+    vtx_type const v = vertex.getIndex();
+    if (m_connectivity[v].external != baseLine.m_connectivity[v].external || \
+        m_connectivity[v].internal != baseLine.m_connectivity[v].internal) {
+      DEBUG_MESSAGE(std::string("Incorrect info for ") + \
+          getVertexDegreeString(v) + std::string(" vs. ") + \
+          baseLine.getVertexDegreeString(v));
+      good = false; 
+    }
+  }
+
+  return good;
 }
   
 }

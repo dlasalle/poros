@@ -94,11 +94,21 @@ UNITTEST(TwoWayConnectivity, Move)
   testEqual(conn.getVertexDelta(0), -1);
 }
 
-UNITTEST(TwoWayConnectivity, UpdateNieghbor)
+UNITTEST(TwoWayConnectivity, UpdateNeighbor)
 {
   GridGraphGenerator gen(2,2,2);
 
   ConstantGraph g = gen.generate();
+  /*
+   * 0-------1
+   * |\      |\
+   * | \     | \
+   * |  2-------3
+   * 4--|----5  |
+   *  \ |     \ |
+   *   \|      \|
+   *    6-------7
+   */
 
   Partitioning p(2, &g);
 
@@ -115,10 +125,28 @@ UNITTEST(TwoWayConnectivity, UpdateNieghbor)
   p.recalcCutEdgeWeight();
   TwoWayConnectivity conn(&g, &p);
 
+  p.move(1, 1);
+  conn.move(1);
   for (Edge const & edge : g.getEdges(1)) {
-    pid_type const where = p.getAssignment(edge.getVertex());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+    vtx_type const u = edge.getVertex();
+    pid_type const where = p.getAssignment(u);
+    int const status = \
+        conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+    if (u == 5) {
+      testEqual(status, TwoWayConnectivity::BORDER_REMOVED);
+    } else {
+      testEqual(status, TwoWayConnectivity::BORDER_STILLIN);
+    }
   }
+
+  testTrue(conn.isInBorder(0));
+  testTrue(conn.isInBorder(1));
+  testTrue(conn.isInBorder(2));
+  testTrue(conn.isInBorder(3));
+  testTrue(conn.isInBorder(4));
+  testFalse(conn.isInBorder(5));
+  testTrue(conn.isInBorder(6));
+  testTrue(conn.isInBorder(7));
 
   testEqual(conn.getVertexDelta(0), -1);
   testEqual(conn.getVertexDelta(3), -1);
@@ -139,7 +167,6 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
    *   \|      \|
    *    6-------7
    */
-
 
   ConstantGraph g = gen.generate();
 
@@ -196,7 +223,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   testEqual(conn.getVertexDelta(4), -1);
 
   conn.move(0);
-  p.move(0, 1);
+  p.move(0, 0);
   for (Edge const & edge : g.getEdges(0)) {
     pid_type const where = p.getAssignment(edge.getVertex());
     conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
@@ -252,6 +279,67 @@ UNITTEST(TwoWayConnectivity, GetBorderSet)
   testTrue(map[2]);
   testTrue(map[3]);
   testTrue(map[4]);
+}
+
+
+UNITTEST(TwoWayConnectivity, Verify)
+{
+  GridGraphGenerator gen(2,2,2);
+  /*
+   * 0-------1
+   * |\      |\
+   * | \     | \
+   * |  2-------3
+   * 4--|----5  |
+   *  \ |     \ |
+   *   \|      \|
+   *    6-------7
+   */
+
+  ConstantGraph g = gen.generate();
+
+  Partitioning p(2, &g);
+
+  // back face
+  p.assign(0, 0);
+  p.assign(1, 0);
+  p.assign(4, 0);
+  p.assign(5, 0);
+
+  // front face
+  p.assign(2, 1);
+  p.assign(3, 1);
+  p.assign(6, 1);
+  p.assign(7, 1);
+
+  p.recalcCutEdgeWeight();
+
+  TwoWayConnectivity conn(&g, &p);
+
+  testTrue(conn.verify(&p));
+
+  conn.move(0);
+  p.move(0, 1);
+  for (Edge const & edge : g.getEdges(0)) {
+    pid_type const where = p.getAssignment(edge.getVertex());
+    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+  }
+
+  conn.move(2);
+  p.move(2, 0);
+  for (Edge const & edge : g.getEdges(2)) {
+    pid_type const where = p.getAssignment(edge.getVertex());
+    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  }
+
+  conn.move(0);
+  p.move(0, 0);
+  for (Edge const & edge : g.getEdges(0)) {
+    pid_type const where = p.getAssignment(edge.getVertex());
+    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  }
+
+  testTrue(conn.verify(&p));
 }
 
 

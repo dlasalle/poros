@@ -235,6 +235,7 @@ class Partitioning
       ASSERT_LESS(vertex, m_assignment.size());
       ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
+      ASSERT_NOTEQUAL(getAssignment(vertex), partition);
 
       wgt_type const weight = m_graph->getVertexWeight(vertex);
 
@@ -349,8 +350,6 @@ class Partitioning
     {
       return Iterator(m_partitionWeight.size(), m_partitionWeight.data());
     }
-
-
 
 
   private:

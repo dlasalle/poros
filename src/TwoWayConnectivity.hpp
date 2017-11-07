@@ -33,6 +33,13 @@ class TwoWayConnectivity
       MOVE_AWAY = -1
     };
 
+    enum border_status_enum {
+      BORDER_ADDED,
+      BORDER_REMOVED,
+      BORDER_STILLIN,
+      BORDER_STILLOUT
+    };
+
     /**
     * @brief Determine the direction enum given the partition a vertex is
     * moving to, and the partition of the other vertex.
@@ -98,9 +105,9 @@ class TwoWayConnectivity
     * @param direction The destination partition of the vertex -- must be a
     * member of the move_direction_enum (1 or -1).
     *
-    * @return True if the neighbor is being added to the boundary.
+    * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline bool updateNeighbor(
+    inline int updateNeighbor(
         Edge const * const edge,
         int const direction) noexcept
     {
@@ -116,12 +123,22 @@ class TwoWayConnectivity
       m_connectivity[u].internal += flow*edge->getWeight();
       m_connectivity[u].external -= flow*edge->getWeight();
 
-      // insert into boundary
-      if (m_connectivity[u].external > 0 && !m_border.has(u)) {
-        m_border.add(u);
-        return true;
+      if (m_border.has(u)) {
+        if (m_connectivity[u].external == 0) {
+          // remove from boundary
+          m_border.remove(u);
+          return BORDER_REMOVED;
+        } else {
+          return BORDER_STILLIN; 
+        } 
       } else {
-        return false;
+        if (m_connectivity[u].external > 0) {
+          // insert into boundary
+          m_border.add(u);
+          return BORDER_ADDED;
+        } else {
+          return BORDER_STILLOUT; 
+        } 
       }
     }
 
@@ -157,6 +174,17 @@ class TwoWayConnectivity
     }
 
 
+    /**
+    * @brief Verify that this two way connectivity is correct.
+    *
+    * @param part The partitioning.
+    *
+    * @return True if this connectivity is correct, false otherwise.
+    */
+    bool verify(
+        Partitioning const * part) const;
+
+
   private:
     struct vertex_struct
     {
@@ -175,6 +203,17 @@ class TwoWayConnectivity
         TwoWayConnectivity const & rhs);
     TwoWayConnectivity & operator=(
         TwoWayConnectivity const & rhs);
+
+
+    /**
+    * @brief Create a string of the connectivity of the vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The string.
+    */
+    std::string getVertexDegreeString(
+        vtx_type const v) const;
 };
 
 }

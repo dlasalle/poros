@@ -125,12 +125,8 @@ void swapBalanceRight(
 
   if (lower <= upper) {
     // perform swap
-    partitioning->move(vertices[right].vertex, RIGHT_PARTITION);
-    partitioning->move((*lower).vertex, LEFT_PARTITION);
-
-    // delete me
-    printf("Swapped: %u/%u", \
-        partitioning->getWeight(RIGHT_PARTITION), maxRightWeight);
+    partitioning->move(vertices[right].vertex, LEFT_PARTITION);
+    partitioning->move((*lower).vertex, RIGHT_PARTITION);
   }
 }
 
