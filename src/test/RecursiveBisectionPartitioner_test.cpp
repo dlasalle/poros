@@ -28,7 +28,7 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
   RecursiveBisectionPartitioner rb(&b);
 
   // generate graph
-  GridGraphGenerator gen(10, 4, 3);
+  GridGraphGenerator gen(10, 6, 5);
 
   for (pid_type k = 2; k < 10; ++k) {
     ConstantGraph graph = gen.generate();

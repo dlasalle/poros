@@ -167,6 +167,7 @@ void FMRefiner::refine(
         std::to_string(partitioning->getCutEdgeWeight()) + \
         std::string(" with balance of ") + \
         std::to_string(analyzer.calcMaxImbalance()) + \
+        std::string("/") + std::to_string(target->getImbalanceTolerance()) + \
         std::string(" at iter ") + std::to_string(refIter));
      
     // fill priority queue with boundary vertices

@@ -70,6 +70,14 @@ void RecursiveBisectionPartitioner::recurse(
   Partitioning bisection = m_bisector->execute(&bisectTarget, graph);
   PartitioningAnalyzer analyzer(&bisection, &bisectTarget);
 
+  DEBUG_MESSAGE(std::string("Made bisection of balance ") + \
+      std::to_string(analyzer.calcMaxImbalance()) + std::string("/") + \
+      std::to_string(bisectTarget.getImbalanceTolerance()) + \
+      std::string(" (") + \
+      std::to_string(bisection.getWeight(LEFT_PARTITION)) + \
+      std::string(":") + \
+      std::to_string(bisection.getWeight(RIGHT_PARTITION)) + std::string(")"));
+
   // NOTE: this requires that for uneven number of parts, latter half has more
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
       numPartsPrefix[1]-numPartsPrefix[0]);
