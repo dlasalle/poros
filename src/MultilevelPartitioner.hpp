@@ -21,7 +21,8 @@ namespace dolos
 {
 
 
-class MultilevelPartitioner
+class MultilevelPartitioner :
+    public IPartitioner
 {
   public:
     /**
@@ -40,11 +41,13 @@ class MultilevelPartitioner
     /**
      * @brief Create a partitioning of the graph.
      *
+     * @param target The target partitioning to achieve.
      * @param graph The graph to partition.
      *
      * @return The partitioning.
      */
     virtual Partitioning execute(
+        TargetPartitioning const * target,
         ConstantGraph const * graph) const;
 
 

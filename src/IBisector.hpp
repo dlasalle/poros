@@ -11,14 +11,15 @@
 #define DOLOS_SRC_IBISECTOR_HPP
 
 
-#include "IPartitioner.hpp"
+#include "ConstantGraph.hpp"
+#include "Partitioning.hpp"
+#include "TargetPartitioning.hpp"
 
 
 namespace dolos
 {
 
-class IBisector :
-    public IPartitioner
+class IBisector
 {
   public:
     /**
@@ -28,6 +29,19 @@ class IBisector :
     {
       // do nothing
     }
+
+
+    /**
+     * @brief Create a two-way partitioning of the graph.
+     *
+     * @param target The target partitioning to achieve.
+     * @param graph The graph to partition.
+     *
+     * @return The partitioning.
+     */
+    virtual Partitioning execute(
+        TargetPartitioning const * target,
+        ConstantGraph const * graph) const = 0;
 
 
 };
