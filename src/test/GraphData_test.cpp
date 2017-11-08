@@ -18,12 +18,12 @@ namespace dolos
 {
 
 
-UNITTEST(ConstantGraph, ConstructionAndGet)
+UNITTEST(GraphData, ConstructionAndGet)
 {
   GraphData gd(5, 8);
 
-  testEqual(gd.getNumVertices(), 5);
-  testEqual(gd.getNumEdges(), 8);
+  testEqual(gd.getNumVertices(), 5u);
+  testEqual(gd.getNumEdges(), 8u);
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
@@ -46,7 +46,7 @@ UNITTEST(ConstantGraph, ConstructionAndGet)
     GraphData const * const cgd = &gd;
 
     for (vtx_type v = 0; v < 5; ++v) {
-      testEqual(cgd->getVertexWeight()[v], 1); 
+      testEqual(cgd->getVertexWeight()[v], 1u); 
     }
 
     // write to every edgePrefix location 
@@ -57,18 +57,18 @@ UNITTEST(ConstantGraph, ConstructionAndGet)
     // write to every edge location
     for (adj_type e = 0; e < 8; ++e) {
       testEqual(cgd->getEdgeList()[e], static_cast<vtx_type>(e));
-      testEqual(cgd->getEdgeWeight()[e], 2);
+      testEqual(cgd->getEdgeWeight()[e], 2u);
     }
   }
 }
 
 
-UNITTEST(ConstantGraph, MoveGet)
+UNITTEST(GraphData, MoveGet)
 {
   GraphData gd(5, 8);
 
-  testEqual(gd.getNumVertices(), 5);
-  testEqual(gd.getNumEdges(), 8);
+  testEqual(gd.getNumVertices(), 5u);
+  testEqual(gd.getNumEdges(), 8u);
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
@@ -91,7 +91,7 @@ UNITTEST(ConstantGraph, MoveGet)
     GraphData const cgd = std::move(gd);
 
     for (vtx_type v = 0; v < 5; ++v) {
-      testEqual(cgd.getVertexWeight()[v], 1); 
+      testEqual(cgd.getVertexWeight()[v], 1u); 
     }
 
     // write to every edgePrefix location 
@@ -102,13 +102,13 @@ UNITTEST(ConstantGraph, MoveGet)
     // write to every edge location
     for (adj_type e = 0; e < 8; ++e) {
       testEqual(cgd.getEdgeList()[e], static_cast<vtx_type>(e));
-      testEqual(cgd.getEdgeWeight()[e], 2);
+      testEqual(cgd.getEdgeWeight()[e], 2u);
     }
   }
 
 }
 
-UNITTEST(ConstantGraph, ToGraph)
+UNITTEST(GraphData, ToGraph)
 {
   std::vector<adj_type> prefix{0, 1, 3, 5, 6};
   std::vector<wgt_type> vwgt{1, 2, 4, 3};

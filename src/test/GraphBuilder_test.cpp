@@ -55,15 +55,15 @@ UNITTEST(GraphBuilder, FullBuild)
   ConstantGraph graph = builder.finish();
 
   // verify graph
-  testEqual(graph.getNumVertices(), 4);
-  testEqual(graph.getNumEdges(), 8);
+  testEqual(graph.getNumVertices(), 4u);
+  testEqual(graph.getNumEdges(), 8u);
 
   for (Vertex const & vertex : graph.getVertices()) {
-    testEqual(vertex.getWeight(), 1);
-    testEqual(vertex.getNumEdges(), 2);
+    testEqual(vertex.getWeight(), 1u);
+    testEqual(vertex.getNumEdges(), 2u);
 
     for (Edge const & edge : vertex.getEdges()) {
-      testEqual(edge.getWeight(), 2);
+      testEqual(edge.getWeight(), 2u);
     }
   }
 }

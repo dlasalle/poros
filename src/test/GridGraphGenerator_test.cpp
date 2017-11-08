@@ -25,12 +25,12 @@ UNITTEST(RandomBisector, Execute)
 
   ConstantGraph graph = gen.generate();
 
-  testEqual(graph.getNumVertices(), 17*10*3);
+  testEqual(graph.getNumVertices(), static_cast<vtx_type>(17*10*3));
 
   wgt_type const * const vertexWeight = graph.getVertexWeight();
   for (vtx_type v = 0; v < graph.getNumVertices(); ++v) {
-    testGreaterOrEqual(vertexWeight[v], 1);
-    testLessOrEqual(vertexWeight[v], 3);
+    testGreaterOrEqual(vertexWeight[v], static_cast<wgt_type>(1));
+    testLessOrEqual(vertexWeight[v], static_cast<wgt_type>(3));
   }
 }
 

@@ -33,7 +33,7 @@ UNITTEST(Partitioning, BlankConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.getWeight(), 9*7);
+    testEqual(part.getWeight(), 9u*7u);
   }
 }
 
@@ -53,7 +53,7 @@ UNITTEST(Partitioning, VectorConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.getWeight(), 9*7);
+    testEqual(part.getWeight(), 9u*7u);
   }
 }
 
@@ -74,7 +74,7 @@ UNITTEST(Partitioning, MoveConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p2) {
-    testEqual(part.getWeight(), 9*7);
+    testEqual(part.getWeight(), 9u*7u);
   }
 }
 
@@ -86,7 +86,7 @@ UNITTEST(Partitioning, NumberOfPartitions)
   ConstantGraph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
-  testEqual(5, p.getNumPartitions());
+  testEqual(5u, p.getNumPartitions());
 }
 
 

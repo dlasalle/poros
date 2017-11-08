@@ -33,7 +33,7 @@ UNITTEST(RandomFMBisector, Execute)
   testLessOrEqual(analyzer.calcMaxImbalance(), 0.1005);
 
   // within a factor 3 of best
-  testLessOrEqual(part.getCutEdgeWeight(), 90);
+  testLessOrEqual(part.getCutEdgeWeight(), 90u);
 }
 
 }

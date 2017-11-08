@@ -25,7 +25,7 @@ UNITTEST(RandomTraverser, Next)
     ++steps;
   }
 
-  testEqual(steps, 10);
+  testEqual(steps, 10u);
 }
 
 UNITTEST(RandomTraverser, GetCompleteness)
@@ -60,7 +60,7 @@ UNITTEST(RandomTraverser, GetRandomness)
     }
   }
 
-  testLess(commons, 100);
+  testLess(commons, 100u);
 }
 
 

@@ -30,7 +30,7 @@ UNITTEST(Subgraph, GetGraph)
 
   Subgraph s(&g, &superMap);
 
-  testEqual(s.getGraph()->getNumVertices(), 5*5*5);
+  testEqual(s.getGraph()->getNumVertices(), static_cast<vtx_type>(5*5*5));
 }
 
 
@@ -73,10 +73,10 @@ UNITTEST(Subgraph, MapPartitioning)
   s.mapPartitioning(&subPart, superLabels.data(), 3);
   Partitioning superPart(5, g, &superLabels);
 
-  testEqual(superPart.getAssignment(0), 3);
-  testEqual(superPart.getAssignment(1), 3);
-  testEqual(superPart.getAssignment(2), 4);
-  testEqual(superPart.getAssignment(3), 4);
+  testEqual(superPart.getAssignment(0), static_cast<pid_type>(3));
+  testEqual(superPart.getAssignment(1), static_cast<pid_type>(3));
+  testEqual(superPart.getAssignment(2), static_cast<pid_type>(4));
+  testEqual(superPart.getAssignment(3), static_cast<pid_type>(4));
 }
 
 

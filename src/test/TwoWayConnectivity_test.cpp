@@ -266,7 +266,7 @@ UNITTEST(TwoWayConnectivity, GetBorderSet)
 
   sl::FixedSet<vtx_type> const * const bnd = conn.getBorderVertexSet();
 
-  testEqual(bnd->size(), 4);
+  testEqual(bnd->size(), 4u);
 
   std::vector<bool> map(6, false);
 

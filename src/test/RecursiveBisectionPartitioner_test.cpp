@@ -10,7 +10,7 @@
 
 #include "solidutils/UnitTest.hpp"
 #include "RecursiveBisectionPartitioner.hpp"
-#include "RandomBisector.hpp"
+#include "RandomFMBisector.hpp"
 #include "TargetPartitioning.hpp"
 #include "PartitioningAnalyzer.hpp"
 #include "GridGraphGenerator.hpp"
@@ -22,13 +22,13 @@ namespace dolos
 UNITTEST(RandomBisector, ExecuteKWayUniform)
 {
   // create bisector
-  RandomBisector b;
+  RandomFMBisector b(8);
 
   // create partitioner
   RecursiveBisectionPartitioner rb(&b);
 
   // generate graph
-  GridGraphGenerator gen(10, 20, 30);
+  GridGraphGenerator gen(10, 4, 3);
 
   for (pid_type k = 2; k < 10; ++k) {
     ConstantGraph graph = gen.generate();
@@ -43,20 +43,20 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
     PartitioningAnalyzer analyzer(&part, &target);
 
     double const imbalance = analyzer.calcMaxImbalance();
-    testLess(imbalance, 0.03005);
+    testLess(imbalance, 0.03005) << "Num partitions = " << k;
   }
 }
 
 UNITTEST(RandomBisector, ExecuteKWay1To5)
 {
   // create bisector
-  RandomBisector b;
+  RandomFMBisector b(8);
 
   // create partitioner
   RecursiveBisectionPartitioner rb(&b);
 
   // generate graph
-  GridGraphGenerator gen(10, 20, 30);
+  GridGraphGenerator gen(9, 5, 7);
   gen.setRandomVertexWeight(1,5);
 
   for (pid_type k = 2; k < 10; ++k) {
@@ -72,16 +72,8 @@ UNITTEST(RandomBisector, ExecuteKWay1To5)
 
     PartitioningAnalyzer analyzer(&part, &target);
 
-    // delete me
-    std::cout << "Create " << k << " parititions: ";
-    for (Partition const & p : part) {
-      std::cout << p.getWeight() << "/" << target.getTargetWeight(p.getIndex())
-      << "(" << target.getMaxWeight(p.getIndex()) << ") ";
-    }
-    std::cout << std::endl;
-
     double const imbalance = analyzer.calcMaxImbalance();
-    testLess(imbalance, 0.03005);
+    testLess(imbalance, 0.03005) << "Num partitions = " << k;
   }
 }
 
@@ -90,13 +82,13 @@ UNITTEST(RandomBisector, Execute4Way)
   std::vector<double> targets{0.25, 0.3, 0.3, 0.15};
 
   // create bisector
-  RandomBisector b;
+  RandomFMBisector b(8);
 
   // create partitioner
   RecursiveBisectionPartitioner rb(&b);
 
   // generate graph
-  GridGraphGenerator gen(10, 20, 30);
+  GridGraphGenerator gen(6, 13, 7);
   gen.setRandomVertexWeight(1, 5);
 
   ConstantGraph graph = gen.generate();
@@ -135,7 +127,7 @@ UNITTEST(RandomBisector, Execute7Way1To3)
 
   // partition 
   Partitioning part = rb.execute(&target, &graph);
-  testEqual(part.getNumPartitions(), 7);
+  testEqual(part.getNumPartitions(), static_cast<pid_type>(7));
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();
