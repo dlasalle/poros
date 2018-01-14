@@ -43,7 +43,7 @@ class Partition
     *
     * @return The index.
     */
-    inline pid_type getIndex() const noexcept
+    inline pid_type index() const noexcept
     {
       return m_index;
     }
@@ -54,7 +54,7 @@ class Partition
     *
     * @return The weight.
     */
-    inline wgt_type getWeight() const noexcept
+    inline wgt_type weight() const noexcept
     {
       return m_partitionWeight[m_index];
     }

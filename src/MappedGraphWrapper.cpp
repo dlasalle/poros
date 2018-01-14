@@ -43,7 +43,7 @@ void MappedGraphWrapper::mapPartitioning(
     pid_type const offset) const
 {
   for (Vertex const & vertex : getGraph()->getVertices()) {
-    vtx_type const sub = vertex.getIndex();
+    vtx_type const sub = vertex.index();
     pid_type const assignment = subPart->getAssignment(sub);
     partitionLabels[sub] = assignment + offset;
   }

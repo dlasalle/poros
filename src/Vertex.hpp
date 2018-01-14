@@ -54,7 +54,7 @@ class Vertex
     *
     * @return The index.
     */
-    inline vtx_type getIndex() const noexcept
+    inline vtx_type index() const noexcept
     {
       return m_index;
     }
@@ -65,9 +65,20 @@ class Vertex
     *
     * @return The weight of this vertex.
     */
-    inline wgt_type getWeight() const noexcept
+    inline wgt_type weight() const noexcept
     {
       return m_vertexWeight[m_index];
+    }
+
+
+    /**
+    * @brief Get the degree of this vertex.
+    *
+    * @return The degree of the vertex.
+    */
+    inline vtx_type degree() const noexcept
+    {
+      return m_edgePrefix[m_index+1] - m_edgePrefix[m_index];
     }
 
 
@@ -80,17 +91,6 @@ class Vertex
     {
       return EdgeSet(m_edgePrefix[m_index], m_edgePrefix[m_index+1], \
           m_edgeList, m_edgeWeight);
-    }
-
-
-    /**
-    * @brief Get the number of edges incident to this vertex.
-    *
-    * @return The number of edges incident to this vertex.
-    */
-    inline adj_type getNumEdges() const noexcept
-    {
-      return m_edgePrefix[m_index+1] - m_edgePrefix[m_index];
     }
 
 

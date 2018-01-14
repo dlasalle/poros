@@ -48,15 +48,15 @@ TwoWayConnectivity::TwoWayConnectivity(
   // populate connectivity vector
   for (Vertex const & vertex : graph->getVertices()) {
     vertex_struct pair{0, 0};
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     pid_type const home = partitioning->getAssignment(v);
     for (Edge const & edge : vertex.getEdges()) {
       vtx_type const u = edge.getVertex();
       pid_type const other = partitioning->getAssignment(u);
       if (other == home) {
-        pair.internal += edge.getWeight();
+        pair.internal += edge.weight();
       } else {
-        pair.external += edge.getWeight();
+        pair.external += edge.weight();
       }
     }
 
@@ -116,7 +116,7 @@ bool TwoWayConnectivity::verify(
 
   // verify connectivity
   for (Vertex const & vertex : m_graph->getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     if (m_connectivity[v].external != baseLine.m_connectivity[v].external || \
         m_connectivity[v].internal != baseLine.m_connectivity[v].internal) {
       DEBUG_MESSAGE(std::string("Incorrect info for ") + \

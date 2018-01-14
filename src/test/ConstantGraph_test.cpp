@@ -11,6 +11,7 @@
 #include <vector>
 #include "ConstantGraph.hpp"
 #include "solidutils/UnitTest.hpp"
+#include "solidutils/Timer.hpp"
 #include "GridGraphGenerator.hpp"
 
 
@@ -26,7 +27,7 @@ UNITTEST(ConstantGraph, IterateVertices)
 
   std::vector<bool> visited(g.getNumVertices(), false);
   for (Vertex const v : g.getVertices()) {
-    visited[v.getIndex()] = true;    
+    visited[v.index()] = true;    
   }
 
   for (bool const & v : visited) {
@@ -43,7 +44,7 @@ UNITTEST(ConstantGraph, IterateEdges)
 
   std::vector<bool> visited(g.getNumEdges(), false);
   for (Edge const & e : g.getEdges()) {
-    visited[e.getIndex()] = true;
+    visited[e.index()] = true;
   }
 
   for (bool const & e : visited) {
@@ -61,7 +62,7 @@ UNITTEST(ConstantGraph, IteratePerVertexEdges)
   std::vector<bool> visited(g.getNumEdges(), false);
   for (Vertex const & v : g.getVertices()) {
     for (Edge const & e : v.getEdges()) {
-      visited[e.getIndex()] = true;
+      visited[e.index()] = true;
     }
   }
 
@@ -69,10 +70,6 @@ UNITTEST(ConstantGraph, IteratePerVertexEdges)
     testTrue(e);
   }
 }
-
-
-
-
 
 
 }

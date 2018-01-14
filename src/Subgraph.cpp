@@ -65,7 +65,7 @@ void Subgraph::mapPartitioning(
 {
   // translate partitioning
   for (Vertex const & vertex : getGraph()->getVertices()) {
-    vtx_type const sub = vertex.getIndex();
+    vtx_type const sub = vertex.index();
     pid_type const assignment = subPart->getAssignment(sub);
     vtx_type const super = getSuperMap(sub);
     partitionLabels[super] = assignment + offset;

@@ -83,8 +83,8 @@ void swapBalanceRight(
   size_t right = vertices.size()-1;
   for (Vertex const & vertex : graph->getVertices()) {
     vertex_struct pair;
-    pair.vertex = vertex.getIndex();
-    pair.weight = vertex.getWeight();
+    pair.vertex = vertex.index();
+    pair.weight = vertex.weight();
 
     if (partitioning->getAssignment(pair.vertex) == LEFT_PARTITION) {
       vertices[left] = pair;

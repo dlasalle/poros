@@ -59,11 +59,11 @@ UNITTEST(GraphBuilder, FullBuild)
   testEqual(graph.getNumEdges(), 8u);
 
   for (Vertex const & vertex : graph.getVertices()) {
-    testEqual(vertex.getWeight(), 1u);
-    testEqual(vertex.getNumEdges(), 2u);
+    testEqual(vertex.weight(), 1u);
+    testEqual(vertex.degree(), 2u);
 
     for (Edge const & edge : vertex.getEdges()) {
-      testEqual(edge.getWeight(), 2u);
+      testEqual(edge.weight(), 2u);
     }
   }
 }

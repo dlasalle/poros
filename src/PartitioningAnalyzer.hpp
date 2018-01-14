@@ -86,7 +86,7 @@ class PartitioningAnalyzer
     {
       bool balanced = true;
       for (Partition const & part : *m_partitioning) {
-        balanced = balanced && !isOverWeight(part.getIndex());
+        balanced = balanced && !isOverWeight(part.index());
       }
 
       return balanced;

@@ -47,11 +47,22 @@ class Edge
     *
     * @return The index of the edge.
     */
-    inline adj_type getIndex() const noexcept
+    inline adj_type index() const noexcept
     {
       return m_index;
     }
     
+
+    /**
+    * @brief Get the weight of this edge.
+    *
+    * @return 
+    */
+    inline wgt_type weight() const noexcept
+    {
+      return m_edgeWeight[m_index];
+    }
+
 
     /**
     * @brief Get the vertex at the other end of this edge.
@@ -62,18 +73,6 @@ class Edge
     {
       return m_edgeList[m_index];
     }
-
-
-    /**
-    * @brief Get the weight of this edge.
-    *
-    * @return 
-    */
-    inline wgt_type getWeight() const noexcept
-    {
-      return m_edgeWeight[m_index];
-    }
-
 
   private:
     adj_type const m_index;

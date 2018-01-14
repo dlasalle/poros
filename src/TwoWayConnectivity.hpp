@@ -124,8 +124,8 @@ class TwoWayConnectivity
       // moved to the same partition as this one, and -1 when it is being moved
       // away.
       wgt_diff_type const flow = static_cast<wgt_diff_type>(direction);
-      m_connectivity[u].internal += flow*edge->getWeight();
-      m_connectivity[u].external -= flow*edge->getWeight();
+      m_connectivity[u].internal += flow*edge->weight();
+      m_connectivity[u].external -= flow*edge->weight();
 
       return updateBorderStatus(u);
     }

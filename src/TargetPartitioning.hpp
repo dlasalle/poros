@@ -14,6 +14,7 @@
 #define DOLOS_SRC_TARGETPARTITIONING_HPP
 
 
+#include <stdexcept>
 #include "Base.hpp"
 #include "solidutils/Array.hpp"
 #include "solidutils/Debug.hpp"

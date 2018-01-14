@@ -73,16 +73,16 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
 
   // fill vertex weights
   for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const vSuper = vertex.getIndex();
+    vtx_type const vSuper = vertex.index();
     vtx_type const vSub = subMap[vSuper];
     
     pid_type const pid = part->getAssignment(vSuper);
-    builder[pid].setVertexWeight(vSub, vertex.getWeight());
+    builder[pid].setVertexWeight(vSub, vertex.weight());
   }
 
   // calculate number of edges
   for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     vtx_type const subV = subMap[v];
     pid_type const vPid = part->getAssignment(v);
 
@@ -104,7 +104,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
 
   // fill edges 
   for (Vertex const & vertex : graph->getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     vtx_type const subV = subMap[v];
     pid_type const vPid = part->getAssignment(v);
 
@@ -115,7 +115,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
       // this edge will exist in the subgraph
       if (vPid == uPid) {
         vtx_type const subU = subMap[u];
-        builder[vPid].addEdgeToVertex(subV, subU, edge.getWeight());
+        builder[vPid].addEdgeToVertex(subV, subU, edge.weight());
       }
     }
   }

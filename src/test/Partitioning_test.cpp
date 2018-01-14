@@ -27,13 +27,13 @@ UNITTEST(Partitioning, BlankConstructor)
   Partitioning p(5, &graph);
 
   for (Vertex const & vertex : graph.getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     p.assign(v, v % 5);
   }
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.getWeight(), 9u*7u);
+    testEqual(part.weight(), 9u*7u);
   }
 }
 
@@ -45,7 +45,7 @@ UNITTEST(Partitioning, VectorConstructor)
   
   sl::Array<pid_type> labels(graph.getNumVertices());
   for (Vertex const & vertex : graph.getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     labels[v] = v % 5;
   }
 
@@ -53,7 +53,7 @@ UNITTEST(Partitioning, VectorConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.getWeight(), 9u*7u);
+    testEqual(part.weight(), 9u*7u);
   }
 }
 
@@ -65,7 +65,7 @@ UNITTEST(Partitioning, MoveConstructor)
   
   sl::Array<pid_type> labels(graph.getNumVertices());
   for (Vertex const & vertex : graph.getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     labels[v] = v % 5;
   }
 
@@ -74,7 +74,7 @@ UNITTEST(Partitioning, MoveConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p2) {
-    testEqual(part.getWeight(), 9u*7u);
+    testEqual(part.weight(), 9u*7u);
   }
 }
 
@@ -97,7 +97,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
   
   sl::Array<pid_type> labels(graph.getNumVertices());
   for (Vertex const & vertex : graph.getVertices()) {
-    vtx_type const v = vertex.getIndex();
+    vtx_type const v = vertex.index();
     if (v < 15) {
       labels[v] = 0;
     } else if (v < 40) {
@@ -117,7 +117,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
 
   // check counts
   for (Partition const & part : p) {
-    testEqual(counts[part.getIndex()], part.getWeight());
+    testEqual(counts[part.index()], part.weight());
   }
 }
 
