@@ -46,7 +46,7 @@ class RandomMatchingAggregator
     */
     virtual Aggregation aggregate(
         ConstantGraph const * graph) const;
-}
+};
 
 
 }

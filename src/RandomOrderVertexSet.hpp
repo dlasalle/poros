@@ -1,26 +1,27 @@
 /**
-* @file VertexSet.hpp
-* @brief The VertexSet class.
+* @file RandomOrderVertexSet.hpp
+* @brief The RandomOrderVertexSet class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017
+* Copyright 2017, Solid Lake LLC
 * @version 1
-* @date 2017-10-23
+* @date 2018-01-14
 */
 
 
 
-#ifndef DOLOS_SRC_VERTEXSET_HPP
-#define DOLOS_SRC_VERTEXSET_HPP
+#ifndef DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
+#define DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
 
 
-#include "Vertex.hpp"
+#include "VertexSet.hpp"
+#include "solidutils/Random.hpp"
 
 
 namespace dolos
 {
 
 
-class VertexSet
+class RandomOrderVertexSet
 {
   public:
     class Iterator
@@ -28,11 +29,13 @@ class VertexSet
       public:
         Iterator(
             vtx_type const index,
+            vtx_type const * const perm,
             wgt_type const * const vertexWeight,
             adj_type const * const edgePrefix,
             vtx_type const * const edgeList,
             wgt_type const * const edgeWeight) noexcept :
           m_index(index),
+          m_perm(perm),
           m_vertexWeight(vertexWeight),
           m_edgePrefix(edgePrefix),
           m_edgeList(edgeList),
@@ -43,8 +46,8 @@ class VertexSet
 
         inline Vertex operator*() const
         {
-          return Vertex(m_index, m_vertexWeight, m_edgePrefix, m_edgeList, \
-              m_edgeWeight);
+          return Vertex(m_perm[m_index], m_vertexWeight, m_edgePrefix, \
+              m_edgeList, m_edgeWeight);
         }
 
         inline Iterator const & operator++()
@@ -81,6 +84,7 @@ class VertexSet
 
       private:
         adj_type m_index;
+        vtx_type const * const m_perm;
         wgt_type const * const m_vertexWeight;
         adj_type const * const m_edgePrefix;
         vtx_type const * const m_edgeList;
@@ -97,7 +101,7 @@ class VertexSet
     * @param edgeList The edge list vector.
     * @param edgeWeight The edge weight vector.
     */
-    VertexSet(
+    RandomOrderVertexSet(
         vtx_type const begin,
         vtx_type const end,
         wgt_type const * const weight,
@@ -106,12 +110,13 @@ class VertexSet
         wgt_type const * const edgeWeight) noexcept :
       m_begin(begin),
       m_end(end),
+      m_perm(end - begin),
       m_weight(weight),
       m_edgePrefix(edgePrefix),
       m_edgeList(edgeList),
       m_edgeWeight(edgeWeight)
     {
-      // do nothing
+      sl::Random::fillWithPerm(m_perm, begin, end)
     }
 
     /**
@@ -121,8 +126,8 @@ class VertexSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(m_begin, m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
+      return Iterator(m_begin, m_perm.data(), m_weight, m_edgePrefix, \
+          m_edgeList, m_edgeWeight);
     }
 
     /**
@@ -132,8 +137,8 @@ class VertexSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator(m_end, m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
+      return Iterator(m_end, m_perm.data(), m_weight, m_edgePrefix, \
+          m_edgeList, m_edgeWeight);
     }
 
     /**
@@ -149,6 +154,7 @@ class VertexSet
   private:
     vtx_type const m_begin;
     vtx_type const m_end;
+    std::vector<vtx_type> m_perm;
     wgt_type const * const m_weight;
     adj_type const * const m_edgePrefix;
     vtx_type const * const m_edgeList;
@@ -157,6 +163,8 @@ class VertexSet
 
 
 }
+
+
 
 
 #endif

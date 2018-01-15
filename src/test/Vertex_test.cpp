@@ -28,8 +28,8 @@ UNITTEST(Vertex, Index)
   Vertex v0(0, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
   Vertex v1(1, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
 
-  testEqual(v0.index(), 0);
-  testEqual(v1.index(), 1);
+  testEqual(v0.index(), static_cast<vtx_type>(0));
+  testEqual(v1.index(), static_cast<vtx_type>(1));
 }
 
 
@@ -43,8 +43,8 @@ UNITTEST(Vertex, Weight)
   Vertex v0(0, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
   Vertex v1(1, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
 
-  testEqual(v0.weight(), 3);
-  testEqual(v1.weight(), 1);
+  testEqual(v0.weight(), static_cast<wgt_type>(3));
+  testEqual(v1.weight(), static_cast<wgt_type>(1));
 }
 
 UNITTEST(Vertex, Degree)
@@ -57,8 +57,8 @@ UNITTEST(Vertex, Degree)
   Vertex v0(0, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
   Vertex v1(1, vwgts.data(), prefix.data(), adjncy.data(), ewgts.data());
 
-  testEqual(v0.degree(), 2);
-  testEqual(v1.degree(), 1);
+  testEqual(v0.degree(), static_cast<vtx_type>(2));
+  testEqual(v1.degree(), static_cast<vtx_type>(1));
 }
 
 

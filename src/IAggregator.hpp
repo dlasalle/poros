@@ -15,6 +15,7 @@
 
 
 #include "Aggregation.hpp"
+#include "ConstantGraph.hpp"
 
 namespace dolos
 {

@@ -13,6 +13,7 @@
 
 
 #include "Base.hpp"
+#include <vector>
 
 
 namespace dolos
@@ -31,7 +32,7 @@ class Aggregation
 
   private:
     std::vector<vtx_type> m_coarseMap;
-}
+};
 
 }
 

@@ -25,8 +25,8 @@ UNITTEST(Vertex, Index)
   Edge e0(0, adjncy.data(), ewgts.data());
   Edge e1(1, adjncy.data(), ewgts.data());
 
-  testEqual(e0.index(), 0);
-  testEqual(e1.index(), 1);
+  testEqual(e0.index(), static_cast<adj_type>(0));
+  testEqual(e1.index(), static_cast<adj_type>(1));
 }
 
 
@@ -38,8 +38,8 @@ UNITTEST(Vertex, Weight)
   Edge e0(0, adjncy.data(), ewgts.data());
   Edge e1(1, adjncy.data(), ewgts.data());
 
-  testEqual(e0.weight(), 4);
-  testEqual(e1.weight(), 7);
+  testEqual(e0.weight(), static_cast<wgt_type>(4));
+  testEqual(e1.weight(), static_cast<wgt_type>(7));
 }
 
 UNITTEST(Vertex, GetVertex)
@@ -50,8 +50,8 @@ UNITTEST(Vertex, GetVertex)
   Edge e0(0, adjncy.data(), ewgts.data());
   Edge e1(1, adjncy.data(), ewgts.data());
 
-  testEqual(e0.getVertex(), 1);
-  testEqual(e1.getVertex(), 3);
+  testEqual(e0.getVertex(), static_cast<vtx_type>(1));
+  testEqual(e1.getVertex(), static_cast<vtx_type>(3));
 }
 
 }

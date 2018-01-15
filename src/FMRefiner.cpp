@@ -71,7 +71,7 @@ pid_type pickSide(
         from = 1;
       } else {
         // break the tie via a random number
-        from = sl::Random::inRange(0,1);
+        from = sl::Random::inRange(0,2);
       }
     }
   }
