@@ -13,8 +13,9 @@
 #define DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
 
 
-#include "VertexSet.hpp"
 #include "solidutils/Random.hpp"
+#include "Vertex.hpp"
+#include "Base.hpp"
 #include <vector>
 
 
@@ -120,6 +121,26 @@ class RandomOrderVertexSet
       sl::Random::fillWithPerm(&m_perm, begin);
     }
 
+
+    /**
+    * @brief Move constructor.
+    *
+    * @param other The set to move.
+    */
+    RandomOrderVertexSet(
+        RandomOrderVertexSet && other) :
+      m_begin(other.m_begin),
+      m_end(other.m_end),
+      m_perm(std::move(other.m_perm)),
+      m_weight(other.m_weight),
+      m_edgePrefix(other.m_edgePrefix),
+      m_edgeList(other.m_edgeList),
+      m_edgeWeight(other.m_edgeWeight)
+    {
+      // do nothing
+    }
+
+
     /**
     * @brief Get the begin iterator to this vertex set.
     *
@@ -151,6 +172,22 @@ class RandomOrderVertexSet
     {
       return m_end - m_begin;
     }
+
+
+    /**
+    * @brief Get a vertex at a given index.
+    *
+    * @param index The index.
+    *
+    * @return The vertex.
+    */
+    inline Vertex operator[](
+        size_t const index) const
+    {
+      return Vertex(m_perm[index], m_weight, m_edgePrefix, m_edgeList, \
+          m_edgeWeight);
+    }
+
   
   private:
     vtx_type const m_begin;

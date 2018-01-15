@@ -23,12 +23,14 @@ class Aggregation
 {
   public:
     /**
-    * @brief Create a new aggregation. 
+    * @brief Create a new aggregation from a vector. 
     *
-    * @param numVertices The number of vertices in the aggregation.
+    * @param coarseMap The cmap vector.
+    * @param numCoarseVertices The number of coarse vertices.
     */
     Aggregation(
-        vtx_type numVertices);
+        std::vector<vtx_type> && coarseMap,
+        vtx_type numCoarseVertices);
 
   private:
     std::vector<vtx_type> m_coarseMap;

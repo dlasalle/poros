@@ -14,6 +14,7 @@
 
 
 #include "Vertex.hpp"
+#include "RandomOrderVertexSet.hpp"
 
 
 namespace dolos
@@ -144,6 +145,33 @@ class VertexSet
     inline vtx_type size() const noexcept
     {
       return m_end - m_begin;
+    }
+
+
+    /**
+    * @brief Get a vertex at a given index.
+    *
+    * @param index The index.
+    *
+    * @return The vertex.
+    */
+    inline Vertex operator[](
+        size_t const index) const
+    {
+      return Vertex(index, m_weight, m_edgePrefix, m_edgeList, \
+          m_edgeWeight);
+    }
+
+
+    /**
+    * @brief Get the set of vertices randomly permuted.
+    *
+    * @return The randomly permuted set.
+    */
+    inline RandomOrderVertexSet random() const noexcept
+    {
+      return RandomOrderVertexSet(m_begin, m_end, m_weight, m_edgePrefix, \
+          m_edgeList, m_edgeWeight);
     }
   
   private:

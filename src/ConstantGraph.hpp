@@ -80,6 +80,7 @@ class ConstantGraph
       return m_numVertices;
     }
 
+
     /**
     * @brief Get the number of edges in the graph (counted in each direction).
     *
@@ -90,6 +91,7 @@ class ConstantGraph
       return m_numEdges;
     }
 
+
     /**
     * @brief Get the total vertex weight in the graph.
     *
@@ -99,6 +101,7 @@ class ConstantGraph
     {
       return m_totalVertexWeight; 
     }
+
 
     /**
     * @brief Get the total edge weight in the graph.
