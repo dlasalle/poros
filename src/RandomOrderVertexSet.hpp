@@ -15,6 +15,7 @@
 
 #include "VertexSet.hpp"
 #include "solidutils/Random.hpp"
+#include <vector>
 
 
 namespace dolos
@@ -116,7 +117,7 @@ class RandomOrderVertexSet
       m_edgeList(edgeList),
       m_edgeWeight(edgeWeight)
     {
-      sl::Random::fillWithPerm(m_perm, begin, end)
+      sl::Random::fillWithPerm(&m_perm, begin);
     }
 
     /**
@@ -159,6 +160,13 @@ class RandomOrderVertexSet
     adj_type const * const m_edgePrefix;
     vtx_type const * const m_edgeList;
     wgt_type const * const m_edgeWeight;
+
+    // disable copying
+    RandomOrderVertexSet(
+        RandomOrderVertexSet const & other) = delete;
+    RandomOrderVertexSet& operator=(
+        RandomOrderVertexSet const & other) = delete;
+
 };
 
 
