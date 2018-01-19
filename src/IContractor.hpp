@@ -17,6 +17,7 @@
 
 
 #include "ConstantGraph.hpp"
+#include "Aggregation.hpp"
 #include "Base.hpp"
 
 
@@ -31,7 +32,10 @@ class IContractor
     /**
     * @brief The virtual destructor.
     */
-    virtual ~IContractor(); 
+    virtual ~IContractor()
+    {
+      // do nothing
+    }
 
 
     /**

@@ -20,7 +20,7 @@
 namespace dolos
 {
 
-class SummationContractor
+class SummationContractor : public IContractor
 {
   public:
     /**

@@ -35,7 +35,7 @@ SummationContractor::SummationContractor()
 ******************************************************************************/
 
 
-ConstantGraph SummationContract::contract(
+ConstantGraph SummationContractor::contract(
     ConstantGraph const * const graph,
     Aggregation const * const aggregation)
 {
