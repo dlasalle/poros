@@ -11,7 +11,7 @@
 
 #include "SubgraphExtractor.hpp"
 
-#include "GraphBuilder.hpp"
+#include "TwoStepGraphBuilder.hpp"
 #include "solidutils/VectorMath.hpp"
 
 
@@ -33,7 +33,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   vtx_type const numVertices = graph->getNumVertices();
 
   // place to hold subgraphs while being constructed
-  std::vector<GraphBuilder> builder(numParts);
+  std::vector<TwoStepGraphBuilder> builder(numParts);
 
   // count vertices in each partition
   std::vector<vtx_type> vertexCounts = part->calcVertexCounts();

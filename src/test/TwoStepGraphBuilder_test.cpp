@@ -1,6 +1,6 @@
 /**
-* @file GraphBuilder_test.cpp
-* @brief Unit tests for the GraphBuilder class.
+* @file TwoStepGraphBuilder_test.cpp
+* @brief Unit tests for the TwoStepGraphBuilder class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
 * @version 1
@@ -10,17 +10,17 @@
 
 
 #include "solidutils/UnitTest.hpp"
-#include "GraphBuilder.hpp"
+#include "TwoStepGraphBuilder.hpp"
 
 
 namespace dolos
 {
 
 
-UNITTEST(GraphBuilder, FullBuild)
+UNITTEST(TwoStepGraphBuilder, FullBuild)
 {
   // create a ring of 4 vertices
-  GraphBuilder builder;
+  TwoStepGraphBuilder builder;
 
   builder.setNumVertices(4);
   builder.beginVertexPhase();

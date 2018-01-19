@@ -1,6 +1,6 @@
 /**
-* @file GraphBuilder.hpp
-* @brief The GraphBuilder class.
+* @file TwoStepGraphBuilder.hpp
+* @brief The TwoStepGraphBuilder class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
 * @version 1
@@ -23,7 +23,7 @@ namespace dolos
 {
 
 
-class GraphBuilder
+class TwoStepGraphBuilder
 {
   public:
     enum {
@@ -36,7 +36,7 @@ class GraphBuilder
     /**
     * @brief Create a new graph builder.
     */
-    GraphBuilder();
+    TwoStepGraphBuilder();
 
 
     /**
@@ -158,10 +158,10 @@ class GraphBuilder
     sl::Array<wgt_type> m_edgeWeight;
 
     // prevent copying
-    GraphBuilder(
-        GraphBuilder const & lhs);
-    GraphBuilder & operator=(
-        GraphBuilder const & lhs);
+    TwoStepGraphBuilder(
+        TwoStepGraphBuilder const & lhs);
+    TwoStepGraphBuilder & operator=(
+        TwoStepGraphBuilder const & lhs);
 
 
 

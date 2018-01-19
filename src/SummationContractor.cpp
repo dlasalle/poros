@@ -11,7 +11,7 @@
 
 
 #include "SummationContractor.hpp"
-#include "GraphBuilder.hpp"
+#include "TwoStepGraphBuilder.hpp"
 
 namespace dolos
 {
@@ -39,14 +39,21 @@ ConstantGraph SummationContractor::contract(
     ConstantGraph const * const graph,
     Aggregation const * const aggregation)
 {
-  GraphBuilder builder;
+  OneStepGraphBuilder builder;
 
-  builder.setNumVertices(aggregation->getNumCoarseVertices());
+  // reserve space in our buffers
+  std::vector<vtx_type> neighbors;
+  neighbors.reserve(aggregation.getNumCoarseVertices());
+  std::vector<wgt_type> edgeWeights;
+  edgeWeights.reserve(aggregation.getNumCoarseVertices());
 
-  builder.beginVertexPhase();
+  // go over each fine vertex
+  for (VertexGroup const & group : aggregation->getCoarseVertices()) {
+    for (vtx_type const fine : group.fineVertices()) {
+      
+    }
+  }
 
-
-  builder.beginEdgePhase();
 
   return builder.finish();
 }

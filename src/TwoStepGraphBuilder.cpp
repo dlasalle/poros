@@ -1,6 +1,6 @@
 /**
-* @file GraphBuilder.cpp
-* @brief Implementation of the GraphBuilder class.
+* @file TwoStepGraphBuilder.cpp
+* @brief Implementation of the TwoStepGraphBuilder class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017
 * @version 1
@@ -9,7 +9,7 @@
 
 
 
-#include "GraphBuilder.hpp"
+#include "TwoStepGraphBuilder.hpp"
 #include "GraphData.hpp"
 #include "solidutils/VectorMath.hpp"
 
@@ -23,7 +23,7 @@ namespace dolos
 ******************************************************************************/
 
 
-GraphBuilder::GraphBuilder() :
+TwoStepGraphBuilder::TwoStepGraphBuilder() :
   m_phase(PHASE_START),
   m_numVertices(0),
   m_numEdges(0),
@@ -44,7 +44,7 @@ GraphBuilder::GraphBuilder() :
 ******************************************************************************/
 
 
-void GraphBuilder::setNumVertices(
+void TwoStepGraphBuilder::setNumVertices(
     vtx_type const numVertices)
 {
   ASSERT_EQUAL(m_phase, PHASE_START);
@@ -53,7 +53,7 @@ void GraphBuilder::setNumVertices(
 }
 
 
-void GraphBuilder::beginVertexPhase()
+void TwoStepGraphBuilder::beginVertexPhase()
 {
   ASSERT_EQUAL(m_phase, PHASE_START);
   m_phase = PHASE_VERTICES;
@@ -66,7 +66,7 @@ void GraphBuilder::beginVertexPhase()
 }
 
 
-void GraphBuilder::beginEdgePhase()
+void TwoStepGraphBuilder::beginEdgePhase()
 {
   ASSERT_EQUAL(m_phase, PHASE_VERTICES);
   m_phase = PHASE_EDGES;
@@ -86,7 +86,7 @@ void GraphBuilder::beginEdgePhase()
 }
 
 
-ConstantGraph GraphBuilder::finish()
+ConstantGraph TwoStepGraphBuilder::finish()
 {
   ASSERT_EQUAL(m_phase, PHASE_EDGES);
 
