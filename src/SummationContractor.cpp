@@ -48,12 +48,35 @@ ConstantGraph SummationContractor::contract(
   edgeWeights.reserve(aggregation.getNumCoarseVertices());
 
   // go over each fine vertex
+  std::vector<index_type> htable(agg->getNumCoarseVertices(), NULL_VTX);
   for (VertexGroup const & group : aggregation->getCoarseVertices()) {
-    for (vtx_type const fine : group.fineVertices()) {
-      
-    }
-  }
+    wgt_type coarseVertexWeight = 0;
 
+    for (vtx_type const fine : group.fineVertices()) {
+      Vertex const vertex = graph->getVertex(v);
+      coaresVertexWeight += vertex.weight();
+      for (Edge const & edge : vertex.getEdges()) {
+        adj_type coarseEdgeIndex = htable[edge.index()];
+        if (coarseEdgeIndex == NULL_VTX) {
+          // new edge
+          coarseEdgeIndex = neighbors.size();
+          htable[edge.index()] = coarseEdgeIndex; 
+          neighbors.emplace_back(edge.index());
+          edgeWeights.emplace_back(edge.weight());
+        } else {
+          // edge already exists -- sum them together
+          edgeWeights[coarseEdgeIndex] += edge.weight();
+        }
+      }
+    }
+
+    // add vertex to coarse graph
+    ASSERT_EQUAL(neighbors,size(), edgeWeights.size());
+    builder.addVertex(coarseVertexWeight, \
+        neighbors.size(), neighbors.data(), edgeWeights.data());
+    neighbors.clear();
+    edgeWeights.clear();
+  }
 
   return builder.finish();
 }

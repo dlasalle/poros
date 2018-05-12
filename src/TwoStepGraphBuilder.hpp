@@ -159,9 +159,9 @@ class TwoStepGraphBuilder
 
     // prevent copying
     TwoStepGraphBuilder(
-        TwoStepGraphBuilder const & lhs);
+        TwoStepGraphBuilder const & lhs) = delete;
     TwoStepGraphBuilder & operator=(
-        TwoStepGraphBuilder const & lhs);
+        TwoStepGraphBuilder const & lhs) = delete;
 
 
 

@@ -49,6 +49,14 @@ class OneStepGraphBuilder
       vtx_type degree,
       vtx_type const * neighbors,
       wgt_type const * edgeWeights);
+
+
+  /**
+  * @brief Build the graph. This resets the builder to its initial state.
+  *
+  * @return The built graph.
+  */
+  ConstantGraph finish();
 };
 
 
