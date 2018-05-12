@@ -1,6 +1,6 @@
 /**
-* @file RandomOrderVertexSet.hpp
-* @brief The RandomOrderVertexSet class.
+* @file PermutedVertexSet.hpp
+* @brief The PermutedVertexSet class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017, Solid Lake LLC
 * @version 1
@@ -23,7 +23,7 @@ namespace dolos
 {
 
 
-class RandomOrderVertexSet
+class PermutedVertexSet
 {
   public:
     class Iterator
@@ -31,24 +31,21 @@ class RandomOrderVertexSet
       public:
         Iterator(
             vtx_type const index,
-            vtx_type const * const perm,
-            wgt_type const * const vertexWeight,
-            adj_type const * const edgePrefix,
-            vtx_type const * const edgeList,
-            wgt_type const * const edgeWeight) noexcept :
+            vtx_type const * const set,
+            ICSRGraphData const * const data) noexcept :
           m_index(index),
-          m_perm(perm),
-          m_vertexWeight(vertexWeight),
-          m_edgePrefix(edgePrefix),
-          m_edgeList(edgeList),
-          m_edgeWeight(edgeWeight)
+          m_set(set),
+          m_vertexWeight(data->vertexWeight()),
+          m_edgePrefix(data->edgePrefix()),
+          m_edgeList(data->edgeList()),
+          m_edgeWeight(data->edgeWeight())
         {
           // do nothing
         }
 
         inline Vertex operator*() const
         {
-          return Vertex(m_perm[m_index], m_vertexWeight, m_edgePrefix, \
+          return Vertex(m_set[m_index], m_vertexWeight, m_edgePrefix, \
               m_edgeList, m_edgeWeight);
         }
 
@@ -86,7 +83,11 @@ class RandomOrderVertexSet
 
       private:
         adj_type m_index;
-        vtx_type const * const m_perm;
+        vtx_type const * const m_set;
+
+        // we explicitly store the pointers, rather than use the
+        // ICSRGraphData structure so as to reduce access time as
+        // the iterator is dereferenced
         wgt_type const * const m_vertexWeight;
         adj_type const * const m_edgePrefix;
         vtx_type const * const m_edgeList;
@@ -103,22 +104,14 @@ class RandomOrderVertexSet
     * @param edgeList The edge list vector.
     * @param edgeWeight The edge weight vector.
     */
-    RandomOrderVertexSet(
-        vtx_type const begin,
-        vtx_type const end,
-        wgt_type const * const weight,
-        adj_type const * const edgePrefix,
-        vtx_type const * const edgeList,
-        wgt_type const * const edgeWeight) noexcept :
-      m_begin(begin),
-      m_end(end),
-      m_perm(end - begin),
-      m_weight(weight),
-      m_edgePrefix(edgePrefix),
-      m_edgeList(edgeList),
-      m_edgeWeight(edgeWeight)
+    PermutedVertexSet(
+        vtx_type const size,
+        vtx_type const * const vertices,
+        ICSRGraphData const * const data) noexcept :
+      m_set(vertices, vertices+size),
+      m_data(data)
     {
-      sl::Random::fillWithPerm(&m_perm, begin);
+      // do nothing
     }
 
 
@@ -127,19 +120,13 @@ class RandomOrderVertexSet
     *
     * @param other The set to move.
     */
-    RandomOrderVertexSet(
-        RandomOrderVertexSet && other) :
-      m_begin(other.m_begin),
-      m_end(other.m_end),
-      m_perm(std::move(other.m_perm)),
-      m_weight(other.m_weight),
-      m_edgePrefix(other.m_edgePrefix),
-      m_edgeList(other.m_edgeList),
-      m_edgeWeight(other.m_edgeWeight)
+    PermutedVertexSet(
+        PermutedVertexSet && other) :
+      m_set(std::move(other.m_set)),
+      m_data(other.m_data)
     {
       // do nothing
     }
-
 
     /**
     * @brief Get the begin iterator to this vertex set.
@@ -148,8 +135,7 @@ class RandomOrderVertexSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(m_begin, m_perm.data(), m_weight, m_edgePrefix, \
-          m_edgeList, m_edgeWeight);
+      return Iterator(0, m_set.data(), m_data);
     }
 
     /**
@@ -159,8 +145,7 @@ class RandomOrderVertexSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator(m_end, m_perm.data(), m_weight, m_edgePrefix, \
-          m_edgeList, m_edgeWeight);
+      return Iterator(m_set.size(), m_set.data(), m_data);
     }
 
     /**
@@ -170,9 +155,8 @@ class RandomOrderVertexSet
     */
     inline vtx_type size() const noexcept
     {
-      return m_end - m_begin;
+      return m_set.size();
     }
-
 
     /**
     * @brief Get a vertex at a given index.
@@ -184,25 +168,20 @@ class RandomOrderVertexSet
     inline Vertex operator[](
         size_t const index) const
     {
-      return Vertex(m_perm[index], m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
+      return Vertex(m_set[index], m_data->vertexWeight(), m_data->edgePrefix(), \
+          m_data->edgeList(), m_data->edgeWeight());
     }
 
   
   private:
-    vtx_type const m_begin;
-    vtx_type const m_end;
-    std::vector<vtx_type> m_perm;
-    wgt_type const * const m_weight;
-    adj_type const * const m_edgePrefix;
-    vtx_type const * const m_edgeList;
-    wgt_type const * const m_edgeWeight;
+    std::vector<vtx_type> m_set;
+    ICSRGraphData const * const m_data;
 
     // disable copying
-    RandomOrderVertexSet(
-        RandomOrderVertexSet const & other) = delete;
-    RandomOrderVertexSet& operator=(
-        RandomOrderVertexSet const & other) = delete;
+    PermutedVertexSet(
+        PermutedVertexSet const & other) = delete;
+    PermutedVertexSet& operator=(
+        PermutedVertexSet const & other) = delete;
 
 };
 

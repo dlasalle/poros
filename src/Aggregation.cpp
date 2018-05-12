@@ -9,6 +9,7 @@
 
 
 #include "Aggregation.hpp"
+#include "solidutils/VectorMath.hpp"
 
 
 namespace dolos
@@ -21,18 +22,75 @@ namespace dolos
 
 Aggregation::Aggregation(
     std::vector<vtx_type> && coarseMap,
-    const vtx_type numCoarseVertices) :
+    vtx_type const numCoarseVertices,
+    ICSRGraphData const * const data) :
   m_numCoarseVertices(numCoarseVertices),
-  m_coarseMap(coarseMap)
+  m_coarseMap(coarseMap),
+  m_finePrefix(numCoarseVertices+1, 0),
+  m_fineMap(m_coarseMap.size()),
+  m_data(data)
+{
+  // build prefix and fine map
+  for (vtx_type const vtx : coarseMap) {
+    ++m_finePrefix[vtx+1];
+  }
+  sl::VectorMath::prefixSumExclusive(m_finePrefix.data(), m_finePrefix.size());
+  for (vtx_type const vtx : coarseMap) {
+    m_fineMap[m_finePrefix[vtx+1]] = vtx;
+    ++m_finePrefix[vtx+1];
+  }
+
+  ASSERT_EQUAL(m_finePrefix.back(), m_coarseMap.size());
+}
+
+Aggregation(
+    Aggregation const & rhs) :
+  m_numCoarseVertices(rhs.m_numCoarseVertices),
+  m_coarseMap(rhs.m_coarseMap),
+  m_finePrefix(rhs.m_finePrefix),
+  m_fineMap(rhs.m_fineMap),
+  m_data(rhs.m_data)
+{
+  // do nothing 
+}
+
+Aggregation(
+    Aggregation && rhs) :
+  m_numCoarseVertices(rhs.m_numCoarseVertices),
+  m_coarseMap(std::move(rhs.m_coarseMap)),
+  m_finePrefix(std::move(rhs.m_finePrefix)),
+  m_fineMap(std::move(rhs.m_fineMap)),
+  m_data(rhs.m_data)
 {
   // do nothing
 }
+
+Aggregation& operator=(
+    Aggregation const & rhs)
+{
+  m_numCoarseVertices = rhs.m_numCoarseVertices;
+  m_coarseMap = rhs.m_coarseMap;
+  m_finePrefix = rhs.m_finePrefix;
+  m_fineMap = rhs.m_fineMap;
+  m_data = rhs.m_data;
+}
+
+Aggregation& operator=(
+    Aggregation && rhs)
+{
+}
+
 
 
 /******************************************************************************
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
+VertexGrouping Aggregation::coarseVertices() const noexcept
+{
+  return VertexGrouping(m_numCoarseVertices, m_finePrefix.data(),
+      m_fineMap.data(), m_data);
+}
 
 
 

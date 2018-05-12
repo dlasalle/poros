@@ -97,8 +97,8 @@ ConstantGraph GraphData::toGraph()
 
   ConstantGraph graph( \
       data->getNumVertices(), data->getNumEdges(), \
-      data->getEdgePrefix(), data->getEdgeList(), data->getVertexWeight(), \
-      data->getEdgeWeight(), data);
+      data->edgePrefix(), data->edgeList(), data->vertexWeight(), \
+      data->edgeWeight(), data);
 
   return graph;
 }
@@ -116,49 +116,49 @@ void GraphData::setUnitEdgeWeight() noexcept
 }
 
 
-adj_type * GraphData::getEdgePrefix() noexcept
+adj_type * GraphData::edgePrefix() noexcept
 {
   return m_edgePrefix.data();
 }
 
 
-vtx_type * GraphData::getEdgeList() noexcept
+vtx_type * GraphData::edgeList() noexcept
 {
   return m_edgeList.data();
 }
 
 
-wgt_type * GraphData::getVertexWeight() noexcept
+wgt_type * GraphData::vertexWeight() noexcept
 {
   return m_vertexWeight.data();
 }
 
 
-wgt_type * GraphData::getEdgeWeight() noexcept
+wgt_type * GraphData::edgeWeight() noexcept
 {
   return m_edgeWeight.data();
 }
 
 
-adj_type const * GraphData::getEdgePrefix() const noexcept
+adj_type const * GraphData::edgePrefix() const noexcept
 {
   return m_edgePrefix.data();
 }
 
 
-vtx_type const * GraphData::getEdgeList() const noexcept
+vtx_type const * GraphData::edgeList() const noexcept
 {
   return m_edgeList.data();
 }
 
 
-wgt_type const * GraphData::getVertexWeight() const noexcept
+wgt_type const * GraphData::vertexWeight() const noexcept
 {
   return m_vertexWeight.data();
 }
 
 
-wgt_type const * GraphData::getEdgeWeight() const noexcept
+wgt_type const * GraphData::edgeWeight() const noexcept
 {
   return m_edgeWeight.data();
 }

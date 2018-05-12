@@ -39,23 +39,22 @@ ConstantGraph SummationContractor::contract(
     ConstantGraph const * const graph,
     Aggregation const * const aggregation)
 {
-  OneStepGraphBuilder builder;
+  TwoStepGraphBuilder builder;
 
   // reserve space in our buffers
   std::vector<vtx_type> neighbors;
-  neighbors.reserve(aggregation.getNumCoarseVertices());
+  neighbors.reserve(aggregation->getNumCoarseVertices());
   std::vector<wgt_type> edgeWeights;
-  edgeWeights.reserve(aggregation.getNumCoarseVertices());
+  edgeWeights.reserve(aggregation->getNumCoarseVertices());
 
   // go over each fine vertex
-  std::vector<index_type> htable(agg->getNumCoarseVertices(), NULL_VTX);
-  for (VertexGroup const & group : aggregation->getCoarseVertices()) {
+  std::vector<vtx_type> htable(aggregation->getNumCoarseVertices(), NULL_VTX);
+  for (VertexGroup const group : aggregation->getCoarseVertices()) {
     wgt_type coarseVertexWeight = 0;
 
-    for (vtx_type const fine : group.fineVertices()) {
-      Vertex const vertex = graph->getVertex(v);
+    for (Vertex const vertex : group.fineVertices()) {
       coaresVertexWeight += vertex.weight();
-      for (Edge const & edge : vertex.getEdges()) {
+      for (Edge const edge : vertex.getEdges()) {
         adj_type coarseEdgeIndex = htable[edge.index()];
         if (coarseEdgeIndex == NULL_VTX) {
           // new edge
@@ -71,7 +70,7 @@ ConstantGraph SummationContractor::contract(
     }
 
     // add vertex to coarse graph
-    ASSERT_EQUAL(neighbors,size(), edgeWeights.size());
+    ASSERT_EQUAL(neighbors.size(), edgeWeights.size());
     builder.addVertex(coarseVertexWeight, \
         neighbors.size(), neighbors.data(), edgeWeights.data());
     neighbors.clear();

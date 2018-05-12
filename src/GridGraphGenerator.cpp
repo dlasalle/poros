@@ -139,10 +139,10 @@ ConstantGraph GridGraphGenerator::generate()
 
   GraphData data(numVertices, numEdges);
 
-  adj_type * const edgePrefix = data.getEdgePrefix();
-  vtx_type * const edgeList = data.getEdgeList();
-  wgt_type * const vertexWeight = data.getVertexWeight();
-  wgt_type * const edgeWeight = data.getEdgeWeight();
+  adj_type * const edgePrefix = data.edgePrefix();
+  vtx_type * const edgeList = data.edgeList();
+  wgt_type * const vertexWeight = data.vertexWeight();
+  wgt_type * const edgeWeight = data.edgeWeight();
 
   vtx_type const numX = m_grid->getNumVerticesX();
   vtx_type const numY = m_grid->getNumVerticesY();

@@ -16,6 +16,7 @@
 
 #include "solidutils/Debug.hpp"
 #include "Aggregation.hpp"
+#include "ICSRGraphData.hpp"
 #include "Base.hpp"
 
 
@@ -37,9 +38,12 @@ class MatchedAggregationBuilder
     /**
     * @brief Build an aggregation from this matching.
     *
+    * @param data The graph data.
+    *
     * @return The aggregation. 
     */
-    Aggregation build() const;
+    Aggregation build(
+        ICSRGraphData const * const data) const;
 
 
     /**

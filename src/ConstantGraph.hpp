@@ -241,6 +241,8 @@ class ConstantGraph
 
     /**
     * @brief Any data to free upon destruction.
+    * TODO: this should really be a shared pointer or some other type of
+    * reference counting system.
     */
     IAllocatedData * m_data;
 

@@ -34,7 +34,8 @@ MatchedAggregationBuilder::MatchedAggregationBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-Aggregation MatchedAggregationBuilder::build() const
+Aggregation MatchedAggregationBuilder::build(
+    ICSRGraphData const * const data) const
 {
   std::vector<vtx_type> cmap(m_match.size());
   
@@ -52,7 +53,7 @@ Aggregation MatchedAggregationBuilder::build() const
     }
   }
 
-  return Aggregation(std::move(cmap), numCoarseVertices);
+  return Aggregation(std::move(cmap), numCoarseVertices, data);
 }
 
 

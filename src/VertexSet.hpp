@@ -14,7 +14,6 @@
 
 
 #include "Vertex.hpp"
-#include "RandomOrderVertexSet.hpp"
 
 
 namespace dolos
@@ -42,40 +41,40 @@ class VertexSet
           // do nothing
         }
 
-        inline Vertex operator*() const
+        inline Vertex operator*() const noexcept
         {
           return Vertex(m_index, m_vertexWeight, m_edgePrefix, m_edgeList, \
               m_edgeWeight);
         }
 
-        inline Iterator const & operator++()
+        inline Iterator const & operator++() noexcept
         {
           ++m_index;
           return *this;
         }
 
         inline Iterator const & operator+=(
-            vtx_type const offset)
+            vtx_type const offset) noexcept
         {
           m_index += offset;
           return *this;
         }
 
         inline Iterator const & operator-=(
-            vtx_type const offset)
+            vtx_type const offset) noexcept
         {
           m_index -= offset;
           return *this;
         }
 
         inline bool operator==(
-            Iterator const & other) const
+            Iterator const & other) const noexcept
         {
           return m_index == other.m_index;
         }
 
         inline bool operator!=(
-            Iterator const & other) const
+            Iterator const & other) const noexcept
         {
           return m_index != other.m_index;
         }
@@ -156,24 +155,12 @@ class VertexSet
     * @return The vertex.
     */
     inline Vertex operator[](
-        size_t const index) const
+        vtx_type const index) const
     {
       return Vertex(index, m_weight, m_edgePrefix, m_edgeList, \
           m_edgeWeight);
     }
 
-
-    /**
-    * @brief Get the set of vertices randomly permuted.
-    *
-    * @return The randomly permuted set.
-    */
-    inline RandomOrderVertexSet random() const noexcept
-    {
-      return RandomOrderVertexSet(m_begin, m_end, m_weight, m_edgePrefix, \
-          m_edgeList, m_edgeWeight);
-    }
-  
   private:
     vtx_type const m_begin;
     vtx_type const m_end;

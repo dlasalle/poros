@@ -14,8 +14,9 @@
 #define DOLOS_SRC_GRAPHDATA_HPP
 
 #include "Base.hpp"
-#include "IAllocatedData.hpp"
 #include "ConstantGraph.hpp"
+#include "IAllocatedData.hpp"
+#include "ICSRGraphData.hpp"
 #include "solidutils/Array.hpp"
 
 namespace dolos
@@ -24,6 +25,7 @@ namespace dolos
 
 
 class GraphData :
+    public ICSRGraphData,
     public IAllocatedData
 {
   public:
@@ -103,7 +105,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    adj_type * getEdgePrefix() noexcept;
+    adj_type * edgePrefix() noexcept;
 
 
     /**
@@ -111,7 +113,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    vtx_type * getEdgeList() noexcept;
+    vtx_type * edgeList() noexcept;
 
 
     /**
@@ -119,7 +121,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type * getVertexWeight() noexcept;
+    wgt_type * vertexWeight() noexcept;
 
 
     /**
@@ -127,7 +129,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type * getEdgeWeight() noexcept;
+    wgt_type * edgeWeight() noexcept;
 
 
     /**
@@ -135,7 +137,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    adj_type const * getEdgePrefix() const noexcept;
+    adj_type const * edgePrefix() const noexcept override;
 
 
     /**
@@ -143,7 +145,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    vtx_type const * getEdgeList() const noexcept;
+    vtx_type const * edgeList() const noexcept override;
 
 
     /**
@@ -151,7 +153,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type const * getVertexWeight() const noexcept;
+    wgt_type const * vertexWeight() const noexcept override;
 
 
     /**
@@ -159,7 +161,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type const * getEdgeWeight() const noexcept;
+    wgt_type const * edgeWeight() const noexcept override;
 
 
 
