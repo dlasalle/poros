@@ -43,7 +43,7 @@ Aggregation::Aggregation(
   ASSERT_EQUAL(m_finePrefix.back(), m_coarseMap.size());
 }
 
-Aggregation(
+Aggregation::Aggregation(
     Aggregation const & rhs) :
   m_numCoarseVertices(rhs.m_numCoarseVertices),
   m_coarseMap(rhs.m_coarseMap),
@@ -54,7 +54,7 @@ Aggregation(
   // do nothing 
 }
 
-Aggregation(
+Aggregation::Aggregation(
     Aggregation && rhs) :
   m_numCoarseVertices(rhs.m_numCoarseVertices),
   m_coarseMap(std::move(rhs.m_coarseMap)),
@@ -65,7 +65,7 @@ Aggregation(
   // do nothing
 }
 
-Aggregation& operator=(
+Aggregation& Aggregation::operator=(
     Aggregation const & rhs)
 {
   m_numCoarseVertices = rhs.m_numCoarseVertices;
@@ -73,11 +73,22 @@ Aggregation& operator=(
   m_finePrefix = rhs.m_finePrefix;
   m_fineMap = rhs.m_fineMap;
   m_data = rhs.m_data;
+
+  return *this;
 }
 
-Aggregation& operator=(
+Aggregation& Aggregation::operator=(
     Aggregation && rhs)
 {
+  m_numCoarseVertices = rhs.m_numCoarseVertices;
+  rhs.m_numCoarseVertices = 0;
+  m_coarseMap = std::move(rhs.m_coarseMap);
+  m_finePrefix = std::move(rhs.m_finePrefix);
+  m_fineMap = std::move(rhs.m_fineMap);
+  m_data = rhs.m_data;
+  rhs.m_data = nullptr;
+
+  return *this;
 }
 
 

@@ -110,11 +110,11 @@ class Aggregation
 
 
   private:
-    const vtx_type m_numCoarseVertices;
+    vtx_type m_numCoarseVertices;
     std::vector<vtx_type> m_coarseMap;
     std::vector<vtx_type> m_finePrefix;
     std::vector<vtx_type> m_fineMap;
-    ICSRGraphData const * const m_data;
+    ICSRGraphData const * m_data;
 
 };
 

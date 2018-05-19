@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
-#define DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
+#ifndef DOLOS_SRC_PERMUTEDVERTEXSET_HPP
+#define DOLOS_SRC_PERMUTEDVERTEXSET_HPP
 
 
 #include "solidutils/Random.hpp"
@@ -95,14 +95,11 @@ class PermutedVertexSet
     };
 
     /**
-    * @brief Create a new vertex set.
+    * @brief Create a new vertex set with a permuted order.
     *
-    * @param begin The starting vertex.
-    * @param end The ending vertex (exclusive).
-    * @param weight The vector of vertex weights.
-    * @param edgePrefix THe edge prefix vector.
-    * @param edgeList The edge list vector.
-    * @param edgeWeight The edge weight vector.
+    * @param size The number of vertices.
+    * @param vertices The set of vertices (order matters).
+    * @param data The data of the graph.
     */
     PermutedVertexSet(
         vtx_type const size,
@@ -124,6 +121,14 @@ class PermutedVertexSet
         PermutedVertexSet && other) :
       m_set(std::move(other.m_set)),
       m_data(other.m_data)
+    {
+      // do nothing
+    }
+
+    /**
+    * @brief Virtual destructor.
+    */
+    virtual ~PermutedVertexSet()
     {
       // do nothing
     }
@@ -168,8 +173,8 @@ class PermutedVertexSet
     inline Vertex operator[](
         size_t const index) const
     {
-      return Vertex(m_set[index], m_data->vertexWeight(), m_data->edgePrefix(), \
-          m_data->edgeList(), m_data->edgeWeight());
+      return Vertex(m_set[index], m_data->vertexWeight(), \
+          m_data->edgePrefix(), m_data->edgeList(), m_data->edgeWeight());
     }
 
   
