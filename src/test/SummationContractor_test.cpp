@@ -33,7 +33,7 @@ UNITTEST(SummationContractor, Contract)
     cmap[i] = static_cast<vtx_type>(i/2);
   }
 
-  Aggregation agg(std::move(cmap), 8);
+  Aggregation agg(std::move(cmap), 8, graph.getData());
 
   SummationContractor contractor;
 

@@ -16,7 +16,6 @@
 #include "Base.hpp"
 #include "ConstantGraph.hpp"
 #include "IAllocatedData.hpp"
-#include "ICSRGraphData.hpp"
 #include "solidutils/Array.hpp"
 
 namespace dolos
@@ -25,7 +24,6 @@ namespace dolos
 
 
 class GraphData :
-    public ICSRGraphData,
     public IAllocatedData
 {
   public:
@@ -137,7 +135,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    adj_type const * edgePrefix() const noexcept override;
+    adj_type const * edgePrefix() const noexcept;
 
 
     /**
@@ -145,7 +143,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    vtx_type const * edgeList() const noexcept override;
+    vtx_type const * edgeList() const noexcept;
 
 
     /**
@@ -153,7 +151,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type const * vertexWeight() const noexcept override;
+    wgt_type const * vertexWeight() const noexcept;
 
 
     /**
@@ -161,7 +159,7 @@ class GraphData :
     *
     * @return The pointer.
     */
-    wgt_type const * edgeWeight() const noexcept override;
+    wgt_type const * edgeWeight() const noexcept;
 
 
 

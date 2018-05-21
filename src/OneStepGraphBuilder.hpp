@@ -25,6 +25,7 @@ namespace dolos
 
 class OneStepGraphBuilder
 {
+  public:
   /**
   * @brief Create a new graph builder.
   *
@@ -57,6 +58,23 @@ class OneStepGraphBuilder
   * @return The built graph.
   */
   ConstantGraph finish();
+
+  private:
+    vtx_type m_numVertices;
+    adj_type m_numEdges;
+    sl::Array<adj_type> m_edgePrefix;
+    sl::Array<vtx_type> m_edgeList;
+    sl::Array<wgt_type> m_vertexWeight;
+    sl::Array<wgt_type> m_edgeWeight;
+
+    // prevent copying
+    OneStepGraphBuilder(
+        OneStepGraphBuilder const & lhs) = delete;
+    OneStepGraphBuilder & operator=(
+        OneStepGraphBuilder const & lhs) = delete;
+
+
+
 };
 
 

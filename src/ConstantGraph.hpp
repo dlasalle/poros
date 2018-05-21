@@ -17,8 +17,9 @@
 #include "IAllocatedData.hpp"
 #include "EdgeSet.hpp"
 #include "VertexSet.hpp"
-#include <cstdlib>
+#include "CSRGraphData.hpp"
 #include "solidutils/Debug.hpp"
+#include <cstdlib>
 
 
 namespace dolos
@@ -225,6 +226,12 @@ class ConstantGraph
     }
 
 
+    /**
+    * @brief Get the underlying data of the CSR graph.
+    *
+    * @return The underlying data.
+    */
+    CSRGraphData getData() const noexcept;
 
 
   private:

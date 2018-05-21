@@ -35,7 +35,7 @@ MatchedAggregationBuilder::MatchedAggregationBuilder(
 ******************************************************************************/
 
 Aggregation MatchedAggregationBuilder::build(
-    ICSRGraphData const * const data) const
+    CSRGraphData const data) const
 {
   std::vector<vtx_type> cmap(m_match.size());
   

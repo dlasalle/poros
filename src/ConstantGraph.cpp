@@ -92,4 +92,13 @@ ConstantGraph::~ConstantGraph()
 }
 
 
+/******************************************************************************
+* PUBLIC METHODS **************************************************************
+******************************************************************************/
+
+CSRGraphData ConstantGraph::getData() const noexcept
+{
+  return CSRGraphData(m_edgePrefix, m_edgeList, m_vertexWeight, m_edgeWeight);
+}
+
 }

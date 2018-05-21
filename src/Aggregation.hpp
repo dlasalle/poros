@@ -12,9 +12,10 @@
 #define DOLOS_SRC_AGGREGATION_HPP
 
 
-#include "solidutils/Debug.hpp"
 #include "Base.hpp"
 #include "VertexGrouping.hpp"
+#include "CSRGraphData.hpp"
+#include "solidutils/Debug.hpp"
 #include <vector>
 
 
@@ -34,7 +35,7 @@ class Aggregation
     Aggregation(
         std::vector<vtx_type> && coarseMap,
         vtx_type numCoarseVertices,
-        ICSRGraphData const * const data);
+        CSRGraphData data);
 
     /**
     * @brief Copy constructor.
@@ -114,7 +115,7 @@ class Aggregation
     std::vector<vtx_type> m_coarseMap;
     std::vector<vtx_type> m_finePrefix;
     std::vector<vtx_type> m_fineMap;
-    ICSRGraphData const * m_data;
+    CSRGraphData m_data;
 
 };
 

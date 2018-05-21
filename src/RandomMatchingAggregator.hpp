@@ -16,6 +16,7 @@
 
 
 #include "IAggregator.hpp"
+#include "IRandomEngine.hpp"
 
 
 namespace dolos
@@ -45,7 +46,10 @@ class RandomMatchingAggregator
     * @return The aggregation.
     */
     virtual Aggregation aggregate(
-        ConstantGraph const * graph) const;
+        ConstantGraph const * graph,
+        IRandomEngine * const randomEngine) const;
+
+
 };
 
 

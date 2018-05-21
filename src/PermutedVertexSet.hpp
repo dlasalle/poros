@@ -13,9 +13,9 @@
 #define DOLOS_SRC_PERMUTEDVERTEXSET_HPP
 
 
-#include "solidutils/Random.hpp"
 #include "Vertex.hpp"
 #include "Base.hpp"
+#include "CSRGraphData.hpp"
 #include <vector>
 
 
@@ -32,21 +32,18 @@ class PermutedVertexSet
         Iterator(
             vtx_type const index,
             vtx_type const * const set,
-            ICSRGraphData const * const data) noexcept :
+            CSRGraphData const data) noexcept :
           m_index(index),
           m_set(set),
-          m_vertexWeight(data->vertexWeight()),
-          m_edgePrefix(data->edgePrefix()),
-          m_edgeList(data->edgeList()),
-          m_edgeWeight(data->edgeWeight())
+          m_data(data)
         {
           // do nothing
         }
 
         inline Vertex operator*() const
         {
-          return Vertex(m_set[m_index], m_vertexWeight, m_edgePrefix, \
-              m_edgeList, m_edgeWeight);
+          return Vertex(m_set[m_index], m_data.vertexWeight(), \
+              m_data.edgePrefix(), m_data.edgeList(), m_data.edgeWeight());
         }
 
         inline Iterator const & operator++()
@@ -83,15 +80,9 @@ class PermutedVertexSet
 
       private:
         adj_type m_index;
-        vtx_type const * const m_set;
+        vtx_type const * m_set;
+        CSRGraphData m_data;
 
-        // we explicitly store the pointers, rather than use the
-        // ICSRGraphData structure so as to reduce access time as
-        // the iterator is dereferenced
-        wgt_type const * const m_vertexWeight;
-        adj_type const * const m_edgePrefix;
-        vtx_type const * const m_edgeList;
-        wgt_type const * const m_edgeWeight;
     };
 
     /**
@@ -104,7 +95,7 @@ class PermutedVertexSet
     PermutedVertexSet(
         vtx_type const size,
         vtx_type const * const vertices,
-        ICSRGraphData const * const data) noexcept :
+        CSRGraphData const data) noexcept :
       m_set(vertices, vertices+size),
       m_data(data)
     {
@@ -173,14 +164,14 @@ class PermutedVertexSet
     inline Vertex operator[](
         size_t const index) const
     {
-      return Vertex(m_set[index], m_data->vertexWeight(), \
-          m_data->edgePrefix(), m_data->edgeList(), m_data->edgeWeight());
+      return Vertex(m_set[index], m_data.vertexWeight(), \
+          m_data.edgePrefix(), m_data.edgeList(), m_data.edgeWeight());
     }
 
   
   private:
     std::vector<vtx_type> m_set;
-    ICSRGraphData const * const m_data;
+    CSRGraphData m_data;
 
     // disable copying
     PermutedVertexSet(

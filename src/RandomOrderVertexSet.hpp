@@ -33,7 +33,7 @@ class RandomOrderVertexSet : public PermutedVertexSet
       IRandomEngine * randomEngine);
 
 
-}
+};
 
 
 }

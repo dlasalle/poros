@@ -11,7 +11,7 @@
 #ifndef DOLOS_SRC_VERTEXGROUPING_HPP
 #define DOLOS_SRC_VERTEXGROUPING_HPP
 
-#include "ICSRGraphData.hpp"
+#include "CSRGraphData.hpp"
 #include "VertexGroup.hpp"
 
 namespace dolos
@@ -27,7 +27,7 @@ class VertexGrouping
           vtx_type const index,
           vtx_type const * const finePrefix,
           vtx_type const * const fineMap,
-          ICSRGraphData const * const data) :
+          CSRGraphData data) :
         m_index(index),
         m_finePrefix(finePrefix),
         m_fineMap(fineMap),
@@ -80,7 +80,7 @@ class VertexGrouping
         vtx_type m_index;
         vtx_type const * const m_finePrefix;
         vtx_type const * const m_fineMap;
-        ICSRGraphData const * const m_data;
+        CSRGraphData m_data;
   };
 
   /**
@@ -95,7 +95,7 @@ class VertexGrouping
       vtx_type const numCoarseVertices,
       vtx_type const * const finePrefix,
       vtx_type const * const fineMap,
-      ICSRGraphData const * const data) noexcept :
+      CSRGraphData data) noexcept :
     m_numCoarseVertices(numCoarseVertices),
     m_finePrefix(finePrefix),
     m_fineMap(fineMap),
@@ -130,7 +130,7 @@ class VertexGrouping
     vtx_type const m_numCoarseVertices; 
     vtx_type const * const m_finePrefix;
     vtx_type const * const m_fineMap;
-    ICSRGraphData const * const m_data;
+    CSRGraphData m_data;
 
 };
 

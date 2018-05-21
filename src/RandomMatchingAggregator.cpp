@@ -12,7 +12,6 @@
 #include "RandomMatchingAggregator.hpp"
 #include "MatchedAggregationBuilder.hpp"
 #include "RandomOrderVertexSet.hpp"
-#include "IRandomEngine.hpp"
 
 namespace dolos
 {
@@ -23,9 +22,7 @@ namespace dolos
 ******************************************************************************/
 
 
-RandomMatchingAggregator::RandomMatchingAggregator(
-    IRandomEngine * const randEngine) :
-  m_randomEngine(randEngine)  
+RandomMatchingAggregator::RandomMatchingAggregator()
 {
   // do nothing
 }
@@ -43,7 +40,8 @@ RandomMatchingAggregator::~RandomMatchingAggregator()
 
 
 Aggregation RandomMatchingAggregator::aggregate(
-    ConstantGraph const * graph) const
+    ConstantGraph const * const graph,
+    IRandomEngine * const randomEngine) const
 {
   MatchedAggregationBuilder matcher(graph->getNumVertices());
 
@@ -72,7 +70,7 @@ Aggregation RandomMatchingAggregator::aggregate(
     }
   }
 
-  return matcher.build();
+  return matcher.build(graph->getData());
 }
 
 

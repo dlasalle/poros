@@ -12,7 +12,7 @@
 #ifndef DOLOS_SRC_VERTEXGROUP_HPP
 #define DOLOS_SRC_VERTEXGROUP_HPP
 
-#include "ICSRGraphData.hpp"
+#include "CSRGraphData.hpp"
 #include "PermutedVertexSet.hpp"
 
 namespace dolos
@@ -31,7 +31,7 @@ class VertexGroup
     VertexGroup(
         vtx_type const size,
         vtx_type const * const fineVertices,
-        ICSRGraphData const * const data) noexcept :
+        CSRGraphData data) noexcept :
       m_size(size),
       m_fineVertices(fineVertices),
       m_data(data)
@@ -53,7 +53,7 @@ class VertexGroup
   private:
     vtx_type const m_size;
     vtx_type const * const m_fineVertices;
-    ICSRGraphData const * const m_data;
+    CSRGraphData m_data;
     
 };
 

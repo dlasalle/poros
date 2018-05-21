@@ -13,6 +13,9 @@
 #define DOLOS_SRC_IRANDOMENGINE_HPP
 
 
+namespace dolos
+{
+
 class IRandomEngine 
 {
   public:
@@ -20,6 +23,10 @@ class IRandomEngine
   {
     // do nothing
   }
+
+  
+};
+
 }
 
 #endif

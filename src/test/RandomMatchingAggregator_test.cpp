@@ -10,6 +10,7 @@
 
 #include "RandomMatchingAggregator.hpp"
 #include "GridGraphGenerator.hpp"
+#include "SimpleRandomEngine.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -24,7 +25,9 @@ UNITTEST(RandomMatchingAggregator, Aggregate)
 
   RandomMatchingAggregator aggregator;
 
-  Aggregation agg = aggregator.aggregate(&graph);
+  SimpleRandomEngine rand;
+
+  Aggregation agg = aggregator.aggregate(&graph, &rand);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.getNumVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \
@@ -33,7 +36,7 @@ UNITTEST(RandomMatchingAggregator, Aggregate)
   // verify at most two vertices per coarse vertex
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
   for (Vertex const & vertex : graph.getVertices()) {
-    vtx_type const coarse = agg.getCoarseVertex(vertex.index());
+    vtx_type const coarse = agg.getCoarseVertexNumber(vertex.index());
     ++matchCount[coarse];
   }
 
