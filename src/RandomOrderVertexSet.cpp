@@ -14,20 +14,23 @@ namespace dolos
 
 
 /******************************************************************************
-* CONSTRUCTORS / DESTRUCTOR ***************************************************
+* PUBLIC STATIC METHODS *******************************************************
 ******************************************************************************/
 
-RandomOrderVertexSet::RandomOrderVertexSet(
+PermutedVertexSet RandomOrderVertexSet::generate(
     VertexSet const set,
     IRandomEngine * const randomEngine)
 {
+  vtx_type const numVertices = set.size();
+  std::vector<vtx_type> perm(numVertices);
+
+  randomEngine->fillWithPerm(perm.data(), 0, perm.size());
+
+  return PermutedVertexSet(
+      perm.size(),
+      perm.data(),
+      set.data());  
 }
-
-
-/******************************************************************************
-* PUBLIC METHODS **************************************************************
-******************************************************************************/
-
 
 
 }

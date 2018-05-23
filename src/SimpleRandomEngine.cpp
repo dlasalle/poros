@@ -9,6 +9,7 @@
 
 
 #include "SimpleRandomEngine.hpp"
+#include <algorithm>
 
 namespace dolos
 {
@@ -27,6 +28,19 @@ SimpleRandomEngine::SimpleRandomEngine(
 /******************************************************************************
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
+
+void SimpleRandomEngine::fillWithPerm(
+    vtx_type * container,
+    vtx_type const start,
+    vtx_type const end)
+{
+  for (vtx_type i = 0; i < end-start; ++i) {
+    container[i] = start + i;
+  }
+
+  std::random_shuffle(container + start, container + end);
+}
+
 
 
 

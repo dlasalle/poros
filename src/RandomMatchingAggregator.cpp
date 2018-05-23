@@ -45,7 +45,7 @@ Aggregation RandomMatchingAggregator::aggregate(
 {
   MatchedAggregationBuilder matcher(graph->getNumVertices());
 
-  RandomOrderVertexSet permutedVertices(graph->getVertices(), randomEngine);
+  PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(graph->getVertices(), randomEngine);
 
   for (Vertex const & vertex : permutedVertices) {
     vtx_type const v = vertex.index();

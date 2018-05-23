@@ -10,6 +10,7 @@
 
 
 #include "RandomOrderVertexSet.hpp"
+#include "SimpleRandomEngine.hpp"
 #include "solidutils/UnitTest.hpp"
 #include <vector>
 
@@ -23,9 +24,13 @@ UNITTEST(RandomOrderVertexSet, Size)
   std::vector<adj_type> edgePrefix{0,1,2,3,4,5,6,7,8,9,10};;
   std::vector<vtx_type> edgeList{0,1,2,3,4,5,6,7,8,9};
   std::vector<wgt_type> edgeWeight(10, 1);
+  VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), edgeList.data(), \
+      edgeWeight.data());
 
-  RandomOrderVertexSet set(0, 10, weight.data(), edgePrefix.data(), \
-      edgeList.data(), edgeWeight.data());
+  SimpleRandomEngine random;
+
+  PermutedVertexSet set = RandomOrderVertexSet::generate(
+      vSet, &random);
 
   testEqual(set.size(), 10U);
 }
@@ -38,8 +43,13 @@ UNITTEST(RandomOrderVertexSet, Iterator)
   std::vector<vtx_type> edgeList{0,1,2,3,4,5,6,7,8,9};
   std::vector<wgt_type> edgeWeight(10, 1);
 
-  RandomOrderVertexSet set(0, 10, weight.data(), edgePrefix.data(), \
+  VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), \
       edgeList.data(), edgeWeight.data());
+
+  SimpleRandomEngine random;
+
+  PermutedVertexSet set = RandomOrderVertexSet::generate(
+      vSet, &random);
 
   std::vector<bool> marker(weight.size(), false);
 

@@ -13,13 +13,14 @@
 
 
 #include "PermutedVertexSet.hpp"
+#include "VertexSet.hpp"
 #include "IRandomEngine.hpp"
 
 
 namespace dolos
 {
 
-class RandomOrderVertexSet : public PermutedVertexSet
+class RandomOrderVertexSet
 {
   public:
   /**
@@ -28,7 +29,7 @@ class RandomOrderVertexSet : public PermutedVertexSet
   * @param set The vertex set to traverse in a random order.
   * @param entropyEngine The source of random decisions.
   */
-  RandomOrderVertexSet(
+  static PermutedVertexSet generate(
       VertexSet set,
       IRandomEngine * randomEngine);
 

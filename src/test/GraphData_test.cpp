@@ -8,10 +8,10 @@
 */
 
 
-#include <vector>
 #include "GraphData.hpp"
 #include "ConstantGraph.hpp"
 #include "solidutils/UnitTest.hpp"
+#include <vector>
 
 
 namespace dolos
@@ -27,18 +27,18 @@ UNITTEST(GraphData, ConstructionAndGet)
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
-    gd.getVertexWeight()[v] = 1; 
+    gd.vertexWeight()[v] = 1; 
   }
 
   // write to every edgePrefix location 
   for (vtx_type v = 0; v < 6; ++v) {
-    gd.getEdgePrefix()[v] = static_cast<adj_type>(2*v);
+    gd.edgePrefix()[v] = static_cast<adj_type>(2*v);
   }
 
   // write to every edge location
   for (adj_type e = 0; e < 8; ++e) {
-    gd.getEdgeList()[e] = static_cast<vtx_type>(e);
-    gd.getEdgeWeight()[e] = 2;
+    gd.edgeList()[e] = static_cast<vtx_type>(e);
+    gd.edgeWeight()[e] = 2;
   }
 
   // verify that what we wrote is still there and use constant getters
@@ -46,18 +46,18 @@ UNITTEST(GraphData, ConstructionAndGet)
     GraphData const * const cgd = &gd;
 
     for (vtx_type v = 0; v < 5; ++v) {
-      testEqual(cgd->getVertexWeight()[v], 1u); 
+      testEqual(cgd->vertexWeight()[v], 1u); 
     }
 
     // write to every edgePrefix location 
     for (vtx_type v = 0; v < 6; ++v) {
-      testEqual(cgd->getEdgePrefix()[v], static_cast<adj_type>(2*v));
+      testEqual(cgd->edgePrefix()[v], static_cast<adj_type>(2*v));
     }
 
     // write to every edge location
     for (adj_type e = 0; e < 8; ++e) {
-      testEqual(cgd->getEdgeList()[e], static_cast<vtx_type>(e));
-      testEqual(cgd->getEdgeWeight()[e], 2u);
+      testEqual(cgd->edgeList()[e], static_cast<vtx_type>(e));
+      testEqual(cgd->edgeWeight()[e], 2u);
     }
   }
 }
@@ -72,18 +72,18 @@ UNITTEST(GraphData, MoveGet)
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
-    gd.getVertexWeight()[v] = 1; 
+    gd.vertexWeight()[v] = 1; 
   }
 
   // write to every edgePrefix location 
   for (vtx_type v = 0; v < 6; ++v) {
-    gd.getEdgePrefix()[v] = static_cast<adj_type>(2*v);
+    gd.edgePrefix()[v] = static_cast<adj_type>(2*v);
   }
 
   // write to every edge location
   for (adj_type e = 0; e < 8; ++e) {
-    gd.getEdgeList()[e] = static_cast<vtx_type>(e);
-    gd.getEdgeWeight()[e] = 2;
+    gd.edgeList()[e] = static_cast<vtx_type>(e);
+    gd.edgeWeight()[e] = 2;
   }
 
   // verify that what we wrote is still there and use constant getters
@@ -91,18 +91,18 @@ UNITTEST(GraphData, MoveGet)
     GraphData const cgd = std::move(gd);
 
     for (vtx_type v = 0; v < 5; ++v) {
-      testEqual(cgd.getVertexWeight()[v], 1u); 
+      testEqual(cgd.vertexWeight()[v], 1u); 
     }
 
     // write to every edgePrefix location 
     for (vtx_type v = 0; v < 6; ++v) {
-      testEqual(cgd.getEdgePrefix()[v], static_cast<adj_type>(2*v));
+      testEqual(cgd.edgePrefix()[v], static_cast<adj_type>(2*v));
     }
 
     // write to every edge location
     for (adj_type e = 0; e < 8; ++e) {
-      testEqual(cgd.getEdgeList()[e], static_cast<vtx_type>(e));
-      testEqual(cgd.getEdgeWeight()[e], 2u);
+      testEqual(cgd.edgeList()[e], static_cast<vtx_type>(e));
+      testEqual(cgd.edgeWeight()[e], 2u);
     }
   }
 
@@ -119,18 +119,18 @@ UNITTEST(GraphData, ToGraph)
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < vwgt.size(); ++v) {
-    gd.getVertexWeight()[v] = vwgt[v]; 
+    gd.vertexWeight()[v] = vwgt[v]; 
   }
 
   // write to every edgePrefix location 
   for (vtx_type v = 0; v < prefix.size(); ++v) {
-    gd.getEdgePrefix()[v] = prefix[v];
+    gd.edgePrefix()[v] = prefix[v];
   }
 
   // write to every edge location
   for (adj_type e = 0; e < adjncy.size(); ++e) {
-    gd.getEdgeList()[e] = adjncy[e];
-    gd.getEdgeWeight()[e] = ewgt[e];
+    gd.edgeList()[e] = adjncy[e];
+    gd.edgeWeight()[e] = ewgt[e];
   }
 
   // convert to graph and verify graph 

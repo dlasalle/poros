@@ -14,6 +14,7 @@
 
 
 #include "Vertex.hpp"
+#include "CSRGraphData.hpp"
 
 
 namespace dolos
@@ -159,6 +160,16 @@ class VertexSet
     {
       return Vertex(index, m_weight, m_edgePrefix, m_edgeList, \
           m_edgeWeight);
+    }
+
+    /**
+    * @brief Get the data of the underlying graph.
+    *
+    * @return The data of the underlying graph.
+    */
+    inline CSRGraphData data() const 
+    {
+      return CSRGraphData(m_edgePrefix, m_edgeList, m_weight, m_edgeWeight);
     }
 
   private:

@@ -66,7 +66,7 @@ class CSRGraphData
     *
     * @return This data.
     */
-    CSRGraphData operator=(
+    CSRGraphData& operator=(
         CSRGraphData const & rhs)
     {
       m_edgePrefix = rhs.m_edgePrefix;

@@ -22,8 +22,26 @@ namespace dolos
 class SimpleRandomEngine : public IRandomEngine
 {
   public:
+  /**
+  * @brief Create a new random engine.
+  *
+  * @param seed The seed to use.
+  */
   SimpleRandomEngine(
       unsigned int seed = 0);
+
+  /**
+  * @brief Fill a vector with a vertex permutation.
+  *
+  * @param container The container.
+  * @param start The starting vertex (inclusvie).
+  * @param end The ending vertex (exclusive).
+  */
+  void fillWithPerm(
+      vtx_type * container,
+      vtx_type const start,
+      vtx_type const end) override;
+
 
 
   private:
