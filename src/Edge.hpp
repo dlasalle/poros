@@ -69,7 +69,7 @@ class Edge
     *
     * @return The vertex.
     */
-    inline vtx_type getVertex() const noexcept
+    inline vtx_type destination() const noexcept
     {
       return m_edgeList[m_index];
     }

@@ -118,7 +118,7 @@ class TwoWayConnectivity
       // ensure it is 1 or -1
       ASSERT_EQUAL(1, direction*direction);
 
-      vtx_type const u = edge->getVertex();
+      vtx_type const u = edge->destination();
 
       // branchless calculation -- flow will be 1 when the vertex is being
       // moved to the same partition as this one, and -1 when it is being moved

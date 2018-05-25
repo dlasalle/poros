@@ -96,7 +96,7 @@ void move(
   // update connectivity
   connectivity->move(vertex);
   for (Edge const & edge : graph->getEdges(vertex)) {
-    vtx_type const u = edge.getVertex();
+    vtx_type const u = edge.destination();
     pid_type const neighborHome = partitioning->getAssignment(u);
     int const borderStatus = connectivity->updateNeighbor(&edge, \
         TwoWayConnectivity::getDirection(to, neighborHome));
@@ -108,7 +108,7 @@ void move(
           // prone to error -- combine in the future.
           pqs[neighborHome].add(-connectivity->getVertexDelta(u), u);
       } else if (borderStatus == TwoWayConnectivity::BORDER_REMOVED) {
-        vtx_type const u = edge.getVertex();
+        vtx_type const u = edge.destination();
         // insert into priority queue
         pqs[neighborHome].remove(u);
       }

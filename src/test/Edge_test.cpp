@@ -50,8 +50,8 @@ UNITTEST(Vertex, GetVertex)
   Edge e0(0, adjncy.data(), ewgts.data());
   Edge e1(1, adjncy.data(), ewgts.data());
 
-  testEqual(e0.getVertex(), static_cast<vtx_type>(1));
-  testEqual(e1.getVertex(), static_cast<vtx_type>(3));
+  testEqual(e0.destination(), static_cast<vtx_type>(1));
+  testEqual(e1.destination(), static_cast<vtx_type>(3));
 }
 
 }

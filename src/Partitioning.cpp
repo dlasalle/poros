@@ -83,7 +83,7 @@ void Partitioning::recalcCutEdgeWeight()
 
     pid_type const home = m_assignment[v];
     for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getVertex();
+      vtx_type const u = edge.destination();
       pid_type const other = m_assignment[u];
       if (other != home) {
         twoWayCutEdgeWeight += edge.weight();

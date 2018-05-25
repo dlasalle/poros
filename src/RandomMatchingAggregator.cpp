@@ -55,7 +55,7 @@ Aggregation RandomMatchingAggregator::aggregate(
       vtx_type max = NULL_VTX;
       vtx_type maxPriority = 0;
       for (Edge const & edge : vertex.getEdges()) {
-        vtx_type const u = edge.getVertex();
+        vtx_type const u = edge.destination();
         if (!matcher.isMatched(u)) {
           vtx_type const priority = permutedVertices[u].index();
           if (max == NULL_VTX || maxPriority < priority) {

@@ -57,12 +57,13 @@ ConstantGraph SummationContractor::contract(
     for (Vertex const vertex : group.fineVertices()) {
       coarseVertexWeight += vertex.weight();
       for (Edge const edge : vertex.getEdges()) {
-        adj_type coarseEdgeIndex = htable[edge.index()];
+        vtx_type const neighbor = aggregation->getCoarseVertexNumber(edge.destination());
+        adj_type coarseEdgeIndex = htable[neighbor];
         if (coarseEdgeIndex == NULL_VTX) {
           // new edge
           coarseEdgeIndex = neighbors.size();
-          htable[edge.index()] = coarseEdgeIndex; 
-          neighbors.emplace_back(edge.index());
+          htable[neighbor] = coarseEdgeIndex; 
+          neighbors.emplace_back(neighbor);
           edgeWeights.emplace_back(edge.weight());
         } else {
           // edge already exists -- sum them together

@@ -51,7 +51,7 @@ TwoWayConnectivity::TwoWayConnectivity(
     vtx_type const v = vertex.index();
     pid_type const home = partitioning->getAssignment(v);
     for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getVertex();
+      vtx_type const u = edge.destination();
       pid_type const other = partitioning->getAssignment(u);
       if (other == home) {
         pair.internal += edge.weight();

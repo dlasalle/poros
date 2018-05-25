@@ -145,7 +145,7 @@ UNITTEST(GraphData, ToGraph)
     testEqual(prefix[v.index()+1] - prefix[v.index()], v.degree());
 
     for (Edge const & e : v.getEdges()) {
-      testEqual(e.getVertex(), adjncy[e.index()]);
+      testEqual(e.destination(), adjncy[e.index()]);
       testEqual(e.weight(), ewgt[e.index()]); 
     }
   }

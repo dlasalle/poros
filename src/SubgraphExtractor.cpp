@@ -87,7 +87,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     pid_type const vPid = part->getAssignment(v);
 
     for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getVertex();
+      vtx_type const u = edge.destination();
       pid_type const uPid = part->getAssignment(u);
 
       // this edge will exist in the subgraph
@@ -109,7 +109,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     pid_type const vPid = part->getAssignment(v);
 
     for (Edge const & edge : vertex.getEdges()) {
-      vtx_type const u = edge.getVertex();
+      vtx_type const u = edge.destination();
       pid_type const uPid = part->getAssignment(u);
 
       // this edge will exist in the subgraph
