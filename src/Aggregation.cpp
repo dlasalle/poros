@@ -35,8 +35,9 @@ Aggregation::Aggregation(
     ++m_finePrefix[vtx+1];
   }
   sl::VectorMath::prefixSumExclusive(m_finePrefix.data(), m_finePrefix.size());
-  for (vtx_type const vtx : coarseMap) {
-    m_fineMap[m_finePrefix[vtx+1]] = vtx;
+  for (vtx_type v = 0; v < coarseMap.size(); ++v) {
+    vtx_type const vtx = coarseMap[v];
+    m_fineMap[m_finePrefix[vtx+1]] = v;
     ++m_finePrefix[vtx+1];
   }
 

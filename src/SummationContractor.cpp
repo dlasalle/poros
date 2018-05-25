@@ -50,6 +50,7 @@ ConstantGraph SummationContractor::contract(
   edgeWeights.reserve(aggregation->getNumCoarseVertices());
 
   // go over each fine vertex
+  vtx_type coarseVertexNumber = 0;
   std::vector<vtx_type> htable(aggregation->getNumCoarseVertices(), NULL_VTX);
   for (VertexGroup const group : aggregation->coarseVertices()) {
     wgt_type coarseVertexWeight = 0;
@@ -58,6 +59,11 @@ ConstantGraph SummationContractor::contract(
       coarseVertexWeight += vertex.weight();
       for (Edge const edge : vertex.getEdges()) {
         vtx_type const neighbor = aggregation->getCoarseVertexNumber(edge.destination());
+        if (neighbor == coarseVertexNumber) {
+          // skip self loops
+          continue;
+        }
+
         adj_type coarseEdgeIndex = htable[neighbor];
         if (coarseEdgeIndex == NULL_VTX) {
           // new edge
@@ -72,10 +78,18 @@ ConstantGraph SummationContractor::contract(
       }
     }
 
+    ++coarseVertexNumber;
+
     // add vertex to coarse graph
     ASSERT_EQUAL(neighbors.size(), edgeWeights.size());
     builder.addVertex(coarseVertexWeight, \
         neighbors.size(), neighbors.data(), edgeWeights.data());
+
+    // clear hash table
+    for (vtx_type const neighbor : neighbors) {
+      htable[neighbor] = NULL_VTX;
+    }
+
     neighbors.clear();
     edgeWeights.clear();
   }

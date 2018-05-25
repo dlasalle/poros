@@ -1,6 +1,6 @@
 /**
 * @file CSRGraphData.hpp
-* @brief The CSRGraphData interface.
+* @brief The CSRGraphData class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2018
 * @version 1

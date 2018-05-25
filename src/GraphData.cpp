@@ -84,8 +84,8 @@ vtx_type GraphData::getNumVertices() const
 
 adj_type GraphData::getNumEdges() const
 {
-  adj_type const numEdges = m_edgeList.size();
-  ASSERT_EQUAL(m_edgeWeight.size(), numEdges);
+  adj_type const numEdges = m_edgePrefix.back();
+  ASSERT_LESSEQUAL(numEdges, m_edgeWeight.size());
 
   return numEdges;
 }

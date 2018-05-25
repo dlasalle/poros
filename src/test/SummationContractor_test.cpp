@@ -43,16 +43,16 @@ UNITTEST(SummationContractor, Contract)
 
   testEqual(out.getNumVertices(), agg.getNumCoarseVertices());
 
-  testEqual(out.getVertex(0).degree(), static_cast<wgt_type>(1));
-  testEqual(out.getVertex(1).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(2).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(3).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(4).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(5).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(6).degree(), static_cast<wgt_type>(2));
-  testEqual(out.getVertex(7).degree(), static_cast<wgt_type>(1));
+  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(1));
+  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(4).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(5).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(6).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(7).degree(), static_cast<vtx_type>(1));
 
-  for (Edge const & edge : graph.getEdges()) {
+  for (Edge const & edge : out.getEdges()) {
     testEqual(edge.weight(), static_cast<wgt_type>(2));
   }
 }

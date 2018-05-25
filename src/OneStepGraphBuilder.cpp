@@ -51,11 +51,14 @@ void OneStepGraphBuilder::addVertex(
 {
   m_vertexWeight[m_numVertices] = weight;
   for (vtx_type i = 0; i < degree; ++i) {
+    ASSERT_LESS(m_numEdges, m_edgeList.size());
     m_edgeList[m_numEdges] = neighbors[i];
+    ASSERT_LESS(m_numEdges, m_edgeWeight.size());
     m_edgeWeight[m_numEdges] = edgeWeights[i]; 
     ++m_numEdges;
   }
   ++m_numVertices;
+  m_edgePrefix[m_numVertices] = m_numEdges;
 }
 
 

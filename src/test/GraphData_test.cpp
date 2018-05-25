@@ -20,10 +20,7 @@ namespace dolos
 
 UNITTEST(GraphData, ConstructionAndGet)
 {
-  GraphData gd(5, 8);
-
-  testEqual(gd.getNumVertices(), 5u);
-  testEqual(gd.getNumEdges(), 8u);
+  GraphData gd(5, 10);
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
@@ -36,10 +33,13 @@ UNITTEST(GraphData, ConstructionAndGet)
   }
 
   // write to every edge location
-  for (adj_type e = 0; e < 8; ++e) {
+  for (adj_type e = 0; e < 10; ++e) {
     gd.edgeList()[e] = static_cast<vtx_type>(e);
     gd.edgeWeight()[e] = 2;
   }
+
+  testEqual(gd.getNumVertices(), 5u);
+  testEqual(gd.getNumEdges(), 10u);
 
   // verify that what we wrote is still there and use constant getters
   {
@@ -55,7 +55,7 @@ UNITTEST(GraphData, ConstructionAndGet)
     }
 
     // write to every edge location
-    for (adj_type e = 0; e < 8; ++e) {
+    for (adj_type e = 0; e < 10; ++e) {
       testEqual(cgd->edgeList()[e], static_cast<vtx_type>(e));
       testEqual(cgd->edgeWeight()[e], 2u);
     }
@@ -65,10 +65,7 @@ UNITTEST(GraphData, ConstructionAndGet)
 
 UNITTEST(GraphData, MoveGet)
 {
-  GraphData gd(5, 8);
-
-  testEqual(gd.getNumVertices(), 5u);
-  testEqual(gd.getNumEdges(), 8u);
+  GraphData gd(5, 10);
 
   // write to every vertex weight location 
   for (vtx_type v = 0; v < 5; ++v) {
@@ -81,10 +78,14 @@ UNITTEST(GraphData, MoveGet)
   }
 
   // write to every edge location
-  for (adj_type e = 0; e < 8; ++e) {
+  for (adj_type e = 0; e < 10; ++e) {
     gd.edgeList()[e] = static_cast<vtx_type>(e);
     gd.edgeWeight()[e] = 2;
   }
+
+  // test graph size now that we've filled it out
+  testEqual(gd.getNumVertices(), 5u);
+  testEqual(gd.getNumEdges(), 10u);
 
   // verify that what we wrote is still there and use constant getters
   {
@@ -100,7 +101,7 @@ UNITTEST(GraphData, MoveGet)
     }
 
     // write to every edge location
-    for (adj_type e = 0; e < 8; ++e) {
+    for (adj_type e = 0; e < 10; ++e) {
       testEqual(cgd.edgeList()[e], static_cast<vtx_type>(e));
       testEqual(cgd.edgeWeight()[e], 2u);
     }
