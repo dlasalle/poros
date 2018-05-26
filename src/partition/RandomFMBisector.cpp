@@ -21,8 +21,9 @@ namespace dolos
 ******************************************************************************/
 
 RandomFMBisector::RandomFMBisector(
-    int maxIters) :
-  m_bisector(),
+    int maxIters,
+    IRandomEngine * const randEngine) :
+  m_bisector(randEngine),
   m_refiner(maxIters)
 {
   // do nothing

@@ -57,7 +57,7 @@ ConstantGraph SummationContractor::contract(
 
     for (Vertex const vertex : group.fineVertices()) {
       coarseVertexWeight += vertex.weight();
-      for (Edge const edge : vertex.getEdges()) {
+      for (Edge const edge : vertex.edges()) {
         vtx_type const neighbor = aggregation->getCoarseVertexNumber(edge.destination());
         if (neighbor == coarseVertexNumber) {
           // skip self loops

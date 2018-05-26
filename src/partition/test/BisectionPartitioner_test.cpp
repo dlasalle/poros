@@ -12,6 +12,7 @@
 #include "partition/RandomFMBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
+#include "util/SimpleRandomEngine.hpp"
 #include "solidutils/Exception.hpp"
 #include "solidutils/UnitTest.hpp"
 
@@ -26,10 +27,12 @@ namespace dolos
 
 UNITTEST(BisectionPartitioner, ExecuteCorrect)
 {
+  SimpleRandomEngine engine;
+
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();
 
-  RandomFMBisector rfb(8);
+  RandomFMBisector rfb(8, &engine);
   RecursiveBisectionPartitioner parter(&rfb);
   BisectionPartitioner adapter(&parter);
 
@@ -42,10 +45,12 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   
 UNITTEST(BisectionPartitioner, ExecuteInvalid)
 {
+  SimpleRandomEngine engine;
+
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();
 
-  RandomFMBisector rfb(8);
+  RandomFMBisector rfb(8, &engine);
   RecursiveBisectionPartitioner parter(&rfb);
   BisectionPartitioner adapter(&parter);
 

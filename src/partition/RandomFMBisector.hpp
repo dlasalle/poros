@@ -29,9 +29,12 @@ class RandomFMBisector :
   public:
     /**
     * @brief Create a new random FM bisector.
+    *
+    * @param randEngine The random engine.
     */
     RandomFMBisector(
-        int maxIterations);
+        int maxIterations,
+        IRandomEngine * const randEngine);
 
 
     /**

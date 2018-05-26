@@ -13,6 +13,7 @@
 #include "partition/TargetPartitioning.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 #include "graph/GridGraphGenerator.hpp"
+#include "util/SimpleRandomEngine.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -21,8 +22,10 @@ namespace dolos
 
 UNITTEST(RandomBisector, ExecuteUniform)
 {
+  SimpleRandomEngine engine;
+
   // create bisector
-  RandomBisector b;
+  RandomBisector b(&engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -47,8 +50,10 @@ UNITTEST(RandomBisector, Execute1To5)
 {
   std::vector<double> targets{0.4, 0.6};
 
+  SimpleRandomEngine engine;
+
   // create bisector
-  RandomBisector b;
+  RandomBisector b(&engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -71,8 +76,10 @@ UNITTEST(RandomBisector, Execute1To5)
 
 UNITTEST(RandomBisector, ExecuteCut)
 {
+  SimpleRandomEngine engine;
+
   // create bisector
-  RandomBisector b;
+  RandomBisector b(&engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);

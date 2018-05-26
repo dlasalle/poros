@@ -52,7 +52,7 @@ UNITTEST(SummationContractor, Contract)
   testEqual(out.getVertex(6).degree(), static_cast<vtx_type>(2));
   testEqual(out.getVertex(7).degree(), static_cast<vtx_type>(1));
 
-  for (Edge const & edge : out.getEdges()) {
+  for (Edge const & edge : out.edges()) {
     testEqual(edge.weight(), static_cast<wgt_type>(2));
   }
 }

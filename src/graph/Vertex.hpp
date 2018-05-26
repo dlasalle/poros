@@ -87,7 +87,7 @@ class Vertex
     *
     * @return The edges of this vertex.
     */
-    inline EdgeSet getEdges() const noexcept
+    inline EdgeSet edges() const noexcept
     {
       return EdgeSet(m_edgePrefix[m_index], m_edgePrefix[m_index+1], \
           m_edgeList, m_edgeWeight);

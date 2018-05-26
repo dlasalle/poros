@@ -14,6 +14,7 @@
 
 #include "IBisector.hpp"
 #include "PartitionParameters.hpp"
+#include "util/IRandomEngine.hpp"
 
 
 namespace dolos
@@ -26,8 +27,29 @@ class RandomBisector :
   public:
     /**
      * @brief Create a new random partitioner with the given parameters.
+     *
+     * @param randEngine The random engine.
      */
-    RandomBisector();
+    RandomBisector(
+        IRandomEngine * const randEngine);
+
+
+    /**
+    * @brief Deleted copy constructor.
+    *
+    * @param rhs The bisector to copy.
+    */
+    RandomBisector(
+        RandomBisector const & rhs) = delete;
+
+
+    /**
+    * @brief Deleted assignment operator.
+    *
+    * @param rhs The bisector to assign.
+    */
+    RandomBisector operator=(
+        RandomBisector const & rhs) = delete;
 
 
     /**
@@ -49,6 +71,8 @@ class RandomBisector :
         ConstantGraph const * graph) const override;
 
 
+  private:
+  IRandomEngine * const m_randEngine;
 };
 
 

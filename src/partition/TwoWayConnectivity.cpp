@@ -46,11 +46,11 @@ TwoWayConnectivity::TwoWayConnectivity(
   m_graph(graph)
 {
   // populate connectivity vector
-  for (Vertex const & vertex : graph->getVertices()) {
+  for (Vertex const & vertex : graph->vertices()) {
     vertex_struct pair{0, 0};
     vtx_type const v = vertex.index();
     pid_type const home = partitioning->getAssignment(v);
-    for (Edge const & edge : vertex.getEdges()) {
+    for (Edge const & edge : vertex.edges()) {
       vtx_type const u = edge.destination();
       pid_type const other = partitioning->getAssignment(u);
       if (other == home) {
@@ -115,7 +115,7 @@ bool TwoWayConnectivity::verify(
   }
 
   // verify connectivity
-  for (Vertex const & vertex : m_graph->getVertices()) {
+  for (Vertex const & vertex : m_graph->vertices()) {
     vtx_type const v = vertex.index();
     if (m_connectivity[v].external != baseLine.m_connectivity[v].external || \
         m_connectivity[v].internal != baseLine.m_connectivity[v].internal) {

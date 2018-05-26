@@ -26,7 +26,7 @@ UNITTEST(Partitioning, BlankConstructor)
   ConstantGraph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
-  for (Vertex const & vertex : graph.getVertices()) {
+  for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     p.assign(v, v % 5);
   }
@@ -44,7 +44,7 @@ UNITTEST(Partitioning, VectorConstructor)
   ConstantGraph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.getNumVertices());
-  for (Vertex const & vertex : graph.getVertices()) {
+  for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     labels[v] = v % 5;
   }
@@ -64,7 +64,7 @@ UNITTEST(Partitioning, MoveConstructor)
   ConstantGraph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.getNumVertices());
-  for (Vertex const & vertex : graph.getVertices()) {
+  for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     labels[v] = v % 5;
   }
@@ -96,7 +96,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
   ConstantGraph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.getNumVertices());
-  for (Vertex const & vertex : graph.getVertices()) {
+  for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     if (v < 15) {
       labels[v] = 0;

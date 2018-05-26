@@ -193,7 +193,7 @@ class ConstantGraph
     *
     * @return The vertex set.
     */
-    inline VertexSet getVertices() const noexcept
+    inline VertexSet vertices() const noexcept
     {
       return VertexSet(0, m_numVertices, m_vertexWeight, m_edgePrefix, \
           m_edgeList, m_edgeWeight);
@@ -205,7 +205,7 @@ class ConstantGraph
     *
     * @return The edge set.
     */
-    inline EdgeSet getEdges() const noexcept
+    inline EdgeSet edges() const noexcept
     {
       return EdgeSet(0, m_numEdges, m_edgeList, m_edgeWeight);
     }

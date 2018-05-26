@@ -9,16 +9,13 @@
 
 
 #include "RandomBisector.hpp"
-#include "RandomTraverser.hpp"
 #include "PartitioningAnalyzer.hpp"
+#include "graph/RandomOrderVertexSet.hpp"
+#include <algorithm>
 
-
-// delete me
-#include <cstdio>
 
 namespace dolos
 {
-
 
 
 /******************************************************************************
@@ -81,7 +78,7 @@ void swapBalanceRight(
 
   size_t left = 0;
   size_t right = vertices.size()-1;
-  for (Vertex const & vertex : graph->getVertices()) {
+  for (Vertex const & vertex : graph->vertices()) {
     vertex_struct pair;
     pair.vertex = vertex.index();
     pair.weight = vertex.weight();
@@ -137,7 +134,9 @@ void swapBalanceRight(
 * CONSTRUCTORS ****************************************************************
 ******************************************************************************/
 
-RandomBisector::RandomBisector()
+RandomBisector::RandomBisector(
+    IRandomEngine * const randEngine) :
+  m_randEngine(randEngine)
 {
   // do nothing
 }
@@ -157,9 +156,6 @@ Partitioning RandomBisector::execute(
     ConstantGraph const * const graph) const
 {
   // random vertex order
-  RandomTraverser traverser(graph->getNumVertices());
-
-  wgt_type const * const vertexWeight = graph->getVertexWeight();
 
   // start with all vertices in the right partition
   Partitioning partitioning(NUM_BISECTION_PARTS, graph);
@@ -167,22 +163,23 @@ Partitioning RandomBisector::execute(
 
   PartitioningAnalyzer analyzer(&partitioning, target);
 
-  while (traverser.next()) {
-    // balance to within 1 vertex
-    vtx_type const vtx = traverser.get();
+  PermutedVertexSet vertices = RandomOrderVertexSet::generate(
+      graph->vertices(), m_randEngine);
 
-    if (partitioning.getWeight(LEFT_PARTITION) + vertexWeight[vtx] > \
+  for (Vertex const vertex : vertices) {
+    // balance to within 1 vertex
+    if (partitioning.getWeight(LEFT_PARTITION) + vertex.weight() > \
         target->getMaxWeight(LEFT_PARTITION)) {
       break;
     }
 
     double const balance = analyzer.calcMaxImbalance();
 
-    partitioning.move(vtx, LEFT_PARTITION);
+    partitioning.move(vertex.index(), LEFT_PARTITION);
 
     if (balance < analyzer.calcMaxImbalance()) {
       // we hit the best balance undo move and exit loop 
-      partitioning.move(vtx, RIGHT_PARTITION);
+      partitioning.move(vertex.index(), RIGHT_PARTITION);
       break;
     }
   }

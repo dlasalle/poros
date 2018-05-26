@@ -35,7 +35,7 @@ UNITTEST(RandomMatchingAggregator, Aggregate)
 
   // verify at most two vertices per coarse vertex
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
-  for (Vertex const & vertex : graph.getVertices()) {
+  for (Vertex const & vertex : graph.vertices()) {
     vtx_type const coarse = agg.getCoarseVertexNumber(vertex.index());
     ++matchCount[coarse];
   }

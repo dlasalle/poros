@@ -45,7 +45,7 @@ Partitioning::Partitioning(
   ASSERT_GREATER(numParts, 0);
 
   // calculate partition weights
-  for (Vertex const & vertex : graph->getVertices()) {
+  for (Vertex const & vertex : graph->vertices()) {
     vtx_type const v = vertex.index();
     pid_type const part = m_assignment[v];
     ASSERT_LESS(part, numParts);
@@ -78,11 +78,11 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
 void Partitioning::recalcCutEdgeWeight()
 {
   double twoWayCutEdgeWeight = 0;
-  for (Vertex const & vertex : m_graph->getVertices()) {
+  for (Vertex const & vertex : m_graph->vertices()) {
     vtx_type const v = vertex.index();
 
     pid_type const home = m_assignment[v];
-    for (Edge const & edge : vertex.getEdges()) {
+    for (Edge const & edge : vertex.edges()) {
       vtx_type const u = edge.destination();
       pid_type const other = m_assignment[u];
       if (other != home) {

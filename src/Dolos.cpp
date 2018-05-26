@@ -15,6 +15,7 @@
 #include "partition/PartitionParameters.hpp"
 #include "partition/RandomBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
+#include "util/SimpleRandomEngine.hpp"
 
 
 using namespace dolos;
@@ -32,6 +33,7 @@ int DOLOS_PartGraphRecursive(
     pid_type * const partitionAssignment)
 {
   // create a parameters object
+  SimpleRandomEngine randEngine;
 
   // assemble a new graph
   ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
@@ -42,7 +44,7 @@ int DOLOS_PartGraphRecursive(
   PartitionParameters params(numPartitions);
 
   // partition the graph
-  RandomBisector bisector;
+  RandomBisector bisector(&randEngine);
   RecursiveBisectionPartitioner partitioner(&bisector);
 
 

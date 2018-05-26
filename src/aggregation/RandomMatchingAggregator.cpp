@@ -46,7 +46,8 @@ Aggregation RandomMatchingAggregator::aggregate(
 {
   MatchedAggregationBuilder matcher(graph->getNumVertices());
 
-  PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(graph->getVertices(), randomEngine);
+  PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
+      graph->vertices(), randomEngine);
 
   for (Vertex const & vertex : permutedVertices) {
     vtx_type const v = vertex.index();
@@ -55,7 +56,7 @@ Aggregation RandomMatchingAggregator::aggregate(
       // index in the permutation array
       vtx_type max = NULL_VTX;
       vtx_type maxPriority = 0;
-      for (Edge const & edge : vertex.getEdges()) {
+      for (Edge const & edge : vertex.edges()) {
         vtx_type const u = edge.destination();
         if (!matcher.isMatched(u)) {
           vtx_type const priority = permutedVertices[u].index();
