@@ -12,7 +12,7 @@
 #include "partition/FMRefiner.hpp"
 #include "partition/RandomBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
 namespace dolos

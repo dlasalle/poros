@@ -9,7 +9,7 @@
 
 
 #include "aggregation/RandomMatchingAggregator.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "util/SimpleRandomEngine.hpp"
 #include "solidutils/UnitTest.hpp"
 

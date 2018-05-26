@@ -12,7 +12,7 @@
 #include "partition/PartitioningAnalyzer.hpp"
 #include "partition/TargetPartitioning.hpp"
 #include "partition/Partitioning.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
 

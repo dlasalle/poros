@@ -10,7 +10,7 @@
 
 
 #include "graph/SubgraphExtractor.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
 

@@ -12,7 +12,7 @@
 #include "graph/ConstantGraph.hpp"
 #include "solidutils/UnitTest.hpp"
 #include "solidutils/Timer.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 
 
 namespace dolos

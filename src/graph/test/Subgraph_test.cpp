@@ -9,7 +9,7 @@
 
 #include "graph/Subgraph.hpp"
 #include "graph/ConstantGraph.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 #include "solidutils/Array.hpp"
 #include "solidutils/VectorMath.hpp"

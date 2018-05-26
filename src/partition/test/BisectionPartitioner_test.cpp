@@ -11,7 +11,7 @@
 #include "partition/BisectionPartitioner.hpp"
 #include "partition/RandomFMBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/Exception.hpp"
 #include "solidutils/UnitTest.hpp"
 

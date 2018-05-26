@@ -10,7 +10,7 @@
 
 
 #include "aggregation/SummationContractor.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
 

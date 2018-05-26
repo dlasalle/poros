@@ -11,7 +11,7 @@
 #include "partition/Partitioning.hpp"
 #include "partition/TargetPartitioning.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
-#include "util/GridGraphGenerator.hpp"
+#include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
