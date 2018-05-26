@@ -9,13 +9,13 @@
 
 
 
-#include "solidutils/UnitTest.hpp"
 #include "dolos.h"
-#include "GridGraphGenerator.hpp"
-#include "Partitioning.hpp"
-#include "TargetPartitioning.hpp"
-#include "PartitioningAnalyzer.hpp"
+#include "partition/Partitioning.hpp"
+#include "partition/TargetPartitioning.hpp"
+#include "partition/PartitioningAnalyzer.hpp"
+#include "util/GridGraphGenerator.hpp"
 #include "solidutils/Array.hpp"
+#include "solidutils/UnitTest.hpp"
 
 
 namespace dolos

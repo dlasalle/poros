@@ -10,11 +10,11 @@
 
 #include "dolos.h"
 #include "Base.hpp"
-#include "ConstantGraph.hpp"
-#include "Partitioning.hpp"
-#include "PartitionParameters.hpp"
-#include "RandomBisector.hpp"
-#include "RecursiveBisectionPartitioner.hpp"
+#include "graph/ConstantGraph.hpp"
+#include "partition/Partitioning.hpp"
+#include "partition/PartitionParameters.hpp"
+#include "partition/RandomBisector.hpp"
+#include "partition/RecursiveBisectionPartitioner.hpp"
 
 
 using namespace dolos;
