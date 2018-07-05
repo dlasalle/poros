@@ -79,7 +79,7 @@ class PartitionParameters
      *
      * @return The number of partitions.
      */
-    pid_type getNumPartitions() const;
+    pid_type numPartitions() const;
 
 
     /**

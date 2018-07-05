@@ -29,7 +29,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     Partitioning const * const part,
     vtx_type const * const labels)
 {
-  pid_type const numParts = part->getNumPartitions();
+  pid_type const numParts = part->numPartitions();
   vtx_type const numVertices = graph->getNumVertices();
 
   // place to hold subgraphs while being constructed

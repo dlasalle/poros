@@ -34,7 +34,7 @@ void RecursiveBisectionPartitioner::recurse(
 {
   ConstantGraph const * const graph = mappedGraph->getGraph();
   
-  pid_type const numParts = target->getNumPartitions();
+  pid_type const numParts = target->numPartitions();
 
   // We don't want to use the k-way imbalance tolerance, as if one half of the
   // bisection is at maximum weight, then each partition with in that half must
@@ -42,7 +42,7 @@ void RecursiveBisectionPartitioner::recurse(
   // may find it impossible to balance). So instead, what we do is use
   // \eps / \log_2(k)
   double const tolerance = target->getImbalanceTolerance() / \
-      std::log2(target->getNumPartitions());
+      std::log2(target->numPartitions());
 
   double const * const targetFractions = target->getTargetFraction();
 
@@ -151,7 +151,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), target, &mappedGraph, 0);
 
-  Partitioning part(target->getNumPartitions(), graph, &partitionLabels);
+  Partitioning part(target->numPartitions(), graph, &partitionLabels);
   part.recalcCutEdgeWeight();
 
   return part;

@@ -45,10 +45,10 @@ Partitioning BisectionPartitioner::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph) const
 {
-  if (target->getNumPartitions() != 2) {
+  if (target->numPartitions() != 2) {
     throw sl::InvalidInputException( \
         std::string("Number of partitions must be 2: got ") +
-        std::to_string(target->getNumPartitions()));
+        std::to_string(target->numPartitions()));
   }
 
   return m_partitioner->execute(target, graph);

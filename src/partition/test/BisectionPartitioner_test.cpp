@@ -40,7 +40,7 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   
   Partitioning part = adapter.execute(&target, &graph);
 
-  testEqual(part.getNumPartitions(), static_cast<pid_type>(2));
+  testEqual(part.numPartitions(), static_cast<pid_type>(2));
 }
   
 UNITTEST(BisectionPartitioner, ExecuteInvalid)

@@ -66,7 +66,7 @@ Partitioning::Partitioning(
 
 std::vector<vtx_type> Partitioning::calcVertexCounts() const
 {
-  std::vector<vtx_type> vertexCounts(getNumPartitions(), 0);
+  std::vector<vtx_type> vertexCounts(numPartitions(), 0);
   for (vtx_type const & part : m_assignment) {
     ++vertexCounts[part];
   }
@@ -98,7 +98,7 @@ void Partitioning::recalcCutEdgeWeight()
 void Partitioning::assignAll(
     pid_type const partition)
 {
-  ASSERT_LESS(partition, getNumPartitions());
+  ASSERT_LESS(partition, numPartitions());
 
   m_cutEdgeWeight = 0;
 

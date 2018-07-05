@@ -16,6 +16,7 @@
 #include "IAggregator.hpp"
 #include "IRefiner.hpp"
 
+#include <memory>
 
 namespace dolos
 {
@@ -29,14 +30,13 @@ class MultilevelPartitioner :
     * @brief Create a new mutilevel partitioner. 
     *
     * @param aggregator The aggregation algorithm to use.
-    * @param initiailPartitioner The initial partitioning algorithm to use.
+    * @param initialPartitioner The initial partitioning algorithm to use.
     * @param refiner The refinement algorithm to use.
     */
     MultilevelPartitioner(
-        IAggregator const * aggregator,
-        IPartitioner const * initiailPartitioner,
-        IRefiner const * refiner);
-
+        std::unique_ptr<IAggregator> aggregator,
+        std::unique_ptr<IPartitioner> initiailPartitioner,
+        std::unique_ptr<IRefiner> refiner);
 
     /**
      * @brief Create a partitioning of the graph.
@@ -48,9 +48,12 @@ class MultilevelPartitioner :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const;
+        ConstantGraph const * graph) const override;
 
-
+  private:
+    std::unique_ptr<IAggregator> m_aggregator;
+    std::unique_ptr<IPartitioner> m_initiailPartitioner;
+    std::unique_ptr<IRefiner> m_refiner;
      
 };
 

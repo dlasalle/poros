@@ -157,7 +157,7 @@ class TargetPartitioning
     *
     * @return The number of partitions.
     */
-    inline pid_type getNumPartitions() const noexcept
+    inline pid_type numPartitions() const noexcept
     {
       return m_numPartitions;
     }

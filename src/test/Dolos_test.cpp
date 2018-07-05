@@ -40,7 +40,7 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   testEqual(r, 1);
 
   Partitioning part(7, &g, &where); 
-  TargetPartitioning target(part.getNumPartitions(), \
+  TargetPartitioning target(part.numPartitions(), \
       g.getTotalVertexWeight(), 0.03);
   PartitioningAnalyzer analyzer(&part, &target);
 

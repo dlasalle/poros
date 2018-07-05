@@ -57,7 +57,7 @@ void PartitionParameters::setTargetPartitionFractions(
 }
 
 
-pid_type PartitionParameters::getNumPartitions() const
+pid_type PartitionParameters::numPartitions() const
 {
   return m_numParts;
 }

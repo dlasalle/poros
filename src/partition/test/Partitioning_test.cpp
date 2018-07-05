@@ -86,7 +86,7 @@ UNITTEST(Partitioning, NumberOfPartitions)
   ConstantGraph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
-  testEqual(5u, p.getNumPartitions());
+  testEqual(5u, p.numPartitions());
 }
 
 

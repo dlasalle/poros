@@ -37,7 +37,7 @@ UNITTEST(SummationContractor, Contract)
 
   SummationContractor contractor;
 
-  // the coares graph should just be a line with 8 vertices and every edge
+  // the coarse graph should just be a line with 8 vertices and every edge
   // should be of weight 2
   ConstantGraph out = contractor.contract(&graph, &agg);
 

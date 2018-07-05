@@ -37,7 +37,7 @@ PartitioningAnalyzer::PartitioningAnalyzer(
 double PartitioningAnalyzer::calcMaxImbalance() const
 {
   double max = 0.0;
-  pid_type const numPartitions = m_partitioning->getNumPartitions();
+  pid_type const numPartitions = m_partitioning->numPartitions();
 
   for (pid_type part = 0; part < numPartitions; ++part) {
     double const frac = getImbalance(part);

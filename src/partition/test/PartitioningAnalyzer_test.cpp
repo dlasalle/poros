@@ -38,7 +38,7 @@ UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
     }
   }
 
-  TargetPartitioning target(part.getNumPartitions(), \
+  TargetPartitioning target(part.numPartitions(), \
       graph.getTotalVertexWeight(), 0.03);
 
   PartitioningAnalyzer analyzer(&part, &target);
@@ -65,7 +65,7 @@ UNITTEST(PartitioningAnalyzer, GetImbalance)
     }
   }
 
-  TargetPartitioning target(part.getNumPartitions(), \
+  TargetPartitioning target(part.numPartitions(), \
       graph.getTotalVertexWeight(), 0.03);
 
   PartitioningAnalyzer analyzer(&part, &target);
@@ -95,7 +95,7 @@ UNITTEST(PartitioningAnalyzer, IsOverWeight)
     }
   }
 
-  TargetPartitioning target(part.getNumPartitions(), \
+  TargetPartitioning target(part.numPartitions(), \
       graph.getTotalVertexWeight(), 0.03);
 
   PartitioningAnalyzer analyzer(&part, &target);

@@ -41,7 +41,7 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
 
     // partition 
     Partitioning part = rb.execute(&target, &graph);
-    testEqual(part.getNumPartitions(), k);
+    testEqual(part.numPartitions(), k);
 
     PartitioningAnalyzer analyzer(&part, &target);
 
@@ -73,7 +73,7 @@ UNITTEST(RandomBisector, ExecuteKWay1To5)
 
     // partition 
     Partitioning part = rb.execute(&target, &graph);
-    testEqual(part.getNumPartitions(), k);
+    testEqual(part.numPartitions(), k);
 
     PartitioningAnalyzer analyzer(&part, &target);
 
@@ -105,7 +105,7 @@ UNITTEST(RandomBisector, Execute4Way)
 
   // partition 
   Partitioning part = rb.execute(&target, &graph);
-  testEqual(part.getNumPartitions(), targets.size());
+  testEqual(part.numPartitions(), targets.size());
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();
@@ -136,7 +136,7 @@ UNITTEST(RandomBisector, Execute7Way1To3)
 
   // partition 
   Partitioning part = rb.execute(&target, &graph);
-  testEqual(part.getNumPartitions(), static_cast<pid_type>(7));
+  testEqual(part.numPartitions(), static_cast<pid_type>(7));
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();

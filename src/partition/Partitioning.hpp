@@ -194,7 +194,7 @@ class Partitioning
      *
      * @return The number of partitions. 
      */
-    inline pid_type getNumPartitions() const noexcept
+    inline pid_type numPartitions() const noexcept
     {
       return static_cast<pid_type>(m_partitionWeight.size());
     }
