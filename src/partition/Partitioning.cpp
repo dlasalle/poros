@@ -26,7 +26,7 @@ Partitioning::Partitioning(
     ConstantGraph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitionWeight(numParts, 0),
-  m_assignment(graph->getNumVertices(), NULL_PID),
+  m_assignment(graph->numVertices(), NULL_PID),
   m_graph(graph)
 {
   ASSERT_GREATER(numParts, 0);

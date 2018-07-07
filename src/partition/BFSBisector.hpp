@@ -11,12 +11,13 @@
 #ifndef DOLOS_SRC_BFSBISECTOR_HPP
 #define DOLOS_SRC_BFSBISECTOR_HPP
 
-#include "IBesctor.hpp"
+#include "IBisector.hpp"
+#include "util/IRandomEngine.hpp"
 
 namespace dolos
 {
 
-class BFSBisector
+class BFSBisector : public IBisector
 {
   public:
     /**
@@ -26,6 +27,24 @@ class BFSBisector
     */
     BFSBisector(
         IRandomEngine * rng);
+
+    /**
+    * @brief Deleted copy constructor.
+    *
+    * @param rhs The bisector to copy.
+    */
+    BFSBisector(
+        BFSBisector const & rhs) = delete;
+
+    /**
+    * @brief Deleted assignment operator.
+    *
+    * @param rhs The bisector to assign from.
+    *
+    * @return This bisector.
+    */
+    BFSBisector& operator=(
+        BFSBisector const & rhs) = delete;
 
     /**
      * @brief Create a two-way partitioning of the graph via weighted BFS.
@@ -40,6 +59,23 @@ class BFSBisector
         ConstantGraph const * graph) const override;
 
 
+    /**
+    * @brief Create a two-way partitioning of the graph via weighted BFS with
+    * the given seed vertex.
+    *
+    * @param target The taget partitioning.
+    * @param graph The graph.
+    * @param seed The seed vertex.
+    *
+    * @return The partitioning.
+    */
+    virtual Partitioning execute(
+        TargetPartitioning const * target,
+        ConstantGraph const * graph,
+        vtx_type seed) const;
+
+  private:
+    IRandomEngine * m_rng;
 
 };
 

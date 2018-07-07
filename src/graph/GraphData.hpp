@@ -67,7 +67,7 @@ class GraphData :
     *
     * @return The number of vertices.
     */
-    vtx_type getNumVertices() const;
+    vtx_type numVertices() const;
 
 
     /**

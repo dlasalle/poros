@@ -76,7 +76,7 @@ class ConstantGraph
     *
     * @return The number of vertices.
     */
-    inline vtx_type getNumVertices() const noexcept
+    inline vtx_type numVertices() const noexcept
     {
       return m_numVertices;
     }

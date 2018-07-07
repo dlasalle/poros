@@ -74,7 +74,7 @@ void swapBalanceRight(
     Partitioning * const partitioning,
     ConstantGraph const * const graph)
 {
-  std::vector<vertex_struct> vertices(graph->getNumVertices());
+  std::vector<vertex_struct> vertices(graph->numVertices());
 
   size_t left = 0;
   size_t right = vertices.size()-1;

@@ -30,9 +30,9 @@ class Partition
     */
     Partition(
         pid_type const index,
-        wgt_type const * const partitionWeight) noexcept :
+        wgt_type const weight) noexcept :
       m_index(index),
-      m_partitionWeight(partitionWeight)
+      m_weight(weight)
     {
       // do nothing
     }
@@ -56,12 +56,12 @@ class Partition
     */
     inline wgt_type weight() const noexcept
     {
-      return m_partitionWeight[m_index];
+      return m_weight;
     }
 
     private:
       adj_type m_index;
-      wgt_type const * const m_partitionWeight;
+      wgt_type m_weight;
 };
 
 

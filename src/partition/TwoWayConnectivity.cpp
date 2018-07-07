@@ -41,8 +41,8 @@ std::string TwoWayConnectivity::getVertexDegreeString(
 TwoWayConnectivity::TwoWayConnectivity(
     ConstantGraph const * const graph,
     Partitioning const * const partitioning) :
-  m_border(graph->getNumVertices()),
-  m_connectivity(graph->getNumVertices()),
+  m_border(graph->numVertices()),
+  m_connectivity(graph->numVertices()),
   m_graph(graph)
 {
   // populate connectivity vector

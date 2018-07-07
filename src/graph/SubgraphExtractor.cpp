@@ -30,7 +30,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
     vtx_type const * const labels)
 {
   pid_type const numParts = part->numPartitions();
-  vtx_type const numVertices = graph->getNumVertices();
+  vtx_type const numVertices = graph->numVertices();
 
   // place to hold subgraphs while being constructed
   std::vector<TwoStepGraphBuilder> builder(numParts);

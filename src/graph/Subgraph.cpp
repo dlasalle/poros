@@ -33,7 +33,7 @@ Subgraph::Subgraph(
 
 Subgraph::Subgraph(
     ConstantGraph * const graph) :
-  m_superMap(graph->getNumVertices()),
+  m_superMap(graph->numVertices()),
   m_graph(std::move(*graph))
 {
   sl::VectorMath::increment(m_superMap.data(), m_superMap.size());

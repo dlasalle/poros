@@ -42,7 +42,7 @@ class GridGraphGenerator::Grid
       ASSERT_GREATER(numZ, 0);
     }
 
-    inline vtx_type getNumVertices() const noexcept
+    inline vtx_type numVertices() const noexcept
     {
       return m_numX*m_numY*m_numZ;
     }
@@ -54,17 +54,17 @@ class GridGraphGenerator::Grid
           ((m_numZ - 1) * (m_numX*m_numY))) * 2;
     }
 
-    inline vtx_type getNumVerticesX() const noexcept
+    inline vtx_type numVerticesX() const noexcept
     {
       return m_numX;
     }
 
-    inline vtx_type getNumVerticesY() const noexcept
+    inline vtx_type numVerticesY() const noexcept
     {
       return m_numY;
     }
 
-    inline vtx_type getNumVerticesZ() const noexcept
+    inline vtx_type numVerticesZ() const noexcept
     {
       return m_numZ;
     }
@@ -134,7 +134,7 @@ void GridGraphGenerator::setRandomEdgeWeight(
 
 ConstantGraph GridGraphGenerator::generate()
 {
-  vtx_type const numVertices = m_grid->getNumVertices();
+  vtx_type const numVertices = m_grid->numVertices();
   adj_type const numEdges = m_grid->getNumEdges(); 
 
   GraphData data(numVertices, numEdges);
@@ -144,9 +144,9 @@ ConstantGraph GridGraphGenerator::generate()
   wgt_type * const vertexWeight = data.vertexWeight();
   wgt_type * const edgeWeight = data.edgeWeight();
 
-  vtx_type const numX = m_grid->getNumVerticesX();
-  vtx_type const numY = m_grid->getNumVerticesY();
-  vtx_type const numZ = m_grid->getNumVerticesZ();
+  vtx_type const numX = m_grid->numVerticesX();
+  vtx_type const numY = m_grid->numVerticesY();
+  vtx_type const numZ = m_grid->numVerticesZ();
 
   // each vertex can be the root of up to 3 edges
   std::vector<wgt_type> srcEdgeWeights(numVertices*3);

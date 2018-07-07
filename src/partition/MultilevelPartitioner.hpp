@@ -12,9 +12,9 @@
 #define DOLOS_SRC_MULTILEVELPARTITIONER_HPP
 
 
-#include "IPartitioner.hpp"
-#include "IAggregator.hpp"
-#include "IRefiner.hpp"
+#include "partition/IPartitioner.hpp"
+#include "partition/IRefiner.hpp"
+#include "aggregation/IAggregator.hpp"
 
 #include <memory>
 

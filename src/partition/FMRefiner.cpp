@@ -149,16 +149,16 @@ void FMRefiner::refine(
     ConstantGraph const * const graph) const
 {
   VertexQueue pqs[]{ \
-    {graph->getNumVertices()}, \
-    {graph->getNumVertices()} \
+    {graph->numVertices()}, \
+    {graph->numVertices()} \
   };
   PartitioningAnalyzer analyzer(partitioning, target);
-  sl::BitArray visited(graph->getNumVertices());
+  sl::BitArray visited(graph->numVertices());
 
   double const tolerance = target->getImbalanceTolerance();
 
   std::vector<vtx_type> moves;
-  moves.reserve(graph->getNumVertices());
+  moves.reserve(graph->numVertices());
 
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
     

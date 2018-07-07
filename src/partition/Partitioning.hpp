@@ -42,10 +42,10 @@ class Partitioning
 
         inline Partition operator*() const
         {
-          return Partition(m_index, m_partitionWeight);
+          return Partition(m_index, m_partitionWeight[m_index]);
         }
 
-        inline Iterator const & operator++()
+        inline Iterator & operator++()
         {
           ++m_index;
           return *this;
@@ -152,6 +152,20 @@ class Partitioning
     * @brief Set all vertices as unassigned.
     */
     void unassignAll();
+
+
+    /**
+    * @brief Get the partition with the given index.
+    *
+    * @param part The partition index.
+    *
+    * @return The partition.
+    */
+    inline Partition operator[](
+        pid_type const part) const noexcept
+    {
+      return Partition(part, m_partitionWeight[part]);
+    }
 
 
     /**
@@ -353,10 +367,6 @@ class Partitioning
 
 
   private:
-    struct partition_struct {
-      wgt_type weight;
-    };
-
     wgt_type m_cutEdgeWeight;
 
     sl::Array<wgt_type> m_partitionWeight;

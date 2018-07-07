@@ -70,7 +70,7 @@ GraphData::GraphData(
 ******************************************************************************/
 
 
-vtx_type GraphData::getNumVertices() const
+vtx_type GraphData::numVertices() const
 {
   ASSERT_GREATER(m_edgePrefix.size(),0);
 
@@ -96,7 +96,7 @@ ConstantGraph GraphData::toGraph()
   GraphData * const data = new GraphData(std::move(*this));
 
   ConstantGraph graph( \
-      data->getNumVertices(), data->getNumEdges(), \
+      data->numVertices(), data->getNumEdges(), \
       data->edgePrefix(), data->edgeList(), data->vertexWeight(), \
       data->edgeWeight(), data);
 

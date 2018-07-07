@@ -146,7 +146,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
     TargetPartitioning const * const target,
     ConstantGraph const * graph) const
 {
-  sl::Array<pid_type> partitionLabels(graph->getNumVertices());
+  sl::Array<pid_type> partitionLabels(graph->numVertices());
 
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), target, &mappedGraph, 0);
