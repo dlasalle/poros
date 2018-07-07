@@ -30,6 +30,18 @@ class IRandomEngine
   }
 
   /**
+  * @brief Get a random number with the given minimum and maximum values.
+  *
+  * @param min The minimum value (inclusive).
+  * @param max The maximum value (inclusive).
+  *
+  * @return The random number.
+  */
+  virtual vtx_type randInRange(
+      vtx_type const min,
+      vtx_type const max) = 0;
+
+  /**
   * @brief Fill a vector with a vertex permutation.
   *
   * @param container The container.

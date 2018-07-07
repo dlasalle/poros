@@ -43,6 +43,18 @@ class SimpleRandomEngine : public IRandomEngine
       vtx_type const end) override;
 
 
+  /**
+  * @brief Get a random number with the given minimum and maximum values.
+  *
+  * @param min The minimum value (inclusive).
+  * @param max The maximum value (inclusive).
+  *
+  * @return The random number.
+  */
+  vtx_type randInRange(
+      vtx_type const min,
+      vtx_type const max) override;
+
 
   private:
   std::mt19937 m_rng;

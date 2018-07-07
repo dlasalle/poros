@@ -38,10 +38,16 @@ void SimpleRandomEngine::fillWithPerm(
     container[i] = start + i;
   }
 
-  std::random_shuffle(container + start, container + end);
+  std::shuffle(container + start, container + end, m_rng);
 }
 
 
+vtx_type SimpleRandomEngine::randInRange(
+    vtx_type const min,
+    vtx_type const max)
+{
+  return std::uniform_int_distribution<vtx_type>(min, max)(m_rng);
+}
 
 
 }
