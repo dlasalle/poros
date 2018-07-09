@@ -43,7 +43,7 @@ UNITTEST(Partitioning, VectorConstructor)
   GridGraphGenerator gen(9, 7, 5);
   ConstantGraph graph = gen.generate(); 
   
-  sl::Array<pid_type> labels(graph.getNumVertices());
+  sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     labels[v] = v % 5;
@@ -63,7 +63,7 @@ UNITTEST(Partitioning, MoveConstructor)
   GridGraphGenerator gen(9, 7, 5);
   ConstantGraph graph = gen.generate(); 
   
-  sl::Array<pid_type> labels(graph.getNumVertices());
+  sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     labels[v] = v % 5;
@@ -95,7 +95,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
   GridGraphGenerator gen(9, 7, 5);
   ConstantGraph graph = gen.generate(); 
   
-  sl::Array<pid_type> labels(graph.getNumVertices());
+  sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
     vtx_type const v = vertex.index();
     if (v < 15) {

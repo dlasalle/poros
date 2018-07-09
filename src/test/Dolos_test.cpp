@@ -32,8 +32,8 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
 
   wgt_type cutEdgeWeight;
 
-  sl::Array<pid_type> where(g.getNumVertices());
-  int r = DOLOS_PartGraphRecursive(g.getNumVertices(), g.getEdgePrefix(), \
+  sl::Array<pid_type> where(g.numVertices());
+  int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
       g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
       7, nullptr, &cutEdgeWeight, where.data());
 

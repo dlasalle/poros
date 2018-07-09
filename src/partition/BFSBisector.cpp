@@ -74,7 +74,7 @@ Partitioning BFSBisector::execute(
       // update neighbor priority
       for (const Edge edge : vertex.edges()) {
         if (queue.contains(edge.destination())) {
-          queue.updateByDelta(edge.weight(), v);
+          queue.updateByDelta(edge.weight(), edge.destination());
         }
       }
     }
@@ -101,6 +101,8 @@ Partitioning BFSBisector::execute(
       }
     }
   }
+
+  part.recalcCutEdgeWeight();
 
   return part;
 }

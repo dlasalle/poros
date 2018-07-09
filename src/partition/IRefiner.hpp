@@ -41,7 +41,7 @@ class IRefiner
     * @param graph The graph.
     */
     virtual void refine(
-        PartitioningParameters const * params,
+        PartitionParameters const * params,
         Partitioning * partitioning,
         ConstantGraph const * graph) const = 0;
 };

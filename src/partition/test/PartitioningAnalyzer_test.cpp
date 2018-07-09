@@ -28,7 +28,7 @@ UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
-  for (vtx_type v = 0; v < graph.getNumVertices(); ++v) {
+  for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
       part.assign(v, 0);
     } else if (v < 50) {
@@ -55,7 +55,7 @@ UNITTEST(PartitioningAnalyzer, GetImbalance)
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
-  for (vtx_type v = 0; v < graph.getNumVertices(); ++v) {
+  for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
       part.assign(v, 0);
     } else if (v < 50) {
@@ -85,7 +85,7 @@ UNITTEST(PartitioningAnalyzer, IsOverWeight)
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
-  for (vtx_type v = 0; v < graph.getNumVertices(); ++v) {
+  for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
       part.assign(v, 0);
     } else if (v < 50) {

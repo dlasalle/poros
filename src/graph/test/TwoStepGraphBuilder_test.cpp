@@ -55,7 +55,7 @@ UNITTEST(TwoStepGraphBuilder, FullBuild)
   ConstantGraph graph = builder.finish();
 
   // verify graph
-  testEqual(graph.getNumVertices(), 4u);
+  testEqual(graph.numVertices(), 4u);
   testEqual(graph.getNumEdges(), 8u);
 
   for (Vertex const & vertex : graph.vertices()) {

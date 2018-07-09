@@ -35,7 +35,7 @@ class MultilevelPartitioner :
     */
     MultilevelPartitioner(
         std::unique_ptr<IAggregator> aggregator,
-        std::unique_ptr<IPartitioner> initiailPartitioner,
+        std::unique_ptr<IPartitioner> initialPartitioner,
         std::unique_ptr<IRefiner> refiner);
 
     /**
@@ -52,7 +52,7 @@ class MultilevelPartitioner :
 
   private:
     std::unique_ptr<IAggregator> m_aggregator;
-    std::unique_ptr<IPartitioner> m_initiailPartitioner;
+    std::unique_ptr<IPartitioner> m_initialPartitioner;
     std::unique_ptr<IRefiner> m_refiner;
      
 };

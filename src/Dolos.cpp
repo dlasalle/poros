@@ -48,7 +48,7 @@ int DOLOS_PartGraphRecursive(
   RecursiveBisectionPartitioner partitioner(&bisector);
 
 
-  TargetPartitioning target(params.getNumPartitions(), \
+  TargetPartitioning target(params.numPartitions(), \
       baseGraph.getTotalVertexWeight(), params.getImbalanceTolerance(), \
       params.getTargetPartitionFractions());
 

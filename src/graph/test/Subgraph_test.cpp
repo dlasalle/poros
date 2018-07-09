@@ -25,12 +25,12 @@ UNITTEST(Subgraph, GetGraph)
 
   ConstantGraph g = gen.generate();
 
-  sl::Array<vtx_type> superMap(g.getNumVertices());
+  sl::Array<vtx_type> superMap(g.numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
   Subgraph s(&g, &superMap);
 
-  testEqual(s.getGraph()->getNumVertices(), static_cast<vtx_type>(5*5*5));
+  testEqual(s.getGraph()->numVertices(), static_cast<vtx_type>(5*5*5));
 }
 
 
@@ -40,7 +40,7 @@ UNITTEST(Subgraph, GetSuperMap)
 
   ConstantGraph g = gen.generate();
 
-  sl::Array<vtx_type> superMap(g.getNumVertices());
+  sl::Array<vtx_type> superMap(g.numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
   Subgraph s(&g, &superMap);
@@ -56,7 +56,7 @@ UNITTEST(Subgraph, MapPartitioning)
   GridGraphGenerator gen(2,2,1);
   ConstantGraph tempG = gen.generate();
 
-  sl::Array<vtx_type> superMap(tempG.getNumVertices());
+  sl::Array<vtx_type> superMap(tempG.numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 0U);
 
   Subgraph s(&tempG, &superMap);
@@ -69,7 +69,7 @@ UNITTEST(Subgraph, MapPartitioning)
   subPart.assign(2, 1);
   subPart.assign(3, 1);
 
-  sl::Array<pid_type> superLabels(g->getNumVertices());
+  sl::Array<pid_type> superLabels(g->numVertices());
   s.mapPartitioning(&subPart, superLabels.data(), 3);
   Partitioning superPart(5, g, &superLabels);
 

@@ -27,7 +27,7 @@ UNITTEST(SummationContractor, Contract)
   GridGraphGenerator gen(2,8,1);
   ConstantGraph graph = gen.generate();
 
-  std::vector<vtx_type> cmap(graph.getNumVertices());
+  std::vector<vtx_type> cmap(graph.numVertices());
 
   for (size_t i = 0; i < cmap.size(); ++i) {
     cmap[i] = static_cast<vtx_type>(i/2);
@@ -41,7 +41,7 @@ UNITTEST(SummationContractor, Contract)
   // should be of weight 2
   ConstantGraph out = contractor.contract(&graph, &agg);
 
-  testEqual(out.getNumVertices(), agg.getNumCoarseVertices());
+  testEqual(out.numVertices(), agg.getNumCoarseVertices());
 
   testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(1));
   testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(2));

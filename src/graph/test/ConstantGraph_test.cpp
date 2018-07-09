@@ -25,7 +25,7 @@ UNITTEST(ConstantGraph, IterateVertices)
 
   ConstantGraph g = gen.generate();
 
-  std::vector<bool> visited(g.getNumVertices(), false);
+  std::vector<bool> visited(g.numVertices(), false);
   for (Vertex const v : g.vertices()) {
     visited[v.index()] = true;    
   }

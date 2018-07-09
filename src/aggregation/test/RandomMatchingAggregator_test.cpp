@@ -29,9 +29,9 @@ UNITTEST(RandomMatchingAggregator, Aggregate)
 
   Aggregation agg = aggregator.aggregate(&graph, &rand);
 
-  testGreaterOrEqual(agg.getNumCoarseVertices(), graph.getNumVertices() / 2); 
+  testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \
-      static_cast<vtx_type>(graph.getNumVertices() * 0.6)); 
+      static_cast<vtx_type>(graph.numVertices() * 0.6)); 
 
   // verify at most two vertices per coarse vertex
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);

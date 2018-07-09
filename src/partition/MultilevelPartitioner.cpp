@@ -20,11 +20,11 @@ namespace dolos
 
 MultilevelPartitioner::MultilevelPartitioner(
     std::unique_ptr<IAggregator> aggregator,
-    std::unique_ptr<IPartitioner> initiailPartitioner,
+    std::unique_ptr<IPartitioner> initialPartitioner,
     std::unique_ptr<IRefiner> refiner) :
-  m_aggregator(aggregator),
-  m_initialPartitioner(initialPartitioner),
-  m_refiner(refiner)
+  m_aggregator(std::move(aggregator)),
+  m_initialPartitioner(std::move(initialPartitioner)),
+  m_refiner(std::move(refiner))
 {
   // do nothing 
 }

@@ -37,7 +37,7 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
 
   ConstantGraph g = builder.finish();
 
-  testEqual(g.getNumVertices(), 7U);
+  testEqual(g.numVertices(), 7U);
   testEqual(g.getNumEdges(), 12U);
 
   testEqual(g.getVertex(0).degree(), 6U);

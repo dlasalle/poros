@@ -44,7 +44,7 @@ Aggregation RandomMatchingAggregator::aggregate(
     ConstantGraph const * const graph,
     IRandomEngine * const randomEngine) const
 {
-  MatchedAggregationBuilder matcher(graph->getNumVertices());
+  MatchedAggregationBuilder matcher(graph->numVertices());
 
   PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
       graph->vertices(), randomEngine);
