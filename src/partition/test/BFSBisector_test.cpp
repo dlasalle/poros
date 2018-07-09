@@ -21,7 +21,7 @@ namespace dolos
 
 UNITTEST(BFSBisector, ExecuteUniform)
 {
-  SimpleRandomEngine engine;
+  SimpleRandomEngine engine(0);
 
   // create bisector
   BFSBisector b(&engine);
@@ -49,7 +49,7 @@ UNITTEST(BFSBisector, Execute1To5)
 {
   std::vector<double> targets{0.4, 0.6};
 
-  SimpleRandomEngine engine;
+  SimpleRandomEngine engine(0);
 
   // create bisector
   BFSBisector b(&engine);
@@ -75,7 +75,7 @@ UNITTEST(BFSBisector, Execute1To5)
 
 UNITTEST(BFSBisector, ExecuteCut)
 {
-  SimpleRandomEngine engine;
+  SimpleRandomEngine engine(0);
 
   // create bisector
   BFSBisector b(&engine);
