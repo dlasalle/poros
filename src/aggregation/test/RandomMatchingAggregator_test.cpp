@@ -23,11 +23,11 @@ UNITTEST(RandomMatchingAggregator, Aggregate)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  RandomMatchingAggregator aggregator;
-
   SimpleRandomEngine rand;
 
-  Aggregation agg = aggregator.aggregate(&graph, &rand);
+  RandomMatchingAggregator aggregator(&rand);
+
+  Aggregation agg = aggregator.aggregate(&graph);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \

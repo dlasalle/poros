@@ -9,6 +9,9 @@
 
 
 #include "partition/MultilevelPartitioner.hpp"
+#include "aggregation/RandomMatchingAggregator.hpp"
+#include "partition/BFSBisector.hpp"
+#include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/SimpleRandomEngine.hpp"
 
@@ -24,9 +27,9 @@ UNITTEST(MultilevelPartitioner, ExecuteFullCoarsen8Part)
   GridGraphGenerator gen(8, 8, 8);
 
   SimpleRandomEngine rng(0);
-  RandomMatchingAggregator rm(rng);
+  RandomMatchingAggregator rm(&rng);
 
-  BFSBisector bfs(rng);
+  BFSBisector bfs(&rng);
   RecursiveBisectionPartitioner rb(&bfs);
 
   // TODO: setup the multilevel partition to contract to 8 coarse vertices
