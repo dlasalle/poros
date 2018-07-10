@@ -56,7 +56,7 @@ class BFSBisector : public IBisector
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const override;
+        ConstantGraph const * graph) override;
 
 
     /**
@@ -65,14 +65,14 @@ class BFSBisector : public IBisector
     *
     * @param target The taget partitioning.
     * @param graph The graph.
-    * @param seed The seed vertex.
+    * @param seedVertex The seed vertex.
     *
     * @return The partitioning.
     */
     virtual Partitioning execute(
         TargetPartitioning const * target,
         ConstantGraph const * graph,
-        vtx_type seed) const;
+        vtx_type seedVertex);
 
   private:
     IRandomEngine * m_rng;

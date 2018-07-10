@@ -30,7 +30,7 @@ class BisectionPartitioner :
     * @param partitioner The partitioner.
     */
     BisectionPartitioner(
-        IPartitioner const * const partitioner);
+        IPartitioner * partitioner);
 
 
     /**
@@ -52,11 +52,11 @@ class BisectionPartitioner :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const;
+        ConstantGraph const * graph);
 
 
   private:
-    IPartitioner const * const m_partitioner;
+    IPartitioner * m_partitioner;
 
     // disable copying
     BisectionPartitioner(

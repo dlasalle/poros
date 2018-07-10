@@ -33,17 +33,17 @@ BFSBisector::BFSBisector(
 
 Partitioning BFSBisector::execute(
     TargetPartitioning const * target,
-    ConstantGraph const * graph) const
+    ConstantGraph const * graph)
 {
-  vtx_type const seed = m_rng->randInRange(0, graph->numVertices()-1);
+  vtx_type const seedVertex = m_rng->randInRange(0, graph->numVertices()-1);
 
-  return BFSBisector::execute(target, graph, seed);
+  return BFSBisector::execute(target, graph, seedVertex);
 }
 
 Partitioning BFSBisector::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph,
-    vtx_type const seed) const
+    vtx_type const seed)
 {
   ASSERT_EQUAL(target->numPartitions(), 2);
 

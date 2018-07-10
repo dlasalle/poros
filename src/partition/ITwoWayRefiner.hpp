@@ -13,10 +13,10 @@
 #define DOLOS_SRC_ITWOWAYREFINER_HPP
 
 
-#include "PartitionParameters.hpp"
+#include "TargetPartitioning.hpp"
 #include "Partitioning.hpp"
-#include "graph/ConstantGraph.hpp"
 #include "TwoWayConnectivity.hpp"
+#include "graph/ConstantGraph.hpp"
 
 
 namespace dolos
@@ -39,12 +39,14 @@ class ITwoWayRefiner
     *
     * @param params The parameters of the bisection.
     * @param partitioning The partitioning (input and output).
+    * @param connectivity The connectivity of vertices to the partitions.
     * @param graph The graph.
     */
     virtual void refine(
-        PartitionParameters const * params,
+        TargetPartitioning const * target,
+        TwoWayConnectivity * connectivity,
         Partitioning * partitioning,
-        ConstantGraph const * graph) const = 0;
+        ConstantGraph const * graph) = 0;
 };
 
 

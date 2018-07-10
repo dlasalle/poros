@@ -23,9 +23,13 @@ UNITTEST(MultilevelPartitioner, ExecuteFullCoarsen8Part)
   // build a grid graph
   GridGraphGenerator gen(8, 8, 8);
 
-  // TODO: setup the multilevel partition to contract to 8 coarse vertices
+  SimpleRandomEngine rng(0);
+  RandomMatchingAggregator rm(rng);
 
-  
+  BFSBisector bfs(rng);
+  RecursiveBisectionPartitioner rb(&bfs);
+
+  // TODO: setup the multilevel partition to contract to 8 coarse vertices
 }
 
 }

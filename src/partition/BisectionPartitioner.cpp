@@ -23,7 +23,7 @@ namespace dolos
 
 
 BisectionPartitioner::BisectionPartitioner(
-    IPartitioner const * const partitioner) :
+    IPartitioner * const partitioner) :
   m_partitioner(partitioner)
 {
   // do nothing
@@ -42,8 +42,8 @@ BisectionPartitioner::~BisectionPartitioner()
 
 
 Partitioning BisectionPartitioner::execute(
-    TargetPartitioning const * target,
-    ConstantGraph const * graph) const
+    TargetPartitioning const * const target,
+    ConstantGraph const * const graph)
 {
   if (target->numPartitions() != 2) {
     throw sl::InvalidInputException( \

@@ -39,7 +39,7 @@ class IPartitioner
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const = 0;
+        ConstantGraph const * graph) = 0;
 
 };
 

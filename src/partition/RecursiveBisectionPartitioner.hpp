@@ -33,7 +33,7 @@ class RecursiveBisectionPartitioner :
     * @param bisector The bisector to use.
     */
     RecursiveBisectionPartitioner(
-        IBisector const * bisector);
+        IBisector * bisector);
 
 
     /**
@@ -46,11 +46,11 @@ class RecursiveBisectionPartitioner :
      */
     Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const override;
+        ConstantGraph const * graph) override;
 
 
   private:
-    IBisector const * m_bisector;
+    IBisector * m_bisector;
 
 
     /**
@@ -65,7 +65,7 @@ class RecursiveBisectionPartitioner :
         pid_type * partitionLabels,
         TargetPartitioning const * target,
         IMappedGraph const * subGraph,
-        pid_type const offset) const;
+        pid_type const offset);
 
 
     // disable copying

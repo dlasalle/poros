@@ -146,7 +146,7 @@ void FMRefiner::refine(
     TargetPartitioning const * const target,
     TwoWayConnectivity * const connectivity,
     Partitioning * const partitioning,
-    ConstantGraph const * const graph) const
+    ConstantGraph const * const graph)
 {
   VertexQueue pqs[]{ \
     {graph->numVertices()}, \

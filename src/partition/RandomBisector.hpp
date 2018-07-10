@@ -68,7 +68,7 @@ class RandomBisector :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const override;
+        ConstantGraph const * graph) override;
 
 
   private:

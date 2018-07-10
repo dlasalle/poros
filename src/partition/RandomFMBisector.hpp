@@ -34,7 +34,7 @@ class RandomFMBisector :
     */
     RandomFMBisector(
         int maxIterations,
-        IRandomEngine * const randEngine);
+        IRandomEngine * randEngine);
 
 
     /**
@@ -53,7 +53,7 @@ class RandomFMBisector :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) const override;
+        ConstantGraph const * graph) override;
 
 
   private:

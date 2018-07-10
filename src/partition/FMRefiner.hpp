@@ -23,7 +23,7 @@ namespace dolos
 /**
 * @brief The refiner implementing the Fidducia-Mattheyses algorithm.
 */
-class FMRefiner
+class FMRefiner : public ITwoWayRefiner
 {
   public:
     /**
@@ -45,10 +45,10 @@ class FMRefiner
     * @param graph The graph.
     */
     void refine(
-        TargetPartitioning const * const target,
+        TargetPartitioning const * target,
         TwoWayConnectivity * connectivity,
-        Partitioning * const partitioning,
-        ConstantGraph const * graph) const;
+        Partitioning * partitioning,
+        ConstantGraph const * graph);
 
   private:
     int m_maxRefinementIters;

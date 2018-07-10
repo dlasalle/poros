@@ -29,8 +29,8 @@ namespace dolos
 void RecursiveBisectionPartitioner::recurse(
     pid_type * const partitionLabels,
     TargetPartitioning const * const target,
-    IMappedGraph const * mappedGraph,
-    pid_type const offset) const
+    IMappedGraph const * const mappedGraph,
+    pid_type const offset)
 {
   ConstantGraph const * const graph = mappedGraph->getGraph();
   
@@ -129,7 +129,7 @@ void RecursiveBisectionPartitioner::recurse(
 
 
 RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
-    IBisector const * const bisector) :
+    IBisector * const bisector) :
   m_bisector(bisector)
 {
   // do nothing
@@ -144,7 +144,7 @@ RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
 
 Partitioning RecursiveBisectionPartitioner::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * graph) const
+    ConstantGraph const * const graph)
 {
   sl::Array<pid_type> partitionLabels(graph->numVertices());
 

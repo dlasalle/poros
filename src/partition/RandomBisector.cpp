@@ -153,7 +153,7 @@ RandomBisector::~RandomBisector()
 
 Partitioning RandomBisector::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph) const
+    ConstantGraph const * const graph)
 {
   // random vertex order
 

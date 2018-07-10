@@ -9,8 +9,7 @@
 
 
 
-#include "aggregation/RandomMatchingAggregator.hpp"
-
+#include "RandomMatchingAggregator.hpp"
 #include "aggregation/MatchedAggregationBuilder.hpp"
 #include "graph/RandomOrderVertexSet.hpp"
 
@@ -23,7 +22,9 @@ namespace dolos
 ******************************************************************************/
 
 
-RandomMatchingAggregator::RandomMatchingAggregator()
+RandomMatchingAggregator::RandomMatchingAggregator(
+    IRandomEngine * const rng) :
+  m_rng(rng)
 {
   // do nothing
 }
@@ -41,13 +42,12 @@ RandomMatchingAggregator::~RandomMatchingAggregator()
 
 
 Aggregation RandomMatchingAggregator::aggregate(
-    ConstantGraph const * const graph,
-    IRandomEngine * const randomEngine) const
+    ConstantGraph const * const graph) const
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
   PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
-      graph->vertices(), randomEngine);
+      graph->vertices(), m_rng);
 
   for (Vertex const & vertex : permutedVertices) {
     vtx_type const v = vertex.index();

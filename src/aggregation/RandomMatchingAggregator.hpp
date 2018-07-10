@@ -22,13 +22,36 @@ namespace dolos
 {
 
 
-class RandomMatchingAggregator
+class RandomMatchingAggregator : public IAggregator
 {
   public:
     /**
     * @brief Create a new random matchign aggregator.
+    *
+    * @param randomEngine The random engine to use.
     */
-    RandomMatchingAggregator();
+    RandomMatchingAggregator(
+        IRandomEngine * const randomEngine);
+
+
+    /**
+    * @brief Deleted copy constructor.
+    *
+    * @param rhs The aggregator to copy.
+    */
+    RandomMatchingAggregator(
+        RandomMatchingAggregator const & rhs) = delete;
+
+
+    /**
+    * @brief Deleted assignment operator.
+    *
+    * @param rhs The aggregator to copy from.
+    *
+    * @return This aggregator.
+    */
+    RandomMatchingAggregator& operator=(
+        RandomMatchingAggregator const & rhs) = delete;
 
 
     /**
@@ -45,10 +68,10 @@ class RandomMatchingAggregator
     * @return The aggregation.
     */
     virtual Aggregation aggregate(
-        ConstantGraph const * graph,
-        IRandomEngine * const randomEngine) const;
+        ConstantGraph const * graph) const;
 
-
+  private:
+    IRandomEngine * m_rng;
 };
 
 
