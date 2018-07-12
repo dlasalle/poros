@@ -9,6 +9,7 @@
 
 
 #include "partition/MultilevelBisector.hpp"
+#include "multilevel/DiscreteCoarseGraph.hpp"
 
 
 namespace dolos
@@ -24,7 +25,7 @@ MultilevelBisector::MultilevelBisector(
     std::unique_ptr<IBisector> initialBisector,
     std::unique_ptr<ITwoWayRefiner> refiner) :
   m_aggregator(std::move(aggregator)),
-  m_intialBisector(std::move(initialBisector)),
+  m_initialBisector(std::move(initialBisector)),
   m_refiner(std::move(refiner))
 {
   // do nothing
@@ -40,15 +41,14 @@ Partitioning MultilevelBisector::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph)
 {
-  Aggregation agg = m_aggregator->execute(graph);
+  Aggregation agg = m_aggregator->aggregate(graph);
 
-  SummationCoarsener coarsener;
+  DiscreteCoarseGraph coarse(graph, &agg);
 
-  coarsener.coarsen(graph, agg);
+  // recurse
+  Partitioning coarsePart = execute(target, coarse.graph());
 
-  Partitioning coarsePart = execute(target, coarsener.coarse());
-
-  Partitioning part = coarsener.uncoarsen(coarsePart); 
+  Partitioning part = coarse.project(&coarsePart); 
 
   m_refiner->refine(target, connectivity, &part, graph);
 

@@ -10,6 +10,7 @@ add_subdirectory("util")
 add_subdirectory("graph")
 add_subdirectory("partition")
 add_subdirectory("aggregation")
+add_subdirectory("multilevel")
 
 file(GLOB sources *.cpp)
 target_sources(dolos PRIVATE ${sources})

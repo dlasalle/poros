@@ -14,6 +14,8 @@
 
 
 #include "partition/IBisector.hpp"
+#include "aggregation/IAggregator.hpp"
+#include "partition/ITwoWayRefiner.hpp"
 
 #include <memory>
 
@@ -55,7 +57,7 @@ class MultilevelBisector : public IBisector
     std::unique_ptr<IBisector> m_initialBisector;
     std::unique_ptr<ITwoWayRefiner> m_refiner;
 
-}
+};
 
 }
 
