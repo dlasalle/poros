@@ -9,6 +9,7 @@
 
 
 #include "multilevel/DiscreteCoarseGraph.hpp"
+#include "solidutils/UnitTest.hpp"
 
 
 namespace dolos

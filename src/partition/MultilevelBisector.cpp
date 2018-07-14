@@ -10,6 +10,7 @@
 
 #include "partition/MultilevelBisector.hpp"
 #include "multilevel/DiscreteCoarseGraph.hpp"
+#include "partition/TwoWayConnectivity.hpp"
 
 
 namespace dolos
@@ -50,7 +51,9 @@ Partitioning MultilevelBisector::execute(
 
   Partitioning part = coarse.project(&coarsePart); 
 
-  m_refiner->refine(target, connectivity, &part, graph);
+  TwoWayConnectivity connectivity(graph, &part);
+
+  m_refiner->refine(target, &connectivity, &part, graph);
 
   return part;
 }
