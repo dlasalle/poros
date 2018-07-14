@@ -17,6 +17,7 @@ namespace dolos
 
 UNITTEST(DiscreteCoarseGraph, Constructor)
 {
+  FAIL();
 }
 
 }
