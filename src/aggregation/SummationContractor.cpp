@@ -41,7 +41,7 @@ ConstantGraph SummationContractor::contract(
 {
   OneStepGraphBuilder builder(
       aggregation->getNumCoarseVertices(),
-      graph->getNumEdges());
+      graph->numEdges());
 
   // reserve space in our buffers
   std::vector<vtx_type> neighbors;

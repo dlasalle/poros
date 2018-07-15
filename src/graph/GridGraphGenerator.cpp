@@ -47,7 +47,7 @@ class GridGraphGenerator::Grid
       return m_numX*m_numY*m_numZ;
     }
 
-    inline adj_type getNumEdges() const noexcept
+    inline adj_type numEdges() const noexcept
     {
       return (((m_numX - 1) * (m_numY*m_numZ)) + \
           ((m_numY - 1) * (m_numX*m_numZ)) + \
@@ -135,7 +135,7 @@ void GridGraphGenerator::setRandomEdgeWeight(
 ConstantGraph GridGraphGenerator::generate()
 {
   vtx_type const numVertices = m_grid->numVertices();
-  adj_type const numEdges = m_grid->getNumEdges(); 
+  adj_type const numEdges = m_grid->numEdges(); 
 
   GraphData data(numVertices, numEdges);
 

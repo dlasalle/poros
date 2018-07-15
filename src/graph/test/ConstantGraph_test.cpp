@@ -42,7 +42,7 @@ UNITTEST(ConstantGraph, IterateEdges)
 
   ConstantGraph g = gen.generate();
 
-  std::vector<bool> visited(g.getNumEdges(), false);
+  std::vector<bool> visited(g.numEdges(), false);
   for (Edge const & e : g.edges()) {
     visited[e.index()] = true;
   }
@@ -59,7 +59,7 @@ UNITTEST(ConstantGraph, IteratePerVertexEdges)
 
   ConstantGraph g = gen.generate();
 
-  std::vector<bool> visited(g.getNumEdges(), false);
+  std::vector<bool> visited(g.numEdges(), false);
   for (Vertex const & v : g.vertices()) {
     for (Edge const & e : v.edges()) {
       visited[e.index()] = true;

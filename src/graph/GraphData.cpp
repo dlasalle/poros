@@ -82,7 +82,7 @@ vtx_type GraphData::numVertices() const
 }
 
 
-adj_type GraphData::getNumEdges() const
+adj_type GraphData::numEdges() const
 {
   adj_type const numEdges = m_edgePrefix.back();
   ASSERT_LESSEQUAL(numEdges, m_edgeWeight.size());
@@ -96,7 +96,7 @@ ConstantGraph GraphData::toGraph()
   GraphData * const data = new GraphData(std::move(*this));
 
   ConstantGraph graph( \
-      data->numVertices(), data->getNumEdges(), \
+      data->numVertices(), data->numEdges(), \
       data->edgePrefix(), data->edgeList(), data->vertexWeight(), \
       data->edgeWeight(), data);
 

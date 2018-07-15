@@ -104,5 +104,13 @@ VertexGrouping Aggregation::coarseVertices() const noexcept
 }
 
 
+void Aggregation::fillCoarseMap(
+    vtx_type * data) const noexcept
+{
+  for (vtx_type v = 0; v < m_coarseMap.size(); ++v) {
+    data[v] = m_coarseMap[v];
+  }
+}
+
 
 }

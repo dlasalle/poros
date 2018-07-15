@@ -87,7 +87,7 @@ class ConstantGraph
     *
     * @return The number of edges.
     */
-    inline adj_type getNumEdges() const noexcept
+    inline adj_type numEdges() const noexcept
     {
       return m_numEdges;
     }
@@ -255,9 +255,9 @@ class ConstantGraph
 
     // disable copying
     ConstantGraph(
-        ConstantGraph const & lhs);
+        ConstantGraph const & lhs) = delete;
     ConstantGraph & operator=(
-        ConstantGraph const & lhs);
+        ConstantGraph const & lhs) = delete;
 };
 
 

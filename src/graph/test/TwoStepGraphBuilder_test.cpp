@@ -56,7 +56,7 @@ UNITTEST(TwoStepGraphBuilder, FullBuild)
 
   // verify graph
   testEqual(graph.numVertices(), 4u);
-  testEqual(graph.getNumEdges(), 8u);
+  testEqual(graph.numEdges(), 8u);
 
   for (Vertex const & vertex : graph.vertices()) {
     testEqual(vertex.weight(), 1u);

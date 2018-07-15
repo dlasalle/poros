@@ -39,7 +39,7 @@ UNITTEST(GraphData, ConstructionAndGet)
   }
 
   testEqual(gd.numVertices(), 5u);
-  testEqual(gd.getNumEdges(), 10u);
+  testEqual(gd.numEdges(), 10u);
 
   // verify that what we wrote is still there and use constant getters
   {
@@ -85,7 +85,7 @@ UNITTEST(GraphData, MoveGet)
 
   // test graph size now that we've filled it out
   testEqual(gd.numVertices(), 5u);
-  testEqual(gd.getNumEdges(), 10u);
+  testEqual(gd.numEdges(), 10u);
 
   // verify that what we wrote is still there and use constant getters
   {
@@ -138,7 +138,7 @@ UNITTEST(GraphData, ToGraph)
   ConstantGraph const g = gd.toGraph();
 
   testEqual(g.numVertices(), vwgt.size());
-  testEqual(g.getNumEdges(), ewgt.size());
+  testEqual(g.numEdges(), ewgt.size());
 
   for (Vertex const & v : g.vertices()) {
     testEqual(v.weight(), vwgt[v.index()]);

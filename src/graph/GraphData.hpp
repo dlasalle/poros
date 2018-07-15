@@ -75,7 +75,7 @@ class GraphData :
     *
     * @return The number of edges.
     */
-    adj_type getNumEdges() const;
+    adj_type numEdges() const;
 
 
     /**

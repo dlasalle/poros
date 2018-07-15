@@ -109,6 +109,13 @@ class Aggregation
     VertexGrouping coarseVertices() const noexcept;
 
 
+    /**
+    * @brief Fill the memory location with the coarse map.
+    *
+    * @param data The memory location.
+    */
+    void fillCoarseMap(
+        vtx_type * data) const noexcept;
 
   private:
     vtx_type m_numCoarseVertices;

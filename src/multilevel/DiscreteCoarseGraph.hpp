@@ -76,7 +76,7 @@ class DiscreteCoarseGraph : public ICoarseGraph
 
   private:
   ConstantGraph const * m_fine;
-  ConstantGraph const * m_coarse;
+  ConstantGraph m_coarse;
   sl::Array<vtx_type> m_coarseMap;
 };
 
