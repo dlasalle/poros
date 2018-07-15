@@ -35,7 +35,7 @@ UNITTEST(DiscreteCoarseGraph, Contract)
   ConstantGraph const * coarseGraph = coarse.graph();
 
   testEqual(coarseGraph->numVertices(), 8U);
-  testEqual(coarseGraph->numEdges(), 7U);
+  testEqual(coarseGraph->numEdges(), 14U);
 }
 
 }
