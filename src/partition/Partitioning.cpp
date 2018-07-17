@@ -51,6 +51,9 @@ Partitioning::Partitioning(
     ASSERT_LESS(part, numParts);
     m_partitionWeight[part] += vertex.weight();
   }
+
+  // TODO: should not be calling private method inside of constructor
+  recalcCutEdgeWeight();
 }
 
 

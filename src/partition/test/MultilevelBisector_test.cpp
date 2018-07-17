@@ -31,6 +31,7 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
 
   // builder our ml bisector
   SimpleRandomEngine rng(0);
+
   std::unique_ptr<IAggregator> agg(new RandomMatchingAggregator(&rng));
   std::unique_ptr<IBisector> bis(new BFSBisector(&rng));
   std::unique_ptr<ITwoWayRefiner> ref(new FMRefiner(8));
@@ -38,7 +39,7 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
   MultilevelBisector mb(std::move(agg), std::move(bis), std::move(ref));
 
   // set target partitioning
-  TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);
+  TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.005);
 
   Partitioning part = mb.execute(&target, &graph);
 
@@ -50,8 +51,8 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
   testLessOrEqual(part.getCutEdgeWeight(), maxCut);
   testGreaterOrEqual(part.getCutEdgeWeight(), minCut);
 
-  // balanced to within 0.1%
-  testLess(analyzer.calcMaxImbalance(), 0.001);
+  // balanced to within 0.51%
+  testLess(analyzer.calcMaxImbalance(), 0.0051);
 }
 
 }

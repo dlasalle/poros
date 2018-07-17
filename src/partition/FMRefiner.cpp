@@ -200,8 +200,8 @@ void FMRefiner::refine(
         bestCut = currentCut;
         bestBalance = balance;
         moves.clear();
-      } else if (currentCut < bestCut && (balance < tolerance || \
-          balance < bestBalance)) {
+      } else if (currentCut < bestCut && (balance <= tolerance || \
+          balance <= bestBalance)) {
         bestCut = currentCut;
         bestBalance = balance;
         moves.clear();

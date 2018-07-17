@@ -69,6 +69,9 @@ ConstantGraph const * DiscreteCoarseGraph::graph() const
 Partitioning DiscreteCoarseGraph::project(
     Partitioning const * coarsePart)
 {
+  DEBUG_MESSAGE("Projecting partition from " +
+      std::to_string(m_coarse.numVertices()) + " to " +
+      std::to_string(m_fine->numVertices()));
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 
   // iterate over fine vertices
@@ -79,6 +82,9 @@ Partitioning DiscreteCoarseGraph::project(
 
     finePart.assign(v, p); 
   }
+
+  finePart.recalcCutEdgeWeight();
+  ASSERT_EQUAL(finePart.getCutEdgeWeight(), coarsePart->getCutEdgeWeight());
 
   return finePart;
 }
