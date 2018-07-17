@@ -58,18 +58,18 @@ ConstantGraph SummationContractor::contract(
     for (Vertex const vertex : group.fineVertices()) {
       coarseVertexWeight += vertex.weight();
       for (Edge const edge : vertex.edges()) {
-        vtx_type const neighbor = aggregation->getCoarseVertexNumber(edge.destination());
-        if (neighbor == coarseVertexNumber) {
+        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(edge.destination());
+        if (coarseNeighbor == coarseVertexNumber) {
           // skip self loops
           continue;
         }
 
-        adj_type coarseEdgeIndex = htable[neighbor];
+        adj_type coarseEdgeIndex = htable[coarseNeighbor];
         if (coarseEdgeIndex == NULL_VTX) {
           // new edge
           coarseEdgeIndex = neighbors.size();
-          htable[neighbor] = coarseEdgeIndex; 
-          neighbors.emplace_back(neighbor);
+          htable[coarseNeighbor] = coarseEdgeIndex; 
+          neighbors.emplace_back(coarseNeighbor);
           edgeWeights.emplace_back(edge.weight());
         } else {
           // edge already exists -- sum them together

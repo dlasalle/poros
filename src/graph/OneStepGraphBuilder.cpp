@@ -28,7 +28,7 @@ OneStepGraphBuilder::OneStepGraphBuilder(
     adj_type const maxNumEdges) :
   m_numVertices(0),
   m_numEdges(0),
-  m_edgePrefix(numVertices+1),
+  m_edgePrefix(numVertices+1, 0),
   m_edgeList(maxNumEdges),
   m_vertexWeight(numVertices),
   m_edgeWeight(maxNumEdges)
@@ -65,6 +65,11 @@ void OneStepGraphBuilder::addVertex(
 ConstantGraph OneStepGraphBuilder::finish()
 {
   ASSERT_EQUAL(m_numVertices, m_vertexWeight.size());
+
+  m_edgePrefix.resize(m_numVertices+1);
+  m_edgeList.resize(m_numEdges);
+  m_vertexWeight.resize(m_numVertices);
+  m_edgeWeight.resize(m_numEdges);
 
   GraphData data(&m_edgePrefix, &m_edgeList, &m_vertexWeight, &m_edgeWeight);
   ConstantGraph graph = data.toGraph();

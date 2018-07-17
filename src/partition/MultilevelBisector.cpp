@@ -42,20 +42,25 @@ Partitioning MultilevelBisector::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph)
 {
-  Aggregation agg = m_aggregator->aggregate(graph);
+  vtx_type const threshold = target->numPartitions() * 8;
+  if (graph->numVertices() < threshold) {
+    return m_initialBisector->execute(target, graph); 
+  } else {
+    Aggregation agg = m_aggregator->aggregate(graph);
 
-  DiscreteCoarseGraph coarse(graph, &agg);
+    DiscreteCoarseGraph coarse(graph, &agg);
 
-  // recurse
-  Partitioning coarsePart = execute(target, coarse.graph());
+    // recurse
+    Partitioning coarsePart = execute(target, coarse.graph());
 
-  Partitioning part = coarse.project(&coarsePart); 
+    Partitioning part = coarse.project(&coarsePart); 
 
-  TwoWayConnectivity connectivity(graph, &part);
+    TwoWayConnectivity connectivity(graph, &part);
 
-  m_refiner->refine(target, &connectivity, &part, graph);
+    m_refiner->refine(target, &connectivity, &part, graph);
 
-  return part;
+    return part;
+  }
 }
 
 

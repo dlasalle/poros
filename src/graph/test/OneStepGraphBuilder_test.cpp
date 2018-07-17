@@ -24,7 +24,7 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
 
   std::vector<vtx_type> neighbors{1,2,3,4,5,6,
       0, 0, 0, 0, 0, 0};
-  std::vector<wgt_type> weights{12, 1};
+  std::vector<wgt_type> weights(12, 1);
   builder.addVertex(1, 6, neighbors.data(), weights.data());
 
   builder.addVertex(1, 1, neighbors.data()+6, weights.data()+6);

@@ -91,11 +91,16 @@ UNITTEST(BFSBisector, ExecuteCut)
   // perform bisection
   Partitioning part = b.execute(&target, &graph);
 
-  wgt_type maxCut = 80;
-  wgt_type minCut = 40;
+  wgt_type const maxCut = 80;
+  wgt_type const minCut = 40;
 
   testLessOrEqual(part.getCutEdgeWeight(), maxCut);
   testGreaterOrEqual(part.getCutEdgeWeight(), minCut);
+
+  PartitioningAnalyzer analyzer(&part, &target);
+
+  // balanced to within 0.1%
+  testLess(analyzer.calcMaxImbalance(), 0.001);
 }
 
 
