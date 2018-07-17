@@ -83,6 +83,7 @@ Partitioning DiscreteCoarseGraph::project(
     finePart.assign(v, p); 
   }
 
+  // TODO: this doesn't need to be calculated, we should set it directly
   finePart.recalcCutEdgeWeight();
   ASSERT_EQUAL(finePart.getCutEdgeWeight(), coarsePart->getCutEdgeWeight());
 
