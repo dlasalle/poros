@@ -71,7 +71,11 @@ ConstantGraph OneStepGraphBuilder::finish()
   m_vertexWeight.resize(m_numVertices);
   m_edgeWeight.resize(m_numEdges);
 
-  GraphData data(&m_edgePrefix, &m_edgeList, &m_vertexWeight, &m_edgeWeight);
+  GraphData data(
+      std::move(m_edgePrefix),
+      std::move(m_edgeList),
+      std::move(m_vertexWeight),
+      std::move(m_edgeWeight));
   ConstantGraph graph = data.toGraph();
 
   return graph;

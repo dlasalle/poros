@@ -16,6 +16,16 @@
 namespace dolos
 {
 
+/******************************************************************************
+* CONSTANTS *******************************************************************
+******************************************************************************/
+
+namespace
+{
+
+constexpr const wgt_type UNIT_WEIGHT = static_cast<wgt_type>(1);
+
+}
 
 
 /******************************************************************************
@@ -36,14 +46,14 @@ GraphData::GraphData(
 
 
 GraphData::GraphData(
-    sl::Array<adj_type> * const edgePrefix,
-    sl::Array<vtx_type> * const edgeList,
-    sl::Array<wgt_type> * const vertexWeight,
-    sl::Array<wgt_type> * const edgeWeight) :
-  m_edgePrefix(std::move(*edgePrefix)),
-  m_edgeList(std::move(*edgeList)),
-  m_vertexWeight(std::move(*vertexWeight)),
-  m_edgeWeight(std::move(*edgeWeight))
+    std::vector<adj_type> edgePrefix,
+    std::vector<vtx_type> edgeList,
+    std::vector<wgt_type> vertexWeight,
+    std::vector<wgt_type> edgeWeight) :
+  m_edgePrefix(std::move(edgePrefix)),
+  m_edgeList(std::move(edgeList)),
+  m_vertexWeight(std::move(vertexWeight)),
+  m_edgeWeight(std::move(edgeWeight))
 {
   // do nothing  
 }
@@ -106,13 +116,13 @@ ConstantGraph GraphData::toGraph()
 
 void GraphData::setUnitVertexWeight() noexcept
 {
-  m_vertexWeight.set(1);
+  m_vertexWeight.assign(m_vertexWeight.size(), UNIT_WEIGHT);
 }
 
 
 void GraphData::setUnitEdgeWeight() noexcept
 {
-  m_edgeWeight.set(1);
+  m_edgeWeight.assign(m_edgeWeight.size(), UNIT_WEIGHT);
 }
 
 

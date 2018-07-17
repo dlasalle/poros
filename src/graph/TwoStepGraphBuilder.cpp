@@ -59,8 +59,7 @@ void TwoStepGraphBuilder::beginVertexPhase()
   m_phase = PHASE_VERTICES;
   
   // allocate vertex arrays
-  m_edgePrefix.resize(m_numVertices+1);
-  m_edgePrefix.set(0);
+  m_edgePrefix.assign(m_numVertices+1, 0);;
 
   m_vertexWeight.resize(m_numVertices);
 }
@@ -90,7 +89,11 @@ ConstantGraph TwoStepGraphBuilder::finish()
 {
   ASSERT_EQUAL(m_phase, PHASE_EDGES);
 
-  GraphData data(&m_edgePrefix, &m_edgeList, &m_vertexWeight, &m_edgeWeight);
+  GraphData data(
+      std::move(m_edgePrefix),
+      std::move(m_edgeList), 
+      std::move(m_vertexWeight),
+      std::move(m_edgeWeight));
   ConstantGraph graph = data.toGraph();
 
   m_phase = PHASE_START;

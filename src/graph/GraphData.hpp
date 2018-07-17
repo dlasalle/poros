@@ -16,7 +16,8 @@
 #include "Base.hpp"
 #include "graph/ConstantGraph.hpp"
 #include "util/IAllocatedData.hpp"
-#include "solidutils/Array.hpp"
+
+#include <vector>
 
 namespace dolos
 {
@@ -47,10 +48,10 @@ class GraphData :
     * @param edgeWeight The edge weight array.
     */
     GraphData(
-        sl::Array<adj_type> * edgePrefix,
-        sl::Array<vtx_type> * edgeList,
-        sl::Array<wgt_type> * vertexWeight,
-        sl::Array<wgt_type> * edgeWeight);
+        std::vector<adj_type> edgePrefix,
+        std::vector<vtx_type> edgeList,
+        std::vector<wgt_type> vertexWeight,
+        std::vector<wgt_type> edgeWeight);
 
 
     /**
@@ -165,10 +166,10 @@ class GraphData :
 
 
   private:
-    sl::Array<adj_type> m_edgePrefix;
-    sl::Array<vtx_type> m_edgeList;
-    sl::Array<wgt_type> m_vertexWeight;
-    sl::Array<wgt_type> m_edgeWeight;
+    std::vector<adj_type> m_edgePrefix;
+    std::vector<vtx_type> m_edgeList;
+    std::vector<wgt_type> m_vertexWeight;
+    std::vector<wgt_type> m_edgeWeight;
 
     // prevent copying
     GraphData(
