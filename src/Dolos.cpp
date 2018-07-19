@@ -14,6 +14,9 @@
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
 #include "partition/RandomBisector.hpp"
+#include "partition/FMRefiner.hpp"
+#include "aggregation/RandomMatchingAggregator.hpp"
+#include "partition/MultilevelBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "util/SimpleRandomEngine.hpp"
 
@@ -44,9 +47,13 @@ int DOLOS_PartGraphRecursive(
   PartitionParameters params(numPartitions);
 
   // partition the graph
-  RandomBisector bisector(&randEngine);
-  RecursiveBisectionPartitioner partitioner(&bisector);
+  std::unique_ptr<IAggregator> rm(new RandomMatchingAggregator(&randEngine));
+  std::unique_ptr<IBisector> rb(new RandomBisector(&randEngine));
+  std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 
+  MultilevelBisector mb(std::move(rm), std::move(rb), std::move(fm));
+
+  RecursiveBisectionPartitioner partitioner(&mb);
 
   TargetPartitioning target(params.numPartitions(), \
       baseGraph.getTotalVertexWeight(), params.getImbalanceTolerance(), \

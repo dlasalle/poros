@@ -20,7 +20,7 @@
 namespace dolos
 {
 
-UNITTEST(RandomBisector, ExecuteKWayUniform)
+UNITTEST(RecursiveBisectionPartitioner, ExecuteKWayUniform)
 {
   SimpleRandomEngine engine;
 
@@ -50,7 +50,7 @@ UNITTEST(RandomBisector, ExecuteKWayUniform)
   }
 }
 
-UNITTEST(RandomBisector, ExecuteKWay1To5)
+UNITTEST(RecursiveBisectionPartitioner, ExecuteKWay1To5)
 {
   SimpleRandomEngine engine;
 
@@ -82,7 +82,7 @@ UNITTEST(RandomBisector, ExecuteKWay1To5)
   }
 }
 
-UNITTEST(RandomBisector, Execute4Way)
+UNITTEST(RecursiveBisectionPartitioner, Execute4Way)
 {
   std::vector<double> targets{0.25, 0.3, 0.3, 0.15};
 
@@ -112,7 +112,7 @@ UNITTEST(RandomBisector, Execute4Way)
   testLess(imbalance, 0.03005);
 }
 
-UNITTEST(RandomBisector, Execute7Way1To3)
+UNITTEST(RecursiveBisectionPartitioner, Execute7Way1To3)
 {
   SimpleRandomEngine engine;
 

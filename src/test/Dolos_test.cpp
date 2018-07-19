@@ -47,7 +47,10 @@ UNITTEST(Dolos, PartGraphRecursiveSeven)
   double const imbalance = analyzer.calcMaxImbalance();
 
   testLess(imbalance, 0.03);
-  testLessOrEqual(cutEdgeWeight, g.getTotalEdgeWeight());
+
+  // cut should be within a factor of 2 of optimal
+  int const optimal = 13 * 13 * 3 * 4; // optimal for 8 way
+  testLessOrEqual(cutEdgeWeight, optimal*2U);
 }
 
 
