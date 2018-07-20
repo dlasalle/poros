@@ -50,6 +50,16 @@ class VertexGroup
       return PermutedVertexSet(m_size, m_fineVertices, m_data); 
     }
 
+    /**
+    * @brief Get the number of vertices in this group.
+    *
+    * @return The number of vertices.
+    */
+    vtx_type size() const
+    {
+      return m_size;
+    }
+
   private:
     vtx_type const m_size;
     vtx_type const * const m_fineVertices;

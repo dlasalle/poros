@@ -1,14 +1,13 @@
 /**
-* @file RandomMatchingAggregator_test.cpp
-* @brief Unit tests for the RandomMatchingAggregator class.
+* @file HeavyEdgeMatchingAggregator_test.cpp
+* @brief Unit tests of the HeavyEdgeMatchingAggregator class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2018, Solid Lake LLC
+* Copyright 2018
 * @version 1
-* @date 2018-01-15
+* @date 2018-07-19
 */
 
-
-#include "aggregation/RandomMatchingAggregator.hpp"
+#include "aggregation/HeavyEdgeMatchingAggregator.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/SimpleRandomEngine.hpp"
 #include "solidutils/UnitTest.hpp"
@@ -18,14 +17,14 @@ namespace dolos
 {
 
 
-UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
+UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 {
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
   SimpleRandomEngine rand;
 
-  RandomMatchingAggregator aggregator(&rand);
+  HeavyEdgeMatchingAggregator aggregator(&rand);
 
   Aggregation agg = aggregator.aggregate(&graph);
 
@@ -44,17 +43,16 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
     testGreaterOrEqual(count, 1);
     testLessOrEqual(count, 2);
   }
-
 }
 
-UNITTEST(RandomMatchingAggregator, ConnectedMatch)
+UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 {
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
   SimpleRandomEngine rand;
 
-  RandomMatchingAggregator aggregator(&rand);
+  HeavyEdgeMatchingAggregator aggregator(&rand);
 
   Aggregation agg = aggregator.aggregate(&graph);
 
