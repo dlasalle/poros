@@ -101,6 +101,34 @@ class Partitioning
     Partitioning(
         Partitioning && lhs) noexcept;
 
+    /**
+    * @brief Deleted copy constructor.
+    *
+    * @param lhs The partitioning to copy.
+    */
+    Partitioning(
+        Partitioning const & lhs) = delete;
+
+    /**
+    * @brief Move assignment operator.
+    *
+    * @param lhs The partitioning to move.
+    *
+    * @return This partitioning.
+    */
+    Partitioning & operator=(
+        Partitioning && lhs);
+
+    /**
+    * @brief Deleted copy assignment operator.
+    *
+    * @param lhs The partitioning to copy.
+    *
+    * @return This partitioning.
+    */
+    Partitioning & operator=(
+        Partitioning const & lhs) = delete;
+
 
     /**
     * @brief Calculate the number of vertices per partition.
@@ -374,11 +402,7 @@ class Partitioning
 
     ConstantGraph const * m_graph;
 
-    // disable copying
-    Partitioning(
-        Partitioning const & lhs);
-    Partitioning & operator=(
-        Partitioning const & lhs);
+
 
 };
 

@@ -61,6 +61,11 @@ Partitioning::Partitioning(
 Partitioning::Partitioning(
     Partitioning && lhs) noexcept = default;
 
+// use default generated -- must be done explicitly since we disabled copying
+Partitioning& Partitioning::operator=(
+    Partitioning && lhs) = default;
+
+
 
 /******************************************************************************
 * PUBLIC FUNCTIONS ************************************************************

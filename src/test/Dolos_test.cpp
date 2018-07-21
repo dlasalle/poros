@@ -22,35 +22,60 @@ namespace dolos
 {
 
 
-UNITTEST(Dolos, PartGraphRecursiveSeven)
+UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
 {
   GridGraphGenerator gen(25, 25, 25);
-  gen.setRandomEdgeWeight(1,10);
-  gen.setRandomVertexWeight(1,3);
 
   ConstantGraph g = gen.generate();
 
-  wgt_type cutEdgeWeight;
+  // make 10 partitions
+  for (size_t i = 0; i < 10U; ++i)  {
+    wgt_type cutEdgeWeight;
 
-  sl::Array<pid_type> where(g.numVertices());
-  int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
-      g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
-      7, nullptr, &cutEdgeWeight, where.data());
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        7, nullptr, &cutEdgeWeight, where.data());
 
-  testEqual(r, 1);
+    testEqual(r, 1);
 
-  Partitioning part(7, &g, &where); 
-  TargetPartitioning target(part.numPartitions(), \
-      g.getTotalVertexWeight(), 0.03);
-  PartitioningAnalyzer analyzer(&part, &target);
+    Partitioning part(7, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
+    PartitioningAnalyzer analyzer(&part, &target);
 
-  double const imbalance = analyzer.calcMaxImbalance();
+    double const imbalance = analyzer.calcMaxImbalance();
 
-  testLess(imbalance, 0.03005);
+    testLess(imbalance, 0.03005);
+  }
+}
 
-  // cut should be within a factor of 2 of optimal
-  int const optimal = 13 * 13 * 3 * 4; // optimal for 8 way
-  testLessOrEqual(cutEdgeWeight, optimal*2U);
+UNITTEST(Dolos, PartGraphRecursiveSevenCut)
+{
+  GridGraphGenerator gen(25, 25, 25);
+
+  ConstantGraph g = gen.generate();
+
+  // worst of 100 metis runs
+  wgt_type const metisMax = 2197;
+
+  // make 10 partitions
+  for (size_t i = 0; i < 10U; ++i)  {
+    wgt_type cutEdgeWeight;
+
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        7, nullptr, &cutEdgeWeight, where.data());
+
+    testEqual(r, 1);
+
+    Partitioning part(7, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
+
+    testLessOrEqual(cutEdgeWeight, metisMax*1.05);
+  }
 }
 
 

@@ -38,7 +38,6 @@ UNITTEST(RandomBisector, ExecuteUniform)
   // perform bisection
   Partitioning part = b.execute(&target, &graph);
 
-  std::vector<double> targets{0.5, 0.5};
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();
