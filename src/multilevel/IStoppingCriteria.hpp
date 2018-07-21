@@ -11,11 +11,12 @@
 #ifndef DOLOS_SRC_ISTOPPINGCRITERA_HPP
 #define DOLOS_SRC_ISTOPPINGCRITERA_HPP
 
+#include "graph/ConstantGraph.hpp"
 
 namespace dolos
 {
 
-class IStoppringCriteria
+class IStoppingCriteria
 {
   public:
   /**
@@ -29,14 +30,16 @@ class IStoppringCriteria
   /**
   * @brief Determine if coarsening should terminate.
   *
-  * @param fine The fine graph (next).
-  * @param coarse The coarse graph (previous -- may be nullptr).
+  * @param level The level of the coarsest graph.
+  * @param fine The fine graph (previous -- may be nullptr).
+  * @param coarse The coarse graph (next).
   *
-  * @return True if coarseing should stop at the finest graph.
+  * @return True if coarseing should stop at the coarse graph.
   */
   virtual bool shouldStop(
+      int level,
       ConstantGraph const * fine,
-      ConstantGraph const * coarse) = 0;
+      ConstantGraph const * coarse) const = 0;
 
 };
 

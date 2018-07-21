@@ -42,9 +42,6 @@ ConstantGraph::ConstantGraph(
   m_data(data)
 {
   ASSERT_NOTNULL(m_edgePrefix);
-  ASSERT_NOTNULL(m_edgeList);
-  ASSERT_NOTNULL(m_vertexWeight);
-  ASSERT_NOTNULL(m_edgeWeight);
 
   // calculate total vertex weight
   for (vtx_type v = 0; v < m_numVertices; ++v) {
