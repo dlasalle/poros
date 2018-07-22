@@ -64,7 +64,7 @@ bool EdgeRatioStoppingCriteria::shouldStop(
     // if our ratio is greater, then we stop (e.g., we have 97% the number of
     // eges in the coarse graph as in the fine, and the stopping condition is
     // 95%
-    return ratio < m_ratio;
+    return ratio > m_ratio;
   }
 }
 

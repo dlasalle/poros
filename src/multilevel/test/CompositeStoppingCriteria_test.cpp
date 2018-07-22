@@ -80,9 +80,9 @@ UNITTEST(CompositeStoppingCriteria, ShouldContinue)
   
   CompositeStoppingCriteria criteria;
 
-  criteria.addCriteria(
+  criteria.add(
     std::unique_ptr<IStoppingCriteria>(new FalseStoppingCriteria));
-  criteria.addCriteria(
+  criteria.add(
     std::unique_ptr<IStoppingCriteria>(new FalseStoppingCriteria));
 
   testFalse(criteria.shouldStop(1, &fine, &coarse));
@@ -101,9 +101,9 @@ UNITTEST(CompositeStoppingCriteria, ShouldStop)
 
   CompositeStoppingCriteria criteria;
 
-  criteria.addCriteria(
+  criteria.add(
     std::unique_ptr<IStoppingCriteria>(new FalseStoppingCriteria));
-  criteria.addCriteria(
+  criteria.add(
     std::unique_ptr<IStoppingCriteria>(new TrueStoppingCriteria));
 
   testTrue(criteria.shouldStop(1, &fine, &coarse));

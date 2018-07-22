@@ -26,7 +26,7 @@ UNITTEST(EdgeRatioStoppingCriteria, ShouldContinue)
   
   EdgeRatioStoppingCriteria criteria(0.8);
 
-  testTrue(criteria.shouldStop(1, &fine, &coarse));
+  testFalse(criteria.shouldStop(1, &fine, &coarse));
 }
 
 UNITTEST(EdgeRatioStoppingCriteria, ShouldStop)
@@ -41,7 +41,7 @@ UNITTEST(EdgeRatioStoppingCriteria, ShouldStop)
   
   EdgeRatioStoppingCriteria criteria(0.5);
 
-  testFalse(criteria.shouldStop(1, &fine, &coarse));
+  testTrue(criteria.shouldStop(1, &fine, &coarse));
 }
 
 
@@ -60,7 +60,18 @@ UNITTEST(EdgeRatioStoppingCriteria, ZeroFine)
   testTrue(criteria.shouldStop(1, &fine, &coarse));
 }
 
-UNITTEST(EdgeRatioStoppingCriteria, NullFine)
+UNITTEST(EdgeRatioStoppingCriteria, NullFineContinue)
+{
+  // graph with 108 edges
+  GridGraphGenerator genCoarse(16, 4, 1);
+  ConstantGraph coarse = genCoarse.generate();
+  
+  EdgeRatioStoppingCriteria criteria(0.75);
+
+  testFalse(criteria.shouldStop(0, nullptr, &coarse));
+}
+
+UNITTEST(EdgeRatioStoppingCriteria, NullFineStop)
 {
   // graph with 108 edges
   GridGraphGenerator genCoarse(1, 1, 1);

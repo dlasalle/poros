@@ -29,7 +29,7 @@ CompositeStoppingCriteria::CompositeStoppingCriteria() :
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-void CompositeStoppingCriteria::addCriteria(
+void CompositeStoppingCriteria::add(
     std::unique_ptr<IStoppingCriteria> criteria)
 {
   m_criteria.emplace_back(std::move(criteria));

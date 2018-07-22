@@ -11,6 +11,9 @@
 #include "partition/MultilevelBisector.hpp"
 #include "multilevel/DiscreteCoarseGraph.hpp"
 #include "partition/TwoWayConnectivity.hpp"
+#include "multilevel/CompositeStoppingCriteria.hpp"
+#include "multilevel/EdgeRatioStoppingCriteria.hpp"
+#include "multilevel/VertexNumberStoppingCriteria.hpp"
 
 
 namespace dolos
@@ -42,8 +45,29 @@ Partitioning MultilevelBisector::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph)
 {
-  vtx_type const threshold = target->numPartitions() * 8;
-  if (graph->numVertices() < threshold) {
+  CompositeStoppingCriteria criteria;
+
+  criteria.add(std::unique_ptr<IStoppingCriteria>(
+      new VertexNumberStoppingCriteria(target->numPartitions()*8)));
+  criteria.add(std::unique_ptr<IStoppingCriteria>(
+      new EdgeRatioStoppingCriteria(0.95)));
+
+  return recurse(0, &criteria, target, nullptr, graph);
+}
+
+
+/******************************************************************************
+* PROTECTED METHODS ***********************************************************
+******************************************************************************/
+
+Partitioning MultilevelBisector::recurse(
+    int const level,
+    IStoppingCriteria const * const stoppingCriteria,
+    TargetPartitioning const * const target,
+    ConstantGraph const * const parent,
+    ConstantGraph const * const graph)
+{
+  if (stoppingCriteria->shouldStop(level, parent, graph)) {
     return m_initialBisector->execute(target, graph); 
   } else {
     Aggregation agg = m_aggregator->aggregate(graph);
@@ -51,7 +75,8 @@ Partitioning MultilevelBisector::execute(
     DiscreteCoarseGraph coarse(graph, &agg);
 
     // recurse
-    Partitioning coarsePart = execute(target, coarse.graph());
+    Partitioning coarsePart = recurse(level+1,
+        stoppingCriteria, target, graph, coarse.graph());
 
     Partitioning part = coarse.project(&coarsePart); 
 

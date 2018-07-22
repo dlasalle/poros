@@ -16,6 +16,7 @@
 #include "partition/IBisector.hpp"
 #include "aggregation/IAggregator.hpp"
 #include "partition/ITwoWayRefiner.hpp"
+#include "multilevel/IStoppingCriteria.hpp"
 
 #include <memory>
 
@@ -51,6 +52,22 @@ class MultilevelBisector : public IBisector
         TargetPartitioning const * target,
         ConstantGraph const * graph) override;
 
+  protected:
+    /**
+     * @brief Recurse to a new level.
+     *
+     * @param level The new level number (counting from 0).
+     * @param target The target partitioning.
+     * @param graph The current graph.
+     *
+     * @return The partitioning.
+     */
+    Partitioning recurse(
+        int level,
+        IStoppingCriteria const * stoppingCriteria,
+        TargetPartitioning const * target,
+        ConstantGraph const * parent,
+        ConstantGraph const * graph);
 
   private:
     std::unique_ptr<IAggregator> m_aggregator;

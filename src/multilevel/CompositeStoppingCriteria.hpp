@@ -32,7 +32,7 @@ class CompositeStoppingCriteria : public IStoppingCriteria
   *
   * @param criteria The criteria.
   */
-  void addCriteria(
+  void add(
       std::unique_ptr<IStoppingCriteria> criteria);
 
   /**
