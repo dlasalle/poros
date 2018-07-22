@@ -98,9 +98,9 @@ void swapBalanceRight(
   std::sort(vertices.begin()+left, vertices.end());
 
   // how much weight we need to fix
-  wgt_type const minDelta = \
+  wgt_diff_type const minDelta = \
       partitioning->getWeight(RIGHT_PARTITION) - maxRightWeight;
-  wgt_type const maxDelta = \
+  wgt_diff_type const maxDelta = \
       maxLeftWeight - partitioning->getWeight(LEFT_PARTITION);
 
   // reset pointers -- start the heaviest right-side vertex and lightest
@@ -109,7 +109,7 @@ void swapBalanceRight(
   right = vertices.size()-1;
   left = 0;
 
-  wgt_type const weight = vertices[right].weight;
+  wgt_diff_type const weight = vertices[right].weight;
 
   wgt_diff_type const minOffset = weight - maxDelta;
   wgt_diff_type const maxOffset = weight - minDelta;
@@ -120,7 +120,8 @@ void swapBalanceRight(
   std::vector<vertex_struct>::iterator upper = \
       std::lower_bound(vertices.begin(), vertices.begin()+middle, maxOffset);
 
-  if (lower <= upper) {
+  // if we found such a vertice
+  if (lower < upper) {
     // perform swap
     partitioning->move(vertices[right].vertex, LEFT_PARTITION);
     partitioning->move((*lower).vertex, RIGHT_PARTITION);
