@@ -27,7 +27,9 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
 
   RandomMatchingAggregator aggregator(&rand);
 
-  Aggregation agg = aggregator.aggregate(&graph);
+  AggregationParameters params;
+
+  Aggregation agg = aggregator.aggregate(params, &graph);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \
@@ -56,7 +58,8 @@ UNITTEST(RandomMatchingAggregator, ConnectedMatch)
 
   RandomMatchingAggregator aggregator(&rand);
 
-  Aggregation agg = aggregator.aggregate(&graph);
+  AggregationParameters params;
+  Aggregation agg = aggregator.aggregate(params, &graph);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \

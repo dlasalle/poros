@@ -26,7 +26,8 @@ UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 
   HeavyEdgeMatchingAggregator aggregator(&rand);
 
-  Aggregation agg = aggregator.aggregate(&graph);
+  AggregationParameters params;
+  Aggregation agg = aggregator.aggregate(params, &graph);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \
@@ -54,7 +55,44 @@ UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 
   HeavyEdgeMatchingAggregator aggregator(&rand);
 
-  Aggregation agg = aggregator.aggregate(&graph);
+  AggregationParameters params;
+  Aggregation agg = aggregator.aggregate(params, &graph);
+
+  testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
+  testLess(agg.getNumCoarseVertices(), \
+      static_cast<vtx_type>(graph.numVertices() * 0.6)); 
+
+  // verify at most two vertices per coarse vertex
+  std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
+  for (VertexGroup const & group : agg.coarseVertices()) {
+    // should be a matching
+    testLessOrEqual(group.size(), 2U);
+    if (group.size() == 2) {
+      PermutedVertexSet const set = group.fineVertices();
+      bool found = false;
+      for (Edge const & e : set[0].edges()) {
+        if (e.destination() == set[1].index()) {
+          found = true;
+          break;
+        }
+      }
+      testTrue(found);
+    }
+  }
+}
+
+UNITTEST(HeavyEdgeMatchingAggregator, MaxSize)
+{
+  GridGraphGenerator gen(30,40,50);
+  ConstantGraph graph = gen.generate();
+
+  SimpleRandomEngine rand;
+
+  HeavyEdgeMatchingAggregator aggregator(&rand);
+
+  AggregationParameters params;
+  params.setMaxVertexWeight(10);
+  Aggregation agg = aggregator.aggregate(params, &graph);
 
   testGreaterOrEqual(agg.getNumCoarseVertices(), graph.numVertices() / 2); 
   testLess(agg.getNumCoarseVertices(), \

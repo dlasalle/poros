@@ -66,6 +66,7 @@ class HeavyEdgeMatchingAggregator : public IAggregator
     * @return The aggregation.
     */
     virtual Aggregation aggregate(
+        AggregationParameters params,
         ConstantGraph const * graph) const;
 
   private:

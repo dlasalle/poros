@@ -57,13 +57,17 @@ class MultilevelBisector : public IBisector
      * @brief Recurse to a new level.
      *
      * @param level The new level number (counting from 0).
+     * @param params The aggregation parameters.
+     * @param stoppingCriteria The stopping criteria for coarsening.
      * @param target The target partitioning.
+     * @param parent The parent of this graph.
      * @param graph The current graph.
      *
      * @return The partitioning.
      */
     Partitioning recurse(
         int level,
+        AggregationParameters params,
         IStoppingCriteria const * stoppingCriteria,
         TargetPartitioning const * target,
         ConstantGraph const * parent,

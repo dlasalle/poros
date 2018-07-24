@@ -15,6 +15,7 @@
 
 
 #include "Aggregation.hpp"
+#include "aggregation/AggregationParameters.hpp"
 #include "graph/ConstantGraph.hpp"
 
 namespace dolos
@@ -34,11 +35,13 @@ class IAggregator
     /**
     * @brief Create an aggregation of the graph.
     *
+    * @param params The aggregation parameters.
     * @param graph The graph to aggregate.
     *
     * @return The aggregation.
     */
     virtual Aggregation aggregate(
+        AggregationParameters params,
         ConstantGraph const * graph) const = 0;
 
 };

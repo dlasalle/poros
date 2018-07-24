@@ -41,6 +41,7 @@ HeavyEdgeMatchingAggregator::~HeavyEdgeMatchingAggregator()
 
 
 Aggregation HeavyEdgeMatchingAggregator::aggregate(
+    AggregationParameters const params,
     ConstantGraph const * const graph) const
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
@@ -56,7 +57,10 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
       wgt_type maxPriority = 0;
       for (Edge const & edge : vertex.edges()) {
         vtx_type const u = edge.destination();
-        if (!matcher.isMatched(u)) {
+        wgt_type const coarseWeight = \
+            vertex.weight() + graph->getVertexWeight(u);
+        if (!matcher.isMatched(u) && \
+            params.isAllowedVertexWeight(coarseWeight)) {
           wgt_type const priority = edge.weight();
           if (max == NULL_VTX || maxPriority > priority) {
             maxPriority = priority;

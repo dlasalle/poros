@@ -47,12 +47,18 @@ Partitioning MultilevelBisector::execute(
 {
   CompositeStoppingCriteria criteria;
 
+  AggregationParameters params;
+
+  vtx_type const targetNumVertices = target->numPartitions()*8;
   criteria.add(std::unique_ptr<IStoppingCriteria>(
-      new VertexNumberStoppingCriteria(target->numPartitions()*8)));
+      new VertexNumberStoppingCriteria(targetNumVertices)));
   criteria.add(std::unique_ptr<IStoppingCriteria>(
       new EdgeRatioStoppingCriteria(0.95)));
 
-  return recurse(0, &criteria, target, nullptr, graph);
+  params.setMaxVertexWeight( \
+      1.5 * graph->getTotalVertexWeight() / targetNumVertices);
+
+  return recurse(0, params, &criteria, target, nullptr, graph);
 }
 
 
@@ -62,6 +68,7 @@ Partitioning MultilevelBisector::execute(
 
 Partitioning MultilevelBisector::recurse(
     int const level,
+    AggregationParameters const params,
     IStoppingCriteria const * const stoppingCriteria,
     TargetPartitioning const * const target,
     ConstantGraph const * const parent,
@@ -70,13 +77,13 @@ Partitioning MultilevelBisector::recurse(
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     return m_initialBisector->execute(target, graph); 
   } else {
-    Aggregation agg = m_aggregator->aggregate(graph);
+    Aggregation agg = m_aggregator->aggregate(params, graph);
 
     DiscreteCoarseGraph coarse(graph, &agg);
 
     // recurse
-    Partitioning coarsePart = recurse(level+1,
-        stoppingCriteria, target, graph, coarse.graph());
+    Partitioning coarsePart = recurse( \
+        level+1, params, stoppingCriteria, target, graph, coarse.graph());
 
     Partitioning part = coarse.project(&coarsePart); 
 

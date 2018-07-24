@@ -42,6 +42,7 @@ RandomMatchingAggregator::~RandomMatchingAggregator()
 
 
 Aggregation RandomMatchingAggregator::aggregate(
+    AggregationParameters const params,
     ConstantGraph const * const graph) const
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
@@ -58,7 +59,10 @@ Aggregation RandomMatchingAggregator::aggregate(
       vtx_type maxPriority = 0;
       for (Edge const & edge : vertex.edges()) {
         vtx_type const u = edge.destination();
-        if (!matcher.isMatched(u)) {
+        wgt_type const coarseWeight = \
+            vertex.weight() + graph->getVertexWeight(u);
+        if (!matcher.isMatched(u) && \
+            params.isAllowedVertexWeight(coarseWeight)) {
           vtx_type const priority = permutedVertices[u].index();
           if (max == NULL_VTX || maxPriority < priority) {
             maxPriority = priority;
