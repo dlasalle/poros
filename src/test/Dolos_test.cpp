@@ -21,7 +21,7 @@
 namespace dolos
 {
 
-
+#if 0
 UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
 {
   GridGraphGenerator gen(25, 25, 25);
@@ -77,6 +77,32 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
     testLessOrEqual(cutEdgeWeight, metisMax*1.05);
   }
 }
+#endif
 
+UNITTEST(Dolos, PartGraphRecursiveTwoCut)
+{
+  GridGraphGenerator gen(25, 25, 25);
+
+  ConstantGraph g = gen.generate();
+
+  // worst of 100 metis runs
+  wgt_type const metisMax = 2197;
+
+  // make 10 partitions
+  wgt_type cutEdgeWeight;
+
+  sl::Array<pid_type> where(g.numVertices());
+  int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+      g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+      7, nullptr, &cutEdgeWeight, where.data());
+
+  testEqual(r, 1);
+
+  Partitioning part(7, &g, &where); 
+  TargetPartitioning target(part.numPartitions(), \
+      g.getTotalVertexWeight(), 0.03);
+
+  testLessOrEqual(cutEdgeWeight, metisMax*1.05);
+}
 
 }

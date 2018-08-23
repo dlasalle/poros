@@ -49,7 +49,9 @@ Partitioning MultilevelBisector::execute(
 
   AggregationParameters params;
 
-  vtx_type const targetNumVertices = target->numPartitions()*8;
+  // we know we'll have two partitions -- keep 10 in each
+  vtx_type const targetNumVertices = 20;
+
   criteria.add(std::unique_ptr<IStoppingCriteria>(
       new VertexNumberStoppingCriteria(targetNumVertices)));
   criteria.add(std::unique_ptr<IStoppingCriteria>(
@@ -74,6 +76,13 @@ Partitioning MultilevelBisector::recurse(
     ConstantGraph const * const parent,
     ConstantGraph const * const graph)
 {
+  // delete me
+  DEBUG_MESSAGE("Coarsened graph to " +
+      std::to_string(graph->numVertices()) +
+      " vertices and " + std::to_string(graph->numEdges()) +
+      " edges, with an exposed weight of " +
+      std::to_string(graph->getTotalEdgeWeight()) + ".");
+
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     return m_initialBisector->execute(target, graph); 
   } else {

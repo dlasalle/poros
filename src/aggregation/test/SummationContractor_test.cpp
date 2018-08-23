@@ -22,7 +22,7 @@ namespace dolos
 * UNIT TESTS ******************************************************************
 ******************************************************************************/
 
-UNITTEST(SummationContractor, Contract)
+UNITTEST(SummationContractor, ContractLine)
 {
   GridGraphGenerator gen(2,8,1);
   ConstantGraph graph = gen.generate();
@@ -56,6 +56,82 @@ UNITTEST(SummationContractor, Contract)
     testEqual(edge.weight(), static_cast<wgt_type>(2));
   }
 }
+
+UNITTEST(SummationContractor, ContractCubeComplete)
+{
+  GridGraphGenerator gen(2,2,2);
+  ConstantGraph graph = gen.generate();
+
+  std::vector<vtx_type> cmap(graph.numVertices());
+
+  cmap[0] = static_cast<vtx_type>(0);
+  cmap[1] = static_cast<vtx_type>(0);
+
+  cmap[2] = static_cast<vtx_type>(1);
+  cmap[3] = static_cast<vtx_type>(1);
+
+  cmap[4] = static_cast<vtx_type>(2);
+  cmap[6] = static_cast<vtx_type>(2);
+
+  cmap[5] = static_cast<vtx_type>(3);
+  cmap[7] = static_cast<vtx_type>(3);
+
+  Aggregation agg(std::move(cmap), 8, graph.getData());
+
+  SummationContractor contractor;
+
+  // the coarse graph should just be a line with 8 vertices and every edge
+  // should be of weight 2
+  ConstantGraph out = contractor.contract(&graph, &agg);
+
+  testEqual(out.numVertices(), agg.getNumCoarseVertices());
+
+  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(3));
+  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(3));
+  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(3));
+  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(3));
+
+  testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(16));
+}
+
+UNITTEST(SummationContractor, ContractCubeSquare)
+{
+  GridGraphGenerator gen(2,2,2);
+  ConstantGraph graph = gen.generate();
+
+  std::vector<vtx_type> cmap(graph.numVertices());
+
+  cmap[0] = static_cast<vtx_type>(0);
+  cmap[1] = static_cast<vtx_type>(0);
+
+  cmap[2] = static_cast<vtx_type>(1);
+  cmap[3] = static_cast<vtx_type>(1);
+
+  cmap[4] = static_cast<vtx_type>(2);
+  cmap[5] = static_cast<vtx_type>(2);
+
+  cmap[6] = static_cast<vtx_type>(3);
+  cmap[7] = static_cast<vtx_type>(3);
+
+  Aggregation agg(std::move(cmap), 8, graph.getData());
+
+  SummationContractor contractor;
+
+  // the coarse graph should just be a line with 8 vertices and every edge
+  // should be of weight 2
+  ConstantGraph out = contractor.contract(&graph, &agg);
+
+  testEqual(out.numVertices(), agg.getNumCoarseVertices());
+
+  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(2));
+  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(2));
+
+  testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(16));
+}
+
+
 
 
 }
