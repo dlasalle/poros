@@ -10,7 +10,7 @@
 
 #include "HeavyEdgeMatchingAggregator.hpp"
 #include "aggregation/MatchedAggregationBuilder.hpp"
-#include "graph/RandomOrderVertexSet.hpp"
+#include "graph/DegreeSortedVertexSet.hpp"
 
 namespace dolos
 {
@@ -46,8 +46,8 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
-  PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
-      graph->vertices(), m_rng);
+  PermutedVertexSet permutedVertices = DegreeSortedVertexSet::ascending( \
+      graph->vertices());
 
   for (Vertex const & vertex : permutedVertices) {
     vtx_type const v = vertex.index();

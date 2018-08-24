@@ -60,6 +60,7 @@ UNITTEST(SummationContractor, ContractLine)
 UNITTEST(SummationContractor, ContractCubeComplete)
 {
   GridGraphGenerator gen(2,2,2);
+  gen.setRandomEdgeWeight(10,10);
   ConstantGraph graph = gen.generate();
 
   std::vector<vtx_type> cmap(graph.numVertices());
@@ -91,7 +92,7 @@ UNITTEST(SummationContractor, ContractCubeComplete)
   testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(3));
   testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(3));
 
-  testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(16));
+  testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(160));
 }
 
 UNITTEST(SummationContractor, ContractCubeSquare)
@@ -129,6 +130,10 @@ UNITTEST(SummationContractor, ContractCubeSquare)
   testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(2));
 
   testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(16));
+
+  for (Edge const & edge : out.edges()) {
+    testEqual(edge.weight(), static_cast<wgt_type>(2));
+  }
 }
 
 

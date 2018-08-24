@@ -67,6 +67,7 @@ Aggregation RandomMatchingAggregator::aggregate(
           if (max == NULL_VTX || maxPriority < priority) {
             maxPriority = priority;
             max = u;
+            break;
           }
         }
       }
