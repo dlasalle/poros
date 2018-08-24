@@ -3,6 +3,8 @@ project(WILDRIVER)
 
 if (DEFINED DEBUG)
   add_definitions(-DDEBUG=${DEBUG})
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
   set(CMAKE_BUILD_TYPE Debug)
   message("Building a debug release")
 else()
