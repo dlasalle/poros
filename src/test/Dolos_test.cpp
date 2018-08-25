@@ -21,7 +21,6 @@
 namespace dolos
 {
 
-#if 0
 UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
 {
   GridGraphGenerator gen(25, 25, 25);
@@ -49,35 +48,6 @@ UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
     testLess(imbalance, 0.03005);
   }
 }
-
-UNITTEST(Dolos, PartGraphRecursiveSevenCut)
-{
-  GridGraphGenerator gen(25, 25, 25);
-
-  ConstantGraph g = gen.generate();
-
-  // worst of 100 metis runs
-  wgt_type const metisMax = 2708;
-
-  // make 10 partitions
-  for (size_t i = 0; i < 10U; ++i)  {
-    wgt_type cutEdgeWeight;
-
-    sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
-        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
-        7, nullptr, &cutEdgeWeight, where.data());
-
-    testEqual(r, 1);
-
-    Partitioning part(7, &g, &where); 
-    TargetPartitioning target(part.numPartitions(), \
-        g.getTotalVertexWeight(), 0.03);
-
-    testLessOrEqual(cutEdgeWeight, metisMax*1.01);
-  }
-}
-#endif
 
 UNITTEST(Dolos, PartGraphRecursiveTwoCut)
 {
@@ -142,7 +112,7 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
   ConstantGraph g = gen.generate();
 
   // worst of 100 metis runs
-  wgt_type const maxAcceptable = 1750;
+  wgt_type const maxAcceptable = 1650;
 
   // make 10 partitions
   for (size_t i = 0; i < 1/*0U*/; ++i)  {
@@ -161,6 +131,34 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
 
     testLessOrEqual(cutEdgeWeight, maxAcceptable);
   }
+}
+
+UNITTEST(Dolos, PartGraphRecursiveSevenCut)
+{
+  GridGraphGenerator gen(25, 25, 25);
+
+  ConstantGraph g = gen.generate();
+
+  // worst of 100 metis runs
+  wgt_type const maxAcceptable = 2400;
+
+  // make 10 partitions
+  //for (size_t i = 0; i < 10U; ++i)  {
+    wgt_type cutEdgeWeight;
+
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        7, nullptr, &cutEdgeWeight, where.data());
+
+    testEqual(r, 1);
+
+    Partitioning part(7, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
+
+    testLessOrEqual(cutEdgeWeight, maxAcceptable);
+  //}
 }
 
 }
