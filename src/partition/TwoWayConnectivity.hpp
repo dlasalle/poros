@@ -69,6 +69,26 @@ class TwoWayConnectivity
 
 
     /**
+    * @brief Deleted copy constructor.
+    *
+    * @param rhs The object to copy.
+    */
+    TwoWayConnectivity(
+        TwoWayConnectivity const & rhs) = delete;
+
+
+    /**
+    * @brief Deleted copy assignment operator.
+    *
+    * @param rhs The object to copy.
+    *
+    * @return This object.
+    */
+    TwoWayConnectivity & operator=(
+        TwoWayConnectivity const & rhs) = delete;
+
+
+    /**
     * @brief Get the set of border vertices.
     *
     * @return The set of border vertices.
@@ -185,14 +205,6 @@ class TwoWayConnectivity
     sl::Array<vertex_struct> m_connectivity;
     ConstantGraph const * const m_graph;
 
-
-    // disable copying
-    TwoWayConnectivity(
-        TwoWayConnectivity const & rhs);
-    TwoWayConnectivity & operator=(
-        TwoWayConnectivity const & rhs);
-
-
     /**
     * @brief Create a string of the connectivity of the vertex.
     *
@@ -202,7 +214,6 @@ class TwoWayConnectivity
     */
     std::string getVertexDegreeString(
         vtx_type const v) const;
-
 
     /**
     * @brief Update the border status of vertex (whether it is in it or not).

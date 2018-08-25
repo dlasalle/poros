@@ -77,5 +77,4 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
   testLess(analyzer.calcMaxImbalance(), 0.03005);
 }
 
-
 }

@@ -13,7 +13,7 @@
 #include "graph/ConstantGraph.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
-#include "partition/RandomFMBisector.hpp"
+#include "partition/BFSBisector.hpp"
 #include "partition/MultiBisector.hpp"
 #include "partition/FMRefiner.hpp"
 #include "aggregation/HeavyEdgeMatchingAggregator.hpp"
@@ -43,13 +43,12 @@ int DOLOS_PartGraphRecursive(
   ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
       edgeList, vertexWeights, edgeWeights);
 
-
   // setup paramters for the partition
   PartitionParameters params(numPartitions);
 
   // partition the graph
   std::unique_ptr<IAggregator> rm(new HeavyEdgeMatchingAggregator(&randEngine));
-  std::unique_ptr<IBisector> rb(new RandomFMBisector(10, &randEngine));
+  std::unique_ptr<IBisector> rb(new BFSBisector(&randEngine));
   std::unique_ptr<IBisector> mb(new MultiBisector(8, rb.get()));
   std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 

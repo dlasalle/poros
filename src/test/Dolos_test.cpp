@@ -57,7 +57,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
   ConstantGraph g = gen.generate();
 
   // worst of 100 metis runs
-  wgt_type const metisMax = 2197;
+  wgt_type const metisMax = 2708;
 
   // make 10 partitions
   for (size_t i = 0; i < 10U; ++i)  {
@@ -74,7 +74,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
 
-    testLessOrEqual(cutEdgeWeight, metisMax*1.05);
+    testLessOrEqual(cutEdgeWeight, metisMax*1.01);
   }
 }
 #endif
@@ -86,23 +86,81 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
   ConstantGraph g = gen.generate();
 
   // worst of 100 metis runs
-  wgt_type const metisMax = 2197;
+  wgt_type const maxAcceptable = 700;
 
   // make 10 partitions
-  wgt_type cutEdgeWeight;
+  for (size_t i = 0; i < 1/*0U*/; ++i)  {
+    wgt_type cutEdgeWeight;
 
-  sl::Array<pid_type> where(g.numVertices());
-  int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
-      g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
-      7, nullptr, &cutEdgeWeight, where.data());
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        2, nullptr, &cutEdgeWeight, where.data());
 
-  testEqual(r, 1);
+    testEqual(r, 1);
 
-  Partitioning part(7, &g, &where); 
-  TargetPartitioning target(part.numPartitions(), \
-      g.getTotalVertexWeight(), 0.03);
+    Partitioning part(2, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
 
-  testLessOrEqual(cutEdgeWeight, metisMax*1.05);
+    testLessOrEqual(cutEdgeWeight, maxAcceptable);
+  }
+}
+
+UNITTEST(Dolos, PartGraphRecursiveThreeCut)
+{
+  GridGraphGenerator gen(25, 25, 25);
+
+  ConstantGraph g = gen.generate();
+
+  // worst of 100 metis runs
+  wgt_type const maxAcceptable = 1375;
+
+  // make 10 partitions
+  for (size_t i = 0; i < 1/*0U*/; ++i)  {
+    wgt_type cutEdgeWeight;
+
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        3, nullptr, &cutEdgeWeight, where.data());
+
+    testEqual(r, 1);
+
+    Partitioning part(3, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
+
+    testLessOrEqual(cutEdgeWeight, maxAcceptable);
+  }
+}
+
+UNITTEST(Dolos, PartGraphRecursiveFourCut)
+{
+  GridGraphGenerator gen(25, 25, 25);
+
+  ConstantGraph g = gen.generate();
+
+  // worst of 100 metis runs
+  wgt_type const maxAcceptable = 1750;
+
+  // make 10 partitions
+  for (size_t i = 0; i < 1/*0U*/; ++i)  {
+    wgt_type cutEdgeWeight;
+
+    sl::Array<pid_type> where(g.numVertices());
+    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+        g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
+        4, nullptr, &cutEdgeWeight, where.data());
+
+    testEqual(r, 1);
+
+    Partitioning part(4, &g, &where); 
+    TargetPartitioning target(part.numPartitions(), \
+        g.getTotalVertexWeight(), 0.03);
+
+    testLessOrEqual(cutEdgeWeight, maxAcceptable);
+  }
 }
 
 }

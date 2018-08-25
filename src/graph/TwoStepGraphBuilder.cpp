@@ -98,6 +98,8 @@ ConstantGraph TwoStepGraphBuilder::finish()
 
   m_phase = PHASE_START;
 
+  assert(graph.isValid());
+
   return graph;
 }
 

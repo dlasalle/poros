@@ -98,4 +98,56 @@ CSRGraphData ConstantGraph::getData() const noexcept
   return CSRGraphData(m_edgePrefix, m_edgeList, m_vertexWeight, m_edgeWeight);
 }
 
+bool ConstantGraph::isValid() const
+{
+  // check vertex weight sum
+  wgt_type vertexSum = 0;
+  for (vtx_type i = 0; i < m_numVertices; ++i) {
+    vertexSum += m_vertexWeight[i];
+  }
+  if (vertexSum != m_totalVertexWeight) {
+    return false;
+  }
+
+  // check edge list
+  for (adj_type i = 0; i < m_numEdges; ++i) {
+    if (m_edgeList[i] >= m_numVertices) {
+      // invalid vertex
+      return false;
+    }
+  }
+
+  // check edge weight sum
+  wgt_type edgeSum = 0;
+  for (adj_type i = 0; i < m_numEdges; ++i) {
+    edgeSum += m_edgeWeight[i];
+  }
+  if (edgeSum != m_totalEdgeWeight) {
+    return false;
+  }
+
+  // check symmetry
+  for (vtx_type v = 0; v < m_numVertices; ++v) {
+    for (adj_type j = m_edgePrefix[v]; j < m_edgePrefix[v+1]; ++j) {
+      // find reverse edge
+      vtx_type const u = m_edgeList[j];
+      bool found = false;
+      for (adj_type k = m_edgePrefix[u]; k < m_edgePrefix[u+1]; ++k) {
+        if (v == m_edgeList[k]) {
+          if (m_edgeWeight[k] != m_edgeWeight[j]) {
+            return false;
+          }
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 }

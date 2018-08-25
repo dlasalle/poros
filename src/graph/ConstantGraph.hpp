@@ -233,6 +233,13 @@ class ConstantGraph
     */
     CSRGraphData getData() const noexcept;
 
+    
+    /**
+    * @brief Check if this graph is internally coherent.
+    *
+    * @return True if the graph is valid.
+    */
+    bool isValid() const;
 
   private:
     vtx_type m_numVertices;

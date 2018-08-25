@@ -9,13 +9,16 @@
 
 
 
-#include <vector>
 #include "FMRefiner.hpp"
 #include "PartitioningAnalyzer.hpp"
+#include "util/VisitTracker.hpp"
+
 #include "solidutils/Debug.hpp"
 #include "solidutils/Random.hpp"
-#include "solidutils/BitArray.hpp" 
 #include "solidutils/FixedPriorityQueue.hpp"
+
+#include <vector>
+#include <array>
 
 namespace dolos
 {
@@ -45,7 +48,7 @@ typedef sl::FixedPriorityQueue<wgt_diff_type, vtx_type> VertexQueue;
 */
 pid_type pickSide(
     PartitioningAnalyzer const * const analyzer,
-    VertexQueue const * const pqs)
+    std::array<VertexQueue,2> const & pqs)
 {
   ASSERT_GREATER(pqs[0].size() + pqs[1].size(), 0);
 
@@ -87,7 +90,7 @@ void move(
     Partitioning * const partitioning,
     TwoWayConnectivity * const connectivity,
     VertexQueue * const pqs,
-    sl::BitArray * const visited)
+    VisitTracker * const visited)
 {
   ASSERT_NOTEQUAL(to, partitioning->getAssignment(vertex));
 
@@ -95,13 +98,18 @@ void move(
 
   // update connectivity
   connectivity->move(vertex);
+
+  // update partitioning
+  partitioning->move(vertex, to);
+  partitioning->addCutEdgeWeight(delta);
+
   for (Edge const & edge : graph->getEdges(vertex)) {
     vtx_type const u = edge.destination();
     pid_type const neighborHome = partitioning->getAssignment(u);
     int const borderStatus = connectivity->updateNeighbor(&edge, \
         TwoWayConnectivity::getDirection(to, neighborHome));
 
-    if (pqs && !visited->check(vertex)) {
+    if (pqs && !visited->hasVisited(u)) {
       if (borderStatus == TwoWayConnectivity::BORDER_ADDED) {
           // insert into priority queue
           // TODO: repeating this add '-' getVertexDelta() in two places seems
@@ -114,10 +122,6 @@ void move(
       }
     }
   }
-
-  // update partitioning
-  partitioning->move(vertex, to);
-  partitioning->addCutEdgeWeight(delta);
 }
 
 
@@ -148,12 +152,12 @@ void FMRefiner::refine(
     Partitioning * const partitioning,
     ConstantGraph const * const graph)
 {
-  VertexQueue pqs[]{ \
+  std::array<VertexQueue, 2> pqs{{
     {graph->numVertices()}, \
     {graph->numVertices()} \
-  };
+  }};
   PartitioningAnalyzer analyzer(partitioning, target);
-  sl::BitArray visited(graph->numVertices());
+  VisitTracker visited(graph->numVertices());
 
   double const tolerance = target->getImbalanceTolerance();
 
@@ -169,6 +173,10 @@ void FMRefiner::refine(
         std::to_string(analyzer.calcMaxImbalance()) + \
         std::string("/") + std::to_string(target->getImbalanceTolerance()) + \
         std::string(" at iter ") + std::to_string(refIter));
+
+    DEBUG_MESSAGE(std::string("Number of boundary vertices is ") + \
+        std::to_string(connectivity->getBorderVertexSet()->size()));
+ 
      
     // fill priority queue with boundary vertices
     for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
@@ -184,24 +192,21 @@ void FMRefiner::refine(
 
     // move all possible vertices
     while (pqs[0].size() > 0 || pqs[1].size() > 0) {
-      pid_type const from = pickSide(&analyzer, pqs); 
+      pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 
       vtx_type const vertex = pqs[from].pop();
-      visited.mark(vertex);
+      visited.visit(vertex);
       ASSERT_EQUAL(from, partitioning->getAssignment(vertex));
 
-      move(vertex, to, graph, partitioning, connectivity, pqs, &visited);
+      move(vertex, to, graph, partitioning, connectivity, pqs.data(), &visited);
 
       wgt_type const currentCut = partitioning->getCutEdgeWeight();
       double const balance = analyzer.calcMaxImbalance();
 
-      if (bestBalance > tolerance && balance < bestBalance) {
-        bestCut = currentCut;
-        bestBalance = balance;
-        moves.clear();
-      } else if (currentCut < bestCut && (balance <= tolerance || \
-          balance <= bestBalance)) {
+      if ((bestBalance > tolerance && balance < bestBalance) ||
+          (currentCut < bestCut && \
+            (balance <= tolerance || balance <= bestBalance))) {
         bestCut = currentCut;
         bestBalance = balance;
         moves.clear();
