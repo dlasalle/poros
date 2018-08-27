@@ -15,6 +15,7 @@
 #include "partition/FMRefiner.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 
 #include "solidutils/UnitTest.hpp"
 
@@ -30,10 +31,10 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
   ConstantGraph graph = gen.generate();
 
   // builder our ml bisector
-  SimpleRandomEngine rng(0);
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
-  std::unique_ptr<IAggregator> agg(new RandomMatchingAggregator(&rng));
-  std::unique_ptr<IBisector> bis(new BFSBisector(&rng));
+  std::unique_ptr<IAggregator> agg(new RandomMatchingAggregator(engine));
+  std::unique_ptr<IBisector> bis(new BFSBisector(engine));
   std::unique_ptr<ITwoWayRefiner> ref(new FMRefiner(8));
 
   MultilevelBisector mb(std::move(agg), std::move(bis), std::move(ref));

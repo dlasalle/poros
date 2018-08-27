@@ -26,9 +26,9 @@ UNITTEST(RandomFMBisector, Execute)
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.1);
 
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
-  RandomFMBisector b(8, &engine);
+  RandomFMBisector b(8, engine);
 
   Partitioning part = b.execute(&target, &graph);
   PartitioningAnalyzer analyzer(&part, &target);

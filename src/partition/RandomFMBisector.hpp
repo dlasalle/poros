@@ -17,6 +17,7 @@
 #include "RandomBisector.hpp"
 #include "FMRefiner.hpp"
 #include "IBisector.hpp"
+#include "util/RandomEngineHandle.hpp"
 
 
 namespace dolos
@@ -34,7 +35,7 @@ class RandomFMBisector :
     */
     RandomFMBisector(
         int maxIterations,
-        IRandomEngine * randEngine);
+        RandomEngineHandle randEngine);
 
 
     /**

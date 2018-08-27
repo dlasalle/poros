@@ -22,7 +22,7 @@ namespace dolos
 
 RandomFMBisector::RandomFMBisector(
     int maxIters,
-    IRandomEngine * const randEngine) :
+    RandomEngineHandle randEngine) :
   m_bisector(randEngine),
   m_refiner(maxIters)
 {

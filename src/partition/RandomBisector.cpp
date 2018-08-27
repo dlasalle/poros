@@ -136,7 +136,7 @@ void swapBalanceRight(
 ******************************************************************************/
 
 RandomBisector::RandomBisector(
-    IRandomEngine * const randEngine) :
+    RandomEngineHandle randEngine) :
   m_randEngine(randEngine)
 {
   // do nothing

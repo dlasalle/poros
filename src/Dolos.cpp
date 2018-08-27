@@ -20,6 +20,7 @@
 #include "partition/MultilevelBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "util/SimpleRandomEngine.hpp"
+#include "DolosParameters.hpp"
 
 
 using namespace dolos;
@@ -36,8 +37,10 @@ int DOLOS_PartGraphRecursive(
     wgt_type * const totalCutEdgeWeight,
     pid_type * const partitionAssignment)
 {
+  DolosParameters globalParams(options);
+
   // create a parameters object
-  SimpleRandomEngine randEngine;
+  RandomEngineHandle randEngine = globalParams.randomEngine();
 
   // assemble a new graph
   ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
@@ -47,8 +50,8 @@ int DOLOS_PartGraphRecursive(
   PartitionParameters params(numPartitions);
 
   // partition the graph
-  std::unique_ptr<IAggregator> rm(new HeavyEdgeMatchingAggregator(&randEngine));
-  std::unique_ptr<IBisector> rb(new BFSBisector(&randEngine));
+  std::unique_ptr<IAggregator> rm(new HeavyEdgeMatchingAggregator(randEngine));
+  std::unique_ptr<IBisector> rb(new BFSBisector(randEngine));
   std::unique_ptr<IBisector> mb(new MultiBisector(8, rb.get()));
   std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 

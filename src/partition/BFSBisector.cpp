@@ -21,7 +21,7 @@ namespace dolos
 ******************************************************************************/
 
 BFSBisector::BFSBisector(
-    IRandomEngine * const rng) : m_rng(rng)
+    RandomEngineHandle rng) : m_rng(rng)
 {
   // do nothing
 }
@@ -35,7 +35,7 @@ Partitioning BFSBisector::execute(
     TargetPartitioning const * target,
     ConstantGraph const * graph)
 {
-  vtx_type const seedVertex = m_rng->randInRange(0, graph->numVertices()-1);
+  vtx_type const seedVertex = m_rng.randInRange(0, graph->numVertices()-1);
 
   return BFSBisector::execute(target, graph, seedVertex);
 }

@@ -30,9 +30,9 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
 
   FMRefiner fm(25);
 
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
-  RandomBisector bisector(&engine);
+  RandomBisector bisector(engine);
 
   Partitioning part = bisector.execute(&target, &graph); 
 

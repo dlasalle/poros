@@ -56,6 +56,15 @@ class SimpleRandomEngine : public IRandomEngine
       vtx_type const max) override;
 
 
+  /**
+  * @brief Set the random seed to use.
+  *
+  * @param seed The seed to use.
+  */
+  void setSeed(
+      unsigned int seed);
+
+
   private:
   std::mt19937 m_rng;
 };

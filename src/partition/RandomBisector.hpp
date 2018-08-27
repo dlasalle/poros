@@ -14,7 +14,7 @@
 
 #include "IBisector.hpp"
 #include "PartitionParameters.hpp"
-#include "util/IRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 
 
 namespace dolos
@@ -31,7 +31,7 @@ class RandomBisector :
      * @param randEngine The random engine.
      */
     RandomBisector(
-        IRandomEngine * const randEngine);
+        RandomEngineHandle randEngine);
 
 
     /**
@@ -72,7 +72,7 @@ class RandomBisector :
 
 
   private:
-  IRandomEngine * const m_randEngine;
+  RandomEngineHandle m_randEngine;
 };
 
 

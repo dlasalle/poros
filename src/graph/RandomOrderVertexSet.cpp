@@ -19,12 +19,12 @@ namespace dolos
 
 PermutedVertexSet RandomOrderVertexSet::generate(
     VertexSet const set,
-    IRandomEngine * const randomEngine)
+    RandomEngineHandle randomEngine)
 {
   vtx_type const numVertices = set.size();
   std::vector<vtx_type> perm(numVertices);
 
-  randomEngine->fillWithPerm(perm.data(), 0, perm.size());
+  randomEngine.fillWithPerm(perm.data(), 0, perm.size());
 
   return PermutedVertexSet(
       perm.size(),

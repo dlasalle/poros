@@ -53,6 +53,14 @@ class IRandomEngine
       vtx_type const start,
       vtx_type const end) = 0;
 
+  /**
+  * @brief Set the random seed to use.
+  *
+  * @param seed The seed.
+  */
+  virtual void setSeed(
+      unsigned int seed) = 0;
+
 };
 
 }

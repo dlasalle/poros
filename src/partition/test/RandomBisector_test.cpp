@@ -22,10 +22,10 @@ namespace dolos
 
 UNITTEST(RandomBisector, ExecuteUniform)
 {
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   // create bisector
-  RandomBisector b(&engine);
+  RandomBisector b(engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -49,10 +49,10 @@ UNITTEST(RandomBisector, Execute1To5)
 {
   std::vector<double> targets{0.4, 0.6};
 
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   // create bisector
-  RandomBisector b(&engine);
+  RandomBisector b(engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -75,10 +75,10 @@ UNITTEST(RandomBisector, Execute1To5)
 
 UNITTEST(RandomBisector, ExecuteCut)
 {
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   // create bisector
-  RandomBisector b(&engine);
+  RandomBisector b(engine);
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);

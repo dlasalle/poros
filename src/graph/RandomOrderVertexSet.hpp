@@ -14,7 +14,7 @@
 
 #include "graph/PermutedVertexSet.hpp"
 #include "graph/VertexSet.hpp"
-#include "util/IRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 
 
 namespace dolos
@@ -31,7 +31,7 @@ class RandomOrderVertexSet
   */
   static PermutedVertexSet generate(
       VertexSet set,
-      IRandomEngine * randomEngine);
+      RandomEngineHandle randomEngine);
 
 
 };

@@ -23,7 +23,7 @@ namespace dolos
 
 
 RandomMatchingAggregator::RandomMatchingAggregator(
-    IRandomEngine * const rng) :
+    RandomEngineHandle rng) :
   m_rng(rng)
 {
   // do nothing

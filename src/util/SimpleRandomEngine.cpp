@@ -50,4 +50,11 @@ vtx_type SimpleRandomEngine::randInRange(
 }
 
 
+void SimpleRandomEngine::setSeed(
+    unsigned int const seed)
+{
+  // reset the seed
+  m_rng = std::mt19937(seed);
+}
+
 }

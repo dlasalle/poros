@@ -12,7 +12,7 @@
 #define DOLOS_SRC_HEAVYEDGEMATCHINGAGGREGATOR_HPP
 
 
-#include "util/IRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 #include "aggregation/IAggregator.hpp"
 
 
@@ -29,7 +29,7 @@ class HeavyEdgeMatchingAggregator : public IAggregator
     * @param randomEngine The random engine to use.
     */
     HeavyEdgeMatchingAggregator(
-        IRandomEngine * const randomEngine);
+        RandomEngineHandle randomEngine);
 
 
     /**
@@ -70,7 +70,7 @@ class HeavyEdgeMatchingAggregator : public IAggregator
         ConstantGraph const * graph) const;
 
   private:
-    IRandomEngine * m_rng;
+    RandomEngineHandle m_rng;
 };
 
 

@@ -22,7 +22,7 @@ namespace dolos
 
 
 HeavyEdgeMatchingAggregator::HeavyEdgeMatchingAggregator(
-    IRandomEngine * const rng) :
+    RandomEngineHandle rng) :
   m_rng(rng)
 {
   // do nothing

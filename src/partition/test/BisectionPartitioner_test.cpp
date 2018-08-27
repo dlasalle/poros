@@ -27,12 +27,12 @@ namespace dolos
 
 UNITTEST(BisectionPartitioner, ExecuteCorrect)
 {
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();
 
-  RandomFMBisector rfb(8, &engine);
+  RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);
   BisectionPartitioner adapter(&parter);
 
@@ -45,12 +45,12 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   
 UNITTEST(BisectionPartitioner, ExecuteInvalid)
 {
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();
 
-  RandomFMBisector rfb(8, &engine);
+  RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);
   BisectionPartitioner adapter(&parter);
 

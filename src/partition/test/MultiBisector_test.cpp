@@ -13,6 +13,7 @@
 #include "partition/PartitioningAnalyzer.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -21,10 +22,10 @@ namespace dolos
 
 UNITTEST(MultiBisector, ExecuteUniform)
 {
-  SimpleRandomEngine engine;
+  RandomEngineHandle engine(new SimpleRandomEngine(0));
 
   // create bisector
-  RandomBisector b(&engine);
+  RandomBisector b(engine);
   MultiBisector mb(10, &b);
 
   // generate graph

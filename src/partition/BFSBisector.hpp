@@ -12,7 +12,7 @@
 #define DOLOS_SRC_BFSBISECTOR_HPP
 
 #include "IBisector.hpp"
-#include "util/IRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 
 namespace dolos
 {
@@ -26,7 +26,7 @@ class BFSBisector : public IBisector
     * @param rng The random engine to use.
     */
     BFSBisector(
-        IRandomEngine * rng);
+        RandomEngineHandle rng);
 
     /**
     * @brief Deleted copy constructor.
@@ -75,7 +75,7 @@ class BFSBisector : public IBisector
         vtx_type seedVertex);
 
   private:
-    IRandomEngine * m_rng;
+    RandomEngineHandle m_rng;
 
 };
 
