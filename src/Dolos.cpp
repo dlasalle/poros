@@ -26,6 +26,22 @@
 using namespace dolos;
 
 
+/******************************************************************************
+* PUBLIC FUNCTIONS ************************************************************
+******************************************************************************/
+
+dolos_options_struct DOLOS_defaultOptions()
+{
+  dolos_options_struct opts{
+    0.03,
+    nullptr,
+    0,
+    8
+  };
+
+  return opts;
+}
+
 int DOLOS_PartGraphRecursive(
     vtx_type const numVertices,
     adj_type const * const edgePrefix,
