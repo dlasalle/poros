@@ -9,7 +9,7 @@
 
 #include "aggregation/HeavyEdgeMatchingAggregator.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -22,9 +22,9 @@ UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  SimpleRandomEngine rand;
+  RandomEngineHandle rand = RandomEngineFactory::make(0);
 
-  HeavyEdgeMatchingAggregator aggregator(&rand);
+  HeavyEdgeMatchingAggregator aggregator(rand);
 
   AggregationParameters params;
   Aggregation agg = aggregator.aggregate(params, &graph);
@@ -51,9 +51,9 @@ UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  SimpleRandomEngine rand;
+  RandomEngineHandle rand = RandomEngineFactory::make(0);
 
-  HeavyEdgeMatchingAggregator aggregator(&rand);
+  HeavyEdgeMatchingAggregator aggregator(rand);
 
   AggregationParameters params;
   Aggregation agg = aggregator.aggregate(params, &graph);
@@ -86,9 +86,9 @@ UNITTEST(HeavyEdgeMatchingAggregator, MaxSize)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  SimpleRandomEngine rand;
+  RandomEngineHandle rand = RandomEngineFactory::make(0);
 
-  HeavyEdgeMatchingAggregator aggregator(&rand);
+  HeavyEdgeMatchingAggregator aggregator(rand);
 
   AggregationParameters params;
   params.setMaxVertexWeight(10);

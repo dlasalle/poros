@@ -14,7 +14,6 @@
 #include "util/VisitTracker.hpp"
 
 #include "solidutils/Debug.hpp"
-#include "solidutils/Random.hpp"
 #include "solidutils/FixedPriorityQueue.hpp"
 
 #include <vector>
@@ -35,7 +34,7 @@ namespace
 /**
 * @brief Alias our VertexQueue to be a FixedPriorityQueue.
 */
-typedef sl::FixedPriorityQueue<wgt_diff_type, vtx_type> VertexQueue;
+using VertexQueue = sl::FixedPriorityQueue<wgt_diff_type, vtx_type>;
 
 
 /**
@@ -70,11 +69,11 @@ pid_type pickSide(
       // move from highest priority pq
       if (pqs[0].max() > pqs[1].max()) {
         from = 0;
-      } else if (pqs[0].max() > pqs[1].max()) {
+      } else if (pqs[0].max() < pqs[1].max()) {
         from = 1;
       } else {
-        // break the tie via a random number
-        from = sl::Random::inRange(0,2);
+        // break the tie via a pseudo-random number
+        from = (pqs[0].peek() + pqs[1].peek()) % 2;
       }
     }
   }
@@ -119,6 +118,9 @@ void move(
         vtx_type const u = edge.destination();
         // insert into priority queue
         pqs[neighborHome].remove(u);
+      } else if (borderStatus == TwoWayConnectivity::BORDER_STILLIN) {
+        // update value
+        pqs[neighborHome].update(-connectivity->getVertexDelta(u), u);
       }
     }
   }
@@ -195,7 +197,10 @@ void FMRefiner::refine(
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 
+      ASSERT_EQUAL(pqs[from].max(), -connectivity->getVertexDelta(pqs[from].peek()));
+
       vtx_type const vertex = pqs[from].pop();
+
       visited.visit(vertex);
       ASSERT_EQUAL(from, partitioning->getAssignment(vertex));
 

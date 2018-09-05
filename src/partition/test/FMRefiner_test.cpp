@@ -13,7 +13,7 @@
 #include "partition/RandomBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
 namespace dolos
@@ -30,7 +30,7 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
 
   FMRefiner fm(25);
 
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   RandomBisector bisector(engine);
 

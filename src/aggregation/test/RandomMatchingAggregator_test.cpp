@@ -10,7 +10,7 @@
 
 #include "aggregation/RandomMatchingAggregator.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -23,9 +23,9 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  SimpleRandomEngine rand;
+  RandomEngineHandle rand = RandomEngineFactory::make(0);
 
-  RandomMatchingAggregator aggregator(&rand);
+  RandomMatchingAggregator aggregator(rand);
 
   AggregationParameters params;
 
@@ -54,9 +54,9 @@ UNITTEST(RandomMatchingAggregator, ConnectedMatch)
   GridGraphGenerator gen(30,40,50);
   ConstantGraph graph = gen.generate();
 
-  SimpleRandomEngine rand;
+  RandomEngineHandle rand = RandomEngineFactory::make(0);
 
-  RandomMatchingAggregator aggregator(&rand);
+  RandomMatchingAggregator aggregator(rand);
 
   AggregationParameters params;
   Aggregation agg = aggregator.aggregate(params, &graph);
