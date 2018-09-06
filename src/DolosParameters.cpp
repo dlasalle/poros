@@ -21,12 +21,11 @@ namespace dolos
 ******************************************************************************/
 
 DolosParameters::DolosParameters(
-    dolos_options_struct const * options) :
-  m_randomEngine(new SimpleRandomEngine())
+    dolos_options_struct const options) :
+  m_randomEngine(new SimpleRandomEngine(options.randomSeed)),
+  m_aggregationScheme(options.aggregationScheme)
 {
-  if (options != nullptr) {
-    m_randomEngine.setSeed(options->randomSeed);
-  }
+  // do nothing
 }
 
 
@@ -40,6 +39,10 @@ RandomEngineHandle DolosParameters::randomEngine()
   return m_randomEngine;
 }
 
+int DolosParameters::aggregationScheme() const
+{
+  return m_aggregationScheme;
+}
 
 
 }

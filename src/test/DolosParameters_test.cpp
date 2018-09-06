@@ -19,8 +19,8 @@ UNITTEST(DolosParameters, ConsistentRandomSeed)
 
   opts.randomSeed = 1970;
 
-  DolosParameters params1(&opts);
-  DolosParameters params2(&opts);
+  DolosParameters params1(opts);
+  DolosParameters params2(opts);
 
   RandomEngineHandle engine1 = params1.randomEngine();
   RandomEngineHandle engine2 = params2.randomEngine();
@@ -36,10 +36,10 @@ UNITTEST(DolosParameters, DifferentRandomSeed)
   dolos_options_struct opts{};
 
   opts.randomSeed = 1970;
-  DolosParameters params1(&opts);
+  DolosParameters params1(opts);
 
   opts.randomSeed = 0;
-  DolosParameters params2(&opts);
+  DolosParameters params2(opts);
 
   RandomEngineHandle engine1 = params1.randomEngine();
   RandomEngineHandle engine2 = params2.randomEngine();

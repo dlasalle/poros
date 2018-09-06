@@ -25,10 +25,10 @@ class DolosParameters
     /**
      * @brief Create a new set of parameters from an options struct.
      *
-     * @param options The options struct (may be null).
+     * @param options The options struct.
      */
     DolosParameters(
-        dolos_options_struct const * options);
+        dolos_options_struct options);
 
     /**
      * @brief Get the current random engine to use.
@@ -37,8 +37,16 @@ class DolosParameters
      */
     RandomEngineHandle randomEngine();
 
+    /**
+     * @brief Get the aggregation scheme to use.
+     *
+     * @return The aggregation scheme.
+     */
+    int aggregationScheme() const;
+
   private:
     RandomEngineHandle m_randomEngine;
+    int m_aggregationScheme;
 };
 
 }

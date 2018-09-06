@@ -1,6 +1,6 @@
 /**
  * @file Dolos.cpp
- * @brief Top level functions. 
+ * @brief Top level functions.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
  * @version 1
@@ -16,10 +16,10 @@
 #include "partition/BFSBisector.hpp"
 #include "partition/MultiBisector.hpp"
 #include "partition/FMRefiner.hpp"
-#include "aggregation/HeavyEdgeMatchingAggregator.hpp"
+#include "aggregation/AggregatorFactory.hpp"
 #include "partition/MultilevelBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineHandle.hpp"
 #include "DolosParameters.hpp"
 
 
@@ -54,7 +54,12 @@ int DOLOS_PartGraphRecursive(
     wgt_type * const totalCutEdgeWeight,
     pid_type * const partitionAssignment)
 {
-  DolosParameters globalParams(options);
+  if (options == nullptr) {
+    // options must not be null
+    return 0;
+  }
+
+  DolosParameters globalParams(*options);
 
   // create a parameters object
   RandomEngineHandle randEngine = globalParams.randomEngine();
@@ -67,12 +72,14 @@ int DOLOS_PartGraphRecursive(
   PartitionParameters params(numPartitions);
 
   // partition the graph
-  std::unique_ptr<IAggregator> rm(new HeavyEdgeMatchingAggregator(randEngine));
+  std::unique_ptr<IAggregator> agg = AggregatorFactory::make(
+      globalParams.aggregationScheme(), randEngine);
+
   std::unique_ptr<IBisector> rb(new BFSBisector(randEngine));
   std::unique_ptr<IBisector> mb(new MultiBisector(8, rb.get()));
   std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 
-  MultilevelBisector ml(std::move(rm), std::move(mb), std::move(fm));
+  MultilevelBisector ml(std::move(agg), std::move(mb), std::move(fm));
 
   RecursiveBisectionPartitioner partitioner(&ml);
 
