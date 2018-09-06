@@ -36,7 +36,8 @@ dolos_options_struct DOLOS_defaultOptions()
     0.03,
     nullptr,
     0,
-    8
+    8,
+    SORTED_HEAVY_EDGE_MATCHING
   };
 
   return opts;

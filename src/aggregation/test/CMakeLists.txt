@@ -5,9 +5,7 @@ function(setup_test test_file)
 	add_test(NAME ${test_file} COMMAND ${test_file})
 endfunction()
 
-
 include_directories(.)
-
 
 file(GLOB files "*_test.cpp")
 foreach(file ${files})

@@ -26,6 +26,15 @@ typedef uint32_t dolos_wgt_type;
 typedef uint32_t dolos_pid_type;
 
 
+/**
+ * @brief Aggregation types.
+ */
+typedef enum {
+    RANDOM_MATCHING = 0,
+    SORTED_HEAVY_EDGE_MATCHING = 1
+} aggregator_type;
+
+
 typedef struct {
   /**
    * @brief The fraction of imbalance to accept (i.e., 0.03 allows for one
@@ -52,6 +61,12 @@ typedef struct {
    * performed.
    */
   int refinementIterations;
+
+  /**
+   * @brief The type of aggregation to perform. Should be a member of the
+   * `aggreagtor_type` enum.
+   */
+  int aggregationScheme;
 
 } dolos_options_struct;
 
