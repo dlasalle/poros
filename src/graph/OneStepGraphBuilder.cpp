@@ -78,7 +78,7 @@ ConstantGraph OneStepGraphBuilder::finish()
       std::move(m_edgeWeight));
   ConstantGraph graph = data.toGraph();
 
-  assert(graph.isValid());
+  ASSERT_TRUE(graph.isValid());
 
   return graph;
 }
