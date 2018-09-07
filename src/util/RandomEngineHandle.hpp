@@ -75,6 +75,16 @@ class RandomEngineHandle
       m_engine->setSeed(seed);
     }
 
+    /**
+    * @brief Get the random engine of this handle.
+    *
+    * @return The random engine.
+    */
+    IRandomEngine * get()
+    {
+      return m_engine.get();
+    }
+
   private:
     std::shared_ptr<IRandomEngine> m_engine;
 };
