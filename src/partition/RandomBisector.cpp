@@ -165,7 +165,7 @@ Partitioning RandomBisector::execute(
   PartitioningAnalyzer analyzer(&partitioning, target);
 
   PermutedVertexSet vertices = RandomOrderVertexSet::generate(
-      graph->vertices(), m_randEngine);
+      graph->vertices(), m_randEngine.get());
 
   for (Vertex const vertex : vertices) {
     // balance to within 1 vertex

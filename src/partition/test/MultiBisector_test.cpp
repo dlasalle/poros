@@ -12,8 +12,7 @@
 #include "partition/RandomBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
-#include "util/RandomEngineHandle.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -22,7 +21,7 @@ namespace dolos
 
 UNITTEST(MultiBisector, ExecuteUniform)
 {
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   // create bisector
   RandomBisector b(engine);

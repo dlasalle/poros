@@ -11,17 +11,21 @@
 #ifndef DOLOS_SRC_SIMPLERANDOMENGINE_HPP
 #define DOLOS_SRC_SIMPLERANDOMENGINE_HPP
 
+#include "Base.hpp"
 
-#include "IRandomEngine.hpp"
+#include <cstdint>
 #include <random>
+#include <algorithm>
 
 namespace dolos
 {
 
 
-class SimpleRandomEngine : public IRandomEngine
+class SimpleRandomEngine
 {
   public:
+  using result_type = uint32_t;
+
   /**
   * @brief Create a new random engine.
   *
@@ -40,7 +44,7 @@ class SimpleRandomEngine : public IRandomEngine
   void fillWithPerm(
       vtx_type * container,
       vtx_type const start,
-      vtx_type const end) override;
+      vtx_type const end);
 
 
   /**
@@ -53,7 +57,43 @@ class SimpleRandomEngine : public IRandomEngine
   */
   vtx_type randInRange(
       vtx_type const min,
-      vtx_type const max) override;
+      vtx_type const max)
+  {
+    return std::uniform_int_distribution<vtx_type>(min, max)(m_rng);
+  }
+
+
+  /**
+  * @brief The minimum value returned from the () operator.
+  *
+  * @return The minimum value.
+  */
+  result_type min() const
+  {
+    return m_rng.min();
+  }
+
+
+  /**
+  * @brief The maximum value return from dthe () operator.
+  *
+  * @return The maximum value.
+  */
+  result_type max() const
+  {
+    return m_rng.max();
+  }
+
+
+  /**
+  * @brief Generate a random number between min() and max().
+  *
+  * @return The random number.
+  */
+  result_type operator()()
+  {
+    return m_rng();
+  }
 
 
   /**

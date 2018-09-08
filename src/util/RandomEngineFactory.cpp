@@ -9,7 +9,7 @@
 
 
 #include "RandomEngineFactory.hpp"
-#include "SimpleRandomEngine.hpp"
+#include "RandomEngine.hpp"
 
 
 namespace dolos
@@ -23,7 +23,7 @@ namespace dolos
 RandomEngineHandle RandomEngineFactory::make(
     unsigned int const seed)
 {
-  return RandomEngineHandle(new SimpleRandomEngine(seed));
+  return RandomEngineHandle(std::make_shared<RandomEngine>(seed));
 }
 
 

@@ -18,6 +18,8 @@
 namespace dolos
 {
 
+class RandomEngine;
+
 class DegreeSortedVertexSet
 {
   public:
@@ -28,6 +30,16 @@ class DegreeSortedVertexSet
   */
   static PermutedVertexSet ascending(
       VertexSet set);
+
+
+  /**
+  * @brief Produce a set of vertices in ascending order of degree.
+  *
+  * @param set The vertex set to traverse in a random order.
+  */
+  static PermutedVertexSet ascendingRandom(
+      VertexSet set,
+      RandomEngine * const engine);
 
 
 };

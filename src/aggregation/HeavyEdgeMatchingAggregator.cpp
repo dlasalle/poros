@@ -42,12 +42,12 @@ HeavyEdgeMatchingAggregator::~HeavyEdgeMatchingAggregator()
 
 Aggregation HeavyEdgeMatchingAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph) const
+    ConstantGraph const * const graph)
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
-  PermutedVertexSet permutedVertices = DegreeSortedVertexSet::ascending( \
-      graph->vertices());
+  PermutedVertexSet permutedVertices = \
+      DegreeSortedVertexSet::ascendingRandom(graph->vertices(), m_rng.get());
 
   for (Vertex const & vertex : permutedVertices) {
     vtx_type const v = vertex.index();

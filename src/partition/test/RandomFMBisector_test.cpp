@@ -11,7 +11,7 @@
 #include "partition/RandomFMBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -26,7 +26,7 @@ UNITTEST(RandomFMBisector, Execute)
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.1);
 
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   RandomFMBisector b(8, engine);
 

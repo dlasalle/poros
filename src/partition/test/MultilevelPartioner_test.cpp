@@ -13,7 +13,7 @@
 #include "partition/BFSBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 
 #include "solidutils/UnitTest.hpp"
 
@@ -26,7 +26,7 @@ UNITTEST(MultilevelPartitioner, ExecuteFullCoarsen8Part)
   // build a grid graph
   GridGraphGenerator gen(8, 8, 8);
 
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   RandomMatchingAggregator rm(engine);
 

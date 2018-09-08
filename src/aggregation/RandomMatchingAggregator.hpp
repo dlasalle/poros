@@ -68,9 +68,9 @@ class RandomMatchingAggregator : public IAggregator
     *
     * @return The aggregation.
     */
-    virtual Aggregation aggregate(
+   Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph) const;
+        ConstantGraph const * graph) override;
 
   private:
     RandomEngineHandle m_rng;

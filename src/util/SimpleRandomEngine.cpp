@@ -22,6 +22,7 @@ namespace dolos
 SimpleRandomEngine::SimpleRandomEngine(
     unsigned int const seed) : m_rng(seed)
 {
+  // do nothing
 }
 
 
@@ -42,19 +43,12 @@ void SimpleRandomEngine::fillWithPerm(
 }
 
 
-vtx_type SimpleRandomEngine::randInRange(
-    vtx_type const min,
-    vtx_type const max)
-{
-  return std::uniform_int_distribution<vtx_type>(min, max)(m_rng);
-}
-
-
 void SimpleRandomEngine::setSeed(
     unsigned int const seed)
 {
   // reset the seed
   m_rng = std::mt19937(seed);
 }
+
 
 }

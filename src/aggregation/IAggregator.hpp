@@ -42,7 +42,7 @@ class IAggregator
     */
     virtual Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph) const = 0;
+        ConstantGraph const * graph) = 0;
 
 };
 

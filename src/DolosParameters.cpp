@@ -9,7 +9,7 @@
 
 
 #include "DolosParameters.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 
 
 namespace dolos
@@ -22,7 +22,7 @@ namespace dolos
 
 DolosParameters::DolosParameters(
     dolos_options_struct const options) :
-  m_randomEngine(new SimpleRandomEngine(options.randomSeed)),
+  m_randomEngine(RandomEngineFactory::make(options.randomSeed)),
   m_aggregationScheme(options.aggregationScheme)
 {
   // do nothing

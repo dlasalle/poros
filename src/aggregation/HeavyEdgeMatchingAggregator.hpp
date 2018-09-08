@@ -65,9 +65,9 @@ class HeavyEdgeMatchingAggregator : public IAggregator
     *
     * @return The aggregation.
     */
-    virtual Aggregation aggregate(
+    Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph) const;
+        ConstantGraph const * graph);
 
   private:
     RandomEngineHandle m_rng;

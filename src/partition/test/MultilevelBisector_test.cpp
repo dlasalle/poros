@@ -14,8 +14,7 @@
 #include "partition/PartitioningAnalyzer.hpp"
 #include "partition/FMRefiner.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
-#include "util/RandomEngineHandle.hpp"
+#include "util/RandomEngineFactory.hpp"
 
 #include "solidutils/UnitTest.hpp"
 
@@ -31,7 +30,7 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
   ConstantGraph graph = gen.generate();
 
   // builder our ml bisector
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   std::unique_ptr<IAggregator> agg(new RandomMatchingAggregator(engine));
   std::unique_ptr<IBisector> bis(new BFSBisector(engine));

@@ -14,11 +14,12 @@
 
 #include "graph/PermutedVertexSet.hpp"
 #include "graph/VertexSet.hpp"
-#include "util/RandomEngineHandle.hpp"
 
 
 namespace dolos
 {
+
+class RandomEngine;
 
 class RandomOrderVertexSet
 {
@@ -31,7 +32,7 @@ class RandomOrderVertexSet
   */
   static PermutedVertexSet generate(
       VertexSet set,
-      RandomEngineHandle randomEngine);
+      RandomEngine * randomEngine);
 
 
 };

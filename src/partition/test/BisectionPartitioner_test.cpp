@@ -12,7 +12,7 @@
 #include "partition/RandomFMBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/Exception.hpp"
 #include "solidutils/UnitTest.hpp"
 
@@ -27,7 +27,7 @@ namespace dolos
 
 UNITTEST(BisectionPartitioner, ExecuteCorrect)
 {
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();
@@ -45,7 +45,7 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   
 UNITTEST(BisectionPartitioner, ExecuteInvalid)
 {
-  RandomEngineHandle engine(new SimpleRandomEngine(0));
+  RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
   ConstantGraph graph = gen.generate();

@@ -9,6 +9,7 @@
 
 
 #include "DegreeSortedVertexSet.hpp"
+#include "util/RandomEngine.hpp"
 #include "solidutils/Sort.hpp"
 
 
@@ -35,5 +36,23 @@ PermutedVertexSet DegreeSortedVertexSet::ascending(
   return PermutedVertexSet(numVertices, perm.get(), set.data());  
 }
 
+
+PermutedVertexSet DegreeSortedVertexSet::ascendingRandom(
+    VertexSet const set,
+    RandomEngine * const engine)
+{
+  vtx_type const numVertices = set.size();
+  std::vector<vtx_type> degrees(numVertices);
+  degrees.reserve(numVertices);
+  for (Vertex const & vertex : set) {
+    degrees.emplace_back(vertex.degree());
+  }
+
+  std::unique_ptr<vtx_type[]> perm = \
+      sl::Sort::fixedKeysRandom<vtx_type, vtx_type>( \
+      degrees.data(), degrees.size(), *engine);
+
+  return PermutedVertexSet(numVertices, perm.get(), set.data());  
+}
 
 }

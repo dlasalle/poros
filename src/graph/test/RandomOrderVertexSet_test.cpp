@@ -10,8 +10,7 @@
 
 
 #include "graph/RandomOrderVertexSet.hpp"
-#include "util/RandomEngineHandle.hpp"
-#include "util/SimpleRandomEngine.hpp"
+#include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 #include <vector>
 
@@ -28,10 +27,10 @@ UNITTEST(RandomOrderVertexSet, Size)
   VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), edgeList.data(), \
       edgeWeight.data());
 
-  RandomEngineHandle random(new SimpleRandomEngine(0));
+  RandomEngineHandle random = RandomEngineFactory::make(0);
 
   PermutedVertexSet set = RandomOrderVertexSet::generate(
-      vSet, random);
+      vSet, random.get());
 
   testEqual(set.size(), 10U);
 }
@@ -47,10 +46,10 @@ UNITTEST(RandomOrderVertexSet, Iterator)
   VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), \
       edgeList.data(), edgeWeight.data());
 
-  RandomEngineHandle random(new SimpleRandomEngine(0));
+  RandomEngineHandle random = RandomEngineFactory::make(0);
 
   PermutedVertexSet set = RandomOrderVertexSet::generate(
-      vSet, random);
+      vSet, random.get());
 
   std::vector<bool> marker(weight.size(), false);
 

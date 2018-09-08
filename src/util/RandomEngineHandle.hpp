@@ -11,7 +11,7 @@
 #ifndef DOLOS_SRC_RANDOMENGINEHANDLE_HPP
 #define DOLOS_SRC_RANDOMENGINEHANDLE_HPP
 
-#include "util/IRandomEngine.hpp"
+#include "util/RandomEngine.hpp"
 
 #include <memory>
 
@@ -28,7 +28,7 @@ class RandomEngineHandle
     * @param randPtr The random engine.
     */
     explicit RandomEngineHandle(
-        IRandomEngine * const randPtr) :
+        std::shared_ptr<RandomEngine> randPtr) :
       m_engine(randPtr)
     {
       // do nothing
@@ -80,13 +80,13 @@ class RandomEngineHandle
     *
     * @return The random engine.
     */
-    IRandomEngine * get()
+    RandomEngine * get()
     {
       return m_engine.get();
     }
 
   private:
-    std::shared_ptr<IRandomEngine> m_engine;
+    std::shared_ptr<RandomEngine> m_engine;
 };
 
 }
