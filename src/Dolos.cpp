@@ -13,7 +13,7 @@
 #include "graph/ConstantGraph.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
-#include "partition/BFSBisector.hpp"
+#include "partition/BisectorFactory.hpp"
 #include "partition/MultiBisector.hpp"
 #include "partition/FMRefiner.hpp"
 #include "aggregation/AggregatorFactory.hpp"
@@ -75,8 +75,8 @@ int DOLOS_PartGraphRecursive(
   std::unique_ptr<IAggregator> agg = AggregatorFactory::make(
       globalParams.aggregationScheme(), randEngine);
 
-  std::unique_ptr<IBisector> rb(new BFSBisector(randEngine));
-  std::unique_ptr<IBisector> mb(new MultiBisector(8, rb.get()));
+  std::unique_ptr<IBisector> bisector = BisectorFactory::make(BFS_BISECTION, randEngine);
+  std::unique_ptr<IBisector> mb(new MultiBisector(8, std::move(bisector)));
   std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 
   MultilevelBisector ml(std::move(agg), std::move(mb), std::move(fm));

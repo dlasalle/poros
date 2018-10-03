@@ -24,8 +24,8 @@ UNITTEST(MultiBisector, ExecuteUniform)
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   // create bisector
-  RandomBisector b(engine);
-  MultiBisector mb(10, &b);
+  std::unique_ptr<IBisector> b(new RandomBisector(engine));
+  MultiBisector mb(10, std::move(b));
 
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
@@ -46,8 +46,9 @@ UNITTEST(MultiBisector, ExecuteUniform)
 
   // make 10 random bisections and expect the result to be better than average
   wgt_type cutEdges = 0;
+  b.reset(new RandomBisector(engine));
   for (int i = 0; i < 10; ++i) {
-    Partitioning testPart = b.execute(&target, &graph);
+    Partitioning testPart = b->execute(&target, &graph);
     
     cutEdges += testPart.getCutEdgeWeight();
   }

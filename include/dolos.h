@@ -34,6 +34,14 @@ typedef enum {
     SORTED_HEAVY_EDGE_MATCHING = 1
 } aggregator_type;
 
+/**
+ * @brief Bisector types.
+ */
+typedef enum {
+    RANDOM_BISECTION,
+    BFS_BISECTION
+} bisector_type;
+
 
 typedef struct {
   /**

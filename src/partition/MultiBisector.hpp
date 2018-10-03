@@ -15,6 +15,7 @@
 
 #include "IBisector.hpp"
 
+#include <memory>
 
 namespace dolos
 {
@@ -31,7 +32,7 @@ class MultiBisector : public IBisector
   */
   MultiBisector(
       int numBisections,
-      IBisector * bisector);
+      std::unique_ptr<IBisector> bisector);
 
   /**
   * @brief Deleted copy constructor.
@@ -73,7 +74,7 @@ class MultiBisector : public IBisector
 
   private:
   int m_numBisections;
-  IBisector * m_bisector;
+  std::unique_ptr<IBisector> m_bisector;
 
 };
 
