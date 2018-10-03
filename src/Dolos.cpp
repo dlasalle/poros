@@ -75,11 +75,10 @@ int DOLOS_PartGraphRecursive(
   std::unique_ptr<IAggregator> agg = AggregatorFactory::make(
       globalParams.aggregationScheme(), randEngine);
 
-  std::unique_ptr<IBisector> bisector = BisectorFactory::make(BFS_BISECTION, randEngine);
-  std::unique_ptr<IBisector> mb(new MultiBisector(8, std::move(bisector)));
+  std::unique_ptr<IBisector> bisector = BisectorFactory::make(BFS_BISECTION, randEngine, 8);
   std::unique_ptr<ITwoWayRefiner> fm(new FMRefiner(8));
 
-  MultilevelBisector ml(std::move(agg), std::move(mb), std::move(fm));
+  MultilevelBisector ml(std::move(agg), std::move(bisector), std::move(fm));
 
   RecursiveBisectionPartitioner partitioner(&ml);
 
