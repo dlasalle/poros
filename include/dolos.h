@@ -43,6 +43,13 @@ typedef enum {
 } bisector_type;
 
 
+/**
+ * @brief Two way refinement type.
+ */
+typedef enum {
+    FM_TWOWAY_REFINEMENT
+} two_way_refiner_type;
+
 typedef struct {
   /**
    * @brief The fraction of imbalance to accept (i.e., 0.03 allows for one
