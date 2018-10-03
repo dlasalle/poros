@@ -34,6 +34,7 @@ typedef enum {
     SORTED_HEAVY_EDGE_MATCHING = 1
 } aggregator_type;
 
+
 /**
  * @brief Bisector types.
  */
@@ -49,6 +50,7 @@ typedef enum {
 typedef enum {
     FM_TWOWAY_REFINEMENT
 } two_way_refiner_type;
+
 
 typedef struct {
   /**
@@ -83,6 +85,11 @@ typedef struct {
    */
   int aggregationScheme;
 
+  /**
+   * @brief Write timing information to stdout. Used for development and
+   * benchmarking purposes.
+   */
+  int outputTimes;
 } dolos_options_struct;
 
 

@@ -9,7 +9,9 @@
 
 
 #include "dolos.h"
+
 #include "Base.hpp"
+#include "DolosParameters.hpp"
 #include "graph/ConstantGraph.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
@@ -20,7 +22,9 @@
 #include "partition/MultilevelBisector.hpp"
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "util/RandomEngineHandle.hpp"
-#include "DolosParameters.hpp"
+#include "util/TimeKeeper.hpp"
+
+#include <iostream>
 
 
 using namespace dolos;
@@ -37,7 +41,8 @@ dolos_options_struct DOLOS_defaultOptions()
     nullptr,
     0,
     8,
-    SORTED_HEAVY_EDGE_MATCHING
+    SORTED_HEAVY_EDGE_MATCHING,
+    false
   };
 
   return opts;
@@ -59,6 +64,8 @@ int DOLOS_PartGraphRecursive(
     return 0;
   }
 
+  std::shared_ptr<TimeKeeper> timeKeeper(new TimeKeeper);
+
   DolosParameters globalParams(*options);
 
   // create a parameters object
@@ -73,12 +80,12 @@ int DOLOS_PartGraphRecursive(
 
   // partition the graph
   std::unique_ptr<IAggregator> agg = AggregatorFactory::make(
-      globalParams.aggregationScheme(), randEngine);
+      globalParams.aggregationScheme(), randEngine, timeKeeper);
 
   std::unique_ptr<IBisector> bisector = \
-      BisectorFactory::make(BFS_BISECTION, randEngine, 8);
+      BisectorFactory::make(BFS_BISECTION, randEngine, 8, timeKeeper);
   std::unique_ptr<ITwoWayRefiner> refiner = \
-      TwoWayRefinerFactory::make(FM_TWOWAY_REFINEMENT);
+      TwoWayRefinerFactory::make(FM_TWOWAY_REFINEMENT, timeKeeper);
 
   MultilevelBisector ml(std::move(agg), std::move(bisector), std::move(refiner));
 
@@ -92,6 +99,12 @@ int DOLOS_PartGraphRecursive(
 
   // output data
   part.output(totalCutEdgeWeight, partitionAssignment);
+
+  if (options->outputTimes) {
+    for (std::pair<std::string, double> const & pair : timeKeeper->times()) {
+      std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+  }
 
   return 1;
 }
