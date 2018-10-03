@@ -2,7 +2,7 @@
 * @file PartitioningAnalyzer_test.cpp
 * @brief Unit test for the Partitioning analyzer class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017
+* Copyright 2017-2018
 * @version 1
 * @date 2017-11-03
 */

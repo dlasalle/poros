@@ -22,15 +22,39 @@ namespace dolos
 class TimeKeeper
 {
   public:
+    enum {
+      COARSENING,
+      AGGREGATION,
+      CONTRACTION,
+      INITIAL_PARTITIONING,
+      UNCOARSENING,
+      REFINEMENT,
+      PROJECTION,
+      NUM_TIME_CATEGORIES
+    };
+
     /**
-     * @brief Add a new timing category.
-     *
-     * @param key The key to use.
-     * @param name The name of the category.
-     */
-    void addTimeCategory(
-        uint32_t key,
-        std::string name);
+    * @brief Default constructor.
+    */
+    TimeKeeper();
+
+    /**
+    * @brief Deleted copy constructor.
+    *
+    * @param rhs The TimeKeeper to copy.
+    */
+    TimeKeeper(
+        TimeKeeper const & rhs) = delete;
+
+    /**
+    * @brief Deleted copy-assignment operator.
+    *
+    * @param rhs The TimeKeeper to copy.
+    *
+    * @return This TimeKeeper.
+    */
+    TimeKeeper& operator=(
+        TimeKeeper const & rhs) = delete;
 
     /**
      * @brief Add time to a given key. 

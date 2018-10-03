@@ -2,7 +2,7 @@
 * @file OneStepGraphBuilder.hpp
 * @brief The OneStepGraphBuilder class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2018, Solid Lake LLC
+* Copyright 2018
 * @version 1
 * @date 2018-01-18
 */

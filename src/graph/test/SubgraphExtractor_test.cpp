@@ -2,7 +2,7 @@
 * @file SubgraphExtractor_test.cpp
 * @brief Unit tests for the SubgraphExtractor class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017
+* Copyright 2017-2018
 * @version 1
 * @date 2017-10-12
 */

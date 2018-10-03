@@ -2,7 +2,7 @@
 * @file TargetPartitioning.cpp
 * @brief Implementation of the TargetPartitioning class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017
+* Copyright 2017-2018
 * @version 1
 * @date 2017-10-24
 */

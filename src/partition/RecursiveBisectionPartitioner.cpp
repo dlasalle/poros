@@ -2,7 +2,7 @@
 * @file RecursiveBisectionPartitioner.cpp
 * @brief Implementation of the RecursiveBisectionPartitioner.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017, Solid Lake LLC
+* Copyright 2017-2018
 * @version 1
 * @date 2017-10-10
 */

@@ -2,7 +2,7 @@
 * @file Edge_test.cpp
 * @brief Unit tests for the Edge class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2017, Solid Lake LLC
+* Copyright 2017-2018
 * @version 1
 * @date 2018-01-13
 */

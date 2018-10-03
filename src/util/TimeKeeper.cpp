@@ -11,25 +11,36 @@
 #include "TimeKeeper.hpp"
 
 #include "solidutils/Exception.hpp"
+#include "solidutils/Debug.hpp"
 
 namespace dolos
 {
 
+
+
+/******************************************************************************
+* CONSTRUCTORS / DESTRUCTOR ***************************************************
+******************************************************************************/
+
+TimeKeeper::TimeKeeper() :
+  m_times(NUM_TIME_CATEGORIES, 0.0),
+  m_names{
+    "Coarsening",
+    "Aggregation",
+    "Contraction",
+    "Initial Partitioning",
+    "Uncoarsening",
+    "Refinement",
+    "Projection"
+  }
+{
+  ASSERT_EQUAL(m_times.size(), m_names.size());
+}
+
+
 /******************************************************************************
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
-
-void TimeKeeper::addTimeCategory(
-    uint32_t const key,
-    std::string const name)
-{
-  if (m_times.size() <= key) {
-    m_times.resize(key+1, 0);
-    m_names.resize(key+1);
-  }
-
-  m_names[key] = name;
-}
 
 void TimeKeeper::reportTime(
     uint32_t const key,

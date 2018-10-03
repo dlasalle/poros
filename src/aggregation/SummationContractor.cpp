@@ -2,7 +2,7 @@
 * @file SummationContractor.cpp
 * @brief Implementation of the SummationContractor class.
 * @author Dominique LaSalle <dominique@solidlake.com>
-* Copyright 2018, Solid Lake LLC
+* Copyright 2018
 * @version 1
 * @date 2018-01-17
 */
