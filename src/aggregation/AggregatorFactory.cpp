@@ -10,8 +10,11 @@
 #include "AggregatorFactory.hpp"
 #include "RandomMatchingAggregator.hpp"
 #include "HeavyEdgeMatchingAggregator.hpp"
-#include "solidutils/Exception.hpp"
+#include "TimedAggregator.hpp"
+
 #include "dolos.h"
+
+#include "solidutils/Exception.hpp"
 
 
 namespace dolos
@@ -39,4 +42,15 @@ std::unique_ptr<IAggregator> AggregatorFactory::make(
   return ptr;
 }
 
+
+std::unique_ptr<IAggregator> AggregatorFactory::make(
+    int const scheme,
+    RandomEngineHandle rng,
+    std::shared_ptr<TimeKeeper> timeKeeper)
+{
+  std::unique_ptr<TimedAggregator> ptr(new TimedAggregator(make(scheme, rng)));
+  ptr->setTimeKeeper(timeKeeper);
+
+  return ptr;
+}
 }

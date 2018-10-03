@@ -13,6 +13,7 @@
 
 #include "IAggregator.hpp"
 #include "util/RandomEngineHandle.hpp"
+#include "util/TimeKeeper.hpp"
 
 #include <memory>
 
@@ -34,7 +35,21 @@ class AggregatorFactory
       int scheme,
       RandomEngineHandle rng);
       
-      
+  /**
+  * @brief Create a new aggregator.
+  *
+  * @param scheme The scheme for aggregation to use.
+  * @param rng The random number engine.
+  * @param timeKeeper The time keeper to report times to.
+  *
+  * @return The instantiated aggregator.
+  */
+  static std::unique_ptr<IAggregator> make(
+      int scheme,
+      RandomEngineHandle rng,
+      std::shared_ptr<TimeKeeper> timeKeeper);
+  
+
 };
 
 }

@@ -27,10 +27,7 @@ class IAggregator
     /**
     * @brief Virtual destructor to prevent memory leaks.
     */
-    virtual ~IAggregator() 
-    {
-      // do nothing
-    }
+    virtual ~IAggregator() = default;
 
     /**
     * @brief Create an aggregation of the graph.
