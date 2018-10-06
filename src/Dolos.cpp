@@ -24,6 +24,8 @@
 #include "util/RandomEngineHandle.hpp"
 #include "util/TimeKeeper.hpp"
 
+#include "solidutils/Timer.hpp"
+
 #include <iostream>
 
 
@@ -64,6 +66,9 @@ int DOLOS_PartGraphRecursive(
     return 0;
   }
 
+  sl::Timer totalTimer;
+  totalTimer.start();
+
   std::shared_ptr<TimeKeeper> timeKeeper(new TimeKeeper);
 
   DolosParameters globalParams(*options);
@@ -99,6 +104,9 @@ int DOLOS_PartGraphRecursive(
 
   // output data
   part.output(totalCutEdgeWeight, partitionAssignment);
+
+  totalTimer.stop();
+  timeKeeper->reportTime(TimeKeeper::TOTAL, totalTimer.poll());
 
   if (options->outputTimes) {
     for (std::pair<std::string, double> const & pair : timeKeeper->times()) {

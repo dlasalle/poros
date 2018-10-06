@@ -25,6 +25,7 @@ namespace dolos
 TimeKeeper::TimeKeeper() :
   m_times(NUM_TIME_CATEGORIES, 0.0),
   m_names{
+    "Total",
     "Coarsening",
     "Aggregation",
     "Contraction",

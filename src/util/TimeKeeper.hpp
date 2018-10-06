@@ -23,6 +23,7 @@ class TimeKeeper
 {
   public:
     enum {
+      TOTAL,
       COARSENING,
       AGGREGATION,
       CONTRACTION,
