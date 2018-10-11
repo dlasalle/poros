@@ -17,6 +17,7 @@
 #include "aggregation/IAggregator.hpp"
 #include "partition/ITwoWayRefiner.hpp"
 #include "multilevel/IStoppingCriteria.hpp"
+#include "util/TimeKeeper.hpp"
 
 #include <memory>
 
@@ -37,7 +38,8 @@ class MultilevelBisector : public IBisector
     MultilevelBisector(
         std::unique_ptr<IAggregator> aggregator,
         std::unique_ptr<IBisector> initialBisector,
-        std::unique_ptr<ITwoWayRefiner> refiner);
+        std::unique_ptr<ITwoWayRefiner> refiner,
+        std::shared_ptr<TimeKeeper> timeKeeper);
 
 
     /**
@@ -77,7 +79,7 @@ class MultilevelBisector : public IBisector
     std::unique_ptr<IAggregator> m_aggregator;
     std::unique_ptr<IBisector> m_initialBisector;
     std::unique_ptr<ITwoWayRefiner> m_refiner;
-
+    std::shared_ptr<TimeKeeper> m_timeKeeper;
 };
 
 }

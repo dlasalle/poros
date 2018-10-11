@@ -136,8 +136,10 @@ void move(
 
 
 FMRefiner::FMRefiner(
-    int const maxRefIters) :
-  m_maxRefinementIters(maxRefIters)
+    int const maxRefIters,
+    vtx_type const maxMoves) :
+  m_maxRefinementIters(maxRefIters),
+  m_maxMoves(maxMoves)
 {
   // do nothing
 }
@@ -193,7 +195,8 @@ void FMRefiner::refine(
     vtx_type numMoved = 0;
 
     // move all possible vertices
-    while (pqs[0].size() > 0 || pqs[1].size() > 0) {
+    while ((pqs[0].size() > 0 || pqs[1].size() > 0) && \
+        moves.size() < m_maxMoves) {
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 

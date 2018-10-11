@@ -26,7 +26,7 @@ std::unique_ptr<ITwoWayRefiner> TwoWayRefinerFactory::make(
 {
   std::unique_ptr<ITwoWayRefiner> ptr;
   if (scheme == FM_TWOWAY_REFINEMENT) {
-    ptr.reset(new FMRefiner(8));
+    ptr.reset(new FMRefiner(8, 20));
   } else {
     throw sl::InvalidInputException("Unknown two way refinement type: " +
         std::to_string(scheme));

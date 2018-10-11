@@ -30,9 +30,11 @@ class FMRefiner : public ITwoWayRefiner
     * @brief Create a new FM refiner.
     *
     * @param maxIters The maximum number of refinement iterations.
+    * @param maxMoves The maximum number of bad moves to make.
     */
     FMRefiner(
-        int maxIters); 
+        int maxIters,
+        vtx_type maxMoves); 
 
 
     /**
@@ -52,7 +54,7 @@ class FMRefiner : public ITwoWayRefiner
 
   private:
     int m_maxRefinementIters;
-
+    vtx_type m_maxMoves;
 };
 
 }

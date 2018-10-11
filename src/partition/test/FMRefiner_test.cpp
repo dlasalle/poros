@@ -28,7 +28,7 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.03);
 
-  FMRefiner fm(25);
+  FMRefiner fm(25, graph.numVertices());
 
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
@@ -64,7 +64,7 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
   part.move(4, 1);
   part.recalcCutEdgeWeight();
 
-  FMRefiner fm(25);
+  FMRefiner fm(25, graph.numVertices());
 
   TwoWayConnectivity conn(&graph, &part);
 

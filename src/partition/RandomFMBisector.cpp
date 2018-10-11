@@ -24,7 +24,7 @@ RandomFMBisector::RandomFMBisector(
     int maxIters,
     RandomEngineHandle randEngine) :
   m_bisector(randEngine),
-  m_refiner(maxIters)
+  m_refiner(maxIters, 1000)
 {
   // do nothing
 }

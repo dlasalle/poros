@@ -15,6 +15,7 @@
 #include "partition/FMRefiner.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/RandomEngineFactory.hpp"
+#include "util/TimeKeeper.hpp"
 
 #include "solidutils/UnitTest.hpp"
 
@@ -34,9 +35,10 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
 
   std::unique_ptr<IAggregator> agg(new RandomMatchingAggregator(engine));
   std::unique_ptr<IBisector> bis(new BFSBisector(engine));
-  std::unique_ptr<ITwoWayRefiner> ref(new FMRefiner(8));
+  std::unique_ptr<ITwoWayRefiner> ref(new FMRefiner(8, 20));
 
-  MultilevelBisector mb(std::move(agg), std::move(bis), std::move(ref));
+  std::shared_ptr<TimeKeeper> timeKeeper(new TimeKeeper);
+  MultilevelBisector mb(std::move(agg), std::move(bis), std::move(ref), timeKeeper);
 
   // set target partitioning
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.005);

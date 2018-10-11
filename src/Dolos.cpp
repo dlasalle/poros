@@ -92,7 +92,8 @@ int DOLOS_PartGraphRecursive(
   std::unique_ptr<ITwoWayRefiner> refiner = \
       TwoWayRefinerFactory::make(FM_TWOWAY_REFINEMENT, timeKeeper);
 
-  MultilevelBisector ml(std::move(agg), std::move(bisector), std::move(refiner));
+  MultilevelBisector ml(std::move(agg), std::move(bisector), \
+      std::move(refiner), timeKeeper);
 
   RecursiveBisectionPartitioner partitioner(&ml);
 
