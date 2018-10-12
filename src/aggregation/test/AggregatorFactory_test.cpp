@@ -9,7 +9,7 @@
 
 #include "AggregatorFactory.hpp"
 #include "RandomMatchingAggregator.hpp"
-#include "HeavyEdgeMatchingAggregator.hpp"
+#include "SHEMRMAggregator.hpp"
 #include "TimedAggregator.hpp"
 #include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
@@ -31,15 +31,15 @@ UNITTEST(AggregatorFactory, RandomMatchingAggregatorTest)
   testTrue(rmPtr != nullptr);
 }
 
-UNITTEST(AggregatorFactory, HeavyEdgeMatchingAggregatorTest)
+UNITTEST(AggregatorFactory, SHEMRMAggregatorTest)
 {
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
   std::unique_ptr<IAggregator> ptr = AggregatorFactory::make( \
       SORTED_HEAVY_EDGE_MATCHING, rand);
 
-  HeavyEdgeMatchingAggregator const * const rmPtr = \
-      dynamic_cast<HeavyEdgeMatchingAggregator*>(ptr.get());
+  SHEMRMAggregator const * const rmPtr = \
+      dynamic_cast<SHEMRMAggregator*>(ptr.get());
 
   testTrue(rmPtr != nullptr);
 }

@@ -31,6 +31,8 @@ ConstantGraph::ConstantGraph(
     wgt_type const * const vertexWeight,
     wgt_type const * const edgeWeight,
     IAllocatedData * const data) :
+  m_uniformEdgeWeight(true),
+  m_uniformVertexWeight(true),
   m_numVertices(numVertices),
   m_numEdges(numEdges),
   m_totalVertexWeight(0),
@@ -44,19 +46,37 @@ ConstantGraph::ConstantGraph(
   ASSERT_NOTNULL(m_edgePrefix);
 
   // calculate total vertex weight
-  for (vtx_type v = 0; v < m_numVertices; ++v) {
-    m_totalVertexWeight += m_vertexWeight[v];
+  if (m_numVertices > 0) {
+    const wgt_type baseVertexWeight = m_vertexWeight[0];
+    for (vtx_type v = 0; v < m_numVertices; ++v) {
+      const wgt_type vwgt = m_vertexWeight[v];
+      m_totalVertexWeight += vwgt;
+
+      if (vwgt != baseVertexWeight) {
+        m_uniformVertexWeight = false;
+      }
+    }
   }
 
-  // calculate total  edge weight
-  for (adj_type e = 0; e < m_numEdges; ++e) {
-    m_totalEdgeWeight += m_edgeWeight[e];
+  // calculate total edge weight
+  if (m_numEdges > 0) {
+    const wgt_type baseEdgeWeight = m_edgeWeight[0];
+    for (adj_type e = 0; e < m_numEdges; ++e) {
+      const wgt_type ewgt = m_edgeWeight[e];
+      m_totalEdgeWeight += ewgt;
+
+      if (ewgt != baseEdgeWeight) {
+        m_uniformEdgeWeight = false;
+      }
+    }
   }
 }
 
 
 ConstantGraph::ConstantGraph(
     ConstantGraph && lhs) noexcept :
+  m_uniformEdgeWeight(lhs.m_uniformEdgeWeight),
+  m_uniformVertexWeight(lhs.m_uniformVertexWeight),
   m_numVertices(lhs.m_numVertices),
   m_numEdges(lhs.m_numEdges),
   m_totalVertexWeight(lhs.m_totalVertexWeight),

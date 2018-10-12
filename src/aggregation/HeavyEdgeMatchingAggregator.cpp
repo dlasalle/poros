@@ -29,11 +29,6 @@ HeavyEdgeMatchingAggregator::HeavyEdgeMatchingAggregator(
 }
 
 
-HeavyEdgeMatchingAggregator::~HeavyEdgeMatchingAggregator()
-{
-  // do nohting
-}
-
 
 /******************************************************************************
 * PUBLIC METHODS **************************************************************

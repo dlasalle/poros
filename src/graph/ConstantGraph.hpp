@@ -225,6 +225,25 @@ class ConstantGraph
           m_edgeWeight);
     }
 
+    /**
+    * @brief Check if the graph has uniform edge weights.
+    *
+    * @return True if the edge weights are all equal.
+    */
+    inline bool hasUniformEdgeWeight() const noexcept
+    {
+      return m_uniformEdgeWeight;
+    }
+
+    /**
+    * @brief Check if the graph has uniform vertex weights.
+    *
+    * @return True if the vertex weights are all equal.
+    */
+    inline bool hasUniformVertexWeight() const noexcept
+    {
+      return m_uniformVertexWeight;
+    }
 
     /**
     * @brief Get the underlying data of the CSR graph.
@@ -232,7 +251,6 @@ class ConstantGraph
     * @return The underlying data.
     */
     CSRGraphData getData() const noexcept;
-
     
     /**
     * @brief Check if this graph is internally coherent.
@@ -242,6 +260,9 @@ class ConstantGraph
     bool isValid() const;
 
   private:
+    bool m_uniformEdgeWeight;
+    bool m_uniformVertexWeight;
+
     vtx_type m_numVertices;
     adj_type m_numEdges;
 

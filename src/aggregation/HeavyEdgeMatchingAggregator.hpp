@@ -55,7 +55,7 @@ class HeavyEdgeMatchingAggregator : public IAggregator
     /**
     * @brief Virtual destructor.
     */
-    virtual ~HeavyEdgeMatchingAggregator();
+    virtual ~HeavyEdgeMatchingAggregator() = default;
 
 
     /**

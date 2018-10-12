@@ -9,7 +9,7 @@
 
 #include "AggregatorFactory.hpp"
 #include "RandomMatchingAggregator.hpp"
-#include "HeavyEdgeMatchingAggregator.hpp"
+#include "SHEMRMAggregator.hpp"
 #include "TimedAggregator.hpp"
 
 #include "dolos.h"
@@ -33,7 +33,7 @@ std::unique_ptr<IAggregator> AggregatorFactory::make(
   if (scheme == RANDOM_MATCHING) {
     ptr.reset(new RandomMatchingAggregator(rng));
   } else if (scheme == SORTED_HEAVY_EDGE_MATCHING) {
-    ptr.reset(new HeavyEdgeMatchingAggregator(rng));
+    ptr.reset(new SHEMRMAggregator(rng));
   } else {
     throw sl::InvalidInputException("Unknown aggregation scheme: " +
         std::to_string(scheme));
