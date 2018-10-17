@@ -72,7 +72,7 @@ class BFSBisector : public IBisector
     virtual Partitioning execute(
         TargetPartitioning const * target,
         ConstantGraph const * graph,
-        vtx_type seedVertex);
+        Vertex const seedVertex);
 
   private:
     RandomEngineHandle m_rng;

@@ -26,19 +26,15 @@ class EdgeSet
     {
       public:
         Iterator(
-            adj_type const index,
-            vtx_type const * const edgeList,
-            wgt_type const * const edgeWeight) noexcept :
-          m_index(index),
-          m_edgeList(edgeList),
-          m_edgeWeight(edgeWeight)
+            adj_type const index) noexcept :
+          m_index(index)
         {
           // do nothing
         }
 
         inline Edge operator*() const
         {
-          return Edge(m_index, m_edgeList, m_edgeWeight);
+          return Edge::make(m_index);
         }
 
         inline Iterator const & operator++()
@@ -61,8 +57,6 @@ class EdgeSet
 
       private:
         adj_type m_index;
-        vtx_type const * const m_edgeList;
-        wgt_type const * const m_edgeWeight;
     };
 
     /**
@@ -93,7 +87,7 @@ class EdgeSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(m_begin, m_edgeList, m_edgeWeight);
+      return Iterator(m_begin);
     }
 
     /**
@@ -104,7 +98,7 @@ class EdgeSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator(m_end, m_edgeList, m_edgeWeight);
+      return Iterator(m_end);
     }
 
     /**

@@ -40,8 +40,7 @@ class VertexGrouping
       {
         return VertexGroup(
             m_finePrefix[m_index+1]-m_finePrefix[m_index],
-            m_fineMap + m_finePrefix[m_index],
-            m_data);
+            m_fineMap + m_finePrefix[m_index]);
       }
 
       inline Iterator const & operator++() noexcept

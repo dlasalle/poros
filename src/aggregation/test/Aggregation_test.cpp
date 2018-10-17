@@ -55,8 +55,8 @@ UNITTEST(AggregationTest, CoarseVertexSetTest)
   std::vector<bool> visited(cmap.size(), false);
   for (const VertexGroup& group : agg.coarseVertices()) {
     for (const Vertex& v : group.fineVertices()) {
-      testEqual(agg.getCoarseVertexNumber(v.index()), coarse);
-      visited[v.index()] = true;
+      testEqual(agg.getCoarseVertexNumber(v.index), coarse);
+      visited[v.index] = true;
     }
     ++coarse;
   }

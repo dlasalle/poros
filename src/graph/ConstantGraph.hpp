@@ -76,7 +76,7 @@ class ConstantGraph
     *
     * @return The number of vertices.
     */
-    inline vtx_type numVertices() const noexcept
+    vtx_type numVertices() const noexcept
     {
       return m_numVertices;
     }
@@ -87,7 +87,7 @@ class ConstantGraph
     *
     * @return The number of edges.
     */
-    inline adj_type numEdges() const noexcept
+    adj_type numEdges() const noexcept
     {
       return m_numEdges;
     }
@@ -98,7 +98,7 @@ class ConstantGraph
     *
     * @return The total weight.
     */
-    inline wgt_type getTotalVertexWeight() const noexcept
+    wgt_type getTotalVertexWeight() const noexcept
     {
       return m_totalVertexWeight; 
     }
@@ -109,7 +109,7 @@ class ConstantGraph
     *
     * @return The total weight.
     */
-    inline wgt_type getTotalEdgeWeight() const noexcept
+    wgt_type getTotalEdgeWeight() const noexcept
     {
       return m_totalEdgeWeight;
     }
@@ -120,7 +120,7 @@ class ConstantGraph
     *
     * @return The edge prefixsum array.
     */
-    inline adj_type const * getEdgePrefix() const noexcept
+    adj_type const * getEdgePrefix() const noexcept
     {
       return m_edgePrefix;
     }
@@ -131,7 +131,7 @@ class ConstantGraph
     *
     * @return The edge list array.
     */
-    inline vtx_type const * getEdgeList() const noexcept
+    vtx_type const * getEdgeList() const noexcept
     {
       return m_edgeList;
     }
@@ -144,7 +144,7 @@ class ConstantGraph
     *
     * @return The weight of the vertex.
     */
-    inline wgt_type getVertexWeight(
+    wgt_type getVertexWeight(
         vtx_type const vertex) const noexcept
     {
       return m_vertexWeight[vertex];
@@ -156,7 +156,7 @@ class ConstantGraph
     *
     * @return The vertex weight array.
     */
-    inline wgt_type const * getVertexWeight() const noexcept
+    wgt_type const * getVertexWeight() const noexcept
     {
       return m_vertexWeight;
     }
@@ -167,24 +167,9 @@ class ConstantGraph
     *
     * @return The edge weight array.
     */
-    inline wgt_type const * getEdgeWeight() const noexcept
+    wgt_type const * getEdgeWeight() const noexcept
     {
       return m_edgeWeight;
-    }
-
-
-    /**
-    * @brief Get an indvidiaul vertex.
-    *
-    * @param v The vertex to get.
-    *
-    * @return The vertex.
-    */
-    inline Vertex getVertex(
-        vtx_type const v) const noexcept
-    {
-      return Vertex(v, m_vertexWeight, m_edgePrefix, \
-          m_edgeList, m_edgeWeight);
     }
 
 
@@ -193,10 +178,9 @@ class ConstantGraph
     *
     * @return The vertex set.
     */
-    inline VertexSet vertices() const noexcept
+    VertexSet vertices() const noexcept
     {
-      return VertexSet(0, m_numVertices, m_vertexWeight, m_edgePrefix, \
-          m_edgeList, m_edgeWeight);
+      return VertexSet(0, m_numVertices);
     }
 
 
@@ -205,7 +189,7 @@ class ConstantGraph
     *
     * @return The edge set.
     */
-    inline EdgeSet edges() const noexcept
+    EdgeSet edges() const noexcept
     {
       return EdgeSet(0, m_numEdges, m_edgeList, m_edgeWeight);
     }
@@ -214,15 +198,68 @@ class ConstantGraph
     /**
     * @brief Get the set of edges of the vertex for traversal.
     *
-    * @param v The vertex.
+    * @param vertex The vertex.
     *
     * @return The edge set of the vertex.
     */
-    inline EdgeSet getEdges(
-        vtx_type const v) const noexcept
+    EdgeSet edgesOf(
+        Vertex const vertex) const noexcept
     {
+      vtx_type const v = vertex.index;
       return EdgeSet(m_edgePrefix[v], m_edgePrefix[v+1], m_edgeList, \
           m_edgeWeight);
+    }
+
+    /**
+    * @brief Get the degree of a vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The degree of the vertex.
+    */
+    vtx_type degreeOf(
+        Vertex const v) const noexcept
+    {
+      return m_edgePrefix[v.index+1] - m_edgePrefix[v.index];
+    }
+
+    /**
+    * @brief Get the destination of a given edge.
+    *
+    * @param e The edge.
+    *
+    * @return The destination vertex.
+    */
+    Vertex destinationOf(
+        Edge const e) const noexcept
+    {
+      return Vertex::make(m_edgeList[e.index]);
+    }
+
+    /**
+    * @brief Get the weight of the given edge.
+    *
+    * @param e The edge.
+    *
+    * @return The weight.
+    */
+    wgt_type weightOf(
+        Edge const e) const noexcept
+    {
+      return m_edgeWeight[e.index];
+    }
+
+    /**
+    * @brief Get the weight of the given vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The weight.
+    */
+    wgt_type weightOf(
+        Vertex const v) const noexcept
+    {
+      return m_vertexWeight[v.index];
     }
 
     /**
@@ -230,7 +267,7 @@ class ConstantGraph
     *
     * @return True if the edge weights are all equal.
     */
-    inline bool hasUniformEdgeWeight() const noexcept
+    bool hasUniformEdgeWeight() const noexcept
     {
       return m_uniformEdgeWeight;
     }
@@ -240,7 +277,7 @@ class ConstantGraph
     *
     * @return True if the vertex weights are all equal.
     */
-    inline bool hasUniformVertexWeight() const noexcept
+    bool hasUniformVertexWeight() const noexcept
     {
       return m_uniformVertexWeight;
     }

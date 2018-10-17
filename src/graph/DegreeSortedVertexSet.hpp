@@ -13,6 +13,7 @@
 
 #include "graph/PermutedVertexSet.hpp"
 #include "graph/VertexSet.hpp"
+#include "graph/ConstantGraph.hpp"
 
 
 namespace dolos
@@ -29,7 +30,8 @@ class DegreeSortedVertexSet
   * @param set The vertex set to traverse in a random order.
   */
   static PermutedVertexSet ascending(
-      VertexSet set);
+      VertexSet const set,
+      ConstantGraph const * const graph);
 
 
   /**
@@ -39,6 +41,7 @@ class DegreeSortedVertexSet
   */
   static PermutedVertexSet ascendingRandom(
       VertexSet set,
+      ConstantGraph const * const graph,
       RandomEngine * const engine);
 
 

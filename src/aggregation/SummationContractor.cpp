@@ -56,9 +56,10 @@ ConstantGraph SummationContractor::contract(
     wgt_type coarseVertexWeight = 0;
 
     for (Vertex const vertex : group.fineVertices()) {
-      coarseVertexWeight += vertex.weight();
-      for (Edge const edge : vertex.edges()) {
-        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(edge.destination());
+      coarseVertexWeight += graph->weightOf(vertex);
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
+            graph->destinationOf(edge).index);
         if (coarseNeighbor == coarseVertexNumber) {
           // skip self loops
           continue;
@@ -70,10 +71,11 @@ ConstantGraph SummationContractor::contract(
           coarseEdgeIndex = neighbors.size();
           htable[coarseNeighbor] = coarseEdgeIndex; 
           neighbors.emplace_back(coarseNeighbor);
-          edgeWeights.emplace_back(edge.weight());
+          edgeWeights.emplace_back(
+              graph->weightOf(edge));
         } else {
           // edge already exists -- sum them together
-          edgeWeights[coarseEdgeIndex] += edge.weight();
+          edgeWeights[coarseEdgeIndex] += graph->weightOf(edge);
         }
       }
     }

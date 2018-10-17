@@ -20,12 +20,7 @@ namespace dolos
 
 UNITTEST(RandomOrderVertexSet, Size)
 {
-  std::vector<wgt_type> weight(10, 1);
-  std::vector<adj_type> edgePrefix{0,1,2,3,4,5,6,7,8,9,10};;
-  std::vector<vtx_type> edgeList{0,1,2,3,4,5,6,7,8,9};
-  std::vector<wgt_type> edgeWeight(10, 1);
-  VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), edgeList.data(), \
-      edgeWeight.data());
+  VertexSet vSet(0, 10);
 
   RandomEngineHandle random = RandomEngineFactory::make(0);
 
@@ -38,23 +33,17 @@ UNITTEST(RandomOrderVertexSet, Size)
 
 UNITTEST(RandomOrderVertexSet, Iterator)
 {
-  std::vector<wgt_type> weight(10, 1);
-  std::vector<adj_type> edgePrefix{0,1,2,3,4,5,6,7,8,9,10};;
-  std::vector<vtx_type> edgeList{0,1,2,3,4,5,6,7,8,9};
-  std::vector<wgt_type> edgeWeight(10, 1);
-
-  VertexSet vSet(0, edgePrefix.size()-1, weight.data(), edgePrefix.data(), \
-      edgeList.data(), edgeWeight.data());
+  VertexSet vSet(0, 10);
 
   RandomEngineHandle random = RandomEngineFactory::make(0);
 
   PermutedVertexSet set = RandomOrderVertexSet::generate(
       vSet, random.get());
 
-  std::vector<bool> marker(weight.size(), false);
+  std::vector<bool> marker(vSet.size(), false);
 
-  for (Vertex const & vertex : set) {
-    marker[vertex.index()] = true;
+  for (Vertex const vertex : set) {
+    marker[vertex.index] = true;
   }
 
   for (bool mark : marker) {

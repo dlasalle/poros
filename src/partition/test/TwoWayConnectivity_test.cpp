@@ -49,10 +49,10 @@ UNITTEST(TwoWayConnectivity, GetVertexDelta)
 
   Partitioning p(2, &g);
 
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(2, 0);
-  p.assign(3, 1);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(2), 0);
+  p.assign(Vertex::make(3), 1);
 
   p.recalcCutEdgeWeight();
 
@@ -74,22 +74,22 @@ UNITTEST(TwoWayConnectivity, Move)
 
   Partitioning p(2, &g);
 
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(2, 0);
-  p.assign(3, 0);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(2), 0);
+  p.assign(Vertex::make(3), 0);
 
-  p.assign(4, 1);
-  p.assign(5, 1);
-  p.assign(6, 1);
-  p.assign(7, 1);
+  p.assign(Vertex::make(4), 1);
+  p.assign(Vertex::make(5), 1);
+  p.assign(Vertex::make(6), 1);
+  p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
   TwoWayConnectivity conn(&g, &p);
 
   testEqual(conn.getVertexDelta(0), 1);
 
-  conn.move(0);
+  conn.move(Vertex::make(0));
 
   testEqual(conn.getVertexDelta(0), -1);
 }
@@ -112,26 +112,27 @@ UNITTEST(TwoWayConnectivity, UpdateNeighbor)
 
   Partitioning p(2, &g);
 
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(2, 0);
-  p.assign(3, 0);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(2), 0);
+  p.assign(Vertex::make(3), 0);
 
-  p.assign(4, 1);
-  p.assign(5, 1);
-  p.assign(6, 1);
-  p.assign(7, 1);
+  p.assign(Vertex::make(4), 1);
+  p.assign(Vertex::make(5), 1);
+  p.assign(Vertex::make(6), 1);
+  p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
   TwoWayConnectivity conn(&g, &p);
 
-  p.move(1, 1);
-  conn.move(1);
-  for (Edge const & edge : g.getEdges(1)) {
-    vtx_type const u = edge.destination();
+  p.move(Vertex::make(1), 1);
+  conn.move(Vertex::make(1));
+  for (Edge const & edge : g.edgesOf(Vertex::make(1))) {
+    Vertex const u = g.destinationOf(edge);
     pid_type const where = p.getAssignment(u);
     int const status = \
-        conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+        conn.updateNeighbor(u, g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(1, where));
     if (u == 5) {
       testEqual(status, TwoWayConnectivity::BORDER_REMOVED);
     } else {
@@ -139,14 +140,14 @@ UNITTEST(TwoWayConnectivity, UpdateNeighbor)
     }
   }
 
-  testTrue(conn.isInBorder(0));
-  testTrue(conn.isInBorder(1));
-  testTrue(conn.isInBorder(2));
-  testTrue(conn.isInBorder(3));
-  testTrue(conn.isInBorder(4));
-  testFalse(conn.isInBorder(5));
-  testTrue(conn.isInBorder(6));
-  testTrue(conn.isInBorder(7));
+  testTrue(conn.isInBorder(Vertex::make(0)));
+  testTrue(conn.isInBorder(Vertex::make(1)));
+  testTrue(conn.isInBorder(Vertex::make(2)));
+  testTrue(conn.isInBorder(Vertex::make(3)));
+  testTrue(conn.isInBorder(Vertex::make(4)));
+  testFalse(conn.isInBorder(Vertex::make(5)));
+  testTrue(conn.isInBorder(Vertex::make(6)));
+  testTrue(conn.isInBorder(Vertex::make(7)));
 
   testEqual(conn.getVertexDelta(0), -1);
   testEqual(conn.getVertexDelta(3), -1);
@@ -173,16 +174,16 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   Partitioning p(2, &g);
 
   // back face
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(4, 0);
-  p.assign(5, 0);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(4), 0);
+  p.assign(Vertex::make(5), 0);
 
   // front face
-  p.assign(2, 1);
-  p.assign(3, 1);
-  p.assign(6, 1);
-  p.assign(7, 1);
+  p.assign(Vertex::make(2), 1);
+  p.assign(Vertex::make(3), 1);
+  p.assign(Vertex::make(6), 1);
+  p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
 
@@ -198,11 +199,12 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   testEqual(conn.getVertexDelta(6), 1);
   testEqual(conn.getVertexDelta(7), 1);
 
-  conn.move(0);
-  p.move(0, 1);
-  for (Edge const & edge : g.getEdges(0)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+  conn.move(Vertex::make(0));
+  p.move(Vertex::make(0), 1);
+  for (Edge const & edge : g.edgesOf(Vertex::make(0))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(1, where));
   }
 
   testEqual(conn.getVertexDelta(0), -1);
@@ -210,11 +212,12 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   testEqual(conn.getVertexDelta(2), 3);
   testEqual(conn.getVertexDelta(4), -1);
 
-  conn.move(2);
-  p.move(2, 0);
-  for (Edge const & edge : g.getEdges(2)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  conn.move(Vertex::make(2));
+  p.move(Vertex::make(2), 0);
+  for (Edge const & edge : g.edgesOf(Vertex::make(2))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(0, where));
   }
 
   testEqual(conn.getVertexDelta(0), -3);
@@ -222,11 +225,12 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   testEqual(conn.getVertexDelta(2), -3);
   testEqual(conn.getVertexDelta(4), -1);
 
-  conn.move(0);
-  p.move(0, 0);
-  for (Edge const & edge : g.getEdges(0)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  conn.move(Vertex::make(0));
+  p.move(Vertex::make(0), 0);
+  for (Edge const & edge : g.edgesOf(Vertex::make(0))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(0, where));
   }
 
   testEqual(conn.getVertexDelta(0), 3);
@@ -253,12 +257,12 @@ UNITTEST(TwoWayConnectivity, GetBorderSet)
 
   Partitioning p(2, &g);
 
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(2, 1);
-  p.assign(3, 0);
-  p.assign(4, 1);
-  p.assign(5, 1);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(2), 1);
+  p.assign(Vertex::make(3), 0);
+  p.assign(Vertex::make(4), 1);
+  p.assign(Vertex::make(5), 1);
 
   p.recalcCutEdgeWeight();
 
@@ -301,16 +305,16 @@ UNITTEST(TwoWayConnectivity, Verify)
   Partitioning p(2, &g);
 
   // back face
-  p.assign(0, 0);
-  p.assign(1, 0);
-  p.assign(4, 0);
-  p.assign(5, 0);
+  p.assign(Vertex::make(0), 0);
+  p.assign(Vertex::make(1), 0);
+  p.assign(Vertex::make(4), 0);
+  p.assign(Vertex::make(5), 0);
 
   // front face
-  p.assign(2, 1);
-  p.assign(3, 1);
-  p.assign(6, 1);
-  p.assign(7, 1);
+  p.assign(Vertex::make(2), 1);
+  p.assign(Vertex::make(3), 1);
+  p.assign(Vertex::make(6), 1);
+  p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
 
@@ -318,27 +322,30 @@ UNITTEST(TwoWayConnectivity, Verify)
 
   testTrue(conn.verify(&p));
 
-  conn.move(0);
-  p.move(0, 1);
-  for (Edge const & edge : g.getEdges(0)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(1, where));
+  conn.move(Vertex::make(0));
+  p.move(Vertex::make(0), 1);
+  for (Edge const edge : g.edgesOf(Vertex::make(0))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(1, where));
   }
   testTrue(conn.verify(&p));
 
-  conn.move(2);
-  p.move(2, 0);
-  for (Edge const & edge : g.getEdges(2)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  conn.move(Vertex::make(2));
+  p.move(Vertex::make(2), 0);
+  for (Edge const edge : g.edgesOf(Vertex::make(2))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(0, where));
   }
   testTrue(conn.verify(&p));
 
-  conn.move(0);
-  p.move(0, 0);
-  for (Edge const & edge : g.getEdges(0)) {
-    pid_type const where = p.getAssignment(edge.destination());
-    conn.updateNeighbor(&edge, TwoWayConnectivity::getDirection(0, where));
+  conn.move(Vertex::make(0));
+  p.move(Vertex::make(0), 0);
+  for (Edge const edge : g.edgesOf(Vertex::make(0))) {
+    pid_type const where = p.getAssignment(g.destinationOf(edge));
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+        TwoWayConnectivity::getDirection(0, where));
   }
 
   testTrue(conn.verify(&p));

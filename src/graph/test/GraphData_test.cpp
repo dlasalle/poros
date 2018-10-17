@@ -141,13 +141,13 @@ UNITTEST(GraphData, ToGraph)
   testEqual(g.numEdges(), ewgt.size());
 
   for (Vertex const & v : g.vertices()) {
-    testEqual(v.weight(), vwgt[v.index()]);
+    testEqual(g.weightOf(v), vwgt[v.index]);
 
-    testEqual(prefix[v.index()+1] - prefix[v.index()], v.degree());
+    testEqual(prefix[v.index+1] - prefix[v.index], g.degreeOf(v));
 
-    for (Edge const & e : v.edges()) {
-      testEqual(e.destination(), adjncy[e.index()]);
-      testEqual(e.weight(), ewgt[e.index()]); 
+    for (Edge const e : g.edgesOf(v)) {
+      testEqual(g.destinationOf(e).index, adjncy[e.index]);
+      testEqual(g.weightOf(e), ewgt[e.index]); 
     }
   }
 }

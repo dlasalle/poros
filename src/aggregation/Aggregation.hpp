@@ -117,6 +117,7 @@ class Aggregation
     void fillCoarseMap(
         vtx_type * data) const noexcept;
 
+
   private:
     vtx_type m_numCoarseVertices;
     std::vector<vtx_type> m_coarseMap;

@@ -75,12 +75,12 @@ Partitioning DiscreteCoarseGraph::project(
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 
   // iterate over fine vertices
-  for (Vertex const & vertex : m_fine->vertices()) {
-    vtx_type const v = vertex.index();
+  for (Vertex const vertex : m_fine->vertices()) {
+    vtx_type const v = vertex.index;
     vtx_type const c = m_coarseMap[v];
     pid_type const p = coarsePart->getAssignment(c); 
 
-    finePart.assign(v, p); 
+    finePart.assign(vertex, p); 
   }
 
   // TODO: this doesn't need to be calculated, we should set it directly

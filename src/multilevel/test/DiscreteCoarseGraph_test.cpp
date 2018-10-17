@@ -39,22 +39,22 @@ UNITTEST(DiscreteCoarseGraph, Contract)
   testEqual(coarseGraph->numEdges(), 14U);
   
   // check edge counts
-  testEqual(coarseGraph->getVertex(0).degree(), static_cast<vtx_type>(1));
-  testEqual(coarseGraph->getVertex(1).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(2).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(3).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(4).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(5).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(6).degree(), static_cast<vtx_type>(2));
-  testEqual(coarseGraph->getVertex(7).degree(), static_cast<vtx_type>(1));
+  testEqual(coarseGraph->degreeOf(Vertex::make(0)), static_cast<vtx_type>(1));
+  testEqual(coarseGraph->degreeOf(Vertex::make(1)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(2)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(3)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(4)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(5)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(6)), static_cast<vtx_type>(2));
+  testEqual(coarseGraph->degreeOf(Vertex::make(7)), static_cast<vtx_type>(1));
 
   // check edge and vertex weights
-  for (Vertex const & vertex : coarseGraph->vertices()) {
-    testEqual(vertex.weight(), static_cast<wgt_type>(2));
-    for (Edge const & edge : vertex.edges()) {
-      testEqual(edge.weight(), static_cast<wgt_type>(2));
-      testEqual(std::abs(static_cast<int>(edge.destination())
-          - static_cast<int>(vertex.index())), 1);
+  for (Vertex const vertex : coarseGraph->vertices()) {
+    testEqual(coarseGraph->weightOf(vertex), static_cast<wgt_type>(2));
+    for (Edge const edge : coarseGraph->edgesOf(vertex)) {
+      testEqual(coarseGraph->weightOf(edge), static_cast<wgt_type>(2));
+      testEqual(std::abs(static_cast<int>(coarseGraph->destinationOf(edge).index)
+          - static_cast<int>(vertex.index)), 1);
     }
   }
 }

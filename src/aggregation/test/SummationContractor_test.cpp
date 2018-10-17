@@ -43,17 +43,17 @@ UNITTEST(SummationContractor, ContractLine)
 
   testEqual(out.numVertices(), agg.getNumCoarseVertices());
 
-  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(1));
-  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(4).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(5).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(6).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(7).degree(), static_cast<vtx_type>(1));
+  testEqual(out.degreeOf(Vertex::make(0)), static_cast<vtx_type>(1));
+  testEqual(out.degreeOf(Vertex::make(1)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(2)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(3)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(4)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(5)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(6)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(7)), static_cast<vtx_type>(1));
 
   for (Edge const & edge : out.edges()) {
-    testEqual(edge.weight(), static_cast<wgt_type>(2));
+    testEqual(out.weightOf(edge), static_cast<wgt_type>(2));
   }
 }
 
@@ -87,10 +87,10 @@ UNITTEST(SummationContractor, ContractCubeComplete)
 
   testEqual(out.numVertices(), agg.getNumCoarseVertices());
 
-  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(3));
-  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(3));
-  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(3));
-  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(3));
+  testEqual(out.degreeOf(Vertex::make(0)), static_cast<vtx_type>(3));
+  testEqual(out.degreeOf(Vertex::make(1)), static_cast<vtx_type>(3));
+  testEqual(out.degreeOf(Vertex::make(2)), static_cast<vtx_type>(3));
+  testEqual(out.degreeOf(Vertex::make(3)), static_cast<vtx_type>(3));
 
   testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(160));
 }
@@ -124,15 +124,15 @@ UNITTEST(SummationContractor, ContractCubeSquare)
 
   testEqual(out.numVertices(), agg.getNumCoarseVertices());
 
-  testEqual(out.getVertex(0).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(1).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(2).degree(), static_cast<vtx_type>(2));
-  testEqual(out.getVertex(3).degree(), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(0)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(1)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(2)), static_cast<vtx_type>(2));
+  testEqual(out.degreeOf(Vertex::make(3)), static_cast<vtx_type>(2));
 
   testEqual(out.getTotalEdgeWeight(), static_cast<wgt_type>(16));
 
   for (Edge const & edge : out.edges()) {
-    testEqual(edge.weight(), static_cast<wgt_type>(2));
+    testEqual(out.weightOf(edge), static_cast<wgt_type>(2));
   }
 }
 

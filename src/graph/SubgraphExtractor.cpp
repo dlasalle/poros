@@ -56,38 +56,37 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
 
   // populate super-map and submap
   sl::Array<vtx_type> subMap(numVertices);
-  for (vtx_type v = 0; v < numVertices; ++v) {
+  for (Vertex const v : graph->vertices()) {
     pid_type const where = part->getAssignment(v);
     vtx_type const subV = vertexCounts[where]++;
 
     // assign sub to super
     if (labels) {
-      superMaps[where][subV] = labels[v];
+      superMaps[where][subV] = labels[v.index];
     } else {
-      superMaps[where][subV] = v;
+      superMaps[where][subV] = v.index;
     }
 
     // assign super to sub
-    subMap[v] = subV;
+    subMap[v.index] = subV;
   }
 
   // fill vertex weights
-  for (Vertex const & vertex : graph->vertices()) {
-    vtx_type const vSuper = vertex.index();
+  for (Vertex const vertex : graph->vertices()) {
+    vtx_type const vSuper = vertex.index;
     vtx_type const vSub = subMap[vSuper];
     
-    pid_type const pid = part->getAssignment(vSuper);
-    builder[pid].setVertexWeight(vSub, vertex.weight());
+    pid_type const pid = part->getAssignment(vertex);
+    builder[pid].setVertexWeight(vSub, graph->weightOf(vertex));
   }
 
   // calculate number of edges
-  for (Vertex const & vertex : graph->vertices()) {
-    vtx_type const v = vertex.index();
-    vtx_type const subV = subMap[v];
-    pid_type const vPid = part->getAssignment(v);
+  for (Vertex const vertex : graph->vertices()) {
+    vtx_type const subV = subMap[vertex.index];
+    pid_type const vPid = part->getAssignment(vertex);
 
-    for (Edge const & edge : vertex.edges()) {
-      vtx_type const u = edge.destination();
+    for (Edge const edge : graph->edgesOf(vertex)) {
+      Vertex const u = graph->destinationOf(edge);
       pid_type const uPid = part->getAssignment(u);
 
       // this edge will exist in the subgraph
@@ -103,19 +102,18 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   }
 
   // fill edges 
-  for (Vertex const & vertex : graph->vertices()) {
-    vtx_type const v = vertex.index();
-    vtx_type const subV = subMap[v];
-    pid_type const vPid = part->getAssignment(v);
+  for (Vertex const vertex : graph->vertices()) {
+    vtx_type const subV = subMap[vertex.index];
+    pid_type const vPid = part->getAssignment(vertex);
 
-    for (Edge const & edge : vertex.edges()) {
-      vtx_type const u = edge.destination();
+    for (Edge const edge : graph->edgesOf(vertex)) {
+      Vertex const u = graph->destinationOf(edge);
       pid_type const uPid = part->getAssignment(u);
 
       // this edge will exist in the subgraph
       if (vPid == uPid) {
-        vtx_type const subU = subMap[u];
-        builder[vPid].addEdgeToVertex(subV, subU, edge.weight());
+        vtx_type const subU = subMap[u.index];
+        builder[vPid].addEdgeToVertex(subV, subU, graph->weightOf(edge));
       }
     }
   }

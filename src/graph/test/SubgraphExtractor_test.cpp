@@ -25,10 +25,10 @@ UNITTEST(SubgraphExtract, Partitions)
 
   Partitioning p(3, &g);
   p.assignAll(0);
-  p.move(2, 1);
-  p.move(3, 1);
-  p.move(6, 2);
-  p.move(7, 2);
+  p.move(Vertex::make(2), 1);
+  p.move(Vertex::make(3), 1);
+  p.move(Vertex::make(6), 2);
+  p.move(Vertex::make(7), 2);
 
   std::vector<Subgraph> subs = SubgraphExtractor::partitions(&g, &p);
 

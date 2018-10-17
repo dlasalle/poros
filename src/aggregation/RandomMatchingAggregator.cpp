@@ -13,6 +13,9 @@
 #include "aggregation/MatchedAggregationBuilder.hpp"
 #include "graph/RandomOrderVertexSet.hpp"
 
+#include <iostream>
+#include "solidutils/Timer.hpp"
+
 namespace dolos
 {
 
@@ -47,26 +50,30 @@ Aggregation RandomMatchingAggregator::aggregate(
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
+  sl::Timer tmr;
+  tmr.start();
+
   PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
       graph->vertices(), m_rng.get());
 
-  for (Vertex const & vertex : permutedVertices) {
-    vtx_type const v = vertex.index();
+  for (Vertex const vertex : permutedVertices) {
+    vtx_type const v = vertex.index;
     if (!matcher.isMatched(v)) {
       // we'll choose our neighbor randomly by finding the one with the highest
       // index in the permutation array
       vtx_type max = NULL_VTX;
+      vtx_type const vertexWeight = graph->weightOf(vertex);
       vtx_type maxPriority = 0;
-      for (Edge const & edge : vertex.edges()) {
-        vtx_type const u = edge.destination();
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        Vertex const u = graph->destinationOf(edge);
         wgt_type const coarseWeight = \
-            vertex.weight() + graph->getVertexWeight(u);
-        if (!matcher.isMatched(u) && \
+            vertexWeight + graph->weightOf(u);
+        if (!matcher.isMatched(u.index) && \
             params.isAllowedVertexWeight(coarseWeight)) {
-          vtx_type const priority = permutedVertices[u].index();
+          vtx_type const priority = permutedVertices[u.index].index;
           if (max == NULL_VTX || maxPriority < priority) {
             maxPriority = priority;
-            max = u;
+            max = u.index;
             break;
           }
         }
@@ -76,6 +83,9 @@ Aggregation RandomMatchingAggregator::aggregate(
       }
     }
   }
+
+  tmr.stop();
+  std::cout << "RM took " << tmr.poll() << std::endl;
 
   return matcher.build(graph->getData());
 }

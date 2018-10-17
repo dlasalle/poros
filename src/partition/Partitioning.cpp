@@ -46,10 +46,10 @@ Partitioning::Partitioning(
 
   // calculate partition weights
   for (Vertex const & vertex : graph->vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     pid_type const part = m_assignment[v];
     ASSERT_LESS(part, numParts);
-    m_partitionWeight[part] += vertex.weight();
+    m_partitionWeight[part] += graph->weightOf(vertex);
   }
 
   // TODO: should not be calling private method inside of constructor
@@ -86,15 +86,15 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
 void Partitioning::recalcCutEdgeWeight()
 {
   double twoWayCutEdgeWeight = 0;
-  for (Vertex const & vertex : m_graph->vertices()) {
-    vtx_type const v = vertex.index();
+  for (Vertex const vertex : m_graph->vertices()) {
+    vtx_type const v = vertex.index;
 
     pid_type const home = m_assignment[v];
-    for (Edge const & edge : vertex.edges()) {
-      vtx_type const u = edge.destination();
-      pid_type const other = m_assignment[u];
+    for (Edge const edge : m_graph->edgesOf(vertex)) {
+      Vertex const u = m_graph->destinationOf(edge);
+      pid_type const other = m_assignment[u.index];
       if (other != home) {
-        twoWayCutEdgeWeight += edge.weight();
+        twoWayCutEdgeWeight += m_graph->weightOf(edge);
       }
     }
   }

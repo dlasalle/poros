@@ -11,6 +11,7 @@
 
 #include "FMRefiner.hpp"
 #include "PartitioningAnalyzer.hpp"
+#include "util/VertexQueue.hpp"
 #include "util/VisitTracker.hpp"
 
 #include "solidutils/Debug.hpp"
@@ -29,12 +30,6 @@ namespace dolos
 
 namespace
 {
-
-
-/**
-* @brief Alias our VertexQueue to be a FixedPriorityQueue.
-*/
-using VertexQueue = sl::FixedPriorityQueue<wgt_diff_type, vtx_type>;
 
 
 /**
@@ -73,7 +68,7 @@ pid_type pickSide(
         from = 1;
       } else {
         // break the tie via a pseudo-random number
-        from = (pqs[0].peek() + pqs[1].peek()) % 2;
+        from = (pqs[0].peek().index + pqs[1].peek().index) % 2;
       }
     }
   }
@@ -83,7 +78,7 @@ pid_type pickSide(
 
 
 void move(
-    vtx_type const vertex,
+    Vertex const vertex,
     pid_type const to,
     ConstantGraph const * const graph,
     Partitioning * const partitioning,
@@ -102,20 +97,21 @@ void move(
   partitioning->move(vertex, to);
   partitioning->addCutEdgeWeight(delta);
 
-  for (Edge const & edge : graph->getEdges(vertex)) {
-    vtx_type const u = edge.destination();
+  for (Edge const edge : graph->edgesOf(vertex)) {
+    Vertex const u = graph->destinationOf(edge);
     pid_type const neighborHome = partitioning->getAssignment(u);
-    int const borderStatus = connectivity->updateNeighbor(&edge, \
+    int const borderStatus = connectivity->updateNeighbor(u.index, \
+        graph->weightOf(edge), \
         TwoWayConnectivity::getDirection(to, neighborHome));
 
-    if (pqs && !visited->hasVisited(u)) {
+    if (pqs && !visited->hasVisited(u.index)) {
       if (borderStatus == TwoWayConnectivity::BORDER_ADDED) {
           // insert into priority queue
           // TODO: repeating this add '-' getVertexDelta() in two places seems
           // prone to error -- combine in the future.
           pqs[neighborHome].add(-connectivity->getVertexDelta(u), u);
       } else if (borderStatus == TwoWayConnectivity::BORDER_REMOVED) {
-        vtx_type const u = edge.destination();
+        Vertex const u = graph->destinationOf(edge);
         // insert into priority queue
         pqs[neighborHome].remove(u);
       } else if (borderStatus == TwoWayConnectivity::BORDER_STILLIN) {
@@ -165,7 +161,7 @@ void FMRefiner::refine(
 
   double const tolerance = target->getImbalanceTolerance();
 
-  std::vector<vtx_type> moves;
+  std::vector<Vertex> moves;
   moves.reserve(graph->numVertices());
 
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
@@ -183,7 +179,8 @@ void FMRefiner::refine(
  
      
     // fill priority queue with boundary vertices
-    for (vtx_type const vertex : *(connectivity->getBorderVertexSet())) {
+    for (vtx_type const v : *(connectivity->getBorderVertexSet())) {
+      Vertex const vertex = Vertex::make(v);
       pid_type const side = partitioning->getAssignment(vertex);
       pqs[side].add(-connectivity->getVertexDelta(vertex), vertex);
     }
@@ -202,9 +199,9 @@ void FMRefiner::refine(
 
       ASSERT_EQUAL(pqs[from].max(), -connectivity->getVertexDelta(pqs[from].peek()));
 
-      vtx_type const vertex = pqs[from].pop();
+      Vertex const vertex = pqs[from].pop();
 
-      visited.visit(vertex);
+      visited.visit(vertex.index);
       ASSERT_EQUAL(from, partitioning->getAssignment(vertex));
 
       move(vertex, to, graph, partitioning, connectivity, pqs.data(), &visited);
@@ -233,7 +230,7 @@ void FMRefiner::refine(
     for (size_t i = moves.size(); i > 0;) {
       --i;
 
-      vtx_type const vertex = moves[i];
+      Vertex const vertex = moves[i];
       pid_type const from = partitioning->getAssignment(vertex);
       pid_type const to = from ^ 1;
 

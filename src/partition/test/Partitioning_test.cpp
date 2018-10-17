@@ -27,8 +27,8 @@ UNITTEST(Partitioning, BlankConstructor)
   Partitioning p(5, &graph);
 
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
-    p.assign(v, v % 5);
+    vtx_type const v = vertex.index;
+    p.assign(Vertex::make(v), v % 5);
   }
 
   // check partition weights -- should all be 9x7
@@ -45,7 +45,7 @@ UNITTEST(Partitioning, VectorConstructor)
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     labels[v] = v % 5;
   }
 
@@ -65,7 +65,7 @@ UNITTEST(Partitioning, MoveConstructor)
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     labels[v] = v % 5;
   }
 
@@ -97,7 +97,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     if (v < 15) {
       labels[v] = 0;
     } else if (v < 40) {

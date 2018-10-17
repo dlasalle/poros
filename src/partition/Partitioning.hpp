@@ -250,17 +250,19 @@ class Partitioning
      * @param partition The partition to assign it to.
      */
     inline void assign(
-        vtx_type const vertex,
+        Vertex const vertex,
         pid_type const partition) noexcept
     {
-      ASSERT_LESS(vertex, m_assignment.size());
+      vtx_type const index = vertex.index;
+
+      ASSERT_LESS(index, m_assignment.size());
       ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
 
-      wgt_type const weight = m_graph->getVertexWeight(vertex);
+      wgt_type const weight = m_graph->weightOf(vertex);
 
       m_partitionWeight[partition] += weight;
-      m_assignment[vertex] = partition;
+      m_assignment[index] = partition;
     }
 
 
@@ -271,15 +273,17 @@ class Partitioning
      * @param partition The partition to move the vertex to.
      */
     inline void move(
-        vtx_type const vertex,
+        Vertex const vertex,
         pid_type const partition) noexcept
     {
-      ASSERT_LESS(vertex, m_assignment.size());
+      vtx_type const index = vertex.index;
+
+      ASSERT_LESS(index, m_assignment.size());
       ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
       ASSERT_NOTEQUAL(getAssignment(vertex), partition);
 
-      wgt_type const weight = m_graph->getVertexWeight(vertex);
+      wgt_type const weight = m_graph->weightOf(vertex);
 
       // remove from previous partition
       pid_type const current = getAssignment(vertex);
@@ -287,7 +291,7 @@ class Partitioning
 
       // add to new partition
       m_partitionWeight[partition] += weight;
-      m_assignment[vertex] = partition;
+      m_assignment[index] = partition;
     }
 
 
@@ -298,16 +302,34 @@ class Partitioning
      * @param weight The weight of the vertex.
      */
     inline void unassign(
-        vtx_type const vertex) noexcept
+        Vertex const vertex) noexcept
     {
-      ASSERT_LESS(vertex, m_assignment.size());
+      vtx_type const index = vertex.index;
+
+      ASSERT_LESS(index, m_assignment.size());
 
       pid_type const current = getAssignment(vertex);
 
       ASSERT_NOTEQUAL(current, NULL_PID);
 
-      m_partitionWeight[current] -= m_graph->getVertexWeight(vertex);
-      m_assignment[vertex] = NULL_PID;
+      m_partitionWeight[current] -= m_graph->weightOf(vertex);
+      m_assignment[index] = NULL_PID;
+    }
+
+
+    /**
+     * @brief Get the assignment of the vertex.
+     *
+     * @param vertex The vertex.
+     *
+     * @return The assignment.
+     */
+    inline pid_type getAssignment(
+        Vertex const vertex) const noexcept
+    {
+      ASSERT_LESS(vertex.index, m_assignment.size());
+
+      return m_assignment[vertex.index];
     }
 
 
@@ -335,7 +357,7 @@ class Partitioning
      * @return True if the vertex has been assigned to a partition.
      */
     inline bool isAssigned(
-        vtx_type const vertex) const noexcept
+        Vertex const vertex) const noexcept
     {
       return getAssignment(vertex) != NULL_PID;
     }

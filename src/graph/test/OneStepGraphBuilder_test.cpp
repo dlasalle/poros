@@ -40,12 +40,12 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
   testEqual(g.numVertices(), 7U);
   testEqual(g.numEdges(), 12U);
 
-  testEqual(g.getVertex(0).degree(), 6U);
-  testEqual(g.getVertex(1).degree(), 1U);
-  testEqual(g.getVertex(2).degree(), 1U);
-  testEqual(g.getVertex(3).degree(), 1U);
-  testEqual(g.getVertex(4).degree(), 1U);
-  testEqual(g.getVertex(5).degree(), 1U);
+  testEqual(g.degreeOf(Vertex::make(0)), 6U);
+  testEqual(g.degreeOf(Vertex::make(1)), 1U);
+  testEqual(g.degreeOf(Vertex::make(2)), 1U);
+  testEqual(g.degreeOf(Vertex::make(3)), 1U);
+  testEqual(g.degreeOf(Vertex::make(4)), 1U);
+  testEqual(g.degreeOf(Vertex::make(5)), 1U);
 }
 
 

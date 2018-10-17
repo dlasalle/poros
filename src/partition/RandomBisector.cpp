@@ -27,7 +27,7 @@ namespace
 
 struct vertex_struct
 {
-  vtx_type vertex; 
+  Vertex vertex; 
   wgt_type weight;
 
   bool operator<(
@@ -78,10 +78,10 @@ void swapBalanceRight(
 
   size_t left = 0;
   size_t right = vertices.size()-1;
-  for (Vertex const & vertex : graph->vertices()) {
+  for (Vertex const vertex : graph->vertices()) {
     vertex_struct pair;
-    pair.vertex = vertex.index();
-    pair.weight = vertex.weight();
+    pair.vertex = vertex;
+    pair.weight = graph->weightOf(vertex);
 
     if (partitioning->getAssignment(pair.vertex) == LEFT_PARTITION) {
       vertices[left] = pair;
@@ -169,18 +169,18 @@ Partitioning RandomBisector::execute(
 
   for (Vertex const vertex : vertices) {
     // balance to within 1 vertex
-    if (partitioning.getWeight(LEFT_PARTITION) + vertex.weight() > \
+    if (partitioning.getWeight(LEFT_PARTITION) + graph->weightOf(vertex) > \
         target->getMaxWeight(LEFT_PARTITION)) {
       break;
     }
 
     double const balance = analyzer.calcMaxImbalance();
 
-    partitioning.move(vertex.index(), LEFT_PARTITION);
+    partitioning.move(vertex, LEFT_PARTITION);
 
     if (balance < analyzer.calcMaxImbalance()) {
       // we hit the best balance undo move and exit loop 
-      partitioning.move(vertex.index(), RIGHT_PARTITION);
+      partitioning.move(vertex, RIGHT_PARTITION);
       break;
     }
   }

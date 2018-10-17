@@ -57,11 +57,11 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.03);
   Partitioning part(2, &graph);
   part.assignAll(0);
-  part.move(0, 1);
-  part.move(1, 1);
-  part.move(2, 1);
-  part.move(3, 1);
-  part.move(4, 1);
+  part.move(Vertex::make(0), 1);
+  part.move(Vertex::make(1), 1);
+  part.move(Vertex::make(2), 1);
+  part.move(Vertex::make(3), 1);
+  part.move(Vertex::make(4), 1);
   part.recalcCutEdgeWeight();
 
   FMRefiner fm(25, graph.numVertices());

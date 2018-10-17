@@ -64,10 +64,10 @@ UNITTEST(Subgraph, MapPartitioning)
   ConstantGraph const * const g = s.getGraph();
 
   Partitioning subPart(2, g);
-  subPart.assign(0, 0);
-  subPart.assign(1, 0);
-  subPart.assign(2, 1);
-  subPart.assign(3, 1);
+  subPart.assign(Vertex::make(0), 0);
+  subPart.assign(Vertex::make(1), 0);
+  subPart.assign(Vertex::make(2), 1);
+  subPart.assign(Vertex::make(3), 1);
 
   sl::Array<pid_type> superLabels(g->numVertices());
   s.mapPartitioning(&subPart, superLabels.data(), 3);
