@@ -117,6 +117,20 @@ class Aggregation
     void fillCoarseMap(
         vtx_type * data) const noexcept;
 
+    vtx_type const * finePrefix() const noexcept
+    {
+      return m_finePrefix.data();
+    }
+
+    vtx_type const * fineMap() const noexcept
+    {
+      return m_fineMap.data();
+    }
+
+    vtx_type const * cmap() const noexcept
+    {
+      return m_coarseMap.data();
+    }
 
   private:
     vtx_type m_numCoarseVertices;

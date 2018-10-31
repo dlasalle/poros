@@ -100,7 +100,7 @@ Aggregation& Aggregation::operator=(
 VertexGrouping Aggregation::coarseVertices() const noexcept
 {
   return VertexGrouping(m_numCoarseVertices, m_finePrefix.data(),
-      m_fineMap.data(), m_data);
+      m_fineMap.data());
 }
 
 

@@ -33,7 +33,7 @@ UNITTEST(RandomOrderVertexSet, Size)
 
 UNITTEST(RandomOrderVertexSet, Iterator)
 {
-  VertexSet vSet(0, 10);
+  VertexSet vSet(0, 1732);
 
   RandomEngineHandle random = RandomEngineFactory::make(0);
 
@@ -43,6 +43,7 @@ UNITTEST(RandomOrderVertexSet, Iterator)
   std::vector<bool> marker(vSet.size(), false);
 
   for (Vertex const vertex : set) {
+    testFalse(marker[vertex.index]);
     marker[vertex.index] = true;
   }
 

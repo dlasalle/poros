@@ -75,7 +75,7 @@ Partitioning& Partitioning::operator=(
 std::vector<vtx_type> Partitioning::calcVertexCounts() const
 {
   std::vector<vtx_type> vertexCounts(numPartitions(), 0);
-  for (vtx_type const & part : m_assignment) {
+  for (pid_type const & part : m_assignment) {
     ++vertexCounts[part];
   }
 

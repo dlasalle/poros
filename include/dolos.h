@@ -21,7 +21,7 @@ extern "C" {
 
 
 typedef uint32_t dolos_vtx_type;
-typedef uint64_t dolos_adj_type;
+typedef uint32_t dolos_adj_type;
 typedef uint32_t dolos_wgt_type;
 typedef uint32_t dolos_pid_type;
 

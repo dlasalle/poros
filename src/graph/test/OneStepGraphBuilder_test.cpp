@@ -22,18 +22,31 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
 {
   OneStepGraphBuilder builder(7, 12);
 
-  std::vector<vtx_type> neighbors{1,2,3,4,5,6,
-      0, 0, 0, 0, 0, 0};
-  std::vector<wgt_type> weights(12, 1);
-  builder.addVertex(1, 6, neighbors.data(), weights.data());
+  builder.addEdge(1, 1);
+  builder.addEdge(2, 1);
+  builder.addEdge(3, 1);
+  builder.addEdge(4, 1);
+  builder.addEdge(5, 1);
+  builder.addEdge(6, 1);
+  builder.finishVertex(1);
 
-  builder.addVertex(1, 1, neighbors.data()+6, weights.data()+6);
-  builder.addVertex(1, 1, neighbors.data()+7, weights.data()+7);
-  builder.addVertex(1, 1, neighbors.data()+8, weights.data()+8);
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
 
-  builder.addVertex(1, 1, neighbors.data()+9, weights.data()+9);
-  builder.addVertex(1, 1, neighbors.data()+10, weights.data()+10);
-  builder.addVertex(1, 1, neighbors.data()+11, weights.data()+11);
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
+
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
+
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
+
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
+
+  builder.addEdge(0, 1);
+  builder.finishVertex(1);
 
   ConstantGraph g = builder.finish();
 

@@ -17,6 +17,8 @@
 
 #include "solidutils/Timer.hpp"
 
+#include <iostream>
+
 namespace dolos
 {
 
@@ -84,6 +86,14 @@ Partitioning MultilevelBisector::recurse(
       " vertices and " + std::to_string(graph->numEdges()) +
       " edges, with an exposed weight of " +
       std::to_string(graph->getTotalEdgeWeight()) + ".");
+
+   std::cout << "Coarsened graph to " +
+      std::to_string(graph->numVertices()) +
+      " vertices and " + std::to_string(graph->numEdges()) +
+      " edges, with an exposed weight of " +
+      std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
+
+
 
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     return m_initialBisector->execute(target, graph); 

@@ -13,6 +13,7 @@
 #include "solidutils/Debug.hpp"
 #include "GraphData.hpp"
 
+#include <algorithm>
 
 namespace dolos
 {
@@ -26,14 +27,16 @@ namespace dolos
 OneStepGraphBuilder::OneStepGraphBuilder(
     vtx_type const numVertices,
     adj_type const maxNumEdges) :
-  m_numVertices(0),
-  m_numEdges(0),
-  m_edgePrefix(numVertices+1, 0),
-  m_edgeList(maxNumEdges),
-  m_vertexWeight(numVertices),
-  m_edgeWeight(maxNumEdges)
+  m_edgePrefix(1, 0),
+  m_edgeList(),
+  m_vertexWeight(),
+  m_edgeWeight(),
+  m_htable(numVertices, NULL_ADJ)
 {
-  // do nothing 
+  m_edgePrefix.reserve(numVertices+1);
+  m_edgeList.reserve(maxNumEdges);
+  m_vertexWeight.reserve(numVertices);
+  m_edgeWeight.reserve(maxNumEdges);
 }
 
 
@@ -43,33 +46,35 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-void OneStepGraphBuilder::addVertex(
-    wgt_type const weight,
-    vtx_type const degree,
-    vtx_type const * const neighbors,
-    wgt_type const * const edgeWeights)
+void OneStepGraphBuilder::finishVertex(
+      vtx_type const vertexWeight)
 {
-  m_vertexWeight[m_numVertices] = weight;
-  for (vtx_type i = 0; i < degree; ++i) {
-    ASSERT_LESS(m_numEdges, m_edgeList.size());
-    m_edgeList[m_numEdges] = neighbors[i];
-    ASSERT_LESS(m_numEdges, m_edgeWeight.size());
-    m_edgeWeight[m_numEdges] = edgeWeights[i]; 
-    ++m_numEdges;
+  adj_type const loopIdx = m_htable[m_vertexWeight.size()];
+  if (loopIdx != NULL_ADJ) {
+    // pop out self loop
+    m_edgeList[loopIdx] = m_edgeList.back();
+    m_edgeList.pop_back();
+    m_edgeWeight[loopIdx] = m_edgeWeight.back();
+    m_edgeWeight.pop_back();
+    m_htable[m_vertexWeight.size()] = NULL_ADJ;
   }
-  ++m_numVertices;
-  m_edgePrefix[m_numVertices] = m_numEdges;
+
+  adj_type const start = m_edgePrefix[m_vertexWeight.size()];
+  adj_type const end = m_edgeList.size(); 
+  for (vtx_type j = start; j < end; ++j) {
+    vtx_type const u = m_edgeList[j];
+    ASSERT_LESS(u, m_htable.size());
+    m_htable[u] = NULL_ADJ;
+  }
+
+  m_edgePrefix.emplace_back(end);
+  m_vertexWeight.emplace_back(vertexWeight);
 }
 
 
 ConstantGraph OneStepGraphBuilder::finish()
 {
-  ASSERT_EQUAL(m_numVertices, m_vertexWeight.size());
-
-  m_edgePrefix.resize(m_numVertices+1);
-  m_edgeList.resize(m_numEdges);
-  m_vertexWeight.resize(m_numVertices);
-  m_edgeWeight.resize(m_numEdges);
+  ASSERT_EQUAL(m_edgePrefix.size(), m_vertexWeight.size()+1);
 
   GraphData data(
       std::move(m_edgePrefix),

@@ -37,21 +37,22 @@ class OneStepGraphBuilder
       vtx_type numVertices,
       adj_type maxNumEdges);
 
+  void addEdge(
+      vtx_type const dest,
+      wgt_type const wgt)
+  {
+    adj_type const idx = m_htable[dest];
+    if (idx == NULL_ADJ) {
+      m_htable[dest] = static_cast<adj_type>(m_edgeList.size());
+      m_edgeList.emplace_back(dest);
+      m_edgeWeight.emplace_back(wgt);
+    } else {
+      m_edgeWeight[idx] += wgt;
+    }
+  }
 
-  /**
-  * @brief Add a vertex to this graph.
-  *
-  * @param weight The weight of the new vertex.
-  * @param degree The degree of the new vertex.
-  * @param neighbors The neighbors of the this vertex.
-  * @param edgeWeights The weight of edges connecting vertices.
-  */
-  void addVertex(
-      wgt_type weight,
-      vtx_type degree,
-      vtx_type const * neighbors,
-      wgt_type const * edgeWeights);
-
+  void finishVertex(
+      vtx_type wgt);
 
   /**
   * @brief Build the graph. This resets the builder to its initial state.
@@ -61,12 +62,11 @@ class OneStepGraphBuilder
   ConstantGraph finish();
 
   private:
-    vtx_type m_numVertices;
-    adj_type m_numEdges;
     std::vector<adj_type> m_edgePrefix;
     std::vector<vtx_type> m_edgeList;
     std::vector<wgt_type> m_vertexWeight;
     std::vector<wgt_type> m_edgeWeight;
+    std::vector<adj_type> m_htable;
 
     // prevent copying
     OneStepGraphBuilder(
