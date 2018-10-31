@@ -66,7 +66,7 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
         if (!matcher.isMatched(u.index) && \
             params.isAllowedVertexWeight(coarseWeight)) {
           wgt_type const priority = graph->weightOf(edge);
-          if (max == NULL_VTX || maxPriority > priority) {
+          if (max == NULL_VTX || maxPriority < priority) {
             maxPriority = priority;
             max = u.index;
           }
