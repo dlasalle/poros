@@ -27,18 +27,16 @@ namespace dolos
 OneStepGraphBuilder::OneStepGraphBuilder(
     vtx_type const numVertices,
     adj_type const maxNumEdges) :
-  m_edgePrefix(1, 0),
-  m_edgeList(),
-  m_vertexWeight(),
-  m_edgeWeight(),
+  m_numVertices(0),
+  m_numEdges(0),
+  m_edgePrefix(new adj_type[numVertices+1]),
+  m_edgeList(new vtx_type[maxNumEdges]),
+  m_vertexWeight(new wgt_type[numVertices]),
+  m_edgeWeight(new adj_type[maxNumEdges]),
   m_htable(numVertices, NULL_ADJ)
 {
-  m_edgePrefix.reserve(numVertices+1);
-  m_edgeList.reserve(maxNumEdges);
-  m_vertexWeight.reserve(numVertices);
-  m_edgeWeight.reserve(maxNumEdges);
+  m_edgePrefix[0] = 0;
 }
-
 
 
 
@@ -49,34 +47,36 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 void OneStepGraphBuilder::finishVertex(
       vtx_type const vertexWeight)
 {
-  adj_type const loopIdx = m_htable[m_vertexWeight.size()];
+  vtx_type const thisVtx = m_numVertices;
+
+  ++m_numVertices;
+
+  adj_type const loopIdx = m_htable[thisVtx];
   if (loopIdx != NULL_ADJ) {
     // pop out self loop
-    m_edgeList[loopIdx] = m_edgeList.back();
-    m_edgeList.pop_back();
-    m_edgeWeight[loopIdx] = m_edgeWeight.back();
-    m_edgeWeight.pop_back();
-    m_htable[m_vertexWeight.size()] = NULL_ADJ;
+    --m_numEdges;
+    m_edgeList[loopIdx] = m_edgeList[m_numEdges];
+    m_edgeWeight[loopIdx] = m_edgeWeight[m_numEdges];
+    m_htable[thisVtx] = NULL_ADJ;
   }
 
-  adj_type const start = m_edgePrefix[m_vertexWeight.size()];
-  adj_type const end = m_edgeList.size(); 
-  for (vtx_type j = start; j < end; ++j) {
+  adj_type const start = m_edgePrefix[thisVtx];
+  for (vtx_type j = start; j < m_numEdges; ++j) {
     vtx_type const u = m_edgeList[j];
     ASSERT_LESS(u, m_htable.size());
     m_htable[u] = NULL_ADJ;
   }
 
-  m_edgePrefix.emplace_back(end);
-  m_vertexWeight.emplace_back(vertexWeight);
+  m_vertexWeight[thisVtx] = vertexWeight;
+  m_edgePrefix[m_numVertices] = m_numEdges;
 }
 
 
 ConstantGraph OneStepGraphBuilder::finish()
 {
-  ASSERT_EQUAL(m_edgePrefix.size(), m_vertexWeight.size()+1);
-
   GraphData data(
+      m_numVertices,
+      m_numEdges,
       std::move(m_edgePrefix),
       std::move(m_edgeList),
       std::move(m_vertexWeight),

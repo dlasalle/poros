@@ -18,6 +18,7 @@
 #include "Base.hpp"
 
 #include <vector>
+#include <memory>
 
 
 namespace dolos
@@ -43,9 +44,10 @@ class OneStepGraphBuilder
   {
     adj_type const idx = m_htable[dest];
     if (idx == NULL_ADJ) {
-      m_htable[dest] = static_cast<adj_type>(m_edgeList.size());
-      m_edgeList.emplace_back(dest);
-      m_edgeWeight.emplace_back(wgt);
+      m_htable[dest] = static_cast<adj_type>(m_numEdges);
+      m_edgeList[m_numEdges] = dest;
+      m_edgeWeight[m_numEdges] = wgt;
+      ++m_numEdges;
     } else {
       m_edgeWeight[idx] += wgt;
     }
@@ -62,10 +64,13 @@ class OneStepGraphBuilder
   ConstantGraph finish();
 
   private:
-    std::vector<adj_type> m_edgePrefix;
-    std::vector<vtx_type> m_edgeList;
-    std::vector<wgt_type> m_vertexWeight;
-    std::vector<wgt_type> m_edgeWeight;
+    vtx_type m_numVertices;
+    adj_type m_numEdges;
+    std::unique_ptr<adj_type[]> m_edgePrefix;
+    std::unique_ptr<vtx_type[]> m_edgeList;
+    std::unique_ptr<wgt_type[]> m_vertexWeight;
+    std::unique_ptr<wgt_type[]> m_edgeWeight;
+
     std::vector<adj_type> m_htable;
 
     // prevent copying

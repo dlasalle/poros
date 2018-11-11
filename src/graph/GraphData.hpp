@@ -18,6 +18,7 @@
 #include "util/IAllocatedData.hpp"
 
 #include <vector>
+#include <memory>
 
 namespace dolos
 {
@@ -42,16 +43,20 @@ class GraphData :
     /**
     * @brief Create a new graph data from an existing set of arrays.
     *
+    * @param numVertices The number of vertices in the graph.
+    * @param numEdges The number of edges in the graph.
     * @param edgePrefix The edge prefix array.
     * @param edgeList The edge list array.
     * @param vertexWeight The vertex weight array.
     * @param edgeWeight The edge weight array.
     */
     GraphData(
-        std::vector<adj_type> edgePrefix,
-        std::vector<vtx_type> edgeList,
-        std::vector<wgt_type> vertexWeight,
-        std::vector<wgt_type> edgeWeight);
+        vtx_type numVertices,
+        adj_type numEdges,
+        std::unique_ptr<adj_type[]> edgePrefix,
+        std::unique_ptr<vtx_type[]> edgeList,
+        std::unique_ptr<wgt_type[]> vertexWeight,
+        std::unique_ptr<wgt_type[]> edgeWeight);
 
 
     /**
@@ -163,13 +168,13 @@ class GraphData :
     wgt_type const * edgeWeight() const noexcept;
 
 
-
-
   private:
-    std::vector<adj_type> m_edgePrefix;
-    std::vector<vtx_type> m_edgeList;
-    std::vector<wgt_type> m_vertexWeight;
-    std::vector<wgt_type> m_edgeWeight;
+    vtx_type m_numVertices;
+    adj_type m_numEdges;
+    std::unique_ptr<adj_type[]> m_edgePrefix;
+    std::unique_ptr<vtx_type[]> m_edgeList;
+    std::unique_ptr<wgt_type[]> m_vertexWeight;
+    std::unique_ptr<wgt_type[]> m_edgeWeight;
 
     // prevent copying
     GraphData(

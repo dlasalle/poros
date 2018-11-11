@@ -17,7 +17,7 @@
 #include "Base.hpp"
 #include "graph/ConstantGraph.hpp"
 
-#include <vector>
+#include <memory>
 
 namespace dolos
 {
@@ -84,7 +84,6 @@ class TwoStepGraphBuilder
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
 
-      ASSERT_LESS(vertex, m_edgePrefix.size());
       ASSERT_LESS(numEdges, m_numVertices);
       m_edgePrefix[vertex] = numEdges;
     }
@@ -99,8 +98,6 @@ class TwoStepGraphBuilder
         vtx_type const vertex) noexcept
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
-
-      ASSERT_LESS(vertex, m_edgePrefix.size());
 
       ++m_edgePrefix[vertex];
 
@@ -152,10 +149,10 @@ class TwoStepGraphBuilder
     int m_phase;
     vtx_type m_numVertices;
     adj_type m_numEdges;
-    std::vector<adj_type> m_edgePrefix;
-    std::vector<vtx_type> m_edgeList;
-    std::vector<wgt_type> m_vertexWeight;
-    std::vector<wgt_type> m_edgeWeight;
+    std::unique_ptr<adj_type[]> m_edgePrefix;
+    std::unique_ptr<vtx_type[]> m_edgeList;
+    std::unique_ptr<wgt_type[]> m_vertexWeight;
+    std::unique_ptr<wgt_type[]> m_edgeWeight;
 
     // prevent copying
     TwoStepGraphBuilder(
