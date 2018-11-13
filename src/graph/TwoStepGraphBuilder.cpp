@@ -60,7 +60,7 @@ void TwoStepGraphBuilder::beginVertexPhase()
   
   // allocate vertex arrays
   m_edgePrefix.reset(new adj_type[m_numVertices+1]);
-  m_edgePrefix[0] = 0;
+  std::fill(m_edgePrefix.get(), m_edgePrefix.get()+m_numVertices+1, 0);
 
   m_vertexWeight.reset(new wgt_type[m_numVertices]);
 }

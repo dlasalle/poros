@@ -36,7 +36,7 @@ void SimpleRandomEngine::fillWithPerm(
     vtx_type const start,
     vtx_type const end)
 {
-  sl::Random::fillWithPerm(container, start, end, m_rng);
+  sl::Random::fillWithPerm(container, end-start, start, m_rng);
 }
 
 

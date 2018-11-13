@@ -9,13 +9,12 @@
 
 
 #include "GridGraphGenerator.hpp"
-
-
-#include <vector>
 #include "graph/GraphData.hpp"
 #include "solidutils/Random.hpp"
 #include "solidutils/Debug.hpp"
 
+#include <vector>
+#include <random>
 
 namespace dolos
 {
@@ -148,10 +147,12 @@ ConstantGraph GridGraphGenerator::generate()
   vtx_type const numY = m_grid->numVerticesY();
   vtx_type const numZ = m_grid->numVerticesZ();
 
+  std::mt19937 rng(0);
+
   // each vertex can be the root of up to 3 edges
   std::vector<wgt_type> srcEdgeWeights(numVertices*3);
   sl::Random::fillWithRange(srcEdgeWeights.data(), \
-      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax);
+      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax, rng);
   
   adj_type edge = 0;
   vtx_type vertex = 0;
@@ -215,7 +216,7 @@ ConstantGraph GridGraphGenerator::generate()
 
   // set vertex weights
   sl::Random::fillWithRange(vertexWeight, numVertices, \
-      m_vertexWeightMin, m_vertexWeightMax);
+      m_vertexWeightMin, m_vertexWeightMax, rng);
 
   return data.toGraph();
 }
