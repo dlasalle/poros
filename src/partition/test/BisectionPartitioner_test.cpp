@@ -13,7 +13,6 @@
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/RandomEngineFactory.hpp"
-#include "solidutils/Exception.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -59,7 +58,7 @@ UNITTEST(BisectionPartitioner, ExecuteInvalid)
   try {
     Partitioning part = adapter.execute(&target, &graph);
     testFail() << "Exception was not thrown.";
-  } catch (sl::InvalidInputException const &) {
+  } catch (std::runtime_error const &) {
     // test passed
   }
 }

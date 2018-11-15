@@ -9,7 +9,6 @@
 
 
 #include "BisectionPartitioner.hpp"
-#include "solidutils/Exception.hpp"
 
 
 namespace dolos
@@ -46,7 +45,7 @@ Partitioning BisectionPartitioner::execute(
     ConstantGraph const * const graph)
 {
   if (target->numPartitions() != 2) {
-    throw sl::InvalidInputException( \
+    throw std::runtime_error( \
         std::string("Number of partitions must be 2: got ") +
         std::to_string(target->numPartitions()));
   }

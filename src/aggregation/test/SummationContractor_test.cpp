@@ -27,13 +27,13 @@ UNITTEST(SummationContractor, ContractLine)
   GridGraphGenerator gen(2,8,1);
   ConstantGraph graph = gen.generate();
 
-  std::vector<vtx_type> cmap(graph.numVertices());
+  sl::Array<vtx_type> cmap(graph.numVertices());
 
-  for (size_t i = 0; i < cmap.size(); ++i) {
+  for (vtx_type i = 0; i < graph.numVertices(); ++i) {
     cmap[i] = static_cast<vtx_type>(i/2);
   }
 
-  Aggregation agg(std::move(cmap), 8, graph.getData());
+  Aggregation agg(std::move(cmap), 8u, graph.getData());
 
   SummationContractor contractor;
 
@@ -63,7 +63,7 @@ UNITTEST(SummationContractor, ContractCubeComplete)
   gen.setRandomEdgeWeight(10,10);
   ConstantGraph graph = gen.generate();
 
-  std::vector<vtx_type> cmap(graph.numVertices());
+  sl::Array<vtx_type> cmap(graph.numVertices());
 
   cmap[0] = static_cast<vtx_type>(0);
   cmap[1] = static_cast<vtx_type>(0);
@@ -100,7 +100,7 @@ UNITTEST(SummationContractor, ContractCubeSquare)
   GridGraphGenerator gen(2,2,2);
   ConstantGraph graph = gen.generate();
 
-  std::vector<vtx_type> cmap(graph.numVertices());
+  sl::Array<vtx_type> cmap(graph.numVertices());
 
   cmap[0] = static_cast<vtx_type>(0);
   cmap[1] = static_cast<vtx_type>(0);

@@ -114,10 +114,12 @@ TargetPartitioning::TargetPartitioning(
   m_numPartitions(numPartitions),
   m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
-  m_targetFraction(fractions, numPartitions),
+  m_targetFraction(numPartitions),
   m_targetWeight(numPartitions),
   m_maxWeight(numPartitions)
 {
+  std::copy(fractions, fractions+numPartitions, m_targetFraction.begin());
+
   double fractionSum = 0;
   for (size_t i = 0; i < m_numPartitions; ++i) {
     if (m_targetFraction[i] < 0.0 || m_targetFraction[i] > 1.0) {

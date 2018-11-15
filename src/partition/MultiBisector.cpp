@@ -11,7 +11,6 @@
 #include "MultiBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 
-#include "solidutils/Exception.hpp"
 
 namespace dolos
 {
@@ -28,7 +27,7 @@ MultiBisector::MultiBisector(
   m_bisector(std::move(bisector))
 {
   if (m_bisector.get() == nullptr) {
-    throw sl::InvalidInputException("Bisector cannot but null.");
+    throw std::runtime_error("Bisector cannot but null.");
   }
 }
 

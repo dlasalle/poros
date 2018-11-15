@@ -14,8 +14,6 @@
 
 #include "dolos.h"
 
-#include "solidutils/Exception.hpp"
-
 
 namespace dolos
 {
@@ -35,7 +33,7 @@ std::unique_ptr<IAggregator> AggregatorFactory::make(
   } else if (scheme == SORTED_HEAVY_EDGE_MATCHING) {
     ptr.reset(new SHEMRMAggregator(rng));
   } else {
-    throw sl::InvalidInputException("Unknown aggregation scheme: " +
+    throw std::runtime_error("Unknown aggregation scheme: " +
         std::to_string(scheme));
   }
 

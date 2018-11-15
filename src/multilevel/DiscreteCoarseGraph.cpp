@@ -10,6 +10,9 @@
 #include "multilevel/DiscreteCoarseGraph.hpp"
 #include "aggregation/SummationContractor.hpp"
 
+#include "solidutils/Timer.hpp"
+#include <iostream>
+
 namespace dolos
 {
 
@@ -74,6 +77,9 @@ Partitioning DiscreteCoarseGraph::project(
       std::to_string(m_fine->numVertices()));
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 
+  sl::Timer tmr;
+  tmr.start();
+
   // iterate over fine vertices
   for (Vertex const vertex : m_fine->vertices()) {
     vtx_type const v = vertex.index;
@@ -86,6 +92,10 @@ Partitioning DiscreteCoarseGraph::project(
   // TODO: this doesn't need to be calculated, we should set it directly
   finePart.recalcCutEdgeWeight();
   ASSERT_EQUAL(finePart.getCutEdgeWeight(), coarsePart->getCutEdgeWeight());
+
+  tmr.stop();
+
+  std::cout << "Projection took: " << tmr.poll() << std::endl;
 
   return finePart;
 }

@@ -26,7 +26,13 @@ UNITTEST(AggregationTest, CoarseVertexNumberTest)
   CSRGraphData data(edgePrefix.data(), edgeList.data(), vertexWeight.data(),
       edgeWeight.data());
 
-  std::vector<vtx_type> cmap{0, 1, 2, 1, 0};
+  sl::Array<vtx_type> cmap(5);
+  cmap[0] = 0;
+  cmap[1] = 1;
+  cmap[2] = 2;
+  cmap[3] = 1;
+  cmap[4] = 0;
+
   Aggregation agg(std::move(cmap), 3u, data);
 
   testEqual(agg.getNumCoarseVertices(), 3u);
@@ -46,13 +52,18 @@ UNITTEST(AggregationTest, CoarseVertexSetTest)
   CSRGraphData data(edgePrefix.data(), edgeList.data(), vertexWeight.data(),
       edgeWeight.data());
 
-  std::vector<vtx_type> cmap{0, 1, 2, 2, 0};
+  sl::Array<vtx_type> cmap(5);
+  cmap[0] = 0;
+  cmap[1] = 1;
+  cmap[2] = 2;
+  cmap[3] = 1;
+  cmap[4] = 0;
   Aggregation agg(std::move(cmap), 3u, data);
 
   testEqual(agg.getNumCoarseVertices(), 3u);
 
   vtx_type coarse = 0;
-  std::vector<bool> visited(cmap.size(), false);
+  std::vector<bool> visited(5u, false);
   for (const VertexGroup& group : agg.coarseVertices()) {
     for (const Vertex& v : group.fineVertices()) {
       testEqual(agg.getCoarseVertexNumber(v.index), coarse);

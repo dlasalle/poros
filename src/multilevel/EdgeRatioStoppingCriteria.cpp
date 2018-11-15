@@ -9,7 +9,8 @@
 
 
 #include "EdgeRatioStoppingCriteria.hpp"
-#include "solidutils/Exception.hpp"
+#include <stdexcept>
+
 
 namespace dolos
 {
@@ -24,7 +25,7 @@ EdgeRatioStoppingCriteria::EdgeRatioStoppingCriteria(
   m_ratio(ratio)
 {
   if (ratio <= 0.0 || ratio >= 1.0) {
-    throw sl::InvalidInputException("Stopping criteria for edge ratio must be "
+    throw std::runtime_error("Stopping criteria for edge ratio must be "
         "in the range (0.0, 1.0): " + std::to_string(ratio));
   }
 }
@@ -40,10 +41,10 @@ bool EdgeRatioStoppingCriteria::shouldStop(
     ConstantGraph const * const coarse) const
 {
   if (level > 0 && fine == nullptr) {
-    throw sl::InvalidInputException("Cannot evaluate stopping condition on "
+    throw std::runtime_error("Cannot evaluate stopping condition on "
         "level greater than 0 with a null fine graph.");
   } else if (coarse == nullptr) {
-    throw sl::InvalidInputException("Coarse graph for stopping condition "
+    throw std::runtime_error("Coarse graph for stopping condition "
         "cannot be null.");
   }
 
