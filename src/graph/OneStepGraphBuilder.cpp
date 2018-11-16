@@ -50,15 +50,6 @@ void OneStepGraphBuilder::finishVertex(
 
   ++m_numVertices;
 
-  adj_type const loopIdx = m_htable[thisVtx];
-  if (loopIdx != NULL_ADJ) {
-    // pop out self loop
-    --m_numEdges;
-    m_edgeList[loopIdx] = m_edgeList[m_numEdges];
-    m_edgeWeight[loopIdx] = m_edgeWeight[m_numEdges];
-    m_htable[thisVtx] = NULL_ADJ;
-  }
-
   adj_type const start = m_edgePrefix[thisVtx];
   for (vtx_type j = start; j < m_numEdges; ++j) {
     vtx_type const u = m_edgeList[j];
