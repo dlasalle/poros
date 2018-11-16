@@ -32,7 +32,7 @@ SHEMRMAggregator::SHEMRMAggregator(
 
 Aggregation SHEMRMAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   if (graph->hasUniformEdgeWeight()) {
     return m_rm.aggregate(params, graph);

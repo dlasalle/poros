@@ -41,7 +41,7 @@ UNITTEST(MatchedAggregationBuilder, isMatched)
 UNITTEST(MatchedAggregationBuilder, build)
 {
   GridGraphGenerator gen(5,2,1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   MatchedAggregationBuilder builder(graph.numVertices());
 
@@ -51,7 +51,7 @@ UNITTEST(MatchedAggregationBuilder, build)
   builder.match(1,3);
   builder.match(9,8);
 
-  Aggregation agg = builder.build(graph.getData());
+  Aggregation agg = builder.build();
 
   testEqual(agg.getNumCoarseVertices(), static_cast<vtx_type>(5));
 

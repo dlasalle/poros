@@ -16,7 +16,7 @@
 #include "TargetPartitioning.hpp"
 #include "Partitioning.hpp"
 #include "TwoWayConnectivity.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 
 
 namespace dolos
@@ -46,7 +46,7 @@ class ITwoWayRefiner
         TargetPartitioning const * target,
         TwoWayConnectivity * connectivity,
         Partitioning * partitioning,
-        ConstantGraph const * graph) = 0;
+        Graph const * graph) = 0;
 };
 
 

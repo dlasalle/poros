@@ -17,6 +17,8 @@
 
 #include "solidutils/Timer.hpp"
 
+#include <iostream>
+
 namespace dolos
 {
 
@@ -46,7 +48,7 @@ MultilevelBisector::MultilevelBisector(
 
 Partitioning MultilevelBisector::execute(
     TargetPartitioning const * target,
-    ConstantGraph const * graph)
+    Graph const * graph)
 {
   CompositeStoppingCriteria criteria;
 
@@ -76,14 +78,22 @@ Partitioning MultilevelBisector::recurse(
     AggregationParameters const params,
     IStoppingCriteria const * const stoppingCriteria,
     TargetPartitioning const * const target,
-    ConstantGraph const * const parent,
-    ConstantGraph const * const graph)
+    Graph const * const parent,
+    Graph const * const graph)
 {
   DEBUG_MESSAGE("Coarsened graph to " +
       std::to_string(graph->numVertices()) +
       " vertices and " + std::to_string(graph->numEdges()) +
       " edges, with an exposed weight of " +
       std::to_string(graph->getTotalEdgeWeight()) + ".");
+
+   std::cout << "Coarsened graph to " +
+      std::to_string(graph->numVertices()) +
+      " vertices and " + std::to_string(graph->numEdges()) +
+      " edges, with an exposed weight of " +
+      std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
+
+
 
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     return m_initialBisector->execute(target, graph); 

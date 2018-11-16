@@ -15,7 +15,7 @@
 
 #include <memory>
 #include "Base.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 
 
 namespace dolos
@@ -70,7 +70,7 @@ class GridGraphGenerator
     *
     * @return The generated graph.
     */
-    ConstantGraph generate();
+    Graph generate();
 
   private:
     // forward declaration

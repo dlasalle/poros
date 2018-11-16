@@ -52,7 +52,7 @@ class MultilevelBisector : public IBisector
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
   protected:
     /**
@@ -72,8 +72,8 @@ class MultilevelBisector : public IBisector
         AggregationParameters params,
         IStoppingCriteria const * stoppingCriteria,
         TargetPartitioning const * target,
-        ConstantGraph const * parent,
-        ConstantGraph const * graph);
+        Graph const * parent,
+        Graph const * graph);
 
   private:
     std::unique_ptr<IAggregator> m_aggregator;
@@ -81,6 +81,7 @@ class MultilevelBisector : public IBisector
     std::unique_ptr<ITwoWayRefiner> m_refiner;
     std::shared_ptr<TimeKeeper> m_timeKeeper;
 };
+
 
 }
 

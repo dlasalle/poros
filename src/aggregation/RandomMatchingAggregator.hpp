@@ -70,7 +70,7 @@ class RandomMatchingAggregator : public IAggregator
     */
    Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
   private:
     RandomEngineHandle m_rng;

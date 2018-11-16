@@ -14,7 +14,6 @@
 
 
 #include "Vertex.hpp"
-#include "CSRGraphData.hpp"
 
 
 namespace dolos
@@ -27,25 +26,18 @@ class VertexSet
     class Iterator
     {
       public:
-        Iterator(
-            vtx_type const index,
-            wgt_type const * const vertexWeight,
-            adj_type const * const edgePrefix,
-            vtx_type const * const edgeList,
-            wgt_type const * const edgeWeight) noexcept :
-          m_index(index),
-          m_vertexWeight(vertexWeight),
-          m_edgePrefix(edgePrefix),
-          m_edgeList(edgeList),
-          m_edgeWeight(edgeWeight)
+        static Iterator make(
+            vtx_type const index) noexcept
         {
-          // do nothing
+          Iterator i;
+          i.m_index = index;
+
+          return i;
         }
 
         inline Vertex operator*() const noexcept
         {
-          return Vertex(m_index, m_vertexWeight, m_edgePrefix, m_edgeList, \
-              m_edgeWeight);
+          return Vertex::make(m_index);
         }
 
         inline Iterator const & operator++() noexcept
@@ -81,11 +73,7 @@ class VertexSet
         }
 
       private:
-        adj_type m_index;
-        wgt_type const * const m_vertexWeight;
-        adj_type const * const m_edgePrefix;
-        vtx_type const * const m_edgeList;
-        wgt_type const * const m_edgeWeight;
+        vtx_type m_index;
     };
 
     /**
@@ -93,24 +81,12 @@ class VertexSet
     *
     * @param begin The starting vertex.
     * @param end The ending vertex (exclusive).
-    * @param weight The vector of vertex weights.
-    * @param edgePrefix THe edge prefix vector.
-    * @param edgeList The edge list vector.
-    * @param edgeWeight The edge weight vector.
     */
     VertexSet(
         vtx_type const begin,
-        vtx_type const end,
-        wgt_type const * const weight,
-        adj_type const * const edgePrefix,
-        vtx_type const * const edgeList,
-        wgt_type const * const edgeWeight) noexcept :
+        vtx_type const end) noexcept :
       m_begin(begin),
-      m_end(end),
-      m_weight(weight),
-      m_edgePrefix(edgePrefix),
-      m_edgeList(edgeList),
-      m_edgeWeight(edgeWeight)
+      m_end(end)
     {
       // do nothing
     }
@@ -122,8 +98,7 @@ class VertexSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(m_begin, m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
+      return Iterator::make(m_begin);
     }
 
     /**
@@ -133,8 +108,7 @@ class VertexSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator(m_end, m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
+      return Iterator::make(m_end);
     }
 
     /**
@@ -156,29 +130,14 @@ class VertexSet
     * @return The vertex.
     */
     inline Vertex operator[](
-        vtx_type const index) const
+        vtx_type const index) const noexcept
     {
-      return Vertex(index, m_weight, m_edgePrefix, m_edgeList, \
-          m_edgeWeight);
-    }
-
-    /**
-    * @brief Get the data of the underlying graph.
-    *
-    * @return The data of the underlying graph.
-    */
-    inline CSRGraphData data() const 
-    {
-      return CSRGraphData(m_edgePrefix, m_edgeList, m_weight, m_edgeWeight);
+      return Vertex::make(index);
     }
 
   private:
-    vtx_type const m_begin;
-    vtx_type const m_end;
-    wgt_type const * const m_weight;
-    adj_type const * const m_edgePrefix;
-    vtx_type const * const m_edgeList;
-    wgt_type const * const m_edgeWeight;
+    vtx_type m_begin;
+    vtx_type m_end;
 };
 
 

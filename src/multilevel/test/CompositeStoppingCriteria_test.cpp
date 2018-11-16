@@ -26,8 +26,8 @@ class FalseStoppingCriteria : public IStoppingCriteria
 {
   bool shouldStop(
       int,
-      ConstantGraph const *,
-      ConstantGraph const *) const override
+      Graph const *,
+      Graph const *) const override
   {
     return false;
   }
@@ -37,8 +37,8 @@ class TrueStoppingCriteria : public IStoppingCriteria
 {
   bool shouldStop(
       int,
-      ConstantGraph const *,
-      ConstantGraph const *) const override
+      Graph const *,
+      Graph const *) const override
   {
     return true;
   }
@@ -55,11 +55,11 @@ UNITTEST(CompositeStoppingCriteria, Empty)
 {
   // graph with 144 edges
   GridGraphGenerator genFine(4, 4, 4);
-  ConstantGraph fine = genFine.generate();
+  Graph fine = genFine.generate();
 
   // graph with 108 edges
   GridGraphGenerator genCoarse(16, 4, 1);
-  ConstantGraph coarse = genCoarse.generate();
+  Graph coarse = genCoarse.generate();
   
   CompositeStoppingCriteria criteria;
 
@@ -72,11 +72,11 @@ UNITTEST(CompositeStoppingCriteria, ShouldContinue)
 {
   // graph with 144 edges
   GridGraphGenerator genFine(4, 4, 4);
-  ConstantGraph fine = genFine.generate();
+  Graph fine = genFine.generate();
 
   // graph with 108 edges
   GridGraphGenerator genCoarse(16, 4, 1);
-  ConstantGraph coarse = genCoarse.generate();
+  Graph coarse = genCoarse.generate();
   
   CompositeStoppingCriteria criteria;
 
@@ -93,11 +93,11 @@ UNITTEST(CompositeStoppingCriteria, ShouldStop)
 {
   // graph with 144 edges
   GridGraphGenerator genFine(4, 4, 4);
-  ConstantGraph fine = genFine.generate();
+  Graph fine = genFine.generate();
 
   // graph with 108 edges
   GridGraphGenerator genCoarse(16, 4, 1);
-  ConstantGraph coarse = genCoarse.generate();
+  Graph coarse = genCoarse.generate();
 
   CompositeStoppingCriteria criteria;
 

@@ -23,16 +23,12 @@ PermutedVertexSet RandomOrderVertexSet::generate(
     RandomEngine * const randomEngine)
 {
   vtx_type const numVertices = set.size();
-  std::vector<vtx_type> perm(numVertices);
+  std::unique_ptr<vtx_type[]> perm(new vtx_type[numVertices]);
 
-  randomEngine->fillWithPerm(perm.data(), 0, perm.size());
+  randomEngine->fillWithPerm(perm.get(), 0, numVertices);
 
-  return PermutedVertexSet(
-      perm.size(),
-      perm.data(),
-      set.data());
+  return PermutedVertexSet(std::move(perm), numVertices);
 }
 
 
 }
-

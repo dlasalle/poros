@@ -13,6 +13,9 @@
 #include "SummationContractor.hpp"
 #include "graph/OneStepGraphBuilder.hpp"
 
+#include <iostream>
+#include "solidutils/Timer.hpp"
+
 namespace dolos
 {
 
@@ -35,66 +38,38 @@ SummationContractor::SummationContractor()
 ******************************************************************************/
 
 
-ConstantGraph SummationContractor::contract(
-    ConstantGraph const * const graph,
+GraphHandle SummationContractor::contract(
+    Graph const * const graph,
     Aggregation const * const aggregation)
 {
-  OneStepGraphBuilder builder(
-      aggregation->getNumCoarseVertices(),
-      graph->numEdges());
+  sl::Timer tmr;
+  tmr.start();
 
-  // reserve space in our buffers
-  std::vector<vtx_type> neighbors;
-  neighbors.reserve(aggregation->getNumCoarseVertices());
-  std::vector<wgt_type> edgeWeights;
-  edgeWeights.reserve(aggregation->getNumCoarseVertices());
+  OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
 
   // go over each fine vertex
-  vtx_type coarseVertexNumber = 0;
-  std::vector<vtx_type> htable(aggregation->getNumCoarseVertices(), NULL_VTX);
   for (VertexGroup const group : aggregation->coarseVertices()) {
     wgt_type coarseVertexWeight = 0;
 
     for (Vertex const vertex : group.fineVertices()) {
-      coarseVertexWeight += vertex.weight();
-      for (Edge const edge : vertex.edges()) {
-        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(edge.destination());
-        if (coarseNeighbor == coarseVertexNumber) {
-          // skip self loops
-          continue;
-        }
+      coarseVertexWeight += graph->weightOf(vertex);
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
+            graph->destinationOf(edge).index);
 
-        adj_type coarseEdgeIndex = htable[coarseNeighbor];
-        if (coarseEdgeIndex == NULL_VTX) {
-          // new edge
-          coarseEdgeIndex = neighbors.size();
-          htable[coarseNeighbor] = coarseEdgeIndex; 
-          neighbors.emplace_back(coarseNeighbor);
-          edgeWeights.emplace_back(edge.weight());
-        } else {
-          // edge already exists -- sum them together
-          edgeWeights[coarseEdgeIndex] += edge.weight();
-        }
+        builder.addEdge(coarseNeighbor, graph->weightOf(edge));
       }
     }
 
-    ++coarseVertexNumber;
-
-    // add vertex to coarse graph
-    ASSERT_EQUAL(neighbors.size(), edgeWeights.size());
-    builder.addVertex(coarseVertexWeight, \
-        neighbors.size(), neighbors.data(), edgeWeights.data());
-
-    // clear hash table
-    for (vtx_type const neighbor : neighbors) {
-      htable[neighbor] = NULL_VTX;
-    }
-
-    neighbors.clear();
-    edgeWeights.clear();
+    builder.finishVertex(coarseVertexWeight);
   }
 
-  return builder.finish();
+  GraphHandle next = builder.finish();
+
+  tmr.stop();
+  std::cout << "Contract: " << tmr.poll() << std::endl;
+
+  return next;
 }
 
 

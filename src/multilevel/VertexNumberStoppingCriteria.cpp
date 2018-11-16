@@ -30,8 +30,8 @@ VertexNumberStoppingCriteria::VertexNumberStoppingCriteria(
 
 bool VertexNumberStoppingCriteria::shouldStop(
     int const, // level unused
-    ConstantGraph const * const, // fine graph unused
-    ConstantGraph const * const coarse) const
+    Graph const * const, // fine graph unused
+    Graph const * const coarse) const
 {
   return coarse->numVertices() <= m_numVertices;
 }

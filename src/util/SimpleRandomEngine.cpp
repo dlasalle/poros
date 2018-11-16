@@ -9,7 +9,8 @@
 
 
 #include "SimpleRandomEngine.hpp"
-#include <algorithm>
+#include "solidutils/Random.hpp"
+
 
 namespace dolos
 {
@@ -35,11 +36,7 @@ void SimpleRandomEngine::fillWithPerm(
     vtx_type const start,
     vtx_type const end)
 {
-  for (vtx_type i = 0; i < end-start; ++i) {
-    container[i] = start + i;
-  }
-
-  std::shuffle(container + start, container + end, m_rng);
+  sl::Random::fillWithPerm(container, end-start, start, m_rng);
 }
 
 

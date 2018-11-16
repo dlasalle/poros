@@ -56,7 +56,7 @@ class BFSBisector : public IBisector
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
 
     /**
@@ -71,8 +71,8 @@ class BFSBisector : public IBisector
     */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph,
-        vtx_type seedVertex);
+        Graph const * graph,
+        Vertex const seedVertex);
 
   private:
     RandomEngineHandle m_rng;

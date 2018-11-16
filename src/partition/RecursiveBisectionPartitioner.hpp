@@ -46,7 +46,7 @@ class RecursiveBisectionPartitioner :
      */
     Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
 
   private:

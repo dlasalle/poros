@@ -22,19 +22,19 @@ namespace dolos
 
 
 Subgraph::Subgraph(
-    ConstantGraph * const graph,
-    sl::Array<vtx_type> * const superMap) :
-  m_superMap(std::move(*superMap)),
-  m_graph(std::move(*graph))
+    GraphHandle graph,
+    sl::Array<vtx_type> superMap) :
+  m_superMap(std::move(superMap)),
+  m_graph(graph)
 {
   // do nothing
 }
 
 
 Subgraph::Subgraph(
-    ConstantGraph * const graph) :
+    GraphHandle graph) :
   m_superMap(graph->numVertices()),
-  m_graph(std::move(*graph))
+  m_graph(graph)
 {
   sl::VectorMath::increment(m_superMap.data(), m_superMap.size());
 }
@@ -46,9 +46,9 @@ Subgraph::Subgraph(
 ******************************************************************************/
 
 
-ConstantGraph const * Subgraph::getGraph() const
+Graph const * Subgraph::getGraph() const
 {
-  return &m_graph;
+  return m_graph.get();
 }
 
 
@@ -64,10 +64,9 @@ void Subgraph::mapPartitioning(
     pid_type const offset) const
 {
   // translate partitioning
-  for (Vertex const & vertex : getGraph()->vertices()) {
-    vtx_type const sub = vertex.index();
-    pid_type const assignment = subPart->getAssignment(sub);
-    vtx_type const super = getSuperMap(sub);
+  for (Vertex const vertex : m_graph->vertices()) {
+    pid_type const assignment = subPart->getAssignment(vertex);
+    vtx_type const super = m_superMap[vertex.index];
     partitionLabels[super] = assignment + offset;
   }
 }

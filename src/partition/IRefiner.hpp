@@ -14,7 +14,7 @@
 #define DOLOS_SRC_IREFINER_HPP
 
 #include "Partitioning.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "PartitionParameters.hpp"
 
 
@@ -43,7 +43,7 @@ class IRefiner
     virtual void refine(
         PartitionParameters const * params,
         Partitioning * partitioning,
-        ConstantGraph const * graph) const = 0;
+        Graph const * graph) const = 0;
 };
 
 

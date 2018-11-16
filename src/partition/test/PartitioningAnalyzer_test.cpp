@@ -24,17 +24,17 @@ namespace dolos
 UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
   for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
-      part.assign(v, 0);
+      part.assign(Vertex::make(v), 0);
     } else if (v < 50) {
-      part.assign(v, 1);
+      part.assign(Vertex::make(v), 1);
     } else {
-      part.assign(v, 2);
+      part.assign(Vertex::make(v), 2);
     }
   }
 
@@ -51,17 +51,17 @@ UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 UNITTEST(PartitioningAnalyzer, GetImbalance)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
   for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
-      part.assign(v, 0);
+      part.assign(Vertex::make(v), 0);
     } else if (v < 50) {
-      part.assign(v, 1);
+      part.assign(Vertex::make(v), 1);
     } else {
-      part.assign(v, 2);
+      part.assign(Vertex::make(v), 2);
     }
   }
 
@@ -81,17 +81,17 @@ UNITTEST(PartitioningAnalyzer, GetImbalance)
 UNITTEST(PartitioningAnalyzer, IsOverWeight)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
   for (vtx_type v = 0; v < graph.numVertices(); ++v) {
     if (v < 30) {
-      part.assign(v, 0);
+      part.assign(Vertex::make(v), 0);
     } else if (v < 50) {
-      part.assign(v, 1);
+      part.assign(Vertex::make(v), 1);
     } else {
-      part.assign(v, 2);
+      part.assign(Vertex::make(v), 2);
     }
   }
 

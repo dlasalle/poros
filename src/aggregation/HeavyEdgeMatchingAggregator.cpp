@@ -12,6 +12,10 @@
 #include "aggregation/MatchedAggregationBuilder.hpp"
 #include "graph/DegreeSortedVertexSet.hpp"
 
+
+#include <iostream>
+#include "solidutils/Timer.hpp"
+
 namespace dolos
 {
 
@@ -37,29 +41,34 @@ HeavyEdgeMatchingAggregator::HeavyEdgeMatchingAggregator(
 
 Aggregation HeavyEdgeMatchingAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
-  PermutedVertexSet permutedVertices = \
-      DegreeSortedVertexSet::ascendingRandom(graph->vertices(), m_rng.get());
+  sl::Timer tmr;
+  tmr.start();
 
-  for (Vertex const & vertex : permutedVertices) {
-    vtx_type const v = vertex.index();
+  PermutedVertexSet permutedVertices = \
+      DegreeSortedVertexSet::ascendingRandom(graph->vertices(), graph, \
+      m_rng.get());
+
+  for (Vertex const vertex : permutedVertices) {
+    vtx_type const v = vertex.index;
     if (!matcher.isMatched(v)) {
       // we'll choose our neighbor with the heaviest edge 
       vtx_type max = NULL_VTX;
       wgt_type maxPriority = 0;
-      for (Edge const & edge : vertex.edges()) {
-        vtx_type const u = edge.destination();
+      wgt_type const vertexWeight = graph->weightOf(vertex);
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        Vertex const u = graph->destinationOf(edge);
         wgt_type const coarseWeight = \
-            vertex.weight() + graph->getVertexWeight(u);
-        if (!matcher.isMatched(u) && \
+            vertexWeight + graph->weightOf(u);
+        if (!matcher.isMatched(u.index) && \
             params.isAllowedVertexWeight(coarseWeight)) {
-          wgt_type const priority = edge.weight();
-          if (max == NULL_VTX || maxPriority > priority) {
+          wgt_type const priority = graph->weightOf(edge);
+          if (max == NULL_VTX || maxPriority < priority) {
             maxPriority = priority;
-            max = u;
+            max = u.index;
           }
         }
       }
@@ -69,7 +78,10 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
     }
   }
 
-  return matcher.build(graph->getData());
+  tmr.stop();
+  std::cout << "SHEM took " << tmr.poll() << std::endl;
+
+  return matcher.build();
 }
 
 

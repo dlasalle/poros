@@ -10,7 +10,7 @@
 
 
 #include "MatchedAggregationBuilder.hpp"
-
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -34,10 +34,9 @@ MatchedAggregationBuilder::MatchedAggregationBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-Aggregation MatchedAggregationBuilder::build(
-    CSRGraphData const data) const
+Aggregation MatchedAggregationBuilder::build() const
 {
-  std::vector<vtx_type> cmap(m_match.size());
+  sl::Array<vtx_type> cmap(m_match.size());
   
   vtx_type numCoarseVertices = 0;
   for (vtx_type v = 0; v < m_match.size(); ++v) {
@@ -53,7 +52,7 @@ Aggregation MatchedAggregationBuilder::build(
     }
   }
 
-  return Aggregation(std::move(cmap), numCoarseVertices, data);
+  return Aggregation(std::move(cmap), numCoarseVertices);
 }
 
 

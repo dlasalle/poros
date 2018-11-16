@@ -19,15 +19,14 @@ namespace dolos
 
 UNITTEST(AggregationTest, CoarseVertexNumberTest)
 {
-  std::vector<adj_type> edgePrefix{0, 3, 4, 5, 6};
-  std::vector<vtx_type> edgeList{1,2,3, 0, 0, 0};
-  std::vector<wgt_type> vertexWeight(5, 1);
-  std::vector<wgt_type> edgeWeight(6, 1);
-  CSRGraphData data(edgePrefix.data(), edgeList.data(), vertexWeight.data(),
-      edgeWeight.data());
+  sl::Array<vtx_type> cmap(5);
+  cmap[0] = 0;
+  cmap[1] = 1;
+  cmap[2] = 2;
+  cmap[3] = 1;
+  cmap[4] = 0;
 
-  std::vector<vtx_type> cmap{0, 1, 2, 1, 0};
-  Aggregation agg(std::move(cmap), 3u, data);
+  Aggregation agg(std::move(cmap), 3u);
 
   testEqual(agg.getNumCoarseVertices(), 3u);
   testEqual(agg.getCoarseVertexNumber(0), 0u);
@@ -39,24 +38,22 @@ UNITTEST(AggregationTest, CoarseVertexNumberTest)
 
 UNITTEST(AggregationTest, CoarseVertexSetTest)
 {
-  std::vector<adj_type> edgePrefix{0, 3, 4, 5, 6};
-  std::vector<vtx_type> edgeList{1,2,3, 0, 0, 0};
-  std::vector<wgt_type> vertexWeight(5, 1);
-  std::vector<wgt_type> edgeWeight(6, 1);
-  CSRGraphData data(edgePrefix.data(), edgeList.data(), vertexWeight.data(),
-      edgeWeight.data());
-
-  std::vector<vtx_type> cmap{0, 1, 2, 2, 0};
-  Aggregation agg(std::move(cmap), 3u, data);
+  sl::Array<vtx_type> cmap(5);
+  cmap[0] = 0;
+  cmap[1] = 1;
+  cmap[2] = 2;
+  cmap[3] = 1;
+  cmap[4] = 0;
+  Aggregation agg(std::move(cmap), 3u);
 
   testEqual(agg.getNumCoarseVertices(), 3u);
 
   vtx_type coarse = 0;
-  std::vector<bool> visited(cmap.size(), false);
+  std::vector<bool> visited(5u, false);
   for (const VertexGroup& group : agg.coarseVertices()) {
     for (const Vertex& v : group.fineVertices()) {
-      testEqual(agg.getCoarseVertexNumber(v.index()), coarse);
-      visited[v.index()] = true;
+      testEqual(agg.getCoarseVertexNumber(v.index), coarse);
+      visited[v.index] = true;
     }
     ++coarse;
   }

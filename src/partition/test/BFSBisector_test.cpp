@@ -29,7 +29,7 @@ UNITTEST(BFSBisector, ExecuteUniform)
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // setup parameters
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);
@@ -58,7 +58,7 @@ UNITTEST(BFSBisector, Execute1To5)
   GridGraphGenerator gen(40, 40, 1);
   gen.setRandomVertexWeight(1, 5);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // setup parameters
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0, \
@@ -83,7 +83,7 @@ UNITTEST(BFSBisector, ExecuteCut)
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // setup parameters
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);

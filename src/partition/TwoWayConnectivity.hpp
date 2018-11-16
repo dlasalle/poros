@@ -15,7 +15,7 @@
 
 
 #include "Base.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "Partitioning.hpp"
 #include "solidutils/FixedSet.hpp"
 #include "solidutils/Array.hpp"
@@ -64,7 +64,7 @@ class TwoWayConnectivity
     * @param partitioning The partitioning.
     */
     TwoWayConnectivity(
-        ConstantGraph const * graph,
+        Graph const * graph,
         Partitioning const * partitioning);
 
 
@@ -112,13 +112,14 @@ class TwoWayConnectivity
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
     inline int move(
-        vtx_type const vertex) noexcept
+        Vertex const vertex) noexcept
     {
       // flip our connectivity
-      std::swap(m_connectivity[vertex].internal, \
-          m_connectivity[vertex].external);
+      vtx_type const index = vertex.index;
+      std::swap(m_connectivity[index].internal, \
+          m_connectivity[index].external);
 
-      return updateBorderStatus(vertex);
+      return updateBorderStatus(index);
     }
 
 
@@ -132,22 +133,36 @@ class TwoWayConnectivity
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
     inline int updateNeighbor(
-        Edge const * const edge,
+        vtx_type const neighbor,
+        wgt_type const edgeWeight,
         int const direction) noexcept
     {
       // ensure it is 1 or -1
       ASSERT_EQUAL(1, direction*direction);
 
-      vtx_type const u = edge->destination();
-
       // branchless calculation -- flow will be 1 when the vertex is being
       // moved to the same partition as this one, and -1 when it is being moved
       // away.
       wgt_diff_type const flow = static_cast<wgt_diff_type>(direction);
-      m_connectivity[u].internal += flow*edge->weight();
-      m_connectivity[u].external -= flow*edge->weight();
+      m_connectivity[neighbor].internal += flow*edgeWeight;
+      m_connectivity[neighbor].external -= flow*edgeWeight;
 
-      return updateBorderStatus(u);
+      return updateBorderStatus(neighbor);
+    }
+
+
+    /**
+    * @brief Get the delta that would result from moving this vertex (negative
+    * means fewer edges would be cut).
+    *
+    * @param vertex The vertex.
+    *
+    * @return The edge weight delta.
+    */
+    inline wgt_diff_type getVertexDelta(
+        Vertex const vertex) const noexcept
+    {
+      return getVertexDelta(vertex.index);
     }
 
 
@@ -176,9 +191,9 @@ class TwoWayConnectivity
     * @return Whether or not it is in the border. 
     */
     inline bool isInBorder(
-        vtx_type const vertex) const noexcept
+        Vertex const vertex) const noexcept
     {
-      return m_border.has(vertex);
+      return m_border.has(vertex.index);
     }
 
 
@@ -203,7 +218,7 @@ class TwoWayConnectivity
  
     sl::FixedSet<vtx_type> m_border;
     sl::Array<vertex_struct> m_connectivity;
-    ConstantGraph const * const m_graph;
+    Graph const * const m_graph;
 
     /**
     * @brief Create a string of the connectivity of the vertex.

@@ -52,18 +52,18 @@ UNITTEST(TwoStepGraphBuilder, FullBuild)
   builder.addEdgeToVertex(0, 3, 2);
   builder.addEdgeToVertex(2, 1, 2);
 
-  ConstantGraph graph = builder.finish();
+  GraphHandle graph = builder.finish();
 
   // verify graph
-  testEqual(graph.numVertices(), 4u);
-  testEqual(graph.numEdges(), 8u);
+  testEqual(graph->numVertices(), 4u);
+  testEqual(graph->numEdges(), 8u);
 
-  for (Vertex const & vertex : graph.vertices()) {
-    testEqual(vertex.weight(), 1u);
-    testEqual(vertex.degree(), 2u);
+  for (Vertex const vertex : graph->vertices()) {
+    testEqual(graph->weightOf(vertex), 1u);
+    testEqual(graph->degreeOf(vertex), 2u);
 
-    for (Edge const & edge : vertex.edges()) {
-      testEqual(edge.weight(), 2u);
+    for (Edge const edge : graph->edgesOf(vertex)) {
+      testEqual(graph->weightOf(edge), 2u);
     }
   }
 }

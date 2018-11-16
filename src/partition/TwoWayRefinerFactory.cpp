@@ -7,11 +7,11 @@
 * @date 2018-10-02
 */
 
+
 #include "TwoWayRefinerFactory.hpp"
 #include "FMRefiner.hpp"
 #include "TimedTwoWayRefiner.hpp"
 
-#include "solidutils/Exception.hpp"
 
 namespace dolos
 {
@@ -28,7 +28,7 @@ std::unique_ptr<ITwoWayRefiner> TwoWayRefinerFactory::make(
   if (scheme == FM_TWOWAY_REFINEMENT) {
     ptr.reset(new FMRefiner(8, 20));
   } else {
-    throw sl::InvalidInputException("Unknown two way refinement type: " +
+    throw std::runtime_error("Unknown two way refinement type: " +
         std::to_string(scheme));
   }
 

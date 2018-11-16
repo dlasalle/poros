@@ -31,14 +31,14 @@ TimedContractor::TimedContractor(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-ConstantGraph TimedContractor::contract(
-    ConstantGraph const * const graph,
+GraphHandle TimedContractor::contract(
+    Graph const * const graph,
     Aggregation const * const aggregation)
 {
   sl::Timer tmr;
   tmr.start();
 
-  ConstantGraph coarse = m_contractor->contract(graph, aggregation);
+  GraphHandle coarse = m_contractor->contract(graph, aggregation);
 
   tmr.stop();
   reportTime(TimeKeeper::CONTRACTION, tmr.poll());

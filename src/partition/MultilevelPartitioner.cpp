@@ -38,7 +38,7 @@ MultilevelPartitioner::MultilevelPartitioner(
 
 Partitioning MultilevelPartitioner::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   Partitioning part(target->numPartitions(), graph);
 

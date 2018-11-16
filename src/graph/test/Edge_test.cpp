@@ -11,48 +11,22 @@
 
 #include "graph/Edge.hpp"
 #include "solidutils/UnitTest.hpp"
-#include <vector>
+
+#include <type_traits>
 
 
 namespace dolos
 {
 
-UNITTEST(Vertex, Index)
+UNITTEST(Edge, Index)
 {
-  std::vector<vtx_type> adjncy{1, 3}; 
-  std::vector<wgt_type> ewgts{4, 7};
+  Edge e = Edge::make(7);
 
-  Edge e0(0, adjncy.data(), ewgts.data());
-  Edge e1(1, adjncy.data(), ewgts.data());
-
-  testEqual(e0.index(), static_cast<adj_type>(0));
-  testEqual(e1.index(), static_cast<adj_type>(1));
+  testEqual(e.index, 7U);
 }
 
-
-UNITTEST(Vertex, Weight)
-{
-  std::vector<vtx_type> adjncy{1, 3}; 
-  std::vector<wgt_type> ewgts{4, 7};
-
-  Edge e0(0, adjncy.data(), ewgts.data());
-  Edge e1(1, adjncy.data(), ewgts.data());
-
-  testEqual(e0.weight(), static_cast<wgt_type>(4));
-  testEqual(e1.weight(), static_cast<wgt_type>(7));
-}
-
-UNITTEST(Vertex, GetVertex)
-{
-  std::vector<vtx_type> adjncy{1, 3}; 
-  std::vector<wgt_type> ewgts{4, 7};
-
-  Edge e0(0, adjncy.data(), ewgts.data());
-  Edge e1(1, adjncy.data(), ewgts.data());
-
-  testEqual(e0.destination(), static_cast<vtx_type>(1));
-  testEqual(e1.destination(), static_cast<vtx_type>(3));
-}
+static_assert(std::is_pod<Edge>::value, "Edge must be a POD");
+static_assert(sizeof(Edge) == sizeof(adj_type), "Edge be of size scalar.");
 
 }
 

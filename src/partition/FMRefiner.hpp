@@ -50,7 +50,7 @@ class FMRefiner : public ITwoWayRefiner
         TargetPartitioning const * target,
         TwoWayConnectivity * connectivity,
         Partitioning * partitioning,
-        ConstantGraph const * graph);
+        Graph const * graph);
 
   private:
     int m_maxRefinementIters;

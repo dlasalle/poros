@@ -11,97 +11,51 @@
 #ifndef DOLOS_SRC_VERTEX_HPP
 #define DOLOS_SRC_VERTEX_HPP
 
-
 #include "Base.hpp"
-#include "EdgeSet.hpp"
-
 
 namespace dolos
 {
 
-
-class Vertex
+struct Vertex
 {
-  public:
-    /**
-    * @brief Create a new vertex.
-    *
-    * @param index The vertex's index (ID). This is used index into the
-    * following vectors.
-    * @param vertexWeight The vector of vertex weights.
-    * @param edgePrefix The vector of edge prefixes.
-    * @param edgeList The vector of edge endpoints.
-    * @param edgeWeight The vector of edge weights.
-    */
-    Vertex(
-        vtx_type const index,
-        wgt_type const * const vertexWeight,
-        adj_type const * const edgePrefix,
-        vtx_type const * const edgeList,
-        wgt_type const * const edgeWeight) noexcept :
-      m_index(index),
-      m_vertexWeight(vertexWeight),
-      m_edgePrefix(edgePrefix),
-      m_edgeList(edgeList),
-      m_edgeWeight(edgeWeight)
-    {
-      // do nothing 
-    }
+  constexpr static Vertex make(
+      vtx_type const vtx) noexcept
+  {
+    return Vertex{vtx};
+  }
 
+  vtx_type index;
 
-    /**
-    * @brief Get the index of this vertex (it's id).
-    *
-    * @return The index.
-    */
-    inline vtx_type index() const noexcept
-    {
-      return m_index;
-    }
+  constexpr bool operator==(
+      Vertex const lhs) const noexcept
+  {
+    return index == lhs.index;
+  }
 
+  constexpr bool operator!=(
+      Vertex const lhs) const noexcept
+  {
+    return !(*this == lhs);
+  }
 
-    /**
-    * @brief Get the weight of this vertex.
-    *
-    * @return The weight of this vertex.
-    */
-    inline wgt_type weight() const noexcept
-    {
-      return m_vertexWeight[m_index];
-    }
+  constexpr bool operator<(
+      Vertex const lhs) const noexcept
+  {
+    return index < lhs.index;
+  }
 
+  constexpr bool operator<=(
+      Vertex const lhs) const noexcept
+  {
+    return index <= lhs.index;
+  }
 
-    /**
-    * @brief Get the degree of this vertex.
-    *
-    * @return The degree of the vertex.
-    */
-    inline vtx_type degree() const noexcept
-    {
-      return m_edgePrefix[m_index+1] - m_edgePrefix[m_index];
-    }
-
-
-    /**
-    * @brief Get the edges of this vertex.
-    *
-    * @return The edges of this vertex.
-    */
-    inline EdgeSet edges() const noexcept
-    {
-      return EdgeSet(m_edgePrefix[m_index], m_edgePrefix[m_index+1], \
-          m_edgeList, m_edgeWeight);
-    }
-
-
-  private:
-    vtx_type const m_index;
-    wgt_type const * const m_vertexWeight;
-    adj_type const * const m_edgePrefix;
-    vtx_type const * const m_edgeList;
-    wgt_type const * const m_edgeWeight;
+  constexpr operator vtx_type() const noexcept 
+  {
+    return index;
+  }
+ 
 };
-
 
 }
 

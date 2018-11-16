@@ -1,6 +1,6 @@
 /**
-* @file ConstantGraph.cpp
-* @brief The implementation of the ConstantGraph class.
+* @file Graph.cpp
+* @brief The implementation of the Graph class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017-2018
 * @version 1
@@ -10,8 +10,9 @@
 
 
 #include "Base.hpp"
+#include "graph/Graph.hpp"
 #include "solidutils/Debug.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -23,89 +24,98 @@ namespace dolos
 ******************************************************************************/
 
 
-ConstantGraph::ConstantGraph(
+Graph::Graph(
     vtx_type numVertices,
     adj_type numEdges,
     adj_type const * const edgePrefix,
     vtx_type const * const edgeList,
     wgt_type const * const vertexWeight,
-    wgt_type const * const edgeWeight,
-    IAllocatedData * const data) :
+    wgt_type const * const edgeWeight) :
+  Graph(sl::ConstArray<adj_type>(edgePrefix, numVertices+1),
+        sl::ConstArray<vtx_type>(edgeList, numEdges),
+        sl::ConstArray<wgt_type>(vertexWeight, numVertices),
+        sl::ConstArray<wgt_type>(edgeWeight, numEdges))
+{
+  // do nothing
+}
+
+
+Graph::Graph(
+    sl::ConstArray<adj_type> edgePrefix,
+    sl::ConstArray<vtx_type> edgeList,
+    sl::ConstArray<wgt_type> vertexWeight,
+    sl::ConstArray<wgt_type> edgeWeight) :
   m_uniformEdgeWeight(true),
   m_uniformVertexWeight(true),
-  m_numVertices(numVertices),
-  m_numEdges(numEdges),
+  m_numVertices(edgePrefix.size()-1),
+  m_numEdges(edgeList.size()),
   m_totalVertexWeight(0),
   m_totalEdgeWeight(0),
-  m_edgePrefix(edgePrefix),
-  m_edgeList(edgeList),
-  m_vertexWeight(vertexWeight),
-  m_edgeWeight(edgeWeight),
-  m_data(data)
+  m_edgePrefix(std::move(edgePrefix)),
+  m_edgeList(std::move(edgeList)),
+  m_vertexWeight(std::move(vertexWeight)),
+  m_edgeWeight(std::move(edgeWeight))
 {
-  ASSERT_NOTNULL(m_edgePrefix);
-
   // calculate total vertex weight
   if (m_numVertices > 0) {
-    const wgt_type baseVertexWeight = m_vertexWeight[0];
-    for (vtx_type v = 0; v < m_numVertices; ++v) {
-      const wgt_type vwgt = m_vertexWeight[v];
-      m_totalVertexWeight += vwgt;
+    if (m_vertexWeight.data() == nullptr) {
+      // allocate uniform vertex weight
+      m_vertexWeight = sl::Array<vtx_type>(m_numVertices, 1);
+      m_uniformVertexWeight = true;
+    } else {
+      const wgt_type baseVertexWeight = m_vertexWeight[0];
+      for (vtx_type v = 0; v < m_numVertices; ++v) {
+        const wgt_type vwgt = m_vertexWeight[v];
+        m_totalVertexWeight += vwgt;
 
-      if (vwgt != baseVertexWeight) {
-        m_uniformVertexWeight = false;
+        if (vwgt != baseVertexWeight) {
+          m_uniformVertexWeight = false;
+        }
       }
     }
   }
 
   // calculate total edge weight
   if (m_numEdges > 0) {
-    const wgt_type baseEdgeWeight = m_edgeWeight[0];
-    for (adj_type e = 0; e < m_numEdges; ++e) {
-      const wgt_type ewgt = m_edgeWeight[e];
-      m_totalEdgeWeight += ewgt;
+    if (m_edgeWeight.data() == nullptr) {
+      // allocate uniform edge weight
+      m_edgeWeight = sl::Array<wgt_type>(m_numEdges, 1);
+      m_uniformEdgeWeight = true;
+    } else {
+      const wgt_type baseEdgeWeight = m_edgeWeight[0];
+      for (adj_type e = 0; e < m_numEdges; ++e) {
+        const wgt_type ewgt = m_edgeWeight[e];
+        m_totalEdgeWeight += ewgt;
 
-      if (ewgt != baseEdgeWeight) {
-        m_uniformEdgeWeight = false;
+        if (ewgt != baseEdgeWeight) {
+          m_uniformEdgeWeight = false;
+        }
       }
     }
   }
 }
 
 
-ConstantGraph::ConstantGraph(
-    ConstantGraph && lhs) noexcept :
+
+
+Graph::Graph(
+    Graph && lhs) noexcept :
   m_uniformEdgeWeight(lhs.m_uniformEdgeWeight),
   m_uniformVertexWeight(lhs.m_uniformVertexWeight),
   m_numVertices(lhs.m_numVertices),
   m_numEdges(lhs.m_numEdges),
   m_totalVertexWeight(lhs.m_totalVertexWeight),
   m_totalEdgeWeight(lhs.m_totalEdgeWeight),
-  m_edgePrefix(lhs.m_edgePrefix),
-  m_edgeList(lhs.m_edgeList),
-  m_vertexWeight(lhs.m_vertexWeight),
-  m_edgeWeight(lhs.m_edgeWeight),
-  m_data(lhs.m_data)
+  m_edgePrefix(std::move(lhs.m_edgePrefix)),
+  m_edgeList(std::move(lhs.m_edgeList)),
+  m_vertexWeight(std::move(lhs.m_vertexWeight)),
+  m_edgeWeight(std::move(lhs.m_edgeWeight))
 {
   // destrory old graph's data
   lhs.m_numVertices = 0;
   lhs.m_numEdges = 0;
   lhs.m_totalVertexWeight = 0;
   lhs.m_totalEdgeWeight = 0;
-  lhs.m_edgePrefix = nullptr;
-  lhs.m_edgeList = nullptr;
-  lhs.m_vertexWeight = nullptr;
-  lhs.m_edgeWeight = nullptr;
-  lhs.m_data = nullptr;
-}
-
-
-ConstantGraph::~ConstantGraph()
-{
-  if (m_data) {
-    // if we're responsible for free the data, do so.
-    delete m_data;
-  }
 }
 
 
@@ -113,12 +123,8 @@ ConstantGraph::~ConstantGraph()
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-CSRGraphData ConstantGraph::getData() const noexcept
-{
-  return CSRGraphData(m_edgePrefix, m_edgeList, m_vertexWeight, m_edgeWeight);
-}
-
-bool ConstantGraph::isValid() const
+#ifndef NDEBUG
+bool Graph::isValid() const
 {
   // check vertex weight sum
   wgt_type vertexSum = 0;
@@ -169,5 +175,6 @@ bool ConstantGraph::isValid() const
 
   return true;
 }
+#endif
 
 }

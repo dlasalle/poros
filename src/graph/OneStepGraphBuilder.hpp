@@ -14,8 +14,9 @@
 #define DOLOS_SRC_ONESTEPGRAPHBUILDER_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "Base.hpp"
+#include "solidutils/Array.hpp"
 
 #include <vector>
 
@@ -37,36 +38,52 @@ class OneStepGraphBuilder
       vtx_type numVertices,
       adj_type maxNumEdges);
 
+  /**
+  * @brief Add an edge to the current vertex.
+  *
+  * @param dest The destination of the edge.
+  * @param wgt The weight of the edge.
+  */
+  void addEdge(
+      vtx_type const dest,
+      wgt_type const wgt)
+  {
+    adj_type const idx = m_htable[dest];
+    if (idx == NULL_ADJ) {
+      m_htable[dest] = static_cast<adj_type>(m_numEdges);
+      m_edgeList[m_numEdges] = dest;
+      m_edgeWeight[m_numEdges] = wgt;
+      ++m_numEdges;
+    } else {
+      m_edgeWeight[idx] += wgt;
+    }
+  }
 
   /**
-  * @brief Add a vertex to this graph.
+  * @brief Perform bookkeeping for a vertex that will no longer have edges
+  * added.
   *
-  * @param weight The weight of the new vertex.
-  * @param degree The degree of the new vertex.
-  * @param neighbors The neighbors of the this vertex.
-  * @param edgeWeights The weight of edges connecting vertices.
+  * @param wgt The weight of the vertex.
   */
-  void addVertex(
-      wgt_type weight,
-      vtx_type degree,
-      vtx_type const * neighbors,
-      wgt_type const * edgeWeights);
-
+  void finishVertex(
+      vtx_type wgt);
 
   /**
   * @brief Build the graph. This resets the builder to its initial state.
   *
   * @return The built graph.
   */
-  ConstantGraph finish();
+  GraphHandle finish();
 
   private:
     vtx_type m_numVertices;
     adj_type m_numEdges;
-    std::vector<adj_type> m_edgePrefix;
-    std::vector<vtx_type> m_edgeList;
-    std::vector<wgt_type> m_vertexWeight;
-    std::vector<wgt_type> m_edgeWeight;
+    sl::Array<adj_type> m_edgePrefix;
+    sl::Array<vtx_type> m_edgeList;
+    sl::Array<wgt_type> m_vertexWeight;
+    sl::Array<wgt_type> m_edgeWeight;
+
+    std::vector<adj_type> m_htable;
 
     // prevent copying
     OneStepGraphBuilder(
@@ -80,5 +97,6 @@ class OneStepGraphBuilder
 
 
 }
+
 
 #endif

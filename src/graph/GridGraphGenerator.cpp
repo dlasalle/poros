@@ -9,12 +9,13 @@
 
 
 #include "GridGraphGenerator.hpp"
-
-
-#include <vector>
-#include "graph/GraphData.hpp"
 #include "solidutils/Random.hpp"
 #include "solidutils/Debug.hpp"
+
+#include <vector>
+#include <random>
+
+
 
 
 namespace dolos
@@ -132,26 +133,26 @@ void GridGraphGenerator::setRandomEdgeWeight(
 }
 
 
-ConstantGraph GridGraphGenerator::generate()
+Graph GridGraphGenerator::generate()
 {
   vtx_type const numVertices = m_grid->numVertices();
   adj_type const numEdges = m_grid->numEdges(); 
 
-  GraphData data(numVertices, numEdges);
-
-  adj_type * const edgePrefix = data.edgePrefix();
-  vtx_type * const edgeList = data.edgeList();
-  wgt_type * const vertexWeight = data.vertexWeight();
-  wgt_type * const edgeWeight = data.edgeWeight();
+  sl::Array<adj_type> edgePrefix(numVertices+1);
+  sl::Array<vtx_type> edgeList(numEdges);
+  sl::Array<wgt_type> vertexWeight(numVertices);
+  sl::Array<wgt_type> edgeWeight(numEdges);
 
   vtx_type const numX = m_grid->numVerticesX();
   vtx_type const numY = m_grid->numVerticesY();
   vtx_type const numZ = m_grid->numVerticesZ();
 
+  std::mt19937 rng(0);
+
   // each vertex can be the root of up to 3 edges
   std::vector<wgt_type> srcEdgeWeights(numVertices*3);
   sl::Random::fillWithRange(srcEdgeWeights.data(), \
-      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax);
+      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax, rng);
   
   adj_type edge = 0;
   vtx_type vertex = 0;
@@ -214,10 +215,11 @@ ConstantGraph GridGraphGenerator::generate()
   ASSERT_EQUAL(edge, numEdges);
 
   // set vertex weights
-  sl::Random::fillWithRange(vertexWeight, numVertices, \
-      m_vertexWeightMin, m_vertexWeightMax);
+  sl::Random::fillWithRange(vertexWeight.data(), numVertices, \
+      m_vertexWeightMin, m_vertexWeightMax, rng);
 
-  return data.toGraph();
+  return Graph(std::move(edgePrefix), std::move(edgeList), \
+      std::move(vertexWeight), std::move(edgeWeight));
 }
 
 

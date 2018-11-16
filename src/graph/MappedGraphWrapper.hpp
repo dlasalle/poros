@@ -28,7 +28,7 @@ class MappedGraphWrapper :
      * @param graph The graph to map.
      */
    MappedGraphWrapper(
-        ConstantGraph const * graph); 
+        Graph const * graph); 
 
 
     /**
@@ -36,7 +36,7 @@ class MappedGraphWrapper :
      *
      * @return The graph.
      */
-    virtual ConstantGraph const * getGraph() const override;
+    virtual Graph const * getGraph() const override;
 
 
     /**
@@ -55,7 +55,7 @@ class MappedGraphWrapper :
 
 
   private:
-    ConstantGraph const * const m_graph; 
+    Graph const * const m_graph; 
 
     // disable copying
    MappedGraphWrapper(

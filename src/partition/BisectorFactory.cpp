@@ -13,8 +13,6 @@
 #include "MultiBisector.hpp"
 #include "TimedBisector.hpp"
 
-#include "solidutils/Exception.hpp"
-
 namespace dolos
 {
 
@@ -34,7 +32,7 @@ std::unique_ptr<IBisector> BisectorFactory::make(
   } else if (scheme == BFS_BISECTION) {
     ptr.reset(new BFSBisector(rng));
   } else {
-    throw sl::InvalidInputException("Unknown bisector scheme: " +
+    throw std::runtime_error("Unknown bisector scheme: " +
         std::to_string(scheme));
   }
 

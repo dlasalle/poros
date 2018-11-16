@@ -9,9 +9,9 @@
 
 
 #include "TimeKeeper.hpp"
-
-#include "solidutils/Exception.hpp"
 #include "solidutils/Debug.hpp"
+
+#include <stdexcept>
 
 namespace dolos
 {
@@ -48,7 +48,7 @@ void TimeKeeper::reportTime(
     double const seconds)
 {
   if (key >= m_times.size()) {
-    throw sl::InvalidInputException("Got key " + std::to_string(key) + "/" +
+    throw std::runtime_error("Got key " + std::to_string(key) + "/" +
         std::to_string(m_times.size()));
   }
 

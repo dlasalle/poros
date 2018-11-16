@@ -33,7 +33,7 @@ TimedBisector::TimedBisector(
 
 Partitioning TimedBisector::execute(
     TargetPartitioning const * target,
-    ConstantGraph const * graph)
+    Graph const * graph)
 {
   sl::Timer tmr;
   tmr.start();

@@ -23,12 +23,12 @@ UNITTEST(Partitioning, BlankConstructor)
 {
   GridGraphGenerator gen(9, 7, 5);
 
-  ConstantGraph graph = gen.generate(); 
+  Graph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
-    p.assign(v, v % 5);
+    vtx_type const v = vertex.index;
+    p.assign(Vertex::make(v), v % 5);
   }
 
   // check partition weights -- should all be 9x7
@@ -41,11 +41,11 @@ UNITTEST(Partitioning, BlankConstructor)
 UNITTEST(Partitioning, VectorConstructor)
 {
   GridGraphGenerator gen(9, 7, 5);
-  ConstantGraph graph = gen.generate(); 
+  Graph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     labels[v] = v % 5;
   }
 
@@ -61,11 +61,11 @@ UNITTEST(Partitioning, VectorConstructor)
 UNITTEST(Partitioning, MoveConstructor)
 {
   GridGraphGenerator gen(9, 7, 5);
-  ConstantGraph graph = gen.generate(); 
+  Graph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     labels[v] = v % 5;
   }
 
@@ -83,7 +83,7 @@ UNITTEST(Partitioning, NumberOfPartitions)
 {
   GridGraphGenerator gen(9, 7, 5);
 
-  ConstantGraph graph = gen.generate(); 
+  Graph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
   testEqual(5u, p.numPartitions());
@@ -93,11 +93,11 @@ UNITTEST(Partitioning, NumberOfPartitions)
 UNITTEST(Partitioning, CalcVertexCounts)
 {
   GridGraphGenerator gen(9, 7, 5);
-  ConstantGraph graph = gen.generate(); 
+  Graph graph = gen.generate(); 
   
   sl::Array<pid_type> labels(graph.numVertices());
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const v = vertex.index();
+    vtx_type const v = vertex.index;
     if (v < 15) {
       labels[v] = 0;
     } else if (v < 40) {

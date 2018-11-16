@@ -32,7 +32,7 @@ void RecursiveBisectionPartitioner::recurse(
     IMappedGraph const * const mappedGraph,
     pid_type const offset)
 {
-  ConstantGraph const * const graph = mappedGraph->getGraph();
+  Graph const * const graph = mappedGraph->getGraph();
   
   pid_type const numParts = target->numPartitions();
 
@@ -144,7 +144,7 @@ RecursiveBisectionPartitioner::RecursiveBisectionPartitioner(
 
 Partitioning RecursiveBisectionPartitioner::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   sl::Array<pid_type> partitionLabels(graph->numVertices());
 

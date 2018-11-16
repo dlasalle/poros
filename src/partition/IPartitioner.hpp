@@ -12,7 +12,7 @@
 
 
 #include "Partitioning.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "TargetPartitioning.hpp"
 
 namespace dolos
@@ -39,7 +39,7 @@ class IPartitioner
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) = 0;
+        Graph const * graph) = 0;
 
 };
 

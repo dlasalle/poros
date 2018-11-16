@@ -14,7 +14,7 @@
 #define DOLOS_SRC_IMAPPEDGRAPH_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "partition/Partitioning.hpp"
 
 namespace dolos
@@ -38,7 +38,7 @@ class IMappedGraph
      *
      * @return The graph.
      */
-    virtual ConstantGraph const * getGraph() const = 0;
+    virtual Graph const * getGraph() const = 0;
 
 
     /**

@@ -19,65 +19,45 @@
 namespace dolos
 {
 
-
-class Edge
+struct Edge
 {
-  public:
-    /**
-    * @brief Create a new edge with a pointer to the given vertex and a pointer
-    * to the given weight.
-    *
-    * @param endpoint
-    * @param weight
-    */
-    Edge(
-        adj_type const index,
-        vtx_type const * const edgeList,
-        wgt_type const * const edgeWeight) noexcept :
-      m_index(index),
-      m_edgeList(edgeList),
-      m_edgeWeight(edgeWeight)
-    {
-      // do nothing
-    }
+  constexpr static Edge make(
+      adj_type const vtx) noexcept
+  {
+    return Edge{vtx};
+  }
 
+  adj_type index;
 
-    /**
-    * @brief Get the index of the edge.
-    *
-    * @return The index of the edge.
-    */
-    inline adj_type index() const noexcept
-    {
-      return m_index;
-    }
-    
+  constexpr bool operator==(
+      Edge const lhs) const noexcept
+  {
+    return index == lhs.index;
+  }
 
-    /**
-    * @brief Get the weight of this edge.
-    *
-    * @return 
-    */
-    inline wgt_type weight() const noexcept
-    {
-      return m_edgeWeight[m_index];
-    }
+  constexpr bool operator!=(
+      Edge const lhs) const noexcept 
+  {
+    return !(*this == lhs);
+  }
 
+  constexpr bool operator<(
+      Edge const lhs) const noexcept 
+  {
+    return index < lhs.index;
+  }
 
-    /**
-    * @brief Get the vertex at the other end of this edge.
-    *
-    * @return The vertex.
-    */
-    inline vtx_type destination() const noexcept
-    {
-      return m_edgeList[m_index];
-    }
+  constexpr bool operator<=(
+      Edge const lhs) const noexcept 
+  {
+    return index <= lhs.index;
+  }
 
-  private:
-    adj_type const m_index;
-    vtx_type const * const m_edgeList;
-    wgt_type const * const m_edgeWeight;
+  constexpr operator adj_type() const noexcept 
+  {
+    return index;
+  }
+      
 };
 
 

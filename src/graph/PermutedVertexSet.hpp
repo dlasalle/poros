@@ -15,8 +15,9 @@
 
 #include "Vertex.hpp"
 #include "Base.hpp"
-#include "CSRGraphData.hpp"
+
 #include <vector>
+#include <memory>
 
 
 namespace dolos
@@ -29,79 +30,85 @@ class PermutedVertexSet
     class Iterator
     {
       public:
-        Iterator(
-            vtx_type const index,
-            vtx_type const * const set,
-            CSRGraphData const data) noexcept :
-          m_index(index),
-          m_set(set),
-          m_data(data)
+        static Iterator make(
+            vtx_type const * const ptr) noexcept
         {
-          // do nothing
+          Iterator i;
+          i.m_ptr = ptr;
+
+          return i;
         }
 
         inline Vertex operator*() const
         {
-          return Vertex(m_set[m_index], m_data.vertexWeight(), \
-              m_data.edgePrefix(), m_data.edgeList(), m_data.edgeWeight());
+          return Vertex::make(*m_ptr);
         }
 
         inline Iterator const & operator++()
         {
-          ++m_index;
+          ++m_ptr;
           return *this;
         }
 
         inline Iterator const & operator+=(
             vtx_type const offset)
         {
-          m_index += offset;
+          m_ptr += offset;
           return *this;
         }
 
         inline Iterator const & operator-=(
             vtx_type const offset)
         {
-          m_index -= offset;
+          m_ptr -= offset;
           return *this;
         }
 
         inline bool operator==(
             Iterator const & other) const
         {
-          return m_index == other.m_index;
+          return m_ptr == other.m_ptr;
         }
 
         inline bool operator!=(
             Iterator const & other) const
         {
-          return m_index != other.m_index;
+          return m_ptr != other.m_ptr;
         }
 
       private:
-        adj_type m_index;
-        vtx_type const * m_set;
-        CSRGraphData m_data;
-
+        vtx_type const * m_ptr;
     };
 
     /**
     * @brief Create a new vertex set with a permuted order.
     *
-    * @param size The number of vertices.
     * @param vertices The set of vertices (order matters).
-    * @param data The data of the graph.
+    * @param size The number of vertices.
     */
     PermutedVertexSet(
-        vtx_type const size,
-        vtx_type const * const vertices,
-        CSRGraphData const data) noexcept :
-      m_set(vertices, vertices+size),
-      m_data(data)
+        std::unique_ptr<vtx_type[]> set,
+        vtx_type const size) noexcept :
+      m_size(size),
+      m_set(std::move(set))
     {
       // do nothing
     }
 
+    /**
+    * @brief Create a new vertex set with a permuted order.
+    *
+    * @param vertices The set of vertices (order matters).
+    * @param size The number of vertices.
+    */
+    PermutedVertexSet(
+        vtx_type const * const set,
+        vtx_type const size) noexcept :
+      m_size(size),
+      m_set(new vtx_type[m_size])
+    {
+      std::copy(set, set+size, m_set.get());
+    }
 
     /**
     * @brief Move constructor.
@@ -109,20 +116,31 @@ class PermutedVertexSet
     * @param other The set to move.
     */
     PermutedVertexSet(
-        PermutedVertexSet && other) :
-      m_set(std::move(other.m_set)),
-      m_data(other.m_data)
+        PermutedVertexSet && other) noexcept :
+      m_size(other.m_size),
+      m_set(std::move(other.m_set))
     {
-      // do nothing
+      other.m_size = 0;
+      other.m_set.reset(nullptr);
     }
 
     /**
-    * @brief Virtual destructor.
+    * @brief Deleted copy constructor.
+    *
+    * @param other The object to copy..
     */
-    virtual ~PermutedVertexSet()
-    {
-      // do nothing
-    }
+    PermutedVertexSet(
+        PermutedVertexSet const & other) = delete;
+
+    /**
+    * @brief Deleted copy assignment operator.
+    *
+    * @param other The object to copy..
+    *
+    * @return This.
+    */
+    PermutedVertexSet& operator=(
+        PermutedVertexSet const & other) = delete;
 
     /**
     * @brief Get the begin iterator to this vertex set.
@@ -131,7 +149,7 @@ class PermutedVertexSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(0, m_set.data(), m_data);
+      return Iterator::make(m_set.get());
     }
 
     /**
@@ -141,7 +159,7 @@ class PermutedVertexSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator(m_set.size(), m_set.data(), m_data);
+      return Iterator::make(m_set.get() + m_size);
     }
 
     /**
@@ -151,7 +169,7 @@ class PermutedVertexSet
     */
     inline vtx_type size() const noexcept
     {
-      return m_set.size();
+      return m_size;
     }
 
     /**
@@ -162,25 +180,20 @@ class PermutedVertexSet
     * @return The vertex.
     */
     inline Vertex operator[](
-        size_t const index) const
+        size_t const index) const noexcept
     {
-      return Vertex(m_set[index], m_data.vertexWeight(), \
-          m_data.edgePrefix(), m_data.edgeList(), m_data.edgeWeight());
+      return Vertex::make(m_set[index]);
     }
 
   
   private:
-    std::vector<vtx_type> m_set;
-    CSRGraphData m_data;
-
-    // disable copying
-    PermutedVertexSet(
-        PermutedVertexSet const & other) = delete;
-    PermutedVertexSet& operator=(
-        PermutedVertexSet const & other) = delete;
-
+    vtx_type m_size;
+    std::unique_ptr<vtx_type[]> m_set;
 };
 
+
+static_assert(std::is_pod<PermutedVertexSet::Iterator>::value, \
+    "Vertex must be trivial.");
 
 }
 

@@ -11,7 +11,7 @@
 #ifndef DOLOS_SRC_ISTOPPINGCRITERA_HPP
 #define DOLOS_SRC_ISTOPPINGCRITERA_HPP
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 
 namespace dolos
 {
@@ -38,8 +38,8 @@ class IStoppingCriteria
   */
   virtual bool shouldStop(
       int level,
-      ConstantGraph const * fine,
-      ConstantGraph const * coarse) const = 0;
+      Graph const * fine,
+      Graph const * coarse) const = 0;
 
 };
 

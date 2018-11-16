@@ -11,7 +11,7 @@
 #define DOLOS_SRC_IBISECTOR_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "Partitioning.hpp"
 #include "TargetPartitioning.hpp"
 
@@ -41,7 +41,7 @@ class IBisector
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) = 0;
+        Graph const * graph) = 0;
 
 
 };

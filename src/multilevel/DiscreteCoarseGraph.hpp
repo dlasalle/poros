@@ -14,7 +14,7 @@
 
 
 #include "multilevel/ICoarseGraph.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "aggregation/Aggregation.hpp"
 #include "partition/Partitioning.hpp"
 
@@ -34,7 +34,7 @@ class DiscreteCoarseGraph : public ICoarseGraph
   * @param agg The aggregation of the graph.
   */
   DiscreteCoarseGraph(
-      ConstantGraph const * graph,
+      Graph const * graph,
       Aggregation const * agg);
 
   /**
@@ -60,7 +60,7 @@ class DiscreteCoarseGraph : public ICoarseGraph
   *
   * @return The coarsened graph.
   */
-  ConstantGraph const * graph() const override;
+  Graph const * graph() const override;
 
 
   /**
@@ -75,8 +75,8 @@ class DiscreteCoarseGraph : public ICoarseGraph
 
 
   private:
-  ConstantGraph const * m_fine;
-  ConstantGraph m_coarse;
+  Graph const * m_fine;
+  GraphHandle m_coarse;
   sl::Array<vtx_type> m_coarseMap;
 };
 

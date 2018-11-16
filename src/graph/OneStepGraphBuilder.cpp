@@ -11,8 +11,8 @@
 
 #include "OneStepGraphBuilder.hpp"
 #include "solidutils/Debug.hpp"
-#include "GraphData.hpp"
 
+#include <algorithm>
 
 namespace dolos
 {
@@ -28,14 +28,14 @@ OneStepGraphBuilder::OneStepGraphBuilder(
     adj_type const maxNumEdges) :
   m_numVertices(0),
   m_numEdges(0),
-  m_edgePrefix(numVertices+1, 0),
+  m_edgePrefix(numVertices+1),
   m_edgeList(maxNumEdges),
   m_vertexWeight(numVertices),
-  m_edgeWeight(maxNumEdges)
+  m_edgeWeight(maxNumEdges),
+  m_htable(numVertices, NULL_ADJ)
 {
-  // do nothing 
+  m_edgePrefix[0] = 0;
 }
-
 
 
 
@@ -43,44 +43,48 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-void OneStepGraphBuilder::addVertex(
-    wgt_type const weight,
-    vtx_type const degree,
-    vtx_type const * const neighbors,
-    wgt_type const * const edgeWeights)
+void OneStepGraphBuilder::finishVertex(
+      vtx_type const vertexWeight)
 {
-  m_vertexWeight[m_numVertices] = weight;
-  for (vtx_type i = 0; i < degree; ++i) {
-    ASSERT_LESS(m_numEdges, m_edgeList.size());
-    m_edgeList[m_numEdges] = neighbors[i];
-    ASSERT_LESS(m_numEdges, m_edgeWeight.size());
-    m_edgeWeight[m_numEdges] = edgeWeights[i]; 
-    ++m_numEdges;
-  }
+  vtx_type const thisVtx = m_numVertices;
+
   ++m_numVertices;
+
+  adj_type const loopIdx = m_htable[thisVtx];
+  if (loopIdx != NULL_ADJ) {
+    // pop out self loop
+    --m_numEdges;
+    m_edgeList[loopIdx] = m_edgeList[m_numEdges];
+    m_edgeWeight[loopIdx] = m_edgeWeight[m_numEdges];
+    m_htable[thisVtx] = NULL_ADJ;
+  }
+
+  adj_type const start = m_edgePrefix[thisVtx];
+  for (vtx_type j = start; j < m_numEdges; ++j) {
+    vtx_type const u = m_edgeList[j];
+    ASSERT_LESS(u, m_htable.size());
+    m_htable[u] = NULL_ADJ;
+  }
+
+  m_vertexWeight[thisVtx] = vertexWeight;
   m_edgePrefix[m_numVertices] = m_numEdges;
 }
 
 
-ConstantGraph OneStepGraphBuilder::finish()
+GraphHandle OneStepGraphBuilder::finish()
 {
-  ASSERT_EQUAL(m_numVertices, m_vertexWeight.size());
+  m_edgeList.shrink(m_numEdges);
+  m_edgeWeight.shrink(m_numEdges);
 
-  m_edgePrefix.resize(m_numVertices+1);
-  m_edgeList.resize(m_numEdges);
-  m_vertexWeight.resize(m_numVertices);
-  m_edgeWeight.resize(m_numEdges);
-
-  GraphData data(
+  GraphHandle handle(
       std::move(m_edgePrefix),
       std::move(m_edgeList),
       std::move(m_vertexWeight),
       std::move(m_edgeWeight));
-  ConstantGraph graph = data.toGraph();
 
-  ASSERT_TRUE(graph.isValid());
+  ASSERT_TRUE(handle->isValid());
 
-  return graph;
+  return handle;
 }
 
 

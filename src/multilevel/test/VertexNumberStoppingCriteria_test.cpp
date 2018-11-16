@@ -18,7 +18,7 @@ UNITTEST(VertexNumberStoppingCriteria, ShouldContinue)
 {
   // graph with 108 edges
   GridGraphGenerator genCoarse(16, 4, 1);
-  ConstantGraph coarse = genCoarse.generate();
+  Graph coarse = genCoarse.generate();
   
   VertexNumberStoppingCriteria criteria(50);
 
@@ -29,7 +29,7 @@ UNITTEST(VertexNumberStoppingCriteria, ShouldStop)
 {
   // graph with 108 edges
   GridGraphGenerator genCoarse(16, 4, 1);
-  ConstantGraph coarse = genCoarse.generate();
+  Graph coarse = genCoarse.generate();
   
   VertexNumberStoppingCriteria criteria(64);
 

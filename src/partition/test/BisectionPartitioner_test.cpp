@@ -13,7 +13,6 @@
 #include "partition/RecursiveBisectionPartitioner.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "util/RandomEngineFactory.hpp"
-#include "solidutils/Exception.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -30,7 +29,7 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);
@@ -48,7 +47,7 @@ UNITTEST(BisectionPartitioner, ExecuteInvalid)
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);
@@ -59,7 +58,7 @@ UNITTEST(BisectionPartitioner, ExecuteInvalid)
   try {
     Partitioning part = adapter.execute(&target, &graph);
     testFail() << "Exception was not thrown.";
-  } catch (sl::InvalidInputException const &) {
+  } catch (std::runtime_error const &) {
     // test passed
   }
 }

@@ -21,7 +21,7 @@ namespace dolos
 UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
@@ -38,7 +38,7 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
   // verify at most two vertices per coarse vertex
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
   for (Vertex const & vertex : graph.vertices()) {
-    vtx_type const coarse = agg.getCoarseVertexNumber(vertex.index());
+    vtx_type const coarse = agg.getCoarseVertexNumber(vertex.index);
     ++matchCount[coarse];
   }
 
@@ -52,7 +52,7 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
 UNITTEST(RandomMatchingAggregator, ConnectedMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
@@ -73,8 +73,8 @@ UNITTEST(RandomMatchingAggregator, ConnectedMatch)
     if (group.size() == 2) {
       PermutedVertexSet const set = group.fineVertices();
       bool found = false;
-      for (Edge const & e : set[0].edges()) {
-        if (e.destination() == set[1].index()) {
+      for (Edge const e : graph.edgesOf(set[0])) {
+        if (graph.destinationOf(e) == set[1]) {
           found = true;
           break;
         }

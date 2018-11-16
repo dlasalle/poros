@@ -10,6 +10,9 @@
 #include "multilevel/DiscreteCoarseGraph.hpp"
 #include "aggregation/SummationContractor.hpp"
 
+#include "solidutils/Timer.hpp"
+#include <iostream>
+
 namespace dolos
 {
 
@@ -28,8 +31,8 @@ namespace
 *
 * @return The contracted graph.
 */
-ConstantGraph contract(
-  ConstantGraph const * graph,
+GraphHandle contract(
+  Graph const * graph,
   Aggregation const * agg)
 {
   SummationContractor contractor;
@@ -44,7 +47,7 @@ ConstantGraph contract(
 ******************************************************************************/
 
 DiscreteCoarseGraph::DiscreteCoarseGraph(
-  ConstantGraph const * graph,
+  Graph const * graph,
   Aggregation const * agg) :
   m_fine(graph),
   m_coarse(contract(graph, agg)),
@@ -60,9 +63,9 @@ DiscreteCoarseGraph::DiscreteCoarseGraph(
 ******************************************************************************/
 
 
-ConstantGraph const * DiscreteCoarseGraph::graph() const
+Graph const * DiscreteCoarseGraph::graph() const
 {
-  return &m_coarse;
+  return m_coarse.get();
 }
 
 
@@ -70,22 +73,29 @@ Partitioning DiscreteCoarseGraph::project(
     Partitioning const * coarsePart)
 {
   DEBUG_MESSAGE("Projecting partition from " +
-      std::to_string(m_coarse.numVertices()) + " to " +
+      std::to_string(m_coarse->numVertices()) + " to " +
       std::to_string(m_fine->numVertices()));
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 
+  sl::Timer tmr;
+  tmr.start();
+
   // iterate over fine vertices
-  for (Vertex const & vertex : m_fine->vertices()) {
-    vtx_type const v = vertex.index();
+  for (Vertex const vertex : m_fine->vertices()) {
+    vtx_type const v = vertex.index;
     vtx_type const c = m_coarseMap[v];
     pid_type const p = coarsePart->getAssignment(c); 
 
-    finePart.assign(v, p); 
+    finePart.assign(vertex, p); 
   }
 
   // TODO: this doesn't need to be calculated, we should set it directly
   finePart.recalcCutEdgeWeight();
   ASSERT_EQUAL(finePart.getCutEdgeWeight(), coarsePart->getCutEdgeWeight());
+
+  tmr.stop();
+
+  std::cout << "Projection took: " << tmr.poll() << std::endl;
 
   return finePart;
 }

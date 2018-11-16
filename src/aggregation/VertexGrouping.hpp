@@ -11,7 +11,6 @@
 #ifndef DOLOS_SRC_VERTEXGROUPING_HPP
 #define DOLOS_SRC_VERTEXGROUPING_HPP
 
-#include "graph/CSRGraphData.hpp"
 #include "aggregation/VertexGroup.hpp"
 
 namespace dolos
@@ -26,12 +25,10 @@ class VertexGrouping
       Iterator(
           vtx_type const index,
           vtx_type const * const finePrefix,
-          vtx_type const * const fineMap,
-          CSRGraphData data) :
+          vtx_type const * const fineMap) :
         m_index(index),
         m_finePrefix(finePrefix),
-        m_fineMap(fineMap),
-        m_data(data)
+        m_fineMap(fineMap)
       {
         // do nothing 
       }
@@ -40,8 +37,7 @@ class VertexGrouping
       {
         return VertexGroup(
             m_finePrefix[m_index+1]-m_finePrefix[m_index],
-            m_fineMap + m_finePrefix[m_index],
-            m_data);
+            m_fineMap + m_finePrefix[m_index]);
       }
 
       inline Iterator const & operator++() noexcept
@@ -80,7 +76,6 @@ class VertexGrouping
         vtx_type m_index;
         vtx_type const * const m_finePrefix;
         vtx_type const * const m_fineMap;
-        CSRGraphData m_data;
   };
 
   /**
@@ -89,17 +84,14 @@ class VertexGrouping
   * @param numCoarseVertices The number of coarse vertices in this grouping.
   * @param finePrefix The prefixsum of the fine vertices per coarse vertex.
   * @param fineMap The set of fine vertices in each coarse vertex.
-  * @param data The graph data.
   */
   VertexGrouping(
       vtx_type const numCoarseVertices,
       vtx_type const * const finePrefix,
-      vtx_type const * const fineMap,
-      CSRGraphData data) noexcept :
+      vtx_type const * const fineMap) noexcept :
     m_numCoarseVertices(numCoarseVertices),
     m_finePrefix(finePrefix),
-    m_fineMap(fineMap),
-    m_data(data)
+    m_fineMap(fineMap)
   {
     // do nothing
   }
@@ -112,7 +104,7 @@ class VertexGrouping
   */
   inline Iterator begin() const
   {
-    return Iterator(0, m_finePrefix, m_fineMap, m_data); 
+    return Iterator(0, m_finePrefix, m_fineMap); 
   }
 
   /**
@@ -123,14 +115,13 @@ class VertexGrouping
   */
   inline Iterator end() const
   {
-    return Iterator(m_numCoarseVertices, m_finePrefix, m_fineMap, m_data);
+    return Iterator(m_numCoarseVertices, m_finePrefix, m_fineMap);
   }
 
   private:
     vtx_type const m_numCoarseVertices; 
     vtx_type const * const m_finePrefix;
     vtx_type const * const m_fineMap;
-    CSRGraphData m_data;
 
 };
 

@@ -48,7 +48,7 @@ class MultilevelPartitioner :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
   private:
     std::unique_ptr<IAggregator> m_aggregator;

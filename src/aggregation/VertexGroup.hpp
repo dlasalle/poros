@@ -12,7 +12,6 @@
 #ifndef DOLOS_SRC_VERTEXGROUP_HPP
 #define DOLOS_SRC_VERTEXGROUP_HPP
 
-#include "graph/CSRGraphData.hpp"
 #include "graph/PermutedVertexSet.hpp"
 
 namespace dolos
@@ -30,11 +29,9 @@ class VertexGroup
     */
     VertexGroup(
         vtx_type const size,
-        vtx_type const * const fineVertices,
-        CSRGraphData data) noexcept :
+        vtx_type const * const fineVertices) noexcept :
       m_size(size),
-      m_fineVertices(fineVertices),
-      m_data(data)
+      m_fineVertices(fineVertices)
     {
       // do nothing 
     }
@@ -47,7 +44,7 @@ class VertexGroup
     PermutedVertexSet fineVertices() const noexcept
     {
       // TODO: make VertexSet a templated class taking in an iterator
-      return PermutedVertexSet(m_size, m_fineVertices, m_data); 
+      return PermutedVertexSet(m_fineVertices, m_size); 
     }
 
     /**
@@ -63,7 +60,6 @@ class VertexGroup
   private:
     vtx_type const m_size;
     vtx_type const * const m_fineVertices;
-    CSRGraphData m_data;
     
 };
 

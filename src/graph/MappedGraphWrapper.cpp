@@ -19,7 +19,7 @@ namespace dolos
 ******************************************************************************/
 
 MappedGraphWrapper::MappedGraphWrapper(
-    ConstantGraph const * graph) :
+    Graph const * graph) :
   m_graph(graph)
 {
   // do nothing
@@ -31,7 +31,7 @@ MappedGraphWrapper::MappedGraphWrapper(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-ConstantGraph const * MappedGraphWrapper::getGraph() const
+Graph const * MappedGraphWrapper::getGraph() const
 {
   return m_graph;
 }
@@ -42,10 +42,9 @@ void MappedGraphWrapper::mapPartitioning(
     pid_type * const partitionLabels,
     pid_type const offset) const
 {
-  for (Vertex const & vertex : getGraph()->vertices()) {
-    vtx_type const sub = vertex.index();
-    pid_type const assignment = subPart->getAssignment(sub);
-    partitionLabels[sub] = assignment + offset;
+  for (Vertex const vertex : getGraph()->vertices()) {
+    pid_type const assignment = subPart->getAssignment(vertex);
+    partitionLabels[vertex.index] = assignment + offset;
   }
 }
 

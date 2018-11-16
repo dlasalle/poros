@@ -14,9 +14,8 @@
 
 #include "Base.hpp"
 #include "aggregation/VertexGrouping.hpp"
-#include "graph/CSRGraphData.hpp"
 #include "solidutils/Debug.hpp"
-#include <vector>
+#include "solidutils/Array.hpp"
 
 
 namespace dolos
@@ -26,16 +25,15 @@ class Aggregation
 {
   public:
     /**
-    * @brief Create a new aggregation from a vector. 
+    * @brief Create a new aggregation from a coarse map 
     *
     * @param coarseMap The cmap vector.
     * @param numCoarseVertices The number of coarse vertices.
     * @param data The graph data.
     */
     Aggregation(
-        std::vector<vtx_type> && coarseMap,
-        vtx_type numCoarseVertices,
-        CSRGraphData data);
+        sl::Array<vtx_type> coarseMap,
+        vtx_type numCoarseVertices);
 
     /**
     * @brief Copy constructor.
@@ -43,7 +41,7 @@ class Aggregation
     * @param rhs The aggregation to copy.
     */
     Aggregation(
-        Aggregation const & rhs);
+        Aggregation const & rhs) = delete;
 
     /**
     * @brief The move constructor.
@@ -61,7 +59,7 @@ class Aggregation
     * @return This aggregation.
     */
     Aggregation& operator=(
-        Aggregation const & rhs);
+        Aggregation const & rhs) = delete;
 
     /**
     * @brief The move assignment operator.
@@ -95,7 +93,7 @@ class Aggregation
     vtx_type getCoarseVertexNumber(
         const vtx_type v) const noexcept
     {
-      ASSERT_LESS(v, m_coarseMap.size());
+      ASSERT_LESS(v, m_numFineVertices);
       ASSERT_LESS(m_coarseMap[v], m_numCoarseVertices);
       return m_coarseMap[v];
     }
@@ -117,15 +115,32 @@ class Aggregation
     void fillCoarseMap(
         vtx_type * data) const noexcept;
 
+    vtx_type const * finePrefix() const noexcept
+    {
+      return m_finePrefix.data();
+    }
+
+    vtx_type const * fineMap() const noexcept
+    {
+      return m_fineMap.data();
+    }
+
+    vtx_type const * cmap() const noexcept
+    {
+      return m_coarseMap.data();
+    }
+
   private:
+    vtx_type m_numFineVertices;
     vtx_type m_numCoarseVertices;
-    std::vector<vtx_type> m_coarseMap;
-    std::vector<vtx_type> m_finePrefix;
-    std::vector<vtx_type> m_fineMap;
-    CSRGraphData m_data;
+    sl::Array<vtx_type> m_coarseMap;
+    sl::Array<vtx_type> m_finePrefix;
+    sl::Array<vtx_type> m_fineMap;
 
 };
 
+
 }
+
 
 #endif
