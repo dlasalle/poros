@@ -34,8 +34,7 @@ MatchedAggregationBuilder::MatchedAggregationBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-Aggregation MatchedAggregationBuilder::build(
-    CSRGraphData const data) const
+Aggregation MatchedAggregationBuilder::build() const
 {
   sl::Array<vtx_type> cmap(m_match.size());
   
@@ -53,7 +52,7 @@ Aggregation MatchedAggregationBuilder::build(
     }
   }
 
-  return Aggregation(std::move(cmap), numCoarseVertices, data);
+  return Aggregation(std::move(cmap), numCoarseVertices);
 }
 
 

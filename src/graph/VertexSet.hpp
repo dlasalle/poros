@@ -14,7 +14,7 @@
 
 
 #include "Vertex.hpp"
-#include "CSRGraphData.hpp"
+
 
 namespace dolos
 {

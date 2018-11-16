@@ -38,8 +38,8 @@ SummationContractor::SummationContractor()
 ******************************************************************************/
 
 
-ConstantGraph SummationContractor::contract(
-    ConstantGraph const * const graph,
+GraphHandle SummationContractor::contract(
+    Graph const * const graph,
     Aggregation const * const aggregation)
 {
   sl::Timer tmr;
@@ -64,7 +64,7 @@ ConstantGraph SummationContractor::contract(
     builder.finishVertex(coarseVertexWeight);
   }
 
-  ConstantGraph next = builder.finish();
+  GraphHandle next = builder.finish();
 
   tmr.stop();
   std::cout << "Contract: " << tmr.poll() << std::endl;

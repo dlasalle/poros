@@ -20,19 +20,19 @@ namespace dolos
 UNITTEST(DiscreteCoarseGraph, Contract)
 {
   GridGraphGenerator gen(2,8,1);
-  ConstantGraph graph = gen.generate();
+  GraphHandle graph = gen.generate();
 
-  sl::Array<vtx_type> cmap(graph.numVertices());
+  sl::Array<vtx_type> cmap(graph->numVertices());
 
-  for (vtx_type i = 0; i < graph.numVertices(); ++i) {
+  for (vtx_type i = 0; i < graph->numVertices(); ++i) {
     cmap[i] = static_cast<vtx_type>(i/2);
   }
 
-  Aggregation agg(std::move(cmap), 8, graph.getData());
+  Aggregation agg(std::move(cmap), 8);
 
-  DiscreteCoarseGraph coarse(&graph, &agg);
+  DiscreteCoarseGraph coarse(graph.get(), &agg);
 
-  ConstantGraph const * coarseGraph = coarse.graph();
+  Graph const * coarseGraph = coarse.graph();
 
   // check size
   testEqual(coarseGraph->numVertices(), 8U);

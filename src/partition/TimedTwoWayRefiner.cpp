@@ -35,7 +35,7 @@ void TimedTwoWayRefiner::refine(
     TargetPartitioning const * target,
     TwoWayConnectivity * connectivity,
     Partitioning * partitioning,
-    ConstantGraph const * graph)
+    Graph const * graph)
 {
   sl::Timer tmr;
   tmr.start();

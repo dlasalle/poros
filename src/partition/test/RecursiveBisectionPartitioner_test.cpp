@@ -34,7 +34,7 @@ UNITTEST(RecursiveBisectionPartitioner, ExecuteKWayUniform)
   GridGraphGenerator gen(10, 6, 5);
 
   for (pid_type k = 2; k < 10; ++k) {
-    ConstantGraph graph = gen.generate();
+    Graph graph = gen.generate();
 
     TargetPartitioning target(k, graph.getTotalVertexWeight(), \
         0.03);
@@ -66,7 +66,7 @@ UNITTEST(RecursiveBisectionPartitioner, ExecuteKWay1To5)
 
   for (pid_type k = 2; k < 10; ++k) {
     // create partition parameters
-    ConstantGraph graph = gen.generate();
+    Graph graph = gen.generate();
 
     TargetPartitioning target(k, graph.getTotalVertexWeight(), \
         0.03);
@@ -98,7 +98,7 @@ UNITTEST(RecursiveBisectionPartitioner, Execute4Way)
   GridGraphGenerator gen(6, 13, 7);
   gen.setRandomVertexWeight(1, 5);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   TargetPartitioning target(targets.size(), graph.getTotalVertexWeight(), \
       0.03, targets.data());
@@ -130,7 +130,7 @@ UNITTEST(RecursiveBisectionPartitioner, Execute7Way1To3)
   GridGraphGenerator gen(30, 30, 30);
   gen.setRandomVertexWeight(1, 3);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
   TargetPartitioning target(7, graph.getTotalVertexWeight(), \
       0.01);
 

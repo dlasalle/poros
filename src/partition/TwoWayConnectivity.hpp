@@ -15,7 +15,7 @@
 
 
 #include "Base.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "Partitioning.hpp"
 #include "solidutils/FixedSet.hpp"
 #include "solidutils/Array.hpp"
@@ -64,7 +64,7 @@ class TwoWayConnectivity
     * @param partitioning The partitioning.
     */
     TwoWayConnectivity(
-        ConstantGraph const * graph,
+        Graph const * graph,
         Partitioning const * partitioning);
 
 
@@ -218,7 +218,7 @@ class TwoWayConnectivity
  
     sl::FixedSet<vtx_type> m_border;
     sl::Array<vertex_struct> m_connectivity;
-    ConstantGraph const * const m_graph;
+    Graph const * const m_graph;
 
     /**
     * @brief Create a string of the connectivity of the vertex.

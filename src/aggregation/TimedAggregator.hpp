@@ -40,7 +40,7 @@ class TimedAggregator : public IAggregator, public TimedProcess
     */
     Aggregation aggregate(
         AggregationParameters const params,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
   private:
     std::unique_ptr<IAggregator> m_aggregator;

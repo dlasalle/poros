@@ -21,7 +21,7 @@ UNITTEST(SubgraphExtract, Partitions)
 {
   GridGraphGenerator gen(2,2,2);
 
-  ConstantGraph g = gen.generate(); 
+  Graph g = gen.generate(); 
 
   Partitioning p(3, &g);
   p.assignAll(0);

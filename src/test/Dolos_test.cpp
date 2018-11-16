@@ -25,7 +25,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
 {
   GridGraphGenerator gen(25, 25, 25);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   dolos_options_struct opts = DOLOS_defaultOptions();
 
@@ -57,7 +57,7 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 700;
@@ -89,7 +89,7 @@ UNITTEST(Dolos, PartGraphRecursiveThreeCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 1375;
@@ -121,7 +121,7 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   dolos_options_struct opts = DOLOS_defaultOptions();
 
@@ -153,7 +153,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 2400;

@@ -22,7 +22,7 @@ namespace dolos
 UNITTEST(RandomFMBisector, Execute)
 {
   GridGraphGenerator gen(5, 5, 5);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.1);
 

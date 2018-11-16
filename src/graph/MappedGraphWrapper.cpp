@@ -19,7 +19,7 @@ namespace dolos
 ******************************************************************************/
 
 MappedGraphWrapper::MappedGraphWrapper(
-    ConstantGraph const * graph) :
+    Graph const * graph) :
   m_graph(graph)
 {
   // do nothing
@@ -31,7 +31,7 @@ MappedGraphWrapper::MappedGraphWrapper(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-ConstantGraph const * MappedGraphWrapper::getGraph() const
+Graph const * MappedGraphWrapper::getGraph() const
 {
   return m_graph;
 }

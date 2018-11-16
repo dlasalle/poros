@@ -11,7 +11,6 @@
 
 #include "OneStepGraphBuilder.hpp"
 #include "solidutils/Debug.hpp"
-#include "GraphData.hpp"
 
 #include <algorithm>
 
@@ -29,10 +28,10 @@ OneStepGraphBuilder::OneStepGraphBuilder(
     adj_type const maxNumEdges) :
   m_numVertices(0),
   m_numEdges(0),
-  m_edgePrefix(new adj_type[numVertices+1]),
-  m_edgeList(new vtx_type[maxNumEdges]),
-  m_vertexWeight(new wgt_type[numVertices]),
-  m_edgeWeight(new adj_type[maxNumEdges]),
+  m_edgePrefix(numVertices+1),
+  m_edgeList(maxNumEdges),
+  m_vertexWeight(numVertices),
+  m_edgeWeight(maxNumEdges),
   m_htable(numVertices, NULL_ADJ)
 {
   m_edgePrefix[0] = 0;
@@ -72,20 +71,20 @@ void OneStepGraphBuilder::finishVertex(
 }
 
 
-ConstantGraph OneStepGraphBuilder::finish()
+GraphHandle OneStepGraphBuilder::finish()
 {
-  GraphData data(
-      m_numVertices,
-      m_numEdges,
+  m_edgeList.shrink(m_numEdges);
+  m_edgeWeight.shrink(m_numEdges);
+
+  GraphHandle handle(
       std::move(m_edgePrefix),
       std::move(m_edgeList),
       std::move(m_vertexWeight),
       std::move(m_edgeWeight));
-  ConstantGraph graph = data.toGraph();
 
-  ASSERT_TRUE(graph.isValid());
+  ASSERT_TRUE(handle->isValid());
 
-  return graph;
+  return handle;
 }
 
 

@@ -17,7 +17,6 @@
 #include "util/IAllocatedData.hpp"
 #include "graph/EdgeSet.hpp"
 #include "graph/VertexSet.hpp"
-#include "graph/CSRGraphData.hpp"
 #include "solidutils/ConstArray.hpp"
 #include "solidutils/Debug.hpp"
 #include <cstdlib>
@@ -296,13 +295,7 @@ class Graph
       return m_uniformVertexWeight;
     }
 
-    /**
-    * @brief Get the underlying data of the CSR graph.
-    *
-    * @return The underlying data.
-    */
-    CSRGraphData getData() const noexcept;
-    
+   
     #ifndef NDEBUG
     /**
     * @brief Check if this graph is internally coherent.

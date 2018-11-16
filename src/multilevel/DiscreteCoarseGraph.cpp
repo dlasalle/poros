@@ -31,8 +31,8 @@ namespace
 *
 * @return The contracted graph.
 */
-ConstantGraph contract(
-  ConstantGraph const * graph,
+GraphHandle contract(
+  Graph const * graph,
   Aggregation const * agg)
 {
   SummationContractor contractor;
@@ -47,7 +47,7 @@ ConstantGraph contract(
 ******************************************************************************/
 
 DiscreteCoarseGraph::DiscreteCoarseGraph(
-  ConstantGraph const * graph,
+  Graph const * graph,
   Aggregation const * agg) :
   m_fine(graph),
   m_coarse(contract(graph, agg)),
@@ -63,9 +63,9 @@ DiscreteCoarseGraph::DiscreteCoarseGraph(
 ******************************************************************************/
 
 
-ConstantGraph const * DiscreteCoarseGraph::graph() const
+Graph const * DiscreteCoarseGraph::graph() const
 {
-  return &m_coarse;
+  return m_coarse.get();
 }
 
 
@@ -73,7 +73,7 @@ Partitioning DiscreteCoarseGraph::project(
     Partitioning const * coarsePart)
 {
   DEBUG_MESSAGE("Projecting partition from " +
-      std::to_string(m_coarse.numVertices()) + " to " +
+      std::to_string(m_coarse->numVertices()) + " to " +
       std::to_string(m_fine->numVertices()));
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 

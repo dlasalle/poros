@@ -12,7 +12,7 @@
 
 #include "Base.hpp"
 #include "DolosParameters.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
 #include "partition/BisectorFactory.hpp"
@@ -77,7 +77,7 @@ int DOLOS_PartGraphRecursive(
   RandomEngineHandle randEngine = globalParams.randomEngine();
 
   // assemble a new graph
-  ConstantGraph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
+  Graph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
       edgeList, vertexWeights, edgeWeights);
 
   // setup paramters for the partition

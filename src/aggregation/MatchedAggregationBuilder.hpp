@@ -15,7 +15,6 @@
 
 
 #include "aggregation/Aggregation.hpp"
-#include "graph/CSRGraphData.hpp"
 #include "solidutils/Debug.hpp"
 #include "Base.hpp"
 
@@ -38,12 +37,9 @@ class MatchedAggregationBuilder
     /**
     * @brief Build an aggregation from this matching.
     *
-    * @param data The graph data.
-    *
     * @return The aggregation. 
     */
-    Aggregation build(
-        CSRGraphData data) const;
+    Aggregation build() const;
 
 
     /**

@@ -10,7 +10,6 @@
 
 
 #include "TwoStepGraphBuilder.hpp"
-#include "GraphData.hpp"
 #include "solidutils/VectorMath.hpp"
 
 
@@ -27,10 +26,10 @@ TwoStepGraphBuilder::TwoStepGraphBuilder() :
   m_phase(PHASE_START),
   m_numVertices(0),
   m_numEdges(0),
-  m_edgePrefix(),
-  m_edgeList(),
-  m_vertexWeight(),
-  m_edgeWeight()
+  m_edgePrefix(0),
+  m_edgeList(0),
+  m_vertexWeight(0),
+  m_edgeWeight(0)
 {
   // do nothing
 }
@@ -59,10 +58,8 @@ void TwoStepGraphBuilder::beginVertexPhase()
   m_phase = PHASE_VERTICES;
   
   // allocate vertex arrays
-  m_edgePrefix.reset(new adj_type[m_numVertices+1]);
-  std::fill(m_edgePrefix.get(), m_edgePrefix.get()+m_numVertices+1, 0);
-
-  m_vertexWeight.reset(new wgt_type[m_numVertices]);
+  m_edgePrefix = sl::Array<adj_type>(m_numVertices+1, 0);
+  m_vertexWeight = sl::Array<wgt_type>(m_numVertices);
 }
 
 
@@ -72,7 +69,7 @@ void TwoStepGraphBuilder::beginEdgePhase()
   m_phase = PHASE_EDGES;
 
   // prefix sum edge numbers
-  sl::VectorMath::prefixSumExclusive(m_edgePrefix.get(), m_numVertices+1);
+  sl::VectorMath::prefixSumExclusive(m_edgePrefix.begin(), m_edgePrefix.end());
   m_numEdges = m_edgePrefix[m_numVertices];
 
   // shift the edgeprefix so that we can insert
@@ -81,29 +78,26 @@ void TwoStepGraphBuilder::beginEdgePhase()
   }
 
   // allocate edge arrays
-  m_edgeList.reset(new vtx_type[m_numEdges]);
-  m_edgeWeight.reset(new wgt_type[m_numEdges]);
+  m_edgeList = sl::Array<vtx_type>(m_numEdges);
+  m_edgeWeight = sl::Array<wgt_type>(m_numEdges);
 }
 
 
-ConstantGraph TwoStepGraphBuilder::finish()
+GraphHandle TwoStepGraphBuilder::finish()
 {
   ASSERT_EQUAL(m_phase, PHASE_EDGES);
 
-  GraphData data(
-      m_numVertices,
-      m_numEdges,
+  GraphHandle handle(
       std::move(m_edgePrefix),
       std::move(m_edgeList), 
       std::move(m_vertexWeight),
       std::move(m_edgeWeight));
-  ConstantGraph graph = data.toGraph();
 
   m_phase = PHASE_START;
 
-  ASSERT_TRUE(graph.isValid());
+  ASSERT_TRUE(handle->isValid());
 
-  return graph;
+  return handle;
 }
 
 

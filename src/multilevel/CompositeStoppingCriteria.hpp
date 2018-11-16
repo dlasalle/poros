@@ -46,8 +46,8 @@ class CompositeStoppingCriteria : public IStoppingCriteria
   */
   bool shouldStop(
       int level,
-      ConstantGraph const * fine,
-      ConstantGraph const * coarse) const override;
+      Graph const * fine,
+      Graph const * coarse) const override;
 
   private:
   std::vector<std::unique_ptr<IStoppingCriteria>> m_criteria;

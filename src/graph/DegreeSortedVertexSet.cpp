@@ -9,7 +9,7 @@
 
 
 #include "DegreeSortedVertexSet.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "util/RandomEngine.hpp"
 #include "solidutils/Sort.hpp"
 
@@ -23,7 +23,7 @@ namespace dolos
 
 PermutedVertexSet DegreeSortedVertexSet::ascending(
     VertexSet const set,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   vtx_type const numVertices = set.size();
   sl::Array<vtx_type> degrees(numVertices);
@@ -40,7 +40,7 @@ PermutedVertexSet DegreeSortedVertexSet::ascending(
 
 PermutedVertexSet DegreeSortedVertexSet::ascendingRandom(
     VertexSet const set,
-    ConstantGraph const * const graph,
+    Graph const * const graph,
     RandomEngine * const engine)
 {
   vtx_type const numVertices = set.size();

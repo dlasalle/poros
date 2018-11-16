@@ -21,7 +21,7 @@ namespace dolos
 UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
@@ -52,7 +52,7 @@ UNITTEST(RandomMatchingAggregator, LimitTwoMatch)
 UNITTEST(RandomMatchingAggregator, ConnectedMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 

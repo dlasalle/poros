@@ -14,7 +14,6 @@
 
 #include "Base.hpp"
 #include "aggregation/VertexGrouping.hpp"
-#include "graph/CSRGraphData.hpp"
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
 
@@ -34,8 +33,7 @@ class Aggregation
     */
     Aggregation(
         sl::Array<vtx_type> coarseMap,
-        vtx_type numCoarseVertices,
-        CSRGraphData data);
+        vtx_type numCoarseVertices);
 
     /**
     * @brief Copy constructor.
@@ -138,7 +136,6 @@ class Aggregation
     sl::Array<vtx_type> m_coarseMap;
     sl::Array<vtx_type> m_finePrefix;
     sl::Array<vtx_type> m_fineMap;
-    CSRGraphData m_data;
 
 };
 

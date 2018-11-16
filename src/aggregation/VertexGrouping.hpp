@@ -11,7 +11,6 @@
 #ifndef DOLOS_SRC_VERTEXGROUPING_HPP
 #define DOLOS_SRC_VERTEXGROUPING_HPP
 
-#include "graph/CSRGraphData.hpp"
 #include "aggregation/VertexGroup.hpp"
 
 namespace dolos

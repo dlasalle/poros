@@ -23,7 +23,7 @@ UNITTEST(DegreeSortedVertexSet, Size)
   std::vector<vtx_type> edgeList{0,1,2,3,4,5,6,7,8,9,10,11};
   std::vector<wgt_type> edgeWeight(12, 1);
 
-  ConstantGraph g(edgePrefix.size()-1, edgePrefix.back(), edgePrefix.data(),
+  Graph g(edgePrefix.size()-1, edgePrefix.back(), edgePrefix.data(),
       edgeList.data(), weight.data(), edgeWeight.data());
 
   VertexSet vSet(0, edgePrefix.size()-1);

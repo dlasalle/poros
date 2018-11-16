@@ -45,7 +45,7 @@ UNITTEST(TwoWayConnectivity, GetVertexDelta)
    */
 
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   Partitioning p(2, &g);
 
@@ -70,7 +70,7 @@ UNITTEST(TwoWayConnectivity, Move)
 {
   GridGraphGenerator gen(2,2,2);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   Partitioning p(2, &g);
 
@@ -98,7 +98,7 @@ UNITTEST(TwoWayConnectivity, UpdateNeighbor)
 {
   GridGraphGenerator gen(2,2,2);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
   /*
    * 0-------1
    * |\      |\
@@ -169,7 +169,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
    *    6-------7
    */
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   Partitioning p(2, &g);
 
@@ -253,7 +253,7 @@ UNITTEST(TwoWayConnectivity, GetBorderSet)
    */
 
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   Partitioning p(2, &g);
 
@@ -300,7 +300,7 @@ UNITTEST(TwoWayConnectivity, Verify)
    *    6-------7
    */
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   Partitioning p(2, &g);
 

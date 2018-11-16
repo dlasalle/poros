@@ -15,7 +15,6 @@
 
 #include "Vertex.hpp"
 #include "Base.hpp"
-#include "CSRGraphData.hpp"
 
 #include <vector>
 #include <memory>

@@ -30,7 +30,7 @@ UNITTEST(MultiBisector, ExecuteUniform)
   // generate graph
   GridGraphGenerator gen(40, 40, 1);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // setup parameters
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.0);

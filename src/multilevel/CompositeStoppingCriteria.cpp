@@ -37,8 +37,8 @@ void CompositeStoppingCriteria::add(
 
 bool CompositeStoppingCriteria::shouldStop(
     int const level,
-    ConstantGraph const * const fine,
-    ConstantGraph const * const coarse) const
+    Graph const * const fine,
+    Graph const * const coarse) const
 {
   for (const std::unique_ptr<IStoppingCriteria>& criteria : m_criteria) {
     if (criteria->shouldStop(level, fine, coarse)) {

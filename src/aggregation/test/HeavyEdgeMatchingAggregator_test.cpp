@@ -20,7 +20,7 @@ namespace dolos
 UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
@@ -49,7 +49,7 @@ UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 
@@ -84,7 +84,7 @@ UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 UNITTEST(HeavyEdgeMatchingAggregator, MaxSize)
 {
   GridGraphGenerator gen(30,40,50);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
 

@@ -29,7 +29,7 @@ UNITTEST(BisectionPartitioner, ExecuteCorrect)
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);
@@ -47,7 +47,7 @@ UNITTEST(BisectionPartitioner, ExecuteInvalid)
   RandomEngineHandle engine = RandomEngineFactory::make(0);
 
   GridGraphGenerator gen(3,4,5);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   RandomFMBisector rfb(8, engine);
   RecursiveBisectionPartitioner parter(&rfb);

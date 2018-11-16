@@ -12,7 +12,7 @@
 #define DOLOS_SRC_MULTILEVEL_ICOARSEGRAPH_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "partition/Partitioning.hpp"
 
 namespace dolos
@@ -36,7 +36,7 @@ class ICoarseGraph
   *
   * @return The coarsened graph.
   */
-  virtual ConstantGraph const * graph() const = 0;
+  virtual Graph const * graph() const = 0;
 
 
   /**

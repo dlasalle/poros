@@ -14,11 +14,11 @@
 #define DOLOS_SRC_ONESTEPGRAPHBUILDER_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "Base.hpp"
+#include "solidutils/Array.hpp"
 
 #include <vector>
-#include <memory>
 
 
 namespace dolos
@@ -38,6 +38,12 @@ class OneStepGraphBuilder
       vtx_type numVertices,
       adj_type maxNumEdges);
 
+  /**
+  * @brief Add an edge to the current vertex.
+  *
+  * @param dest The destination of the edge.
+  * @param wgt The weight of the edge.
+  */
   void addEdge(
       vtx_type const dest,
       wgt_type const wgt)
@@ -53,6 +59,12 @@ class OneStepGraphBuilder
     }
   }
 
+  /**
+  * @brief Perform bookkeeping for a vertex that will no longer have edges
+  * added.
+  *
+  * @param wgt The weight of the vertex.
+  */
   void finishVertex(
       vtx_type wgt);
 
@@ -61,15 +73,15 @@ class OneStepGraphBuilder
   *
   * @return The built graph.
   */
-  ConstantGraph finish();
+  GraphHandle finish();
 
   private:
     vtx_type m_numVertices;
     adj_type m_numEdges;
-    std::unique_ptr<adj_type[]> m_edgePrefix;
-    std::unique_ptr<vtx_type[]> m_edgeList;
-    std::unique_ptr<wgt_type[]> m_vertexWeight;
-    std::unique_ptr<wgt_type[]> m_edgeWeight;
+    sl::Array<adj_type> m_edgePrefix;
+    sl::Array<vtx_type> m_edgeList;
+    sl::Array<wgt_type> m_vertexWeight;
+    sl::Array<wgt_type> m_edgeWeight;
 
     std::vector<adj_type> m_htable;
 
@@ -85,5 +97,6 @@ class OneStepGraphBuilder
 
 
 }
+
 
 #endif

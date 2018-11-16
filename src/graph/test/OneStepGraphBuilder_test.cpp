@@ -48,17 +48,17 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
   builder.addEdge(0, 1);
   builder.finishVertex(1);
 
-  ConstantGraph g = builder.finish();
+  GraphHandle g = builder.finish();
 
-  testEqual(g.numVertices(), 7U);
-  testEqual(g.numEdges(), 12U);
+  testEqual(g->numVertices(), 7U);
+  testEqual(g->numEdges(), 12U);
 
-  testEqual(g.degreeOf(Vertex::make(0)), 6U);
-  testEqual(g.degreeOf(Vertex::make(1)), 1U);
-  testEqual(g.degreeOf(Vertex::make(2)), 1U);
-  testEqual(g.degreeOf(Vertex::make(3)), 1U);
-  testEqual(g.degreeOf(Vertex::make(4)), 1U);
-  testEqual(g.degreeOf(Vertex::make(5)), 1U);
+  testEqual(g->degreeOf(Vertex::make(0)), 6U);
+  testEqual(g->degreeOf(Vertex::make(1)), 1U);
+  testEqual(g->degreeOf(Vertex::make(2)), 1U);
+  testEqual(g->degreeOf(Vertex::make(3)), 1U);
+  testEqual(g->degreeOf(Vertex::make(4)), 1U);
+  testEqual(g->degreeOf(Vertex::make(5)), 1U);
 }
 
 

@@ -11,7 +11,7 @@
 #ifndef DOLOS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
 #define DOLOS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "multilevel/IStoppingCriteria.hpp"
 
 namespace dolos
@@ -40,8 +40,8 @@ class EdgeRatioStoppingCriteria : public IStoppingCriteria
   */
   bool shouldStop(
       int level,
-      ConstantGraph const * fine,
-      ConstantGraph const * coarse) const override;
+      Graph const * fine,
+      Graph const * coarse) const override;
 
 
   private:

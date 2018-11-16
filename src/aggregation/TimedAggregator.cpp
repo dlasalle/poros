@@ -33,7 +33,7 @@ TimedAggregator::TimedAggregator(
 
 Aggregation TimedAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   sl::Timer tmr;
   tmr.start();

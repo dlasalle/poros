@@ -100,7 +100,29 @@ class GraphHandle
     {
       return m_graph.get();
     }
+
+
+    /**
+    * @brief Get a pointer to the graph.
+    *
+    * @return The pointer.
+    */
+    Graph * get() noexcept
+    {
+      return m_graph.get();
+    }
     
+
+    /**
+    * @brief Get a pointer to the graph.
+    *
+    * @return The pointer.
+    */
+    Graph const * get() const noexcept
+    {
+      return m_graph.get();
+    }
+ 
 
   private:
     std::shared_ptr<Graph> m_graph;

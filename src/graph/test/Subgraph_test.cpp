@@ -8,7 +8,7 @@
 */
 
 #include "graph/Subgraph.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 #include "solidutils/Array.hpp"
@@ -23,12 +23,12 @@ UNITTEST(Subgraph, GetGraph)
 {
   GridGraphGenerator gen(5, 5, 5);
 
-  ConstantGraph g = gen.generate();
+  GraphHandle g = gen.generate();
 
-  sl::Array<vtx_type> superMap(g.numVertices());
+  sl::Array<vtx_type> superMap(g->numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
-  Subgraph s(&g, &superMap);
+  Subgraph s(g, std::move(superMap));
 
   testEqual(s.getGraph()->numVertices(), static_cast<vtx_type>(5*5*5));
 }
@@ -38,12 +38,12 @@ UNITTEST(Subgraph, GetSuperMap)
 {
   GridGraphGenerator gen(5, 5, 5);
 
-  ConstantGraph g = gen.generate();
+  GraphHandle g = gen.generate();
 
-  sl::Array<vtx_type> superMap(g.numVertices());
+  sl::Array<vtx_type> superMap(g->numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
 
-  Subgraph s(&g, &superMap);
+  Subgraph s(g, std::move(superMap));
 
   for (size_t i = 0; i < 5*5*5; ++i) {
     testEqual(s.getSuperMap()[i], static_cast<vtx_type>(i+1));
@@ -54,14 +54,14 @@ UNITTEST(Subgraph, GetSuperMap)
 UNITTEST(Subgraph, MapPartitioning)
 {
   GridGraphGenerator gen(2,2,1);
-  ConstantGraph tempG = gen.generate();
+  GraphHandle tempG = gen.generate();
 
-  sl::Array<vtx_type> superMap(tempG.numVertices());
+  sl::Array<vtx_type> superMap(tempG->numVertices());
   sl::VectorMath::increment(superMap.data(), superMap.size(), 0U);
 
-  Subgraph s(&tempG, &superMap);
+  Subgraph s(tempG, std::move(superMap));
 
-  ConstantGraph const * const g = s.getGraph();
+  Graph const * const g = s.getGraph();
 
   Partitioning subPart(2, g);
   subPart.assign(Vertex::make(0), 0);

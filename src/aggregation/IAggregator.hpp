@@ -16,7 +16,7 @@
 
 #include "Aggregation.hpp"
 #include "aggregation/AggregationParameters.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 
 namespace dolos
 {
@@ -39,7 +39,7 @@ class IAggregator
     */
     virtual Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph) = 0;
+        Graph const * graph) = 0;
 
 };
 

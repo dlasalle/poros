@@ -28,7 +28,7 @@ UNITTEST(MultilevelBisector, ExecuteFullCoarsen8Part)
   // build a grid graph
   GridGraphGenerator gen(40, 40, 1);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // builder our ml bisector
   RandomEngineHandle engine = RandomEngineFactory::make(0);

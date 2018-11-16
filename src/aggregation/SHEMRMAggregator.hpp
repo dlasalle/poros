@@ -66,7 +66,7 @@ class SHEMRMAggregator : public IAggregator
     */
     Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph);
+        Graph const * graph);
 
   private:
       HeavyEdgeMatchingAggregator m_shem;

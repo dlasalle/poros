@@ -42,7 +42,7 @@ BisectionPartitioner::~BisectionPartitioner()
 
 Partitioning BisectionPartitioner::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   if (target->numPartitions() != 2) {
     throw std::runtime_error( \

@@ -14,7 +14,7 @@
 #define DOLOS_SRC_SUBGRAPH_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "partition/Partitioning.hpp"
 #include "graph/IMappedGraph.hpp"
 #include "solidutils/Array.hpp"
@@ -34,8 +34,8 @@ class Subgraph :
     * @param superMap The mapping of vertices to the super graph.
     */
     Subgraph(
-        ConstantGraph * graph,
-        sl::Array<vtx_type> * superMap);
+        GraphHandle superGraph,
+        sl::Array<vtx_type> superMap);
 
 
     /**
@@ -45,7 +45,7 @@ class Subgraph :
     * @param superGraph The super graph.
     */
     Subgraph(
-        ConstantGraph * graph);
+        GraphHandle superGraph);
 
 
     /**
@@ -53,7 +53,7 @@ class Subgraph :
     *
     * @return The graph.
     */
-    ConstantGraph const * getGraph() const override;
+    Graph const * getGraph() const override;
 
 
     /**
@@ -96,7 +96,7 @@ class Subgraph :
 
   private:
     sl::Array<vtx_type> m_superMap;
-    ConstantGraph m_graph;
+    GraphHandle m_graph;
 };
 
 

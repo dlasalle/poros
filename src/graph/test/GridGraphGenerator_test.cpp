@@ -9,7 +9,7 @@
 
 
 #include "graph/GridGraphGenerator.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "solidutils/UnitTest.hpp"
 
 
@@ -23,7 +23,7 @@ UNITTEST(RandomBisector, Execute)
   GridGraphGenerator gen(17, 10, 3);
   gen.setRandomVertexWeight(1, 3);
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   testEqual(graph.numVertices(), static_cast<vtx_type>(17*10*3));
 

@@ -67,7 +67,7 @@ class HeavyEdgeMatchingAggregator : public IAggregator
     */
     Aggregation aggregate(
         AggregationParameters params,
-        ConstantGraph const * graph);
+        Graph const * graph);
 
   private:
     RandomEngineHandle m_rng;

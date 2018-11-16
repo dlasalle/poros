@@ -80,7 +80,7 @@ pid_type pickSide(
 void move(
     Vertex const vertex,
     pid_type const to,
-    ConstantGraph const * const graph,
+    Graph const * const graph,
     Partitioning * const partitioning,
     TwoWayConnectivity * const connectivity,
     VertexQueue * const pqs,
@@ -150,7 +150,7 @@ void FMRefiner::refine(
     TargetPartitioning const * const target,
     TwoWayConnectivity * const connectivity,
     Partitioning * const partitioning,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   std::array<VertexQueue, 2> pqs{{
     {graph->numVertices()}, \

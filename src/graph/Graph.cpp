@@ -31,19 +31,31 @@ Graph::Graph(
     vtx_type const * const edgeList,
     wgt_type const * const vertexWeight,
     wgt_type const * const edgeWeight) :
+  Graph(sl::ConstArray<adj_type>(edgePrefix, numVertices+1),
+        sl::ConstArray<vtx_type>(edgeList, numEdges),
+        sl::ConstArray<wgt_type>(vertexWeight, numVertices),
+        sl::ConstArray<wgt_type>(edgeWeight, numEdges))
+{
+  // do nothing
+}
+
+
+Graph::Graph(
+    sl::ConstArray<adj_type> edgePrefix,
+    sl::ConstArray<vtx_type> edgeList,
+    sl::ConstArray<wgt_type> vertexWeight,
+    sl::ConstArray<wgt_type> edgeWeight) :
   m_uniformEdgeWeight(true),
   m_uniformVertexWeight(true),
-  m_numVertices(numVertices),
-  m_numEdges(numEdges),
+  m_numVertices(edgePrefix.size()-1),
+  m_numEdges(edgeList.size()),
   m_totalVertexWeight(0),
   m_totalEdgeWeight(0),
-  m_edgePrefix(edgePrefix, numVertices+1),
-  m_edgeList(edgeList, numEdges),
-  m_vertexWeight(vertexWeight, numVertices),
-  m_edgeWeight(edgeWeight, numEdges)
+  m_edgePrefix(std::move(edgePrefix)),
+  m_edgeList(std::move(edgeList)),
+  m_vertexWeight(std::move(vertexWeight)),
+  m_edgeWeight(std::move(edgeWeight))
 {
-  ASSERT_NOTNULL(edgePrefix);
-
   // calculate total vertex weight
   if (m_numVertices > 0) {
     if (m_vertexWeight.data() == nullptr) {
@@ -82,6 +94,8 @@ Graph::Graph(
     }
   }
 }
+
+
 
 
 Graph::Graph(

@@ -9,7 +9,6 @@
 
 
 #include "GridGraphGenerator.hpp"
-#include "graph/GraphData.hpp"
 #include "solidutils/Random.hpp"
 #include "solidutils/Debug.hpp"
 
@@ -134,17 +133,15 @@ void GridGraphGenerator::setRandomEdgeWeight(
 }
 
 
-ConstantGraph GridGraphGenerator::generate()
+Graph GridGraphGenerator::generate()
 {
   vtx_type const numVertices = m_grid->numVertices();
   adj_type const numEdges = m_grid->numEdges(); 
 
-  GraphData data(numVertices, numEdges);
-
-  adj_type * const edgePrefix = data.edgePrefix();
-  vtx_type * const edgeList = data.edgeList();
-  wgt_type * const vertexWeight = data.vertexWeight();
-  wgt_type * const edgeWeight = data.edgeWeight();
+  sl::Array<adj_type> edgePrefix(numVertices+1);
+  sl::Array<vtx_type> edgeList(numEdges);
+  sl::Array<wgt_type> vertexWeight(numVertices);
+  sl::Array<wgt_type> edgeWeight(numEdges);
 
   vtx_type const numX = m_grid->numVerticesX();
   vtx_type const numY = m_grid->numVerticesY();
@@ -218,10 +215,11 @@ ConstantGraph GridGraphGenerator::generate()
   ASSERT_EQUAL(edge, numEdges);
 
   // set vertex weights
-  sl::Random::fillWithRange(vertexWeight, numVertices, \
+  sl::Random::fillWithRange(vertexWeight.data(), numVertices, \
       m_vertexWeightMin, m_vertexWeightMax, rng);
 
-  return data.toGraph();
+  return Graph(std::move(edgePrefix), std::move(edgeList), \
+      std::move(vertexWeight), std::move(edgeWeight));
 }
 
 

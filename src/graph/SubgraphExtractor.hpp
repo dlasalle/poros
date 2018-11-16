@@ -14,7 +14,7 @@
 #define DOLOS_SRC_SUBGRAPHEXTRACTOR_HPP
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "partition/Partitioning.hpp"
 #include "graph/Subgraph.hpp"
 
@@ -36,7 +36,7 @@ class SubgraphExtractor
     * @return The subgraphs.
     */
     static std::vector<Subgraph> partitions(
-        ConstantGraph const * graph,
+        Graph const * graph,
         Partitioning const * part,
         vtx_type const * const labels = nullptr);
 };

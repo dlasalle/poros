@@ -72,7 +72,7 @@ void swapBalanceRight(
     wgt_type const maxLeftWeight,
     wgt_type const maxRightWeight,
     Partitioning * const partitioning,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   std::vector<vertex_struct> vertices(graph->numVertices());
 
@@ -154,7 +154,7 @@ RandomBisector::~RandomBisector()
 
 Partitioning RandomBisector::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   // random vertex order
 

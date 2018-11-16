@@ -42,7 +42,7 @@ RandomFMBisector::~RandomFMBisector()
 
 Partitioning RandomFMBisector::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   Partitioning part = m_bisector.execute(target, graph);
 

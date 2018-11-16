@@ -9,8 +9,9 @@
 
 
 #include "TimeKeeper.hpp"
-
 #include "solidutils/Debug.hpp"
+
+#include <stdexcept>
 
 namespace dolos
 {

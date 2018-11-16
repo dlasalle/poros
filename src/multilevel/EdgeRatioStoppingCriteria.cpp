@@ -37,8 +37,8 @@ EdgeRatioStoppingCriteria::EdgeRatioStoppingCriteria(
 
 bool EdgeRatioStoppingCriteria::shouldStop(
     int const level,
-    ConstantGraph const * const fine,
-    ConstantGraph const * const coarse) const
+    Graph const * const fine,
+    Graph const * const coarse) const
 {
   if (level > 0 && fine == nullptr) {
     throw std::runtime_error("Cannot evaluate stopping condition on "

@@ -31,7 +31,7 @@ BFSBisector::BFSBisector(
 
 Partitioning BFSBisector::execute(
     TargetPartitioning const * target,
-    ConstantGraph const * graph)
+    Graph const * graph)
 {
   Vertex const seedVertex = \
       Vertex::make(m_rng.randInRange(0, graph->numVertices()-1));
@@ -41,7 +41,7 @@ Partitioning BFSBisector::execute(
 
 Partitioning BFSBisector::execute(
     TargetPartitioning const * target,
-    ConstantGraph const * graph,
+    Graph const * graph,
     Vertex const seed)
 {
   ASSERT_EQUAL(target->numPartitions(), 2);

@@ -25,7 +25,7 @@ namespace dolos
 
 
 std::vector<Subgraph> SubgraphExtractor::partitions(
-    ConstantGraph const * const graph,
+    Graph const * const graph,
     Partitioning const * const part,
     vtx_type const * const labels)
 {
@@ -122,8 +122,8 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   std::vector<Subgraph> subgraphs;
   subgraphs.reserve(numParts);
   for (pid_type pid = 0; pid < numParts; ++pid) {
-    ConstantGraph graph = builder[pid].finish();
-    subgraphs.emplace_back(&graph, &superMaps[pid]);
+    GraphHandle subgraph = builder[pid].finish();
+    subgraphs.emplace_back(subgraph, std::move(superMaps[pid]));
   }
 
   return subgraphs;

@@ -22,14 +22,12 @@ namespace dolos
 
 Aggregation::Aggregation(
     sl::Array<vtx_type> coarseMap,
-    vtx_type const numCoarseVertices,
-    CSRGraphData const data) :
+    vtx_type const numCoarseVertices) :
   m_numFineVertices(coarseMap.size()),
   m_numCoarseVertices(numCoarseVertices),
   m_coarseMap(std::move(coarseMap)),
   m_finePrefix(numCoarseVertices+1, 0),
-  m_fineMap(m_numFineVertices),
-  m_data(data)
+  m_fineMap(m_numFineVertices)
 {
   // build prefix and fine map
   for (vtx_type v = 0; v < m_numFineVertices; ++v) {
@@ -49,8 +47,7 @@ Aggregation::Aggregation(
   m_numCoarseVertices(rhs.m_numCoarseVertices),
   m_coarseMap(std::move(rhs.m_coarseMap)),
   m_finePrefix(std::move(rhs.m_finePrefix)),
-  m_fineMap(std::move(rhs.m_fineMap)),
-  m_data(rhs.m_data)
+  m_fineMap(std::move(rhs.m_fineMap))
 {
   rhs.m_numCoarseVertices = 0;
 }
@@ -65,7 +62,6 @@ Aggregation& Aggregation::operator=(
   m_coarseMap = std::move(rhs.m_coarseMap);
   m_finePrefix = std::move(rhs.m_finePrefix);
   m_fineMap = std::move(rhs.m_fineMap);
-  m_data = rhs.m_data;
 
   return *this;
 }

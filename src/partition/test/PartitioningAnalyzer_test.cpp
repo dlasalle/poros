@@ -24,7 +24,7 @@ namespace dolos
 UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
@@ -51,7 +51,7 @@ UNITTEST(PartitioningAnalyzer, CalcMaxImbalance)
 UNITTEST(PartitioningAnalyzer, GetImbalance)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);
@@ -81,7 +81,7 @@ UNITTEST(PartitioningAnalyzer, GetImbalance)
 UNITTEST(PartitioningAnalyzer, IsOverWeight)
 {
   GridGraphGenerator gen(10, 10, 1);
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   // create a graph with 30, 20, and 50 balance
   Partitioning part(3, &graph);

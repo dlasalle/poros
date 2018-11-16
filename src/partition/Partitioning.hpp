@@ -14,7 +14,7 @@
 
 #include <vector>
 #include "Base.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "Partition.hpp"
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
@@ -77,7 +77,7 @@ class Partitioning
      */
     Partitioning(
         pid_type numParts,
-        ConstantGraph const * graph);
+        Graph const * graph);
 
 
     /**
@@ -89,7 +89,7 @@ class Partitioning
     */
     Partitioning(
         pid_type numParts,
-        ConstantGraph const * graph,
+        Graph const * graph,
         sl::Array<pid_type> * partitionLabels);
 
 
@@ -422,7 +422,7 @@ class Partitioning
     sl::Array<wgt_type> m_partitionWeight;
     sl::Array<pid_type> m_assignment;
 
-    ConstantGraph const * m_graph;
+    Graph const * m_graph;
 
 
 

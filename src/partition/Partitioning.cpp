@@ -23,7 +23,7 @@ namespace dolos
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    ConstantGraph const * const graph) :
+    Graph const * const graph) :
   m_cutEdgeWeight(0),
   m_partitionWeight(numParts, 0),
   m_assignment(graph->numVertices(), NULL_PID),
@@ -35,7 +35,7 @@ Partitioning::Partitioning(
 
 Partitioning::Partitioning(
     pid_type const numParts,
-    ConstantGraph const * const graph,
+    Graph const * const graph,
     sl::Array<pid_type> * const partitionLabels) :
   m_cutEdgeWeight(0),
   m_partitionWeight(numParts, 0),

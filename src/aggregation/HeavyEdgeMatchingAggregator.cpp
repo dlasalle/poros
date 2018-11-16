@@ -41,7 +41,7 @@ HeavyEdgeMatchingAggregator::HeavyEdgeMatchingAggregator(
 
 Aggregation HeavyEdgeMatchingAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
@@ -81,7 +81,7 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
   tmr.stop();
   std::cout << "SHEM took " << tmr.poll() << std::endl;
 
-  return matcher.build(graph->getData());
+  return matcher.build();
 }
 
 

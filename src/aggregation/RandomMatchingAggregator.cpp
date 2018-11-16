@@ -46,7 +46,7 @@ RandomMatchingAggregator::~RandomMatchingAggregator()
 
 Aggregation RandomMatchingAggregator::aggregate(
     AggregationParameters const params,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
@@ -87,7 +87,7 @@ Aggregation RandomMatchingAggregator::aggregate(
   tmr.stop();
   std::cout << "RM took " << tmr.poll() << std::endl;
 
-  return matcher.build(graph->getData());
+  return matcher.build();
 }
 
 

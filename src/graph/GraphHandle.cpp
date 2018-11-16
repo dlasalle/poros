@@ -53,7 +53,7 @@ GraphHandle::GraphHandle(
 
 GraphHandle::GraphHandle(
     Graph rhs) :
-  m_graph(new Graph(std::move(rhs)))
+  m_graph(std::make_shared<Graph>(std::move(rhs)))
 {
   // do nothing 
 }

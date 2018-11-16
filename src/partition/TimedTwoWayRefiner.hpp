@@ -40,7 +40,7 @@ class TimedTwoWayRefiner : public ITwoWayRefiner, public TimedProcess
         TargetPartitioning const * target,
         TwoWayConnectivity * connectivity,
         Partitioning * partitioning,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
     private:
       std::unique_ptr<ITwoWayRefiner> m_refiner;

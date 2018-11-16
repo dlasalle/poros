@@ -52,7 +52,7 @@ class BisectionPartitioner :
      */
     virtual Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph);
+        Graph const * graph);
 
 
   private:

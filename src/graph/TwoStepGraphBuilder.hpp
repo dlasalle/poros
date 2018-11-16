@@ -15,9 +15,9 @@
 
 
 #include "Base.hpp"
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
+#include "solidutils/Array.hpp"
 
-#include <memory>
 
 namespace dolos
 {
@@ -69,7 +69,7 @@ class TwoStepGraphBuilder
     *
     * @return The built graph.
     */
-    ConstantGraph finish();
+    GraphHandle finish();
 
 
     /**
@@ -149,10 +149,10 @@ class TwoStepGraphBuilder
     int m_phase;
     vtx_type m_numVertices;
     adj_type m_numEdges;
-    std::unique_ptr<adj_type[]> m_edgePrefix;
-    std::unique_ptr<vtx_type[]> m_edgeList;
-    std::unique_ptr<wgt_type[]> m_vertexWeight;
-    std::unique_ptr<wgt_type[]> m_edgeWeight;
+    sl::Array<adj_type> m_edgePrefix;
+    sl::Array<vtx_type> m_edgeList;
+    sl::Array<wgt_type> m_vertexWeight;
+    sl::Array<wgt_type> m_edgeWeight;
 
     // prevent copying
     TwoStepGraphBuilder(

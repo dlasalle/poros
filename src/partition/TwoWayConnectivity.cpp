@@ -39,7 +39,7 @@ std::string TwoWayConnectivity::getVertexDegreeString(
 
 
 TwoWayConnectivity::TwoWayConnectivity(
-    ConstantGraph const * const graph,
+    Graph const * const graph,
     Partitioning const * const partitioning) :
   m_border(graph->numVertices()),
   m_connectivity(graph->numVertices()),

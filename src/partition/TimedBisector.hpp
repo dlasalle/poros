@@ -39,7 +39,7 @@ class TimedBisector : public IBisector, public TimedProcess
     */
     Partitioning execute(
         TargetPartitioning const * target,
-        ConstantGraph const * graph) override;
+        Graph const * graph) override;
 
   private:
     std::unique_ptr<IBisector> m_bisector;

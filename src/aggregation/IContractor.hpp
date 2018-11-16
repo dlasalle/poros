@@ -16,7 +16,7 @@
 
 
 
-#include "graph/ConstantGraph.hpp"
+#include "graph/GraphHandle.hpp"
 #include "Aggregation.hpp"
 #include "Base.hpp"
 
@@ -47,8 +47,8 @@ class IContractor
     *
     * @return The contracted graph.
     */
-    virtual ConstantGraph contract(
-        ConstantGraph const * const graph,
+    virtual GraphHandle contract(
+        Graph const * const graph,
         Aggregation const * const aggregation) = 0;
 
 };

@@ -24,7 +24,7 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
   // graph with 210 vertices and a minimum bisection of 30 
   GridGraphGenerator gen(5, 6, 7); 
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.03);
 
@@ -52,7 +52,7 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
   // graph with 210 vertices and a minimum bisection of 30 
   GridGraphGenerator gen(5, 6, 7); 
 
-  ConstantGraph graph = gen.generate();
+  Graph graph = gen.generate();
 
   TargetPartitioning target(2, graph.getTotalVertexWeight(), 0.03);
   Partitioning part(2, &graph);

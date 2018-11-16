@@ -38,8 +38,8 @@ class TimedContractor : public IContractor, public TimedProcess
     *
     * @return The aggregation.
     */
-    ConstantGraph contract(
-        ConstantGraph const * graph,
+    GraphHandle contract(
+        Graph const * graph,
         Aggregation const * aggregation) override;
 
   private:

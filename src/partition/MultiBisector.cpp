@@ -46,7 +46,7 @@ MultiBisector::~MultiBisector()
 
 Partitioning MultiBisector::execute(
     TargetPartitioning const * const target,
-    ConstantGraph const * const graph)
+    Graph const * const graph)
 {
   wgt_type bestBisection = 0;
   double bestBalance = 0.0;

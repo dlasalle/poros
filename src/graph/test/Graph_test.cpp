@@ -1,6 +1,6 @@
 /**
-* @file ConstantGraph_test.cpp
-* @brief Unit tests for the ConstantGraph class.
+* @file Graph_test.cpp
+* @brief Unit tests for the Graph class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017-2018
 * @version 1
@@ -9,7 +9,7 @@
 
 
 #include <vector>
-#include "graph/ConstantGraph.hpp"
+#include "graph/Graph.hpp"
 #include "solidutils/UnitTest.hpp"
 #include "solidutils/Timer.hpp"
 #include "graph/GridGraphGenerator.hpp"
@@ -19,11 +19,11 @@ namespace dolos
 {
 
 
-UNITTEST(ConstantGraph, IterateVertices)
+UNITTEST(Graph, IterateVertices)
 {
   GridGraphGenerator gen(5, 5, 5);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   std::vector<bool> visited(g.numVertices(), false);
   for (Vertex const v : g.vertices()) {
@@ -36,11 +36,11 @@ UNITTEST(ConstantGraph, IterateVertices)
 }
 
 
-UNITTEST(ConstantGraph, IterateEdges)
+UNITTEST(Graph, IterateEdges)
 {
   GridGraphGenerator gen(5, 5, 5);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   std::vector<bool> visited(g.numEdges(), false);
   for (Edge const & e : g.edges()) {
@@ -53,11 +53,11 @@ UNITTEST(ConstantGraph, IterateEdges)
 }
 
 
-UNITTEST(ConstantGraph, IteratePerVertexEdges)
+UNITTEST(Graph, IteratePerVertexEdges)
 {
   GridGraphGenerator gen(5, 5, 5);
 
-  ConstantGraph g = gen.generate();
+  Graph g = gen.generate();
 
   std::vector<bool> visited(g.numEdges(), false);
   for (Vertex const v : g.vertices()) {
