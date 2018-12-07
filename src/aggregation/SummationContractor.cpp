@@ -48,7 +48,9 @@ GraphHandle SummationContractor::contract(
   OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
 
   // go over each fine vertex
+  vtx_type coarseVertex = 0;
   for (VertexGroup const group : aggregation->coarseVertices()) {
+
     wgt_type coarseVertexWeight = 0;
 
     for (Vertex const vertex : group.fineVertices()) {
@@ -56,12 +58,14 @@ GraphHandle SummationContractor::contract(
       for (Edge const edge : graph->edgesOf(vertex)) {
         vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
             graph->destinationOf(edge).index);
-
-        builder.addEdge(coarseNeighbor, graph->weightOf(edge));
+        if (coarseVertex != coarseNeighbor) {
+          builder.addEdge(coarseNeighbor, graph->weightOf(edge));
+        }
       }
     }
 
     builder.finishVertex(coarseVertexWeight);
+    ++coarseVertex;
   }
 
   GraphHandle next = builder.finish();
