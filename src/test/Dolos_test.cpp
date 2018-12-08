@@ -42,7 +42,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
 
     testEqual(r, 1);
 
-    Partitioning part(7, &g, &where); 
+    Partitioning part(7, &g, std::move(where)); 
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
     PartitioningAnalyzer analyzer(&part, &target);
@@ -77,7 +77,7 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
 
     testEqual(r, 1);
 
-    Partitioning part(2, &g, &where); 
+    Partitioning part(2, &g, std::move(where)); 
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
 
@@ -109,7 +109,7 @@ UNITTEST(Dolos, PartGraphRecursiveThreeCut)
 
     testEqual(r, 1);
 
-    Partitioning part(3, &g, &where); 
+    Partitioning part(3, &g, std::move(where)); 
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
 
@@ -141,7 +141,7 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
 
     testEqual(r, 1);
 
-    Partitioning part(4, &g, &where); 
+    Partitioning part(4, &g, std::move(where)); 
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
 
@@ -173,7 +173,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
 
     testEqual(r, 1);
 
-    Partitioning part(7, &g, &where); 
+    Partitioning part(7, &g, std::move(where)); 
     TargetPartitioning target(part.numPartitions(), \
         g.getTotalVertexWeight(), 0.03);
 
