@@ -40,6 +40,12 @@ class TwoWayConnectivity
       BORDER_STILLOUT
     };
 
+    struct vertex_struct
+    {
+      wgt_type external;
+      wgt_type internal;
+    };
+
     /**
     * @brief Determine the direction enum given the partition a vertex is
     * moving to, and the partition of the other vertex.
@@ -55,17 +61,31 @@ class TwoWayConnectivity
     {
       return -(((destVertexA ^ homeVertexB)<<1)-1);
     }
-        
+
 
     /**
-    * @brief Create a new two-way connectivity.
+    * @brief Create a TwoWayConnectivity from a graph and partitioning.
     *
-    * @param graph The graph.
+    * @param graph The graph that is partitioned.
     * @param partitioning The partitioning.
+    *
+    * @return The TwoWayConnectivity.
+    *
+    * @throw An exception if the partitioning is not a bisection.
     */
-    TwoWayConnectivity(
+    static TwoWayConnectivity fromPartitioning(
         Graph const * graph,
         Partitioning const * partitioning);
+
+
+    /**
+    * @brief Create a new two-way connectivity from the internal/external
+    * weights associated with each vertex.
+    *
+    * @param connectivity The weights.
+    */
+    TwoWayConnectivity(
+        sl::Array<vertex_struct> connectivity);
 
 
     /**
@@ -86,6 +106,15 @@ class TwoWayConnectivity
     */
     TwoWayConnectivity & operator=(
         TwoWayConnectivity const & rhs) = delete;
+
+
+    /**
+    * @brief Default implementation of the move constructor.
+    *
+    * @param rhs The connectivity to move.
+    */
+    TwoWayConnectivity(
+        TwoWayConnectivity && rhs) = default;
 
 
     /**
@@ -198,27 +227,35 @@ class TwoWayConnectivity
 
 
     /**
+    * @brief Check whether or not a vertex is in the border.
+    *
+    * @param vertex The vertex.
+    *
+    * @return Whether or not it is in the border. 
+    */
+    inline bool isInBorder(
+        vtx_type const vertex) const noexcept
+    {
+      return m_border.has(vertex);
+    }
+
+
+    /**
     * @brief Verify that this two way connectivity is correct.
     *
+    * @param graph The graph.
     * @param part The partitioning.
     *
     * @return True if this connectivity is correct, false otherwise.
     */
     bool verify(
+        Graph const * graph,
         Partitioning const * part) const;
 
 
   private:
-    struct vertex_struct
-    {
-      wgt_type external;
-      wgt_type internal;
-    };
-
- 
     sl::FixedSet<vtx_type> m_border;
     sl::Array<vertex_struct> m_connectivity;
-    Graph const * const m_graph;
 
     /**
     * @brief Create a string of the connectivity of the vertex.

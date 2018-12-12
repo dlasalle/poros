@@ -36,7 +36,8 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
 
   Partitioning part = bisector.execute(&target, &graph); 
 
-  TwoWayConnectivity conn(&graph, &part);
+  TwoWayConnectivity conn = \
+      TwoWayConnectivity::fromPartitioning(&graph, &part);
 
   fm.refine(&target, &conn, &part, &graph);
 
@@ -66,7 +67,8 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
 
   FMRefiner fm(25, graph.numVertices());
 
-  TwoWayConnectivity conn(&graph, &part);
+  TwoWayConnectivity conn = \
+      TwoWayConnectivity::fromPartitioning(&graph, &part);
 
   fm.refine(&target, &conn, &part, &graph);
 

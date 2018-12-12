@@ -65,7 +65,10 @@ Partitioning MultilevelBisector::execute(
   params.setMaxVertexWeight( \
       1.5 * graph->getTotalVertexWeight() / targetNumVertices);
 
-  return recurse(0, params, &criteria, target, nullptr, graph);
+  PartitioningInformation partInfo = \
+      recurse(0, params, &criteria, target, nullptr, graph);
+
+  return std::move(*(partInfo.partitioning()));
 }
 
 
@@ -73,7 +76,7 @@ Partitioning MultilevelBisector::execute(
 * PROTECTED METHODS ***********************************************************
 ******************************************************************************/
 
-Partitioning MultilevelBisector::recurse(
+PartitioningInformation MultilevelBisector::recurse(
     int const level,
     AggregationParameters const params,
     IStoppingCriteria const * const stoppingCriteria,
@@ -93,10 +96,11 @@ Partitioning MultilevelBisector::recurse(
       " edges, with an exposed weight of " +
       std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
 
-
-
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
-    return m_initialBisector->execute(target, graph); 
+    Partitioning part = m_initialBisector->execute(target, graph); 
+    TwoWayConnectivity conn = \
+        TwoWayConnectivity::fromPartitioning(graph, &part);
+    return PartitioningInformation(std::move(part), std::move(conn));
   } else {
     sl::Timer coarsenTmr;
     coarsenTmr.start();
@@ -112,25 +116,24 @@ Partitioning MultilevelBisector::recurse(
     m_timeKeeper->reportTime(TimeKeeper::COARSENING, coarsenTmr.poll());
 
     // recurse
-    Partitioning coarsePart = recurse( \
+    PartitioningInformation coarsePartInfo = recurse( \
         level+1, params, stoppingCriteria, target, graph, coarse.graph());
-
 
     sl::Timer uncoarsenTmr;
     uncoarsenTmr.start();
 
     sl::Timer projectTmr;
     projectTmr.start();
-    Partitioning part = coarse.project(&coarsePart); 
-    TwoWayConnectivity connectivity(graph, &part);
+    PartitioningInformation finePartInfo = coarse.project(&coarsePartInfo); 
     projectTmr.stop();
     m_timeKeeper->reportTime(TimeKeeper::PROJECTION, projectTmr.poll());
 
-    m_refiner->refine(target, &connectivity, &part, graph);
+    m_refiner->refine(target, finePartInfo.connectivity(),
+        finePartInfo.partitioning(), graph);
     uncoarsenTmr.stop();
     m_timeKeeper->reportTime(TimeKeeper::UNCOARSENING, uncoarsenTmr.poll());
 
-    return part;
+    return finePartInfo;
   }
 }
 

@@ -56,7 +56,7 @@ UNITTEST(TwoWayConnectivity, GetVertexDelta)
 
   p.recalcCutEdgeWeight();
 
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
   // moving any vertex should increase the cut by 1
   testEqual(conn.getVertexDelta(0), 2);
@@ -85,7 +85,7 @@ UNITTEST(TwoWayConnectivity, Move)
   p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
   testEqual(conn.getVertexDelta(0), 1);
 
@@ -123,7 +123,7 @@ UNITTEST(TwoWayConnectivity, UpdateNeighbor)
   p.assign(Vertex::make(7), 1);
 
   p.recalcCutEdgeWeight();
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
   p.move(Vertex::make(1), 1);
   conn.move(Vertex::make(1));
@@ -187,7 +187,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
 
   p.recalcCutEdgeWeight();
 
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
   // moving any vertex should increase the cut by 1
   testEqual(conn.getVertexDelta(0), 1);
@@ -266,7 +266,7 @@ UNITTEST(TwoWayConnectivity, GetBorderSet)
 
   p.recalcCutEdgeWeight();
 
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
   sl::FixedSet<vtx_type> const * const bnd = conn.getBorderVertexSet();
 
@@ -318,9 +318,9 @@ UNITTEST(TwoWayConnectivity, Verify)
 
   p.recalcCutEdgeWeight();
 
-  TwoWayConnectivity conn(&g, &p);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(&g, &p);
 
-  testTrue(conn.verify(&p));
+  testTrue(conn.verify(&g, &p));
 
   conn.move(Vertex::make(0));
   p.move(Vertex::make(0), 1);
@@ -329,7 +329,7 @@ UNITTEST(TwoWayConnectivity, Verify)
     conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
         TwoWayConnectivity::getDirection(1, where));
   }
-  testTrue(conn.verify(&p));
+  testTrue(conn.verify(&g, &p));
 
   conn.move(Vertex::make(2));
   p.move(Vertex::make(2), 0);
@@ -338,7 +338,7 @@ UNITTEST(TwoWayConnectivity, Verify)
     conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
         TwoWayConnectivity::getDirection(0, where));
   }
-  testTrue(conn.verify(&p));
+  testTrue(conn.verify(&g, &p));
 
   conn.move(Vertex::make(0));
   p.move(Vertex::make(0), 0);
@@ -348,7 +348,7 @@ UNITTEST(TwoWayConnectivity, Verify)
         TwoWayConnectivity::getDirection(0, where));
   }
 
-  testTrue(conn.verify(&p));
+  testTrue(conn.verify(&g, &p));
 }
 
 

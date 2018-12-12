@@ -46,7 +46,7 @@ Partitioning RandomFMBisector::execute(
 {
   Partitioning part = m_bisector.execute(target, graph);
 
-  TwoWayConnectivity conn(graph, &part);
+  TwoWayConnectivity conn = TwoWayConnectivity::fromPartitioning(graph, &part);
 
   m_refiner.refine(target, &conn, &part, graph);
 

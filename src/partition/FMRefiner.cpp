@@ -130,7 +130,6 @@ void move(
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
-
 FMRefiner::FMRefiner(
     int const maxRefIters,
     vtx_type const maxMoves) :
@@ -224,7 +223,7 @@ void FMRefiner::refine(
 
     DEBUG_MESSAGE(std::string("Undoing ") + std::to_string(moves.size()) + \
         std::string("/") + std::to_string(numMoved) + std::string(" moves."));
-    ASSERT_TRUE(connectivity->verify(partitioning));
+    ASSERT_TRUE(connectivity->verify(graph, partitioning));
 
     // undo bad moves
     for (size_t i = moves.size(); i > 0;) {
@@ -236,7 +235,7 @@ void FMRefiner::refine(
 
       move(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
     }
-    ASSERT_TRUE(connectivity->verify(partitioning));
+    ASSERT_TRUE(connectivity->verify(graph, partitioning));
     ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);
 
     if (numMoved == moves.size()) {

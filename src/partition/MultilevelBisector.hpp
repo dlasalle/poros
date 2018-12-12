@@ -16,6 +16,7 @@
 #include "partition/IBisector.hpp"
 #include "aggregation/IAggregator.hpp"
 #include "partition/ITwoWayRefiner.hpp"
+#include "partition/PartitioningInformation.hpp"
 #include "multilevel/IStoppingCriteria.hpp"
 #include "util/TimeKeeper.hpp"
 
@@ -65,9 +66,9 @@ class MultilevelBisector : public IBisector
      * @param parent The parent of this graph.
      * @param graph The current graph.
      *
-     * @return The partitioning.
+     * @return The partitioning information.
      */
-    Partitioning recurse(
+    PartitioningInformation recurse(
         int level,
         AggregationParameters params,
         IStoppingCriteria const * stoppingCriteria,
