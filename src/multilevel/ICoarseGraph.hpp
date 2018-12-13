@@ -14,6 +14,7 @@
 
 #include "graph/GraphHandle.hpp"
 #include "partition/Partitioning.hpp"
+#include "partition/PartitioningInformation.hpp"
 
 namespace dolos
 {
@@ -42,12 +43,14 @@ class ICoarseGraph
   /**
   * @brief Project the partitioning of the coarse graph to the fine graph.
   *
-  * @param coarsePartitioning The coarse graph.
+  * @param coarseInfo The partitioning information of the coarse graph.
   *
-  * @return The partitioning of the fine graph.
+  * @return The partitioning information of the fine graph.
   */
-  virtual Partitioning project(
-      Partitioning const * coarsePartitioning) = 0;
+  virtual PartitioningInformation project(
+      PartitioningInformation const * coarseInfo) = 0;
+
+
 
 };
 

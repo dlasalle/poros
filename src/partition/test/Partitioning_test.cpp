@@ -49,7 +49,7 @@ UNITTEST(Partitioning, VectorConstructor)
     labels[v] = v % 5;
   }
 
-  Partitioning p(5, &graph, &labels);
+  Partitioning p(5, &graph, std::move(labels));
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
@@ -69,7 +69,7 @@ UNITTEST(Partitioning, MoveConstructor)
     labels[v] = v % 5;
   }
 
-  Partitioning p1(5, &graph, &labels);
+  Partitioning p1(5, &graph, std::move(labels));
   Partitioning p2(std::move(p1));
 
   // check partition weights -- should all be 9x7
@@ -111,7 +111,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
     }
   }
 
-  Partitioning p(5, &graph, &labels);
+  Partitioning p(5, &graph, std::move(labels));
 
   std::vector<vtx_type> counts = p.calcVertexCounts();
 

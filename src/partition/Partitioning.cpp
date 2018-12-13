@@ -36,10 +36,10 @@ Partitioning::Partitioning(
 Partitioning::Partitioning(
     pid_type const numParts,
     Graph const * const graph,
-    sl::Array<pid_type> * const partitionLabels) :
+    sl::Array<pid_type> partitionLabels) :
   m_cutEdgeWeight(0),
   m_partitionWeight(numParts, 0),
-  m_assignment(std::move(*partitionLabels)),
+  m_assignment(std::move(partitionLabels)),
   m_graph(graph)
 {
   ASSERT_GREATER(numParts, 0);

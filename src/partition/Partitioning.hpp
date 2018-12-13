@@ -12,12 +12,14 @@
 #define DOLOS_SRC_PARTITIONING_HPP
 
 
-#include <vector>
 #include "Base.hpp"
-#include "graph/Graph.hpp"
 #include "Partition.hpp"
+#include "graph/Graph.hpp"
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
+
+
+#include <vector>
 
 
 namespace dolos
@@ -85,12 +87,12 @@ class Partitioning
     *
     * @param numParts The number of parittions.
     * @param graph The graph.
-    * @param partitionLabels The vector of partition labels (will be moved).
+    * @param partitionLabels The vector of partition labels.
     */
     Partitioning(
         pid_type numParts,
         Graph const * graph,
-        sl::Array<pid_type> * partitionLabels);
+        sl::Array<pid_type> partitionLabels);
 
 
     /**

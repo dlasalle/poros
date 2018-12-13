@@ -66,12 +66,12 @@ class DiscreteCoarseGraph : public ICoarseGraph
   /**
   * @brief Project the partitioning of the coarse graph to the fine graph.
   *
-  * @param coarsePartitioning The coarse graph.
+  * @param coarseInfo The partitioning information of the coarse graph.
   *
-  * @return The partitioning of the fine graph.
+  * @return The partitioning information of the fine graph.
   */
-  Partitioning project(
-      Partitioning const * coarsePartitioning) override;
+  PartitioningInformation project(
+      PartitioningInformation const * coarseInfo) override;
 
 
   private:

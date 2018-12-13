@@ -12,9 +12,34 @@
 #include "TwoWayConnectivity.hpp"
 
 
-
 namespace dolos
 {
+
+using vertex_struct = TwoWayConnectivity::vertex_struct;
+
+
+/******************************************************************************
+* HELPER FUCNTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+/**
+* @brief Check if a vertex should be considered in the boundary given its
+* connectivity.
+*
+* @param v The connectivity of the vertex.
+*
+* @return True if it should be in the boundary.
+*/
+bool shouldBeInBorder(
+    vertex_struct const v)
+{
+ return v.external > 0 || v.internal == 0;
+}
+
+}
 
 
 /******************************************************************************
@@ -32,19 +57,16 @@ std::string TwoWayConnectivity::getVertexDegreeString(
 }
 
 
-
 /******************************************************************************
-* CONSTRUCTORS / DESTRUCTOR ***************************************************
+* PUBLIC STATIC METHODS *******************************************************
 ******************************************************************************/
 
-
-TwoWayConnectivity::TwoWayConnectivity(
+TwoWayConnectivity TwoWayConnectivity::fromPartitioning(
     Graph const * const graph,
-    Partitioning const * const partitioning) :
-  m_border(graph->numVertices()),
-  m_connectivity(graph->numVertices()),
-  m_graph(graph)
+    Partitioning const * const partitioning)
 {
+  sl::Array<vertex_struct> connectivity(graph->numVertices());
+
   // populate connectivity vector
   for (Vertex const vertex : graph->vertices()) {
     vertex_struct pair{0, 0};
@@ -60,14 +82,30 @@ TwoWayConnectivity::TwoWayConnectivity(
       }
     }
 
-    if (pair.external > 0) {
-      m_border.add(v);
-    }
-
-    m_connectivity[v] = pair;
+    connectivity[v] = pair;
   }
+
+  return TwoWayConnectivity(std::move(connectivity));
 }
 
+
+/******************************************************************************
+* CONSTRUCTORS / DESTRUCTOR ***************************************************
+******************************************************************************/
+
+
+TwoWayConnectivity::TwoWayConnectivity(
+    sl::Array<vertex_struct> connectivity) :
+  m_border(connectivity.size()),
+  m_connectivity(std::move(connectivity))
+{
+  // fill in border
+  for (vtx_type v = 0; v < m_connectivity.size(); ++v) {
+    if (shouldBeInBorder(m_connectivity[v])) {
+      m_border.add(v);
+    }
+  }
+}
 
 /******************************************************************************
 * PUBLIC METHODS **************************************************************
@@ -87,11 +125,13 @@ sl::FixedSet<vtx_type> const * TwoWayConnectivity::getBorderVertexSet()
 
 
 bool TwoWayConnectivity::verify(
+    Graph const * const graph,
     Partitioning const * const part) const
 {
   bool good = true;
   // rebuild one and compare
-  TwoWayConnectivity baseLine(m_graph,  part);
+  TwoWayConnectivity baseLine = \
+      TwoWayConnectivity::fromPartitioning(graph, part);
 
   // verify border
   if (baseLine.m_border.size() != m_border.size()) {
@@ -115,7 +155,7 @@ bool TwoWayConnectivity::verify(
   }
 
   // verify connectivity
-  for (Vertex const & vertex : m_graph->vertices()) {
+  for (Vertex const & vertex : graph->vertices()) {
     vtx_type const v = vertex.index;
     if (m_connectivity[v].external != baseLine.m_connectivity[v].external || \
         m_connectivity[v].internal != baseLine.m_connectivity[v].internal) {

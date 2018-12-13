@@ -28,6 +28,8 @@ namespace dolos
 class TwoWayConnectivity
 {
   public:
+    using BorderSet = sl::FixedSet<vtx_type>;
+
     enum move_direction_enum {
       MOVE_TOWARDS = 1,
       MOVE_AWAY = -1
@@ -38,6 +40,12 @@ class TwoWayConnectivity
       BORDER_REMOVED,
       BORDER_STILLIN,
       BORDER_STILLOUT
+    };
+
+    struct vertex_struct
+    {
+      wgt_type external;
+      wgt_type internal;
     };
 
     /**
@@ -55,17 +63,31 @@ class TwoWayConnectivity
     {
       return -(((destVertexA ^ homeVertexB)<<1)-1);
     }
-        
+
 
     /**
-    * @brief Create a new two-way connectivity.
+    * @brief Create a TwoWayConnectivity from a graph and partitioning.
     *
-    * @param graph The graph.
+    * @param graph The graph that is partitioned.
     * @param partitioning The partitioning.
+    *
+    * @return The TwoWayConnectivity.
+    *
+    * @throw An exception if the partitioning is not a bisection.
     */
-    TwoWayConnectivity(
+    static TwoWayConnectivity fromPartitioning(
         Graph const * graph,
         Partitioning const * partitioning);
+
+
+    /**
+    * @brief Create a new two-way connectivity from the internal/external
+    * weights associated with each vertex.
+    *
+    * @param connectivity The weights.
+    */
+    TwoWayConnectivity(
+        sl::Array<vertex_struct> connectivity);
 
 
     /**
@@ -89,11 +111,12 @@ class TwoWayConnectivity
 
 
     /**
-    * @brief Get the set of border vertices.
+    * @brief Default implementation of the move constructor.
     *
-    * @return The set of border vertices.
+    * @param rhs The connectivity to move.
     */
-    sl::FixedSet<vtx_type> const * getBorderVertexSet() const noexcept;
+    TwoWayConnectivity(
+        TwoWayConnectivity && rhs) = default;
 
 
     /**
@@ -101,7 +124,15 @@ class TwoWayConnectivity
     *
     * @return The set of border vertices.
     */
-    sl::FixedSet<vtx_type> * getBorderVertexSet() noexcept;
+    BorderSet const * getBorderVertexSet() const noexcept;
+
+
+    /**
+    * @brief Get the set of border vertices.
+    *
+    * @return The set of border vertices.
+    */
+    BorderSet * getBorderVertexSet() noexcept;
 
 
     /**
@@ -111,7 +142,7 @@ class TwoWayConnectivity
     *
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline int move(
+    int move(
         Vertex const vertex) noexcept
     {
       // flip our connectivity
@@ -132,7 +163,7 @@ class TwoWayConnectivity
     *
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline int updateNeighbor(
+    int updateNeighbor(
         vtx_type const neighbor,
         wgt_type const edgeWeight,
         int const direction) noexcept
@@ -159,7 +190,7 @@ class TwoWayConnectivity
     *
     * @return The edge weight delta.
     */
-    inline wgt_diff_type getVertexDelta(
+    wgt_diff_type getVertexDelta(
         Vertex const vertex) const noexcept
     {
       return getVertexDelta(vertex.index);
@@ -174,7 +205,7 @@ class TwoWayConnectivity
     *
     * @return The edge weight delta.
     */
-    inline wgt_diff_type getVertexDelta(
+    wgt_diff_type getVertexDelta(
         vtx_type const vertex) const noexcept
     {
       ASSERT_LESS(vertex, m_connectivity.size());
@@ -190,7 +221,7 @@ class TwoWayConnectivity
     *
     * @return Whether or not it is in the border. 
     */
-    inline bool isInBorder(
+    bool isInBorder(
         Vertex const vertex) const noexcept
     {
       return m_border.has(vertex.index);
@@ -198,27 +229,65 @@ class TwoWayConnectivity
 
 
     /**
+    * @brief Check whether or not a vertex is in the border.
+    *
+    * @param vertex The vertex.
+    *
+    * @return Whether or not it is in the border. 
+    */
+    bool isInBorder(
+        vtx_type const vertex) const noexcept
+    {
+      return m_border.has(vertex);
+    }
+
+    
+    /**
+    * @brief Get the internal connectivity of the given vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The weight of edges connecting this vertex to other vertices
+    * in the partition in which it resides.
+    */
+    wgt_type internalConnectivityOf(
+        Vertex const v) const noexcept
+    {
+      return m_connectivity[v.index].internal;
+    }
+
+
+    /**
+    * @brief Get the external connectivity of the given vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The weight of edges connecting this vertex to other vertices
+    * in a partition other than the one in which this vertex resides.
+    */
+    wgt_type externalConnectivityOf(
+        Vertex const v) const noexcept
+    {
+      return m_connectivity[v.index].external;
+    }
+
+
+    /**
     * @brief Verify that this two way connectivity is correct.
     *
+    * @param graph The graph.
     * @param part The partitioning.
     *
     * @return True if this connectivity is correct, false otherwise.
     */
     bool verify(
+        Graph const * graph,
         Partitioning const * part) const;
 
 
   private:
-    struct vertex_struct
-    {
-      wgt_type external;
-      wgt_type internal;
-    };
-
- 
     sl::FixedSet<vtx_type> m_border;
     sl::Array<vertex_struct> m_connectivity;
-    Graph const * const m_graph;
 
     /**
     * @brief Create a string of the connectivity of the vertex.

@@ -151,7 +151,7 @@ Partitioning RecursiveBisectionPartitioner::execute(
   MappedGraphWrapper mappedGraph(graph);
   recurse(partitionLabels.data(), target, &mappedGraph, 0);
 
-  Partitioning part(target->numPartitions(), graph, &partitionLabels);
+  Partitioning part(target->numPartitions(), graph, std::move(partitionLabels));
   part.recalcCutEdgeWeight();
 
   return part;

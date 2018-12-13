@@ -130,7 +130,6 @@ void move(
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
-
 FMRefiner::FMRefiner(
     int const maxRefIters,
     vtx_type const maxMoves) :
@@ -164,6 +163,10 @@ void FMRefiner::refine(
   std::vector<Vertex> moves;
   moves.reserve(graph->numVertices());
 
+  vtx_type const maxNumBadMoves = std::min(m_maxMoves, \
+      std::max(static_cast<vtx_type>(graph->numVertices()*0.01),
+               static_cast<vtx_type>(25)));
+
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
     
     // delete me
@@ -193,7 +196,7 @@ void FMRefiner::refine(
 
     // move all possible vertices
     while ((pqs[0].size() > 0 || pqs[1].size() > 0) && \
-        moves.size() < m_maxMoves) {
+        moves.size() < maxNumBadMoves) {
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 
@@ -224,7 +227,7 @@ void FMRefiner::refine(
 
     DEBUG_MESSAGE(std::string("Undoing ") + std::to_string(moves.size()) + \
         std::string("/") + std::to_string(numMoved) + std::string(" moves."));
-    ASSERT_TRUE(connectivity->verify(partitioning));
+    ASSERT_TRUE(connectivity->verify(graph, partitioning));
 
     // undo bad moves
     for (size_t i = moves.size(); i > 0;) {
@@ -236,7 +239,7 @@ void FMRefiner::refine(
 
       move(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
     }
-    ASSERT_TRUE(connectivity->verify(partitioning));
+    ASSERT_TRUE(connectivity->verify(graph, partitioning));
     ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);
 
     if (numMoved == moves.size()) {
