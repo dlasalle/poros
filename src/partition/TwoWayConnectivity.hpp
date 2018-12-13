@@ -28,6 +28,8 @@ namespace dolos
 class TwoWayConnectivity
 {
   public:
+    using BorderSet = sl::FixedSet<vtx_type>;
+
     enum move_direction_enum {
       MOVE_TOWARDS = 1,
       MOVE_AWAY = -1
@@ -122,7 +124,7 @@ class TwoWayConnectivity
     *
     * @return The set of border vertices.
     */
-    sl::FixedSet<vtx_type> const * getBorderVertexSet() const noexcept;
+    BorderSet const * getBorderVertexSet() const noexcept;
 
 
     /**
@@ -130,7 +132,7 @@ class TwoWayConnectivity
     *
     * @return The set of border vertices.
     */
-    sl::FixedSet<vtx_type> * getBorderVertexSet() noexcept;
+    BorderSet * getBorderVertexSet() noexcept;
 
 
     /**
@@ -140,7 +142,7 @@ class TwoWayConnectivity
     *
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline int move(
+    int move(
         Vertex const vertex) noexcept
     {
       // flip our connectivity
@@ -161,7 +163,7 @@ class TwoWayConnectivity
     *
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline int updateNeighbor(
+    int updateNeighbor(
         vtx_type const neighbor,
         wgt_type const edgeWeight,
         int const direction) noexcept
@@ -188,7 +190,7 @@ class TwoWayConnectivity
     *
     * @return The edge weight delta.
     */
-    inline wgt_diff_type getVertexDelta(
+    wgt_diff_type getVertexDelta(
         Vertex const vertex) const noexcept
     {
       return getVertexDelta(vertex.index);
@@ -203,7 +205,7 @@ class TwoWayConnectivity
     *
     * @return The edge weight delta.
     */
-    inline wgt_diff_type getVertexDelta(
+    wgt_diff_type getVertexDelta(
         vtx_type const vertex) const noexcept
     {
       ASSERT_LESS(vertex, m_connectivity.size());
@@ -219,7 +221,7 @@ class TwoWayConnectivity
     *
     * @return Whether or not it is in the border. 
     */
-    inline bool isInBorder(
+    bool isInBorder(
         Vertex const vertex) const noexcept
     {
       return m_border.has(vertex.index);
@@ -233,10 +235,40 @@ class TwoWayConnectivity
     *
     * @return Whether or not it is in the border. 
     */
-    inline bool isInBorder(
+    bool isInBorder(
         vtx_type const vertex) const noexcept
     {
       return m_border.has(vertex);
+    }
+
+    
+    /**
+    * @brief Get the internal connectivity of the given vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The weight of edges connecting this vertex to other vertices
+    * in the partition in which it resides.
+    */
+    wgt_type interalConnectivityOf(
+        Vertex const v) const noexcept
+    {
+      return m_connectivity[v.index].internal;
+    }
+
+
+    /**
+    * @brief Get the external connectivity of the given vertex.
+    *
+    * @param v The vertex.
+    *
+    * @return The weight of edges connecting this vertex to other vertices
+    * in a partition other than the one in which this vertex resides.
+    */
+    wgt_type exteralConnectivityOf(
+        Vertex const v) const noexcept
+    {
+      return m_connectivity[v.index].external;
     }
 
 
