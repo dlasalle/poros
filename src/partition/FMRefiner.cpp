@@ -163,6 +163,10 @@ void FMRefiner::refine(
   std::vector<Vertex> moves;
   moves.reserve(graph->numVertices());
 
+  vtx_type const maxNumBadMoves = std::min(m_maxMoves, \
+      std::max(static_cast<vtx_type>(graph->numVertices()*0.01),
+               static_cast<vtx_type>(25)));
+
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
     
     // delete me
@@ -192,7 +196,7 @@ void FMRefiner::refine(
 
     // move all possible vertices
     while ((pqs[0].size() > 0 || pqs[1].size() > 0) && \
-        moves.size() < m_maxMoves) {
+        moves.size() < maxNumBadMoves) {
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 

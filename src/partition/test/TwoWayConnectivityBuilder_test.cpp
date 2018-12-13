@@ -36,17 +36,14 @@ UNITTEST(TwoWayConnectivityBuilderTest, BuildTest)
 
   TwoWayConnectivity conn = builder.finish();
 
-  testTrue(conn.isInBorder(0));
-  testEqual(conn.getVertexDelta(0), 0);
-
-  testFalse(conn.isInBorder(1));
-  testEqual(conn.getVertexDelta(1), 1);
-
-  testTrue(conn.isInBorder(2));
-  testEqual(conn.getVertexDelta(2), -1);
-
-  testTrue(conn.isInBorder(3));
-  testEqual(conn.getVertexDelta(3), 0);
+  testEqual(conn.internalConnectivityOf(Vertex(0), static_cast<wgt_type>(1)));
+  testEqual(conn.externalConnectivityOf(Vertex(0), static_cast<wgt_type>(1)));
+  testEqual(conn.internalConnectivityOf(Vertex(1), static_cast<wgt_type>(1)));
+  testEqual(conn.externalConnectivityOf(Vertex(1), static_cast<wgt_type>(0)));
+  testEqual(conn.internalConnectivityOf(Vertex(2), static_cast<wgt_type>(0)));
+  testEqual(conn.externalConnectivityOf(Vertex(2), static_cast<wgt_type>(1)));
+  testEqual(conn.internalConnectivityOf(Vertex(3), static_cast<wgt_type>(0)));
+  testEqual(conn.externalConnectivityOf(Vertex(3), static_cast<wgt_type>(0)));
 }
 
 }
