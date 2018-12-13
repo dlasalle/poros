@@ -36,14 +36,14 @@ UNITTEST(TwoWayConnectivityBuilderTest, BuildTest)
 
   TwoWayConnectivity conn = builder.finish();
 
-  testEqual(conn.internalConnectivityOf(Vertex(0), static_cast<wgt_type>(1)));
-  testEqual(conn.externalConnectivityOf(Vertex(0), static_cast<wgt_type>(1)));
-  testEqual(conn.internalConnectivityOf(Vertex(1), static_cast<wgt_type>(1)));
-  testEqual(conn.externalConnectivityOf(Vertex(1), static_cast<wgt_type>(0)));
-  testEqual(conn.internalConnectivityOf(Vertex(2), static_cast<wgt_type>(0)));
-  testEqual(conn.externalConnectivityOf(Vertex(2), static_cast<wgt_type>(1)));
-  testEqual(conn.internalConnectivityOf(Vertex(3), static_cast<wgt_type>(0)));
-  testEqual(conn.externalConnectivityOf(Vertex(3), static_cast<wgt_type>(0)));
+  testEqual(conn.internalConnectivityOf(Vertex::make(0)), static_cast<wgt_type>(1));
+  testEqual(conn.externalConnectivityOf(Vertex::make(0)), static_cast<wgt_type>(1));
+  testEqual(conn.internalConnectivityOf(Vertex::make(1)), static_cast<wgt_type>(1));
+  testEqual(conn.externalConnectivityOf(Vertex::make(1)), static_cast<wgt_type>(0));
+  testEqual(conn.internalConnectivityOf(Vertex::make(2)), static_cast<wgt_type>(0));
+  testEqual(conn.externalConnectivityOf(Vertex::make(2)), static_cast<wgt_type>(1));
+  testEqual(conn.internalConnectivityOf(Vertex::make(3)), static_cast<wgt_type>(0));
+  testEqual(conn.externalConnectivityOf(Vertex::make(3)), static_cast<wgt_type>(0));
 }
 
 }

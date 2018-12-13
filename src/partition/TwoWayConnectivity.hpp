@@ -250,7 +250,7 @@ class TwoWayConnectivity
     * @return The weight of edges connecting this vertex to other vertices
     * in the partition in which it resides.
     */
-    wgt_type interalConnectivityOf(
+    wgt_type internalConnectivityOf(
         Vertex const v) const noexcept
     {
       return m_connectivity[v.index].internal;
@@ -265,7 +265,7 @@ class TwoWayConnectivity
     * @return The weight of edges connecting this vertex to other vertices
     * in a partition other than the one in which this vertex resides.
     */
-    wgt_type exteralConnectivityOf(
+    wgt_type externalConnectivityOf(
         Vertex const v) const noexcept
     {
       return m_connectivity[v.index].external;
