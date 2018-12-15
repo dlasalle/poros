@@ -63,8 +63,8 @@ Graph::Graph(
     sl::ConstArray<vtx_type> edgeList,
     sl::ConstArray<wgt_type> vertexWeight,
     sl::ConstArray<wgt_type> edgeWeight) :
-  m_uniformEdgeWeight(true),
-  m_uniformVertexWeight(true),
+  m_unitEdgeWeight(true),
+  m_unitVertexWeight(true),
   m_numVertices(edgePrefix.size()-1),
   m_numEdges(edgeList.size()),
   m_totalVertexWeight(0),
@@ -77,17 +77,16 @@ Graph::Graph(
   // calculate total vertex weight
   if (m_numVertices > 0) {
     if (m_vertexWeight.data() == nullptr) {
-      // allocate uniform vertex weight
+      // allocate unit vertex weight
       m_vertexWeight = sl::Array<vtx_type>(m_numVertices, 1);
-      m_uniformVertexWeight = true;
+      m_unitVertexWeight = true;
     } else {
-      const wgt_type baseVertexWeight = m_vertexWeight[0];
       for (vtx_type v = 0; v < m_numVertices; ++v) {
         const wgt_type vwgt = m_vertexWeight[v];
         m_totalVertexWeight += vwgt;
 
-        if (vwgt != baseVertexWeight) {
-          m_uniformVertexWeight = false;
+        if (vwgt != static_cast<wgt_type>(1)) {
+          m_unitVertexWeight = false;
         }
       }
     }
@@ -96,17 +95,16 @@ Graph::Graph(
   // calculate total edge weight
   if (m_numEdges > 0) {
     if (m_edgeWeight.data() == nullptr) {
-      // allocate uniform edge weight
+      // allocate unit edge weight
       m_edgeWeight = sl::Array<wgt_type>(m_numEdges, 1);
-      m_uniformEdgeWeight = true;
+      m_unitEdgeWeight = true;
     } else {
-      const wgt_type baseEdgeWeight = m_edgeWeight[0];
       for (adj_type e = 0; e < m_numEdges; ++e) {
         const wgt_type ewgt = m_edgeWeight[e];
         m_totalEdgeWeight += ewgt;
 
-        if (ewgt != baseEdgeWeight) {
-          m_uniformEdgeWeight = false;
+        if (ewgt != static_cast<wgt_type>(1)) {
+          m_unitEdgeWeight = false;
         }
       }
     }
@@ -118,8 +116,8 @@ Graph::Graph(
 
 Graph::Graph(
     Graph && lhs) noexcept :
-  m_uniformEdgeWeight(lhs.m_uniformEdgeWeight),
-  m_uniformVertexWeight(lhs.m_uniformVertexWeight),
+  m_unitEdgeWeight(lhs.m_unitEdgeWeight),
+  m_unitVertexWeight(lhs.m_unitVertexWeight),
   m_numVertices(lhs.m_numVertices),
   m_numEdges(lhs.m_numEdges),
   m_totalVertexWeight(lhs.m_totalVertexWeight),

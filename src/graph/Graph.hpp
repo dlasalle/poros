@@ -293,23 +293,23 @@ class Graph
     }
 
     /**
-    * @brief Check if the graph has uniform edge weights.
+    * @brief Check if the graph has unit edge weights.
     *
     * @return True if the edge weights are all equal.
     */
-    bool hasUniformEdgeWeight() const noexcept
+    bool hasUnitEdgeWeight() const noexcept
     {
-      return m_uniformEdgeWeight;
+      return m_unitEdgeWeight;
     }
 
     /**
-    * @brief Check if the graph has uniform vertex weights.
+    * @brief Check if the graph has unit vertex weights.
     *
     * @return True if the vertex weights are all equal.
     */
-    bool hasUniformVertexWeight() const noexcept
+    bool hasUnitVertexWeight() const noexcept
     {
-      return m_uniformVertexWeight;
+      return m_unitVertexWeight;
     }
 
    
@@ -323,8 +323,8 @@ class Graph
     #endif
 
   private:
-    bool m_uniformEdgeWeight;
-    bool m_uniformVertexWeight;
+    bool m_unitEdgeWeight;
+    bool m_unitVertexWeight;
 
     vtx_type m_numVertices;
     adj_type m_numEdges;
