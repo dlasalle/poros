@@ -111,7 +111,6 @@ TargetPartitioning::TargetPartitioning(
     wgt_type const totalVertexWeight,
     double const imbalanceTolerance) :
   m_numPartitions(numPartitions),
-  m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
   m_targetFraction(numPartitions, 1.0 / numPartitions),
   m_targetWeight(numPartitions),
@@ -130,7 +129,6 @@ TargetPartitioning::TargetPartitioning(
     double const imbalanceTolerance,
     double const * const fractions) :
   m_numPartitions(numPartitions),
-  m_totalVertexWeight(totalVertexWeight),
   m_imbalanceTolerance(imbalanceTolerance),
   m_targetFraction(numPartitions),
   m_targetWeight(numPartitions),
