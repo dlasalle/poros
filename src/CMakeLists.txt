@@ -1,9 +1,9 @@
 include_directories(.)
 
 # libraries
-add_library(dolos ${DOLOS_LIBRARY_TYPE} 
+add_library(poros ${POROS_LIBRARY_TYPE}
   ${sources}
-) 
+)
 
 # pull in all sub directory sources
 add_subdirectory("util")
@@ -13,9 +13,9 @@ add_subdirectory("aggregation")
 add_subdirectory("multilevel")
 
 file(GLOB sources *.cpp)
-target_sources(dolos PRIVATE ${sources})
+target_sources(poros PRIVATE ${sources})
 
-install(TARGETS dolos 
+install(TARGETS poros
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )

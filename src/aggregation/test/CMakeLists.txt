@@ -1,7 +1,7 @@
 function(setup_test test_file)
   file(GLOB source ${test_file}.cpp)
 	add_executable(${test_file} ${test_file})
-	target_link_libraries(${test_file} dolos)
+	target_link_libraries(${test_file} poros)
 	add_test(NAME ${test_file} COMMAND ${test_file})
 endfunction()
 

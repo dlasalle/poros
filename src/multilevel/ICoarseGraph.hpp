@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_SRC_MULTILEVEL_ICOARSEGRAPH_HPP
-#define DOLOS_SRC_MULTILEVEL_ICOARSEGRAPH_HPP
+#ifndef POROS_SRC_MULTILEVEL_ICOARSEGRAPH_HPP
+#define POROS_SRC_MULTILEVEL_ICOARSEGRAPH_HPP
 
 
 #include "graph/GraphHandle.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitioningInformation.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

@@ -14,7 +14,7 @@
 #include "solidutils/Debug.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

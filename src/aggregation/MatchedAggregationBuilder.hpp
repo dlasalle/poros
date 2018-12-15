@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_MATCHEDAGGREGATIONBUILDER_HPP
-#define DOLOS_SRC_MATCHEDAGGREGATIONBUILDER_HPP
+#ifndef POROS_SRC_MATCHEDAGGREGATIONBUILDER_HPP
+#define POROS_SRC_MATCHEDAGGREGATIONBUILDER_HPP
 
 
 #include "aggregation/Aggregation.hpp"
@@ -19,7 +19,7 @@
 #include "Base.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class MatchedAggregationBuilder

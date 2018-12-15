@@ -8,12 +8,12 @@
 */
 
 
-#ifndef DOLOS_SRC_ISTOPPINGCRITERA_HPP
-#define DOLOS_SRC_ISTOPPINGCRITERA_HPP
+#ifndef POROS_SRC_ISTOPPINGCRITERA_HPP
+#define POROS_SRC_ISTOPPINGCRITERA_HPP
 
 #include "graph/Graph.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class IStoppingCriteria

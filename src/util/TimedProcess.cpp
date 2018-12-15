@@ -10,7 +10,7 @@
 #include "TimedProcess.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

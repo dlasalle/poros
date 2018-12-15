@@ -9,14 +9,14 @@
 
 
 
-#ifndef DOLOS_SRC_VERTEXSET_HPP
-#define DOLOS_SRC_VERTEXSET_HPP
+#ifndef POROS_SRC_VERTEXSET_HPP
+#define POROS_SRC_VERTEXSET_HPP
 
 
 #include "Vertex.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

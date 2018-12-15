@@ -8,23 +8,23 @@
  */
 
 
-#ifndef DOLOS_SRC_BASE_HPP
-#define DOLOS_SRC_BASE_HPP
+#ifndef POROS_SRC_BASE_HPP
+#define POROS_SRC_BASE_HPP
 
 
-#include "dolos.h"
+#include "poros.h"
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************
 * ALIASES *********************************************************************
 ******************************************************************************/
 
-typedef dolos_vtx_type vtx_type;
-typedef dolos_adj_type adj_type;
-typedef dolos_wgt_type wgt_type;
-typedef dolos_pid_type pid_type;
+typedef poros_vtx_type vtx_type;
+typedef poros_adj_type adj_type;
+typedef poros_wgt_type wgt_type;
+typedef poros_pid_type pid_type;
 
 typedef int32_t wgt_diff_type; 
 

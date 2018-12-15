@@ -9,14 +9,14 @@
 
 
 
-#ifndef DOLOS_SRC_EDGE_HPP
-#define DOLOS_SRC_EDGE_HPP
+#ifndef POROS_SRC_EDGE_HPP
+#define POROS_SRC_EDGE_HPP
 
 
 #include "Base.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 struct Edge

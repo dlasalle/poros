@@ -10,7 +10,7 @@
 #include "CompositeStoppingCriteria.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

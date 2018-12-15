@@ -12,7 +12,7 @@
 #include "RandomEngine.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

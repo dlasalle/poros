@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_ONESTEPGRAPHBUILDER_HPP
-#define DOLOS_SRC_ONESTEPGRAPHBUILDER_HPP
+#ifndef POROS_SRC_ONESTEPGRAPHBUILDER_HPP
+#define POROS_SRC_ONESTEPGRAPHBUILDER_HPP
 
 
 #include "graph/GraphHandle.hpp"
@@ -21,7 +21,7 @@
 #include <vector>
 
 
-namespace dolos
+namespace poros
 {
 
 

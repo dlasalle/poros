@@ -10,7 +10,7 @@
 
 #include "MultilevelPartitioner.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

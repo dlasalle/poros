@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_MULTILEVELBISECTOR_HPP
-#define DOLOS_SRC_MULTILEVELBISECTOR_HPP
+#ifndef POROS_SRC_MULTILEVELBISECTOR_HPP
+#define POROS_SRC_MULTILEVELBISECTOR_HPP
 
 
 #include "partition/IBisector.hpp"
@@ -22,7 +22,7 @@
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 

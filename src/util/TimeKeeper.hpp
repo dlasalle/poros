@@ -8,15 +8,15 @@
  */
 
 
-#ifndef DOLOS_SRC_UTIL_TIMEKEEPER_HPP
-#define DOLOS_SRC_UTIL_TIMEKEEPER_HPP
+#ifndef POROS_SRC_UTIL_TIMEKEEPER_HPP
+#define POROS_SRC_UTIL_TIMEKEEPER_HPP
 
 #include <cstdint>
 #include <vector>
 #include <utility>
 #include <string>
 
-namespace dolos
+namespace poros
 {
 
 class TimeKeeper

@@ -14,7 +14,7 @@
 #include "solidutils/Sort.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

@@ -12,7 +12,7 @@
 #include "solidutils/UnitTest.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(RandomEngineFactory, SameSeedTest)

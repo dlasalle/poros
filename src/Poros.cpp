@@ -1,5 +1,5 @@
 /**
- * @file Dolos.cpp
+ * @file Poros.cpp
  * @brief Top level functions.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017
@@ -8,10 +8,10 @@
  */
 
 
-#include "dolos.h"
+#include "poros.h"
 
 #include "Base.hpp"
-#include "DolosParameters.hpp"
+#include "PorosParameters.hpp"
 #include "graph/Graph.hpp"
 #include "partition/Partitioning.hpp"
 #include "partition/PartitionParameters.hpp"
@@ -29,16 +29,16 @@
 #include <iostream>
 
 
-using namespace dolos;
+using namespace poros;
 
 
 /******************************************************************************
 * PUBLIC FUNCTIONS ************************************************************
 ******************************************************************************/
 
-dolos_options_struct DOLOS_defaultOptions()
+poros_options_struct POROS_defaultOptions()
 {
-  dolos_options_struct opts{
+  poros_options_struct opts{
     0.03,
     nullptr,
     0,
@@ -50,14 +50,14 @@ dolos_options_struct DOLOS_defaultOptions()
   return opts;
 }
 
-int DOLOS_PartGraphRecursive(
+int POROS_PartGraphRecursive(
     vtx_type const numVertices,
     adj_type const * const edgePrefix,
     vtx_type const * const edgeList,
     wgt_type const * const vertexWeights,
     wgt_type const * const edgeWeights,
     pid_type const numPartitions,
-    dolos_options_struct const * const options,
+    poros_options_struct const * const options,
     wgt_type * const totalCutEdgeWeight,
     pid_type * const partitionAssignment)
 {
@@ -71,7 +71,7 @@ int DOLOS_PartGraphRecursive(
 
   std::shared_ptr<TimeKeeper> timeKeeper(new TimeKeeper);
 
-  DolosParameters globalParams(*options);
+  PorosParameters globalParams(*options);
 
   // create a parameters object
   RandomEngineHandle randEngine = globalParams.randomEngine();

@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_RECURSIVEBISECTIONPARTITIONER_HPP
-#define DOLOS_SRC_RECURSIVEBISECTIONPARTITIONER_HPP
+#ifndef POROS_SRC_RECURSIVEBISECTIONPARTITIONER_HPP
+#define POROS_SRC_RECURSIVEBISECTIONPARTITIONER_HPP
 
 
 #include "partition/IPartitioner.hpp"
@@ -18,7 +18,7 @@
 #include "graph/IMappedGraph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

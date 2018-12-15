@@ -10,7 +10,7 @@
 #include "RandomOrderVertexSet.hpp"
 #include "util/RandomEngine.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

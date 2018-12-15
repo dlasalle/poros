@@ -10,7 +10,7 @@
 
 #include "MappedGraphWrapper.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

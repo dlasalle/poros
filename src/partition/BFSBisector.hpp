@@ -8,13 +8,13 @@
 */
 
 
-#ifndef DOLOS_SRC_BFSBISECTOR_HPP
-#define DOLOS_SRC_BFSBISECTOR_HPP
+#ifndef POROS_SRC_BFSBISECTOR_HPP
+#define POROS_SRC_BFSBISECTOR_HPP
 
 #include "IBisector.hpp"
 #include "util/RandomEngineHandle.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class BFSBisector : public IBisector

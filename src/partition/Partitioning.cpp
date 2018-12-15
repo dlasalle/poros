@@ -13,7 +13,7 @@
 // delete me
 #include <cstdio>
 
-namespace dolos
+namespace poros
 {
 
 

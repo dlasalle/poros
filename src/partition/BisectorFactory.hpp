@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_BISECTORFACTORY_HPP
-#define DOLOS_SRC_BISECTORFACTORY_HPP
+#ifndef POROS_SRC_BISECTORFACTORY_HPP
+#define POROS_SRC_BISECTORFACTORY_HPP
 
 #include "IBisector.hpp"
 #include "util/RandomEngineHandle.hpp"
@@ -18,7 +18,7 @@
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 class BisectorFactory

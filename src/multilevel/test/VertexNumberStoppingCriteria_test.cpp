@@ -11,7 +11,7 @@
 #include "graph/GridGraphGenerator.hpp"
 #include "solidutils/UnitTest.hpp"
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(VertexNumberStoppingCriteria, ShouldContinue)

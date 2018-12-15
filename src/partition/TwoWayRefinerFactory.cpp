@@ -13,7 +13,7 @@
 #include "TimedTwoWayRefiner.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

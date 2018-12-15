@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_RANDOMFMBISECTOR_HPP
-#define DOLOS_SRC_RANDOMFMBISECTOR_HPP
+#ifndef POROS_SRC_RANDOMFMBISECTOR_HPP
+#define POROS_SRC_RANDOMFMBISECTOR_HPP
 
 
 #include "RandomBisector.hpp"
@@ -20,7 +20,7 @@
 #include "util/RandomEngineHandle.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

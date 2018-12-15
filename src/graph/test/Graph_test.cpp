@@ -15,7 +15,7 @@
 #include "graph/GridGraphGenerator.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

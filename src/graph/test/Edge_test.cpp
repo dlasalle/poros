@@ -15,7 +15,7 @@
 #include <type_traits>
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(Edge, Index)

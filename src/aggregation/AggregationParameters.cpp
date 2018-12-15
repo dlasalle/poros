@@ -10,7 +10,7 @@
 #include "AggregationParameters.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

@@ -9,15 +9,15 @@
 
 
 
-#ifndef DOLOS_SRC_MULTIBISECTOR_HPP
-#define DOLOS_SRC_MULTIBISECTOR_HPP
+#ifndef POROS_SRC_MULTIBISECTOR_HPP
+#define POROS_SRC_MULTIBISECTOR_HPP
 
 
 #include "IBisector.hpp"
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 

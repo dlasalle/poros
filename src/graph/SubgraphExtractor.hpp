@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_SUBGRAPHEXTRACTOR_HPP
-#define DOLOS_SRC_SUBGRAPHEXTRACTOR_HPP
+#ifndef POROS_SRC_SUBGRAPHEXTRACTOR_HPP
+#define POROS_SRC_SUBGRAPHEXTRACTOR_HPP
 
 
 #include "graph/Graph.hpp"
@@ -19,7 +19,7 @@
 #include "graph/Subgraph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class SubgraphExtractor

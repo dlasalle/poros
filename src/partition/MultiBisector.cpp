@@ -12,7 +12,7 @@
 #include "partition/PartitioningAnalyzer.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -8,8 +8,8 @@
 */
 
 
-#ifndef DOLOS_SRC_SIMPLERANDOMENGINE_HPP
-#define DOLOS_SRC_SIMPLERANDOMENGINE_HPP
+#ifndef POROS_SRC_SIMPLERANDOMENGINE_HPP
+#define POROS_SRC_SIMPLERANDOMENGINE_HPP
 
 #include "Base.hpp"
 
@@ -17,7 +17,7 @@
 #include <random>
 #include <algorithm>
 
-namespace dolos
+namespace poros
 {
 
 

@@ -13,9 +13,9 @@
 #include "TimedAggregator.hpp"
 #include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
-#include "dolos.h"
+#include "poros.h"
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(AggregatorFactory, RandomMatchingAggregatorTest)

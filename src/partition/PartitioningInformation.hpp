@@ -9,14 +9,14 @@
 
 
 
-#ifndef DOLOS_SRC_PARTITIONINGINFORMATION_HPP
-#define DOLOS_SRC_PARTITIONINGINFORMATION_HPP
+#ifndef POROS_SRC_PARTITIONINGINFORMATION_HPP
+#define POROS_SRC_PARTITIONINGINFORMATION_HPP
 
 #include "Partitioning.hpp"
 #include "TwoWayConnectivity.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

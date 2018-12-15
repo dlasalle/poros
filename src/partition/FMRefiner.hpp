@@ -9,15 +9,15 @@
 
 
 
-#ifndef DOLOS_SRC_FMREFINER_HPP
-#define DOLOS_SRC_FMREFINER_HPP
+#ifndef POROS_SRC_FMREFINER_HPP
+#define POROS_SRC_FMREFINER_HPP
 
 
 #include "ITwoWayRefiner.hpp"
 #include "TargetPartitioning.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 /**

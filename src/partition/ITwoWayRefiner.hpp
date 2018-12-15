@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_ITWOWAYREFINER_HPP
-#define DOLOS_SRC_ITWOWAYREFINER_HPP
+#ifndef POROS_SRC_ITWOWAYREFINER_HPP
+#define POROS_SRC_ITWOWAYREFINER_HPP
 
 
 #include "TargetPartitioning.hpp"
@@ -19,7 +19,7 @@
 #include "graph/Graph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class ITwoWayRefiner

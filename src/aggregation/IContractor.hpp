@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_ICONTRACTOR_HPP
-#define DOLOS_SRC_ICONTRACTOR_HPP
+#ifndef POROS_SRC_ICONTRACTOR_HPP
+#define POROS_SRC_ICONTRACTOR_HPP
 
 
 
@@ -22,7 +22,7 @@
 
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -8,8 +8,8 @@
  */
 
 
-#ifndef DOLOS_SRC_MULTILEVELPARTITIONER_HPP
-#define DOLOS_SRC_MULTILEVELPARTITIONER_HPP
+#ifndef POROS_SRC_MULTILEVELPARTITIONER_HPP
+#define POROS_SRC_MULTILEVELPARTITIONER_HPP
 
 
 #include "partition/IPartitioner.hpp"
@@ -18,7 +18,7 @@
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 

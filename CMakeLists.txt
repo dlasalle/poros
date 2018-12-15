@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(WILDRIVER)
+project(POROS)
 
 if (DEFINED DEBUG)
   add_definitions(-DDEBUG=${DEBUG})
@@ -14,9 +14,9 @@ else()
 endif()
 
 if (STATIC)
-  set(WILDRIVER_LIBRARY_TYPE STATIC)
+  set(POROS_LIBRARY_TYPE STATIC)
 else()
-  set(WILDRIVER_LIBRARY_TYPE SHARED)
+  set(POROS_LIBRARY_TYPE SHARED)
 endif()
 
 if (DEFINED DEVEL AND NOT DEVEL EQUAL 0)
@@ -33,16 +33,16 @@ if (DEFINED DEVEL AND NOT DEVEL EQUAL 0)
 endif()
 
 
-if (DEFINED WILDRIVER_DIMENSION_TYPE)
-  add_definitions(-DWILDIRVER_DIMENSION_TYPE=${WILDRIVER_DIMENSION_TYPE})
+if (DEFINED POROS_DIMENSION_TYPE)
+  add_definitions(-DPOROS_DIMENSION_TYPE=${POROS_DIMENSION_TYPE})
 endif()
 
-if (DEFINED WILDRIVER_INDEX_TYPE)
-  add_definitions(-DWILDIRVER_INDEX_TYPE=${WILDRIVER_INDEX_TYPE})
+if (DEFINED POROS_INDEX_TYPE)
+  add_definitions(-DPOROS_INDEX_TYPE=${POROS_INDEX_TYPE})
 endif()
 
-if (DEFINED WILDRIVER_VALUE_TYPE)
-  add_definitions(-DWILDIRVER_VALUE_TYPE=${WILDRIVER_VALUE_TYPE})
+if (DEFINED POROS_VALUE_TYPE)
+  add_definitions(-DPOROS_VALUE_TYPE=${POROS_VALUE_TYPE})
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14") 
@@ -57,7 +57,6 @@ endif()
 
 include_directories("include")
 include_directories("solidutils")
-include_directories(".")
 add_subdirectory("include")
 add_subdirectory("src")
 

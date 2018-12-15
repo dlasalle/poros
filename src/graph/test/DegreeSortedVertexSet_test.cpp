@@ -13,7 +13,7 @@
 #include <vector>
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(DegreeSortedVertexSet, Size)

@@ -9,12 +9,12 @@
 
 
 
-#ifndef DOLOS_SRC_AGGREGATIONPARAMETERS_HPP
-#define DOLOS_SRC_AGGREGATIONPARAMETERS_HPP
+#ifndef POROS_SRC_AGGREGATIONPARAMETERS_HPP
+#define POROS_SRC_AGGREGATIONPARAMETERS_HPP
 
 #include "Base.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class AggregationParameters

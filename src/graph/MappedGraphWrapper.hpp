@@ -8,14 +8,14 @@
  */
 
 
-#ifndef DOLOS_SRC_MAPPEDGRAPH_HPP
-#define DOLOS_SRC_MAPPEDGRAPH_HPP
+#ifndef POROS_SRC_MAPPEDGRAPH_HPP
+#define POROS_SRC_MAPPEDGRAPH_HPP
 
 
 #include "IMappedGraph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class MappedGraphWrapper :

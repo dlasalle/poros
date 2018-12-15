@@ -8,14 +8,14 @@
 */
 
 
-#ifndef DOLOS_SRC_TIMEDCONTRACTOR_HPP
-#define DOLOS_SRC_TIMEDCONTRACTOR_HPP
+#ifndef POROS_SRC_TIMEDCONTRACTOR_HPP
+#define POROS_SRC_TIMEDCONTRACTOR_HPP
 
 #include "IContractor.hpp"
 #include "util/TimedProcess.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class TimedContractor : public IContractor, public TimedProcess

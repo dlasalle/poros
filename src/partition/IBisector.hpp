@@ -7,8 +7,8 @@
  * @date 2017-10-04
  */
 
-#ifndef DOLOS_SRC_IBISECTOR_HPP
-#define DOLOS_SRC_IBISECTOR_HPP
+#ifndef POROS_SRC_IBISECTOR_HPP
+#define POROS_SRC_IBISECTOR_HPP
 
 
 #include "graph/Graph.hpp"
@@ -16,7 +16,7 @@
 #include "TargetPartitioning.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class IBisector

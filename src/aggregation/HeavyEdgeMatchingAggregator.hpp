@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_SRC_HEAVYEDGEMATCHINGAGGREGATOR_HPP
-#define DOLOS_SRC_HEAVYEDGEMATCHINGAGGREGATOR_HPP
+#ifndef POROS_SRC_HEAVYEDGEMATCHINGAGGREGATOR_HPP
+#define POROS_SRC_HEAVYEDGEMATCHINGAGGREGATOR_HPP
 
 
 #include "util/RandomEngineHandle.hpp"
 #include "aggregation/IAggregator.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

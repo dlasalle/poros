@@ -15,7 +15,7 @@
 #include "solidutils/Array.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

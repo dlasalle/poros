@@ -11,7 +11,7 @@
 #include "solidutils/UnitTest.hpp"
 #include <vector>
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

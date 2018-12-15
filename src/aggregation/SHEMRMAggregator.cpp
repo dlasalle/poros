@@ -9,7 +9,7 @@
 
 #include "SHEMRMAggregator.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

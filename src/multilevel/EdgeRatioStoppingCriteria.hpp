@@ -8,13 +8,13 @@
 */
 
 
-#ifndef DOLOS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
-#define DOLOS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
+#ifndef POROS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
+#define POROS_SRC_EDGERATIOSTOPPINGCRITERIA_HPP
 
 #include "graph/Graph.hpp"
 #include "multilevel/IStoppingCriteria.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class EdgeRatioStoppingCriteria : public IStoppingCriteria

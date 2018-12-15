@@ -7,12 +7,12 @@
 * @date 2018-09-04
 */
 
-#ifndef DOLOS_SRC_RANDOMENGINEFACTORY_HPP
-#define DOLOS_SRC_RANDOMENGINEFACTORY_HPP
+#ifndef POROS_SRC_RANDOMENGINEFACTORY_HPP
+#define POROS_SRC_RANDOMENGINEFACTORY_HPP
 
 #include "RandomEngineHandle.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class RandomEngineFactory

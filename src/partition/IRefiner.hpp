@@ -10,15 +10,15 @@
 
 
 
-#ifndef DOLOS_SRC_IREFINER_HPP
-#define DOLOS_SRC_IREFINER_HPP
+#ifndef POROS_SRC_IREFINER_HPP
+#define POROS_SRC_IREFINER_HPP
 
 #include "Partitioning.hpp"
 #include "graph/Graph.hpp"
 #include "PartitionParameters.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class IRefiner

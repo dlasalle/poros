@@ -10,15 +10,15 @@
 
 
 
-#ifndef DOLOS_SRC_RANDOMMATCHINGAGGREGATOR_HPP
-#define DOLOS_SRC_RANDOMMATCHINGAGGREGATOR_HPP
+#ifndef POROS_SRC_RANDOMMATCHINGAGGREGATOR_HPP
+#define POROS_SRC_RANDOMMATCHINGAGGREGATOR_HPP
 
 
 #include "util/RandomEngineHandle.hpp"
 #include "aggregation/IAggregator.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

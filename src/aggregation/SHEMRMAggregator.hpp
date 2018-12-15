@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_SRC_SHEMRMAGGREGATOR_HPP
-#define DOLOS_SRC_SHEMRMAGGREGATOR_HPP
+#ifndef POROS_SRC_SHEMRMAGGREGATOR_HPP
+#define POROS_SRC_SHEMRMAGGREGATOR_HPP
 
 
 #include "IAggregator.hpp"
 #include "RandomMatchingAggregator.hpp"
 #include "HeavyEdgeMatchingAggregator.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class SHEMRMAggregator : public IAggregator
