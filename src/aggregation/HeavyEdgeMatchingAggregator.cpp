@@ -31,9 +31,6 @@
 #include "graph/DegreeSortedVertexSet.hpp"
 
 
-#include <iostream>
-#include "solidutils/Timer.hpp"
-
 namespace poros
 {
 
@@ -62,9 +59,6 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
     Graph const * const graph)
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
-
-  sl::Timer tmr;
-  tmr.start();
 
   PermutedVertexSet permutedVertices = \
       DegreeSortedVertexSet::ascendingRandom(graph->vertices(), graph, \
@@ -95,9 +89,6 @@ Aggregation HeavyEdgeMatchingAggregator::aggregate(
       }
     }
   }
-
-  tmr.stop();
-  std::cout << "SHEM took " << tmr.poll() << std::endl;
 
   return matcher.build();
 }

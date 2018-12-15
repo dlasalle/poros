@@ -31,9 +31,6 @@
 #include "aggregation/MatchedAggregationBuilder.hpp"
 #include "graph/RandomOrderVertexSet.hpp"
 
-#include <iostream>
-#include "solidutils/Timer.hpp"
-
 namespace poros
 {
 
@@ -68,9 +65,6 @@ Aggregation RandomMatchingAggregator::aggregate(
 {
   MatchedAggregationBuilder matcher(graph->numVertices());
 
-  sl::Timer tmr;
-  tmr.start();
-
   PermutedVertexSet permutedVertices = RandomOrderVertexSet::generate(
       graph->vertices(), m_rng.get());
 
@@ -101,9 +95,6 @@ Aggregation RandomMatchingAggregator::aggregate(
       }
     }
   }
-
-  tmr.stop();
-  std::cout << "RM took " << tmr.poll() << std::endl;
 
   return matcher.build();
 }
