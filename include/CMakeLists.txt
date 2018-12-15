@@ -1,2 +1,2 @@
-INSTALL(FILES merizo.h DESTINATION include)
+INSTALL(FILES poros.h DESTINATION include)
 

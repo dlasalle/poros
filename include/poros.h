@@ -1,6 +1,7 @@
 /**
  * @file poros.h
- * @brief Top level header file for Dolos (a modern implementation of Metis). 
+ * @brief Top level header file for Poros (a C++ implementation of Metis
+ * algorithms [http://cs.umn.edu/~metis]).
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2017-2018
  * @version 1
@@ -94,7 +95,7 @@ typedef struct {
 
 
 /**
- * @brief Generate the default options to execute Dolos with.
+ * @brief Generate the default options to execute Poros with.
  *
  * @return The default options.
  */
