@@ -31,11 +31,66 @@
 #include "SummationContractor.hpp"
 #include "graph/OneStepGraphBuilder.hpp"
 
-#include <iostream>
-#include "solidutils/Timer.hpp"
 
 namespace poros
 {
+
+
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+template<bool UNIT_VERTICES, bool UNIT_EDGES>
+GraphHandle contractGraph(
+    Graph const * const graph,
+    Aggregation const * const aggregation)
+{
+  OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
+
+  // go over each fine vertex
+  vtx_type coarseVertex = 0;
+  for (VertexGroup const group : aggregation->coarseVertices()) {
+
+    wgt_type coarseVertexWeight = 0;
+
+    for (Vertex const vertex : group.fineVertices()) {
+      if (UNIT_VERTICES) {
+        coarseVertexWeight += static_cast<wgt_type>(1);
+      } else {
+        coarseVertexWeight += graph->weightOf(vertex);
+      }
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
+            graph->destinationOf(edge).index);
+        if (coarseVertex != coarseNeighbor) {
+          if (UNIT_EDGES) {
+            builder.addEdge(coarseNeighbor, static_cast<wgt_type>(1));
+          } else {
+            builder.addEdge(coarseNeighbor, graph->weightOf(edge));
+          }
+        }
+      }
+    }
+
+    builder.finishVertex(coarseVertexWeight);
+    ++coarseVertex;
+  }
+
+  GraphHandle next = builder.finish();
+
+  return next;
+}
+
+
+
+
+
+
+}
 
 
 /******************************************************************************
@@ -60,38 +115,19 @@ GraphHandle SummationContractor::contract(
     Graph const * const graph,
     Aggregation const * const aggregation)
 {
-  sl::Timer tmr;
-  tmr.start();
-
-  OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
-
-  // go over each fine vertex
-  vtx_type coarseVertex = 0;
-  for (VertexGroup const group : aggregation->coarseVertices()) {
-
-    wgt_type coarseVertexWeight = 0;
-
-    for (Vertex const vertex : group.fineVertices()) {
-      coarseVertexWeight += graph->weightOf(vertex);
-      for (Edge const edge : graph->edgesOf(vertex)) {
-        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
-            graph->destinationOf(edge).index);
-        if (coarseVertex != coarseNeighbor) {
-          builder.addEdge(coarseNeighbor, graph->weightOf(edge));
-        }
-      }
+  if (graph->hasUnitVertexWeight()) {
+    if (graph->hasUnitEdgeWeight()) {
+      return contractGraph<true, true>(graph, aggregation);
+    } else {
+      return contractGraph<true, false>(graph, aggregation);
     }
-
-    builder.finishVertex(coarseVertexWeight);
-    ++coarseVertex;
+  } else {
+    if (graph->hasUnitEdgeWeight()) {
+      return contractGraph<false, true>(graph, aggregation);
+    } else {
+      return contractGraph<false, false>(graph, aggregation);
+    }
   }
-
-  GraphHandle next = builder.finish();
-
-  tmr.stop();
-  std::cout << "Contract: " << tmr.poll() << std::endl;
-
-  return next;
 }
 
 
