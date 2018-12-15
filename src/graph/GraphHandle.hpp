@@ -8,8 +8,8 @@
 */
 
 
-#ifndef DOLOS_SRC_GRAPHHANDLE_HPP
-#define DOLOS_SRC_GRAPHHANDLE_HPP
+#ifndef POROS_SRC_GRAPHHANDLE_HPP
+#define POROS_SRC_GRAPHHANDLE_HPP
 
 
 
@@ -18,7 +18,7 @@
 #include <memory>
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -13,7 +13,7 @@
 #include "MultiBisector.hpp"
 #include "TimedBisector.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

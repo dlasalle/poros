@@ -7,13 +7,13 @@
 * @date 2018-10-15
 */
 
-#ifndef DOLOS_SRC_VERTEXQUEUE_HPP
-#define DOLOS_SRC_VERTEXQUEUE_HPP
+#ifndef POROS_SRC_VERTEXQUEUE_HPP
+#define POROS_SRC_VERTEXQUEUE_HPP
 
 #include "solidutils/FixedPriorityQueue.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

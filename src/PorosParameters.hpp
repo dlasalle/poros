@@ -1,6 +1,6 @@
 /**
- * @file DolosParameters.hpp
- * @brief The DolosParameters class.
+ * @file PorosParameters.hpp
+ * @brief The PorosParameters class.
  * @author Dominique LaSalle <dominique@solidlake.com>
  * Copyright 2018
  * @version 1
@@ -9,17 +9,17 @@
 
 
 
-#ifndef DOLOS_SRC_DOLOSPARAMETERS_HPP
-#define DOLOS_SRC_DOLOSPARAMETERS_HPP
+#ifndef POROS_SRC_POROSPARAMETERS_HPP
+#define POROS_SRC_POROSPARAMETERS_HPP
 
-#include "dolos.h"
+#include "poros.h"
 #include "util/RandomEngineHandle.hpp"
 
-namespace dolos
+namespace poros
 {
 
 
-class DolosParameters
+class PorosParameters
 {
   public:
     /**
@@ -27,8 +27,8 @@ class DolosParameters
      *
      * @param options The options struct.
      */
-    DolosParameters(
-        dolos_options_struct options);
+    PorosParameters(
+        poros_options_struct options);
 
     /**
      * @brief Get the current random engine to use.

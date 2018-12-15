@@ -13,7 +13,7 @@
 #include "solidutils/UnitTest.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(AggregationParameters, MaxVertexWeightTest)

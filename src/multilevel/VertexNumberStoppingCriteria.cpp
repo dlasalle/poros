@@ -9,7 +9,7 @@
 
 #include "VertexNumberStoppingCriteria.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

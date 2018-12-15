@@ -7,15 +7,15 @@
  * @date 2017-10-04
  */
 
-#ifndef DOLOS_SRC_IPARTITIONER_HPP
-#define DOLOS_SRC_IPARTITIONER_HPP
+#ifndef POROS_SRC_IPARTITIONER_HPP
+#define POROS_SRC_IPARTITIONER_HPP
 
 
 #include "Partitioning.hpp"
 #include "graph/Graph.hpp"
 #include "TargetPartitioning.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class IPartitioner

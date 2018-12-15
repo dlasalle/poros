@@ -1,7 +1,7 @@
 include_directories(.)
 
 # libraries
-add_library(dolos ${DOLOS_LIBRARY_TYPE} 
+add_library(merizo ${POROS_LIBRARY_TYPE} 
   ${sources}
 ) 
 
@@ -13,9 +13,9 @@ add_subdirectory("aggregation")
 add_subdirectory("multilevel")
 
 file(GLOB sources *.cpp)
-target_sources(dolos PRIVATE ${sources})
+target_sources(merizo PRIVATE ${sources})
 
-install(TARGETS dolos 
+install(TARGETS merizo 
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )

@@ -7,8 +7,8 @@
 * @date 2018-07-21
 */
 
-#ifndef DOLOS_SRC_COMPOSITESTOPPINGCRITERIA_HPP
-#define DOLOS_SRC_COMPOSITESTOPPINGCRITERIA_HPP
+#ifndef POROS_SRC_COMPOSITESTOPPINGCRITERIA_HPP
+#define POROS_SRC_COMPOSITESTOPPINGCRITERIA_HPP
 
 
 #include "IStoppingCriteria.hpp"
@@ -16,7 +16,7 @@
 #include <memory>
 #include <vector>
 
-namespace dolos
+namespace poros
 {
 
 class CompositeStoppingCriteria : public IStoppingCriteria

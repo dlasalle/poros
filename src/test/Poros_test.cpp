@@ -1,5 +1,5 @@
 /**
-* @file Dolos_test.cpp
+* @file Poros_test.cpp
 * @brief Unit tests for the top level API.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2017-2018
@@ -9,7 +9,7 @@
 
 
 
-#include "dolos.h"
+#include "poros.h"
 #include "partition/Partitioning.hpp"
 #include "partition/TargetPartitioning.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
@@ -18,16 +18,16 @@
 #include "solidutils/UnitTest.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
-UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
+UNITTEST(Poros, PartGraphRecursiveSevenBalance)
 {
   GridGraphGenerator gen(25, 25, 25);
 
   Graph g = gen.generate();
 
-  dolos_options_struct opts = DOLOS_defaultOptions();
+  poros_options_struct opts = POROS_defaultOptions();
 
   // make 10 partitions
   for (size_t i = 0; i < 10U; ++i)  {
@@ -36,7 +36,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
     opts.randomSeed = static_cast<unsigned int>(i);
 
     sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+    int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
         g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
         7, &opts, &cutEdgeWeight, where.data());
 
@@ -53,7 +53,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenBalance)
   }
 }
 
-UNITTEST(Dolos, PartGraphRecursiveTwoCut)
+UNITTEST(Poros, PartGraphRecursiveTwoCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
@@ -62,7 +62,7 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 700;
 
-  dolos_options_struct opts = DOLOS_defaultOptions();
+  poros_options_struct opts = POROS_defaultOptions();
 
   // make 10 partitions
   for (size_t i = 0; i < 10U; ++i)  {
@@ -71,7 +71,7 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
     opts.randomSeed = static_cast<unsigned int>(i);
 
     sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+    int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
         g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
         2, &opts, &cutEdgeWeight, where.data());
 
@@ -85,7 +85,7 @@ UNITTEST(Dolos, PartGraphRecursiveTwoCut)
   }
 }
 
-UNITTEST(Dolos, PartGraphRecursiveThreeCut)
+UNITTEST(Poros, PartGraphRecursiveThreeCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
@@ -94,7 +94,7 @@ UNITTEST(Dolos, PartGraphRecursiveThreeCut)
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 1375;
 
-  dolos_options_struct opts = DOLOS_defaultOptions();
+  poros_options_struct opts = POROS_defaultOptions();
 
   // make 10 partitions
   for (size_t i = 0; i < 10U; ++i)  {
@@ -103,7 +103,7 @@ UNITTEST(Dolos, PartGraphRecursiveThreeCut)
     opts.randomSeed = static_cast<unsigned int>(i);
 
     sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+    int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
         g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
         3, &opts, &cutEdgeWeight, where.data());
 
@@ -117,13 +117,13 @@ UNITTEST(Dolos, PartGraphRecursiveThreeCut)
   }
 }
 
-UNITTEST(Dolos, PartGraphRecursiveFourCut)
+UNITTEST(Poros, PartGraphRecursiveFourCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
   Graph g = gen.generate();
 
-  dolos_options_struct opts = DOLOS_defaultOptions();
+  poros_options_struct opts = POROS_defaultOptions();
 
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 1650;
@@ -135,7 +135,7 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
     opts.randomSeed = static_cast<unsigned int>(i);
 
     sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+    int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
         g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
         4, &opts, &cutEdgeWeight, where.data());
 
@@ -149,7 +149,7 @@ UNITTEST(Dolos, PartGraphRecursiveFourCut)
   }
 }
 
-UNITTEST(Dolos, PartGraphRecursiveSevenCut)
+UNITTEST(Poros, PartGraphRecursiveSevenCut)
 {
   GridGraphGenerator gen(25, 25, 25);
 
@@ -158,7 +158,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
   // worst of 100 metis runs
   wgt_type const maxAcceptable = 2400;
 
-  dolos_options_struct opts = DOLOS_defaultOptions();
+  poros_options_struct opts = POROS_defaultOptions();
 
   // make 10 partitions
   for (size_t i = 0; i < 10U; ++i)  {
@@ -167,7 +167,7 @@ UNITTEST(Dolos, PartGraphRecursiveSevenCut)
     opts.randomSeed = static_cast<unsigned int>(i);
 
     sl::Array<pid_type> where(g.numVertices());
-    int r = DOLOS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+    int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
         g.getEdgeList(), g.getVertexWeight(), g.getEdgeWeight(), \
         7, &opts, &cutEdgeWeight, where.data());
 

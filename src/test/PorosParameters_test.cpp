@@ -1,26 +1,26 @@
 /**
-* @file DolosParameters_test.cpp
-* @brief Unit tests for the DolosParameters class.
+* @file PorosParameters_test.cpp
+* @brief Unit tests for the PorosParameters class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2018
 * @version 1
 * @date 2018-09-04
 */
 
-#include "DolosParameters.hpp"
+#include "PorosParameters.hpp"
 #include "solidutils/UnitTest.hpp"
 
-namespace dolos
+namespace poros
 {
 
-UNITTEST(DolosParameters, ConsistentRandomSeed)
+UNITTEST(PorosParameters, ConsistentRandomSeed)
 {
-  dolos_options_struct opts{};
+  poros_options_struct opts{};
 
   opts.randomSeed = 1970;
 
-  DolosParameters params1(opts);
-  DolosParameters params2(opts);
+  PorosParameters params1(opts);
+  PorosParameters params2(opts);
 
   RandomEngineHandle engine1 = params1.randomEngine();
   RandomEngineHandle engine2 = params2.randomEngine();
@@ -31,15 +31,15 @@ UNITTEST(DolosParameters, ConsistentRandomSeed)
 }
 
 
-UNITTEST(DolosParameters, DifferentRandomSeed)
+UNITTEST(PorosParameters, DifferentRandomSeed)
 {
-  dolos_options_struct opts{};
+  poros_options_struct opts{};
 
   opts.randomSeed = 1970;
-  DolosParameters params1(opts);
+  PorosParameters params1(opts);
 
   opts.randomSeed = 0;
-  DolosParameters params2(opts);
+  PorosParameters params2(opts);
 
   RandomEngineHandle engine1 = params1.randomEngine();
   RandomEngineHandle engine2 = params2.randomEngine();

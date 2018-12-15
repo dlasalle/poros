@@ -9,15 +9,15 @@
 
 
 
-#ifndef DOLOS_SRC_TWOWAYREFINERFACTORY_HPP
-#define DOLOS_SRC_TWOWAYREFINERFACTORY_HPP
+#ifndef POROS_SRC_TWOWAYREFINERFACTORY_HPP
+#define POROS_SRC_TWOWAYREFINERFACTORY_HPP
 
 #include "ITwoWayRefiner.hpp"
 #include "util/TimeKeeper.hpp"
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 class TwoWayRefinerFactory

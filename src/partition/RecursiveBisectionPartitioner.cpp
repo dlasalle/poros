@@ -18,7 +18,7 @@
 
 #include <cmath>
 
-namespace dolos
+namespace poros
 {
 
 

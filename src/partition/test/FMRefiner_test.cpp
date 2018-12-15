@@ -16,7 +16,7 @@
 #include "util/RandomEngineFactory.hpp"
 #include "solidutils/UnitTest.hpp"
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(FMRefiner, RefineRandomGridCut)

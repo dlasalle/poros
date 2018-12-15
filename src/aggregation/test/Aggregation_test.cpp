@@ -10,7 +10,7 @@
 #include "aggregation/Aggregation.hpp"
 #include "solidutils/UnitTest.hpp"
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

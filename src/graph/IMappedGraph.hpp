@@ -10,14 +10,14 @@
 
 
 
-#ifndef DOLOS_SRC_IMAPPEDGRAPH_HPP
-#define DOLOS_SRC_IMAPPEDGRAPH_HPP
+#ifndef POROS_SRC_IMAPPEDGRAPH_HPP
+#define POROS_SRC_IMAPPEDGRAPH_HPP
 
 
 #include "graph/Graph.hpp"
 #include "partition/Partitioning.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

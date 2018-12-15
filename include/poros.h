@@ -1,16 +1,16 @@
 /**
- * @file dolos.h
+ * @file poros.h
  * @brief Top level header file for Dolos (a modern implementation of Metis). 
  * @author Dominique LaSalle <dominique@solidlake.com>
- * Copyright 2017
+ * Copyright 2017-2018
  * @version 1
  * @date 2017-10-04
  */
 
 
 
-#ifndef DOLOS_H
-#define DOLOS_H
+#ifndef POROS_H
+#define POROS_H
 
 
 #include <stdint.h>
@@ -20,10 +20,10 @@ extern "C" {
 #endif
 
 
-typedef uint32_t dolos_vtx_type;
-typedef uint32_t dolos_adj_type;
-typedef uint32_t dolos_wgt_type;
-typedef uint32_t dolos_pid_type;
+typedef uint32_t poros_vtx_type;
+typedef uint32_t poros_adj_type;
+typedef uint32_t poros_wgt_type;
+typedef uint32_t poros_pid_type;
 
 
 /**
@@ -90,7 +90,7 @@ typedef struct {
    * benchmarking purposes.
    */
   int outputTimes;
-} dolos_options_struct;
+} poros_options_struct;
 
 
 /**
@@ -98,7 +98,7 @@ typedef struct {
  *
  * @return The default options.
  */
-dolos_options_struct DOLOS_defaultOptions(void);
+poros_options_struct POROS_defaultOptions(void);
 
 
 /**
@@ -119,16 +119,16 @@ dolos_options_struct DOLOS_defaultOptions(void);
  *
  * @return 1 on success, 0 if an error occurs.
  */
-int DOLOS_PartGraphRecursive(
-    dolos_vtx_type numVertices,
-    dolos_adj_type const * edgePrefix,
-    dolos_vtx_type const * edgeList,
-    dolos_wgt_type const * vertexWeights,
-    dolos_wgt_type const * edgeWeights,
-    dolos_pid_type numPartitions,
-    dolos_options_struct const * options,
-    dolos_wgt_type * totalCutEdgeWeight,
-    dolos_pid_type * partitionAssignment);
+int POROS_PartGraphRecursive(
+    poros_vtx_type numVertices,
+    poros_adj_type const * edgePrefix,
+    poros_vtx_type const * edgeList,
+    poros_wgt_type const * vertexWeights,
+    poros_wgt_type const * edgeWeights,
+    poros_pid_type numPartitions,
+    poros_options_struct const * options,
+    poros_wgt_type * totalCutEdgeWeight,
+    poros_pid_type * partitionAssignment);
 
 
 

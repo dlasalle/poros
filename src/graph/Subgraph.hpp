@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_SUBGRAPH_HPP
-#define DOLOS_SRC_SUBGRAPH_HPP
+#ifndef POROS_SRC_SUBGRAPH_HPP
+#define POROS_SRC_SUBGRAPH_HPP
 
 
 #include "graph/GraphHandle.hpp"
@@ -20,7 +20,7 @@
 #include "solidutils/Array.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class Subgraph :

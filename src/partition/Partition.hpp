@@ -8,14 +8,14 @@
 */
 
 
-#ifndef DOLOS_SRC_PARTITION_HPP
-#define DOLOS_SRC_PARTITION_HPP
+#ifndef POROS_SRC_PARTITION_HPP
+#define POROS_SRC_PARTITION_HPP
 
 
 #include "Base.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

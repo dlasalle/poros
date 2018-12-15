@@ -11,7 +11,7 @@
 #include "RandomFMBisector.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

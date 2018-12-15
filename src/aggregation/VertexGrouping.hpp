@@ -8,12 +8,12 @@
 */
 
 
-#ifndef DOLOS_SRC_VERTEXGROUPING_HPP
-#define DOLOS_SRC_VERTEXGROUPING_HPP
+#ifndef POROS_SRC_VERTEXGROUPING_HPP
+#define POROS_SRC_VERTEXGROUPING_HPP
 
 #include "aggregation/VertexGroup.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class VertexGrouping

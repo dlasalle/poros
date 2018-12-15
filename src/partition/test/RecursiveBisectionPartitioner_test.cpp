@@ -17,7 +17,7 @@
 #include "solidutils/UnitTest.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(RecursiveBisectionPartitioner, ExecuteKWayUniform)

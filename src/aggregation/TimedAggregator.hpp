@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_SRC_TIMEDAGGREGATOR_HPP
-#define DOLOS_SRC_TIMEDAGGREGATOR_HPP
+#ifndef POROS_SRC_TIMEDAGGREGATOR_HPP
+#define POROS_SRC_TIMEDAGGREGATOR_HPP
 
 
 #include "IAggregator.hpp"
 #include "util/TimedProcess.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class TimedAggregator : public IAggregator, public TimedProcess

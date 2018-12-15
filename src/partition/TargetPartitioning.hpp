@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_TARGETPARTITIONING_HPP
-#define DOLOS_SRC_TARGETPARTITIONING_HPP
+#ifndef POROS_SRC_TARGETPARTITIONING_HPP
+#define POROS_SRC_TARGETPARTITIONING_HPP
 
 
 #include <stdexcept>
@@ -20,7 +20,7 @@
 #include "solidutils/Debug.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

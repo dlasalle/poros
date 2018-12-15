@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_UTIL_VISITTRACKER_HPP
-#define DOLOS_UTIL_VISITTRACKER_HPP
+#ifndef POROS_UTIL_VISITTRACKER_HPP
+#define POROS_UTIL_VISITTRACKER_HPP
 
 
 #include <cstdlib>
 #include <vector>
 
 
-namespace dolos
+namespace poros
 {
 
 /**

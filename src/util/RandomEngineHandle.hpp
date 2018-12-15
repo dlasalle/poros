@@ -8,14 +8,14 @@
  */
 
 
-#ifndef DOLOS_SRC_RANDOMENGINEHANDLE_HPP
-#define DOLOS_SRC_RANDOMENGINEHANDLE_HPP
+#ifndef POROS_SRC_RANDOMENGINEHANDLE_HPP
+#define POROS_SRC_RANDOMENGINEHANDLE_HPP
 
 #include "util/RandomEngine.hpp"
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
   
 class RandomEngineHandle

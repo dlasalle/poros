@@ -10,15 +10,15 @@
 
 
 
-#ifndef DOLOS_SRC_IAGGREGATOR_HPP
-#define DOLOS_SRC_IAGGREGATOR_HPP
+#ifndef POROS_SRC_IAGGREGATOR_HPP
+#define POROS_SRC_IAGGREGATOR_HPP
 
 
 #include "Aggregation.hpp"
 #include "aggregation/AggregationParameters.hpp"
 #include "graph/Graph.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class IAggregator

@@ -9,13 +9,13 @@
 
 
 
-#ifndef DOLOS_SRC_TIMEDBISECTOR_HPP
-#define DOLOS_SRC_TIMEDBISECTOR_HPP
+#ifndef POROS_SRC_TIMEDBISECTOR_HPP
+#define POROS_SRC_TIMEDBISECTOR_HPP
 
 #include "IBisector.hpp"
 #include "util/TimedProcess.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class TimedBisector : public IBisector, public TimedProcess

@@ -8,14 +8,14 @@
 */
 
 
-#ifndef DOLOS_SRC_EDGESET_HPP
-#define DOLOS_SRC_EDGESET_HPP
+#ifndef POROS_SRC_EDGESET_HPP
+#define POROS_SRC_EDGESET_HPP
 
 
 #include "Edge.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

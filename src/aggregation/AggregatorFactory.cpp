@@ -12,10 +12,10 @@
 #include "SHEMRMAggregator.hpp"
 #include "TimedAggregator.hpp"
 
-#include "dolos.h"
+#include "poros.h"
 
 
-namespace dolos
+namespace poros
 {
 
 

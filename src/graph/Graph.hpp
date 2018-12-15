@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_GRAPH_HPP
-#define DOLOS_SRC_GRAPH_HPP
+#ifndef POROS_SRC_GRAPH_HPP
+#define POROS_SRC_GRAPH_HPP
 
 
 #include "Base.hpp"
@@ -22,7 +22,7 @@
 #include <cstdlib>
 
 
-namespace dolos
+namespace poros
 {
 
 

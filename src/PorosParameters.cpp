@@ -1,6 +1,6 @@
 /**
-* @file DolosParameters.cpp
-* @brief Implementation of the DolosParameters class.
+* @file PorosParameters.cpp
+* @brief Implementation of the PorosParameters class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2018
 * @version 1
@@ -8,11 +8,11 @@
 */
 
 
-#include "DolosParameters.hpp"
+#include "PorosParameters.hpp"
 #include "util/RandomEngineFactory.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 
@@ -20,8 +20,8 @@ namespace dolos
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
-DolosParameters::DolosParameters(
-    dolos_options_struct const options) :
+PorosParameters::PorosParameters(
+    poros_options_struct const options) :
   m_randomEngine(RandomEngineFactory::make(options.randomSeed)),
   m_aggregationScheme(options.aggregationScheme)
 {
@@ -34,12 +34,12 @@ DolosParameters::DolosParameters(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-RandomEngineHandle DolosParameters::randomEngine()
+RandomEngineHandle PorosParameters::randomEngine()
 {
   return m_randomEngine;
 }
 
-int DolosParameters::aggregationScheme() const
+int PorosParameters::aggregationScheme() const
 {
   return m_aggregationScheme;
 }

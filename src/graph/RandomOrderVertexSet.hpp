@@ -8,15 +8,15 @@
 */
 
 
-#ifndef DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
-#define DOLOS_SRC_RANDOMORDERVERTEXSET_HPP
+#ifndef POROS_SRC_RANDOMORDERVERTEXSET_HPP
+#define POROS_SRC_RANDOMORDERVERTEXSET_HPP
 
 
 #include "graph/PermutedVertexSet.hpp"
 #include "graph/VertexSet.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class RandomEngine;

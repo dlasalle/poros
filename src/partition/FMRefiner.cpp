@@ -20,7 +20,7 @@
 #include <vector>
 #include <array>
 
-namespace dolos
+namespace poros
 {
 
 

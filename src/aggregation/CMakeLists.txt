@@ -1,5 +1,5 @@
 file(GLOB sources *.cpp)
-target_sources(dolos PRIVATE ${sources})
+target_sources(merizo PRIVATE ${sources})
 
 include_directories(.)
 

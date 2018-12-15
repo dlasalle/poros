@@ -13,7 +13,7 @@
 #include "TimedContractor.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

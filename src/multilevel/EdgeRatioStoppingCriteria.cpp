@@ -12,7 +12,7 @@
 #include <stdexcept>
 
 
-namespace dolos
+namespace poros
 {
 
 

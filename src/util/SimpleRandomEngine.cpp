@@ -12,7 +12,7 @@
 #include "solidutils/Random.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

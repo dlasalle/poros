@@ -9,12 +9,12 @@
 
 
 
-#ifndef DOLOS_SRC_TWOWAYCONNECTIVITYBUILDER_HPP
-#define DOLOS_SRC_TWOWAYCONNECTIVITYBUILDER_HPP
+#ifndef POROS_SRC_TWOWAYCONNECTIVITYBUILDER_HPP
+#define POROS_SRC_TWOWAYCONNECTIVITYBUILDER_HPP
 
 #include "partition/TwoWayConnectivity.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

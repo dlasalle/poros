@@ -12,7 +12,7 @@
 #include "TwoWayConnectivity.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 using vertex_struct = TwoWayConnectivity::vertex_struct;

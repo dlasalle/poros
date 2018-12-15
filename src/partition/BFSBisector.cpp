@@ -11,7 +11,7 @@
 #include "BFSBisector.hpp"
 #include "util/VertexQueue.hpp"
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

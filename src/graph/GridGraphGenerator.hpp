@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_GRIDGRAPHGENERATOR_HPP
-#define DOLOS_SRC_GRIDGRAPHGENERATOR_HPP
+#ifndef POROS_SRC_GRIDGRAPHGENERATOR_HPP
+#define POROS_SRC_GRIDGRAPHGENERATOR_HPP
 
 
 #include <memory>
@@ -18,7 +18,7 @@
 #include "graph/Graph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class GridGraphGenerator

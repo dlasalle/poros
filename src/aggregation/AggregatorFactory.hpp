@@ -8,8 +8,8 @@
 */
 
 
-#ifndef DOLOS_SRC_AGGREGATORFACTORY_HPP
-#define DOLOS_SRC_AGGREGATORFACTORY_HPP
+#ifndef POROS_SRC_AGGREGATORFACTORY_HPP
+#define POROS_SRC_AGGREGATORFACTORY_HPP
 
 #include "IAggregator.hpp"
 #include "util/RandomEngineHandle.hpp"
@@ -17,7 +17,7 @@
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 class AggregatorFactory

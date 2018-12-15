@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_GRAPHBUILDER_HPP
-#define DOLOS_SRC_GRAPHBUILDER_HPP
+#ifndef POROS_SRC_GRAPHBUILDER_HPP
+#define POROS_SRC_GRAPHBUILDER_HPP
 
 
 #include "Base.hpp"
@@ -19,7 +19,7 @@
 #include "solidutils/Array.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

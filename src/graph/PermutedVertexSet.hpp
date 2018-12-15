@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_PERMUTEDVERTEXSET_HPP
-#define DOLOS_SRC_PERMUTEDVERTEXSET_HPP
+#ifndef POROS_SRC_PERMUTEDVERTEXSET_HPP
+#define POROS_SRC_PERMUTEDVERTEXSET_HPP
 
 
 #include "Vertex.hpp"
@@ -20,7 +20,7 @@
 #include <memory>
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -7,8 +7,8 @@
 * @date 2018-08-23
 */
 
-#ifndef DOLOS_SRC_DEGREESORTEDVERTEXSET_HPP
-#define DOLOS_SRC_DEGREESORTEDVERTEXSET_HPP
+#ifndef POROS_SRC_DEGREESORTEDVERTEXSET_HPP
+#define POROS_SRC_DEGREESORTEDVERTEXSET_HPP
 
 
 #include "graph/PermutedVertexSet.hpp"
@@ -16,7 +16,7 @@
 #include "graph/Graph.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class RandomEngine;

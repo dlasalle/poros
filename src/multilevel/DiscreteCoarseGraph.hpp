@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_MULTILEVEL_DISCRETECOARSEGRAPH_HPP
-#define DOLOS_SRC_MULTILEVEL_DISCRETECOARSEGRAPH_HPP
+#ifndef POROS_SRC_MULTILEVEL_DISCRETECOARSEGRAPH_HPP
+#define POROS_SRC_MULTILEVEL_DISCRETECOARSEGRAPH_HPP
 
 
 #include "multilevel/ICoarseGraph.hpp"
@@ -20,7 +20,7 @@
 
 #include "solidutils/Array.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

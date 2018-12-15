@@ -15,7 +15,7 @@
 #include "solidutils/VectorMath.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

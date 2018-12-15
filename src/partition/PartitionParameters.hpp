@@ -8,8 +8,8 @@
  */
 
 
-#ifndef DOLOS_SRC_PARTITIONPARAMETERS_HPP
-#define DOLOS_SRC_PARTITIONPARAMETERS_HPP
+#ifndef POROS_SRC_PARTITIONPARAMETERS_HPP
+#define POROS_SRC_PARTITIONPARAMETERS_HPP
 
 
 #include <vector>
@@ -18,7 +18,7 @@
 #include "Base.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -13,7 +13,7 @@
 
 #include "SimpleRandomEngine.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class RandomEngine : public SimpleRandomEngine

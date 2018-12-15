@@ -10,11 +10,11 @@
 
 
 
-#ifndef DOLOS_SRC_IALLOCATEDDATA_HPP
-#define DOLOS_SRC_IALLOCATEDDATA_HPP
+#ifndef POROS_SRC_IALLOCATEDDATA_HPP
+#define POROS_SRC_IALLOCATEDDATA_HPP
 
 
-namespace dolos
+namespace poros
 {
 
 

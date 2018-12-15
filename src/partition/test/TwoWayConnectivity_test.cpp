@@ -15,7 +15,7 @@
 
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(TwoWayConnectivity, GetDirection)

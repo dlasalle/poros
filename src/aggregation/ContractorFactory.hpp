@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_CONTRACTORFACTORY_HPP
-#define DOLOS_SRC_CONTRACTORFACTORY_HPP
+#ifndef POROS_SRC_CONTRACTORFACTORY_HPP
+#define POROS_SRC_CONTRACTORFACTORY_HPP
 
 #include "IContractor.hpp"
 #include "util/TimeKeeper.hpp"
@@ -18,7 +18,7 @@
 #include <memory>
 
 
-namespace dolos
+namespace poros
 {
 
 class ContractorFactory

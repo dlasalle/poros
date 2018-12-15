@@ -9,12 +9,12 @@
 
 
 
-#ifndef DOLOS_SRC_VERTEXGROUP_HPP
-#define DOLOS_SRC_VERTEXGROUP_HPP
+#ifndef POROS_SRC_VERTEXGROUP_HPP
+#define POROS_SRC_VERTEXGROUP_HPP
 
 #include "graph/PermutedVertexSet.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class VertexGroup

@@ -12,7 +12,7 @@
 
 #include "solidutils/Timer.hpp"
 
-namespace dolos
+namespace poros
 {
 
 

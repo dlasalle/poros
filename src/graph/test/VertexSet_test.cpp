@@ -16,7 +16,7 @@
 
 
 
-namespace dolos
+namespace poros
 {
 
 UNITTEST(VertexSet, Size)

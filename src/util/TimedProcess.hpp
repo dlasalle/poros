@@ -9,14 +9,14 @@
 
 
 
-#ifndef DOLOS_SRC_TIMEDPROCESS_HPP
-#define DOLOS_SRC_TIMEDPROCESS_HPP
+#ifndef POROS_SRC_TIMEDPROCESS_HPP
+#define POROS_SRC_TIMEDPROCESS_HPP
 
 #include "TimeKeeper.hpp"
 
 #include <memory>
 
-namespace dolos
+namespace poros
 {
 
 class TimedProcess

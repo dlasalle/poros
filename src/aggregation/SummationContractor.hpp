@@ -10,14 +10,14 @@
 
 
 
-#ifndef DOLOS_SRC_SUMMATIONCONTRACTOR_HPP
-#define DOLOS_SRC_SUMMATIONCONTRACTOR_HPP
+#ifndef POROS_SRC_SUMMATIONCONTRACTOR_HPP
+#define POROS_SRC_SUMMATIONCONTRACTOR_HPP
 
 
 #include "aggregation/IContractor.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 class SummationContractor : public IContractor

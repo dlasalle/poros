@@ -14,7 +14,7 @@
 #include "solidutils/Timer.hpp"
 #include <iostream>
 
-namespace dolos
+namespace poros
 {
 
 /******************************************************************************

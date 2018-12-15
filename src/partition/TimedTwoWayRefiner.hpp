@@ -8,13 +8,13 @@
 */
 
 
-#ifndef DOLOS_SRC_TIMEDTWOWAYREFINER_HPP
-#define DOLOS_SRC_TIMEDTWOWAYREFINER_HPP
+#ifndef POROS_SRC_TIMEDTWOWAYREFINER_HPP
+#define POROS_SRC_TIMEDTWOWAYREFINER_HPP
 
 #include "ITwoWayRefiner.hpp"
 #include "util/TimedProcess.hpp"
 
-namespace dolos
+namespace poros
 {
 
 class TimedTwoWayRefiner : public ITwoWayRefiner, public TimedProcess

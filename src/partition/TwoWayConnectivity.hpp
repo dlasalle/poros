@@ -10,8 +10,8 @@
 
 
 
-#ifndef DOLOS_SRC_TWOWAYCONNECTIVITY_HPP
-#define DOLOS_SRC_TWOWAYCONNECTIVITY_HPP
+#ifndef POROS_SRC_TWOWAYCONNECTIVITY_HPP
+#define POROS_SRC_TWOWAYCONNECTIVITY_HPP
 
 
 #include "Base.hpp"
@@ -21,7 +21,7 @@
 #include "solidutils/Array.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

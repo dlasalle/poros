@@ -9,8 +9,8 @@
 
 
 
-#ifndef DOLOS_SRC_PARTITIONINGANALYZER_HPP
-#define DOLOS_SRC_PARTITIONINGANALYZER_HPP
+#ifndef POROS_SRC_PARTITIONINGANALYZER_HPP
+#define POROS_SRC_PARTITIONINGANALYZER_HPP
 
 
 #include "Base.hpp"
@@ -19,7 +19,7 @@
 #include "solidutils/Debug.hpp"
 
 
-namespace dolos
+namespace poros
 {
 
 

@@ -8,12 +8,12 @@
 */
 
 
-#ifndef DOLOS_SRC_VERTEX_HPP
-#define DOLOS_SRC_VERTEX_HPP
+#ifndef POROS_SRC_VERTEX_HPP
+#define POROS_SRC_VERTEX_HPP
 
 #include "Base.hpp"
 
-namespace dolos
+namespace poros
 {
 
 struct Vertex
