@@ -50,24 +50,24 @@ class EdgeSet
           // do nothing
         }
 
-        inline Edge operator*() const
+        Edge operator*() const
         {
           return Edge::make(m_index);
         }
 
-        inline Iterator const & operator++()
+        Iterator const & operator++()
         {
           ++m_index;
           return *this;
         }
 
-        inline bool operator==(
+        bool operator==(
             Iterator const & other) const
         {
           return m_index == other.m_index;
         }
 
-        inline bool operator!=(
+        bool operator!=(
             Iterator const & other) const
         {
           return m_index != other.m_index;
@@ -87,13 +87,9 @@ class EdgeSet
     */
     EdgeSet(
         adj_type const begin,
-        adj_type const end,
-        vtx_type const * const edgeList,
-        wgt_type const * const edgeWeight) :
+        adj_type const end) :
       m_begin(begin),
-      m_end(end),
-      m_edgeList(edgeList),
-      m_edgeWeight(edgeWeight)
+      m_end(end)
     {
       // do nothing
     }
@@ -103,7 +99,7 @@ class EdgeSet
     *
     * @return The iterator.
     */
-    inline Iterator begin() const noexcept
+    Iterator begin() const noexcept
     {
       return Iterator(m_begin);
     }
@@ -114,7 +110,7 @@ class EdgeSet
     *
     * @return The iterator.
     */
-    inline Iterator end() const noexcept
+    Iterator end() const noexcept
     {
       return Iterator(m_end);
     }
@@ -124,16 +120,14 @@ class EdgeSet
     *
     * @return The number of edges in this edge set.
     */
-    inline adj_type size() const noexcept
+    adj_type size() const noexcept
     {
       return m_end - m_begin;
     }
   
   private:
-    adj_type const m_begin;
-    adj_type const m_end;
-    vtx_type const * const m_edgeList;
-    wgt_type const * const m_edgeWeight;
+    adj_type m_begin;
+    adj_type m_end;
 };
 
 

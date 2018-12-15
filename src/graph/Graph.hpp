@@ -222,7 +222,7 @@ class Graph
     */
     EdgeSet edges() const noexcept
     {
-      return EdgeSet(0, m_numEdges, m_edgeList.data(), m_edgeWeight.data());
+      return EdgeSet(0, m_numEdges);
     }
 
 
@@ -237,8 +237,7 @@ class Graph
         Vertex const vertex) const noexcept
     {
       vtx_type const v = vertex.index;
-      return EdgeSet(m_edgePrefix[v], m_edgePrefix[v+1], m_edgeList.data(), \
-          m_edgeWeight.data());
+      return EdgeSet(m_edgePrefix[v], m_edgePrefix[v+1]);
     }
 
     /**
