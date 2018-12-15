@@ -14,7 +14,7 @@ Requirements
 ------------
 
 To compile Poros you will need `CMake` >= 2.8 and a C++ compiler supporting
-`c++11`.
+`c++14`.
 
 The `configure` script is currently written in `bash`, but `cmake` can be
 invoked directly to build the library.
