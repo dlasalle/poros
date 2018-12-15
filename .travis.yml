@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+dist: xenial
+language: cpp
+compiler:
+  - clang
+  - gcc
+script:
+  - "./configure --debug --devel --test && make && make test"
+  - "./configure --test && make && make test"

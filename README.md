@@ -1,6 +1,10 @@
 Poros
 =====
 
+<a href="https://travis-ci.org/dlasalle/poros">
+  <img src="https://travis-ci.org/dlasalle/poros.svg?branch=master"/>
+</a>
+
 
 A C++ graph partitioning library implementing the [Metis](cs.umn.edu/~metis)
 recursive bisection algorithm.
@@ -10,7 +14,7 @@ Requirements
 ------------
 
 To compile Poros you will need `CMake` >= 2.8 and a C++ compiler supporting
-`c++11`.
+`c++14`.
 
 The `configure` script is currently written in `bash`, but `cmake` can be
 invoked directly to build the library.

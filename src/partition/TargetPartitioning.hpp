@@ -183,7 +183,6 @@ class TargetPartitioning
 
   private:
     pid_type m_numPartitions;
-    wgt_type m_totalVertexWeight;
     double m_imbalanceTolerance;
     sl::Array<double> m_targetFraction;
     sl::Array<wgt_type> m_targetWeight; 
