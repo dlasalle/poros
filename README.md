@@ -1,6 +1,10 @@
 Poros
 =====
 
+<a href="https://travis-ci.org/dlasalle/poros">
+  <img src="https://travis-ci.org/dlasalle/poros.svg?branch=master"/>
+</a>
+
 
 A C++ graph partitioning library implementing the [Metis](cs.umn.edu/~metis)
 recursive bisection algorithm.
