@@ -58,6 +58,56 @@ GraphHandle contract(
   return contractor.contract(graph, agg);
 }
 
+
+template<bool HAS_EDGE_WEIGHTS>
+void fillInConnectivity(
+    Graph const * const fineGraph,
+    Partitioning const * const finePart,
+    TwoWayConnectivity const * const coarseConn,
+    vtx_type const * const coarseMap,
+    TwoWayConnectivityBuilder * const connBuilder)
+{
+
+  // build connectivity
+  for (Vertex const vertex : fineGraph->vertices()) {
+    vtx_type const v = vertex.index;
+    vtx_type const c = coarseMap[v];
+    if (coarseConn->isInBorder(c)) {
+      vtx_type const home = finePart->getAssignment(vertex);
+      wgt_type internal = 0;
+      wgt_type external = 0;
+      // coarse vertex was in the border -- so this one might be
+      for (Edge const edge : fineGraph->edgesOf(vertex)) {
+        vtx_type const neighbor = fineGraph->destinationOf(edge);
+        pid_type const neighborPartition = finePart->getAssignment(neighbor);
+        wgt_type const weight = fineGraph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+        if (neighborPartition == home) {
+          // internal weight
+          internal += weight;
+        } else {
+          // external weight
+          external += weight;
+        }
+      }
+      connBuilder->setInternalConnectivityOf(vertex, internal);
+      connBuilder->setExternalConnectivityOf(vertex, external);
+    } else {
+      // coarse vertex was not in the border, so just sum edge weight
+      wgt_type sum = 0;
+      if (HAS_EDGE_WEIGHTS) {
+        for (Edge const edge : fineGraph->edgesOf(vertex)) {
+          sum += fineGraph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+        }
+      } else {
+        sum = static_cast<wgt_type>(fineGraph->degreeOf(vertex));
+      }
+      connBuilder->setInternalConnectivityOf(vertex, sum);
+      connBuilder->setExternalConnectivityOf(vertex, 0);
+    }
+  }
+}
+
+
 }
 
 /******************************************************************************
@@ -111,38 +161,12 @@ PartitioningInformation DiscreteCoarseGraph::project(
   
   connBuilder.begin(m_fine->numVertices());
 
-  // build connectivity
-  for (Vertex const vertex : m_fine->vertices()) {
-    vtx_type const v = vertex.index;
-    vtx_type const c = m_coarseMap[v];
-    if (coarseConn->isInBorder(c)) {
-      vtx_type const home = finePart.getAssignment(vertex);
-      wgt_type internal = 0;
-      wgt_type external = 0;
-      // coarse vertex was in the border -- so this one might be
-      for (Edge const edge : m_fine->edgesOf(vertex)) {
-        vtx_type const neighbor = m_fine->destinationOf(edge);
-        pid_type const neighborPartition = finePart.getAssignment(neighbor);
-        wgt_type const weight = m_fine->weightOf(edge);
-        if (neighborPartition == home) {
-          // internal weight
-          internal += weight;
-        } else {
-          // external weight
-          external += weight;
-        }
-      }
-      connBuilder.setInternalConnectivityOf(vertex, internal);
-      connBuilder.setExternalConnectivityOf(vertex, external);
-    } else {
-      // coarse vertex was not in the border, so just sum edge weight
-      wgt_type sum = 0;
-      for (Edge const edge : m_fine->edgesOf(vertex)) {
-        sum += m_fine->weightOf(edge);
-      }
-      connBuilder.setInternalConnectivityOf(vertex, sum);
-      connBuilder.setExternalConnectivityOf(vertex, 0);
-    }
+  if (m_fine->hasUnitEdgeWeight()) {
+    fillInConnectivity<false>(m_fine, &finePart, coarseConn, \
+        m_coarseMap.data(), &connBuilder);
+  } else {
+    fillInConnectivity<true>(m_fine, &finePart, coarseConn, \
+        m_coarseMap.data(), &connBuilder);
   }
 
   finePart.setCutEdgeWeight(coarsePart->getCutEdgeWeight());

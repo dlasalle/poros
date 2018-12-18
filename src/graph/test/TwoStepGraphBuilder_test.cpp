@@ -77,11 +77,11 @@ UNITTEST(TwoStepGraphBuilder, FullBuild)
   testEqual(graph->numEdges(), 8u);
 
   for (Vertex const vertex : graph->vertices()) {
-    testEqual(graph->weightOf(vertex), 1u);
+    testEqual(graph->weightOf<true>(vertex), 1u);
     testEqual(graph->degreeOf(vertex), 2u);
 
     for (Edge const edge : graph->edgesOf(vertex)) {
-      testEqual(graph->weightOf(edge), 2u);
+      testEqual(graph->weightOf<true>(edge), 2u);
     }
   }
 }

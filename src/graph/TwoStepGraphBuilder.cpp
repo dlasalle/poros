@@ -44,6 +44,8 @@ TwoStepGraphBuilder::TwoStepGraphBuilder() :
   m_phase(PHASE_START),
   m_numVertices(0),
   m_numEdges(0),
+  m_unitVertexWeight(false),
+  m_unitEdgeWeight(false),
   m_edgePrefix(0),
   m_edgeList(0),
   m_vertexWeight(0),
@@ -69,6 +71,17 @@ void TwoStepGraphBuilder::setNumVertices(
   m_numVertices = numVertices;
 }
 
+void TwoStepGraphBuilder::setUnitVertexWeight(
+    bool const hasUnitWeight)
+{
+  m_unitVertexWeight = hasUnitWeight;
+}
+
+void TwoStepGraphBuilder::setUnitEdgeWeight(
+    bool const hasUnitWeight)
+{
+  m_unitEdgeWeight = hasUnitWeight;
+}
 
 void TwoStepGraphBuilder::beginVertexPhase()
 {
@@ -77,7 +90,9 @@ void TwoStepGraphBuilder::beginVertexPhase()
   
   // allocate vertex arrays
   m_edgePrefix = sl::Array<adj_type>(m_numVertices+1, 0);
-  m_vertexWeight = sl::Array<wgt_type>(m_numVertices);
+  if (!m_unitVertexWeight) {
+    m_vertexWeight = sl::Array<wgt_type>(m_numVertices);
+  }
 }
 
 
@@ -97,7 +112,10 @@ void TwoStepGraphBuilder::beginEdgePhase()
 
   // allocate edge arrays
   m_edgeList = sl::Array<vtx_type>(m_numEdges);
-  m_edgeWeight = sl::Array<wgt_type>(m_numEdges);
+
+  if (!m_unitEdgeWeight) {
+    m_edgeWeight = sl::Array<wgt_type>(m_numEdges);
+  }
 }
 
 

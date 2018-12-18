@@ -71,7 +71,7 @@ UNITTEST(SummationContractor, ContractLine)
   testEqual(out->degreeOf(Vertex::make(7)), static_cast<vtx_type>(1));
 
   for (Edge const & edge : out->edges()) {
-    testEqual(out->weightOf(edge), static_cast<wgt_type>(2));
+    testEqual(out->weightOf<true>(edge), static_cast<wgt_type>(2));
   }
 }
 
@@ -150,7 +150,7 @@ UNITTEST(SummationContractor, ContractCubeSquare)
   testEqual(out->getTotalEdgeWeight(), static_cast<wgt_type>(16));
 
   for (Edge const & edge : out->edges()) {
-    testEqual(out->weightOf(edge), static_cast<wgt_type>(2));
+    testEqual(out->weightOf<true>(edge), static_cast<wgt_type>(2));
   }
 }
 

@@ -29,6 +29,9 @@
 #include "RandomBisector.hpp"
 #include "PartitioningAnalyzer.hpp"
 #include "graph/RandomOrderVertexSet.hpp"
+
+#include "solidutils/Array.hpp"
+
 #include <algorithm>
 
 
@@ -78,6 +81,38 @@ struct vertex_struct
     
 };
 
+
+template<bool HAS_VERTEX_WEIGHTS>
+size_t fillVertexWeightPairs(
+    Graph const * const graph,
+    Partitioning const * const part,
+    vertex_struct * const vertices)
+{
+  size_t left = 0;
+  size_t right = graph->numVertices()-1;
+
+  for (Vertex const vertex : graph->vertices()) {
+    vertex_struct pair;
+    pair.vertex = vertex;
+    pair.weight = graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
+
+    if (part->getAssignment(pair.vertex) == LEFT_PARTITION) {
+      vertices[left] = pair;
+      ++left;
+    } else {
+      vertices[right] = pair;
+      --right;
+    }
+  }
+  ASSERT_EQUAL(left, right+1);
+
+  // sort
+  std::sort(vertices, vertices + left);
+  std::sort(vertices+left, vertices + graph->numVertices());
+
+  return left;
+}
+
 /**
 * @brief Swap vertices to achieve balance where the right side is overweight.
 *
@@ -92,28 +127,14 @@ void swapBalanceRight(
     Partitioning * const partitioning,
     Graph const * const graph)
 {
-  std::vector<vertex_struct> vertices(graph->numVertices());
+  sl::Array<vertex_struct> vertices(graph->numVertices());
 
-  size_t left = 0;
-  size_t right = vertices.size()-1;
-  for (Vertex const vertex : graph->vertices()) {
-    vertex_struct pair;
-    pair.vertex = vertex;
-    pair.weight = graph->weightOf(vertex);
-
-    if (partitioning->getAssignment(pair.vertex) == LEFT_PARTITION) {
-      vertices[left] = pair;
-      ++left;
-    } else {
-      vertices[right] = pair;
-      --right;
-    }
+  size_t left;
+  if (graph->hasUnitVertexWeight()) {
+    left = fillVertexWeightPairs<false>(graph, partitioning, vertices.data());
+  } else {
+    left = fillVertexWeightPairs<true>(graph, partitioning, vertices.data());
   }
-  ASSERT_EQUAL(left, right+1);
-
-  // sort
-  std::sort(vertices.begin(), vertices.begin()+left);
-  std::sort(vertices.begin()+left, vertices.end());
 
   // how much weight we need to fix
   wgt_diff_type const minDelta = \
@@ -124,7 +145,7 @@ void swapBalanceRight(
   // reset pointers -- start the heaviest right-side vertex and lightest
   // left-side vertex
   size_t const middle = left;
-  right = vertices.size()-1;
+  size_t const right = vertices.size()-1;
   left = 0;
 
   wgt_diff_type const weight = vertices[right].weight;
@@ -133,9 +154,9 @@ void swapBalanceRight(
   wgt_diff_type const maxOffset = weight - minDelta;
 
   // binary search the left array for the right weight vertex to swap with
-  std::vector<vertex_struct>::iterator lower = \
+  sl::Array<vertex_struct>::const_iterator lower = \
       std::lower_bound(vertices.begin(), vertices.begin()+middle, minOffset);
-  std::vector<vertex_struct>::iterator upper = \
+  sl::Array<vertex_struct>::const_iterator upper = \
       std::lower_bound(vertices.begin(), vertices.begin()+middle, maxOffset);
 
   // if we found such a vertice
@@ -143,6 +164,36 @@ void swapBalanceRight(
     // perform swap
     partitioning->move(vertices[right].vertex, LEFT_PARTITION);
     partitioning->move((*lower).vertex, RIGHT_PARTITION);
+  }
+}
+
+
+template<bool HAS_VERTEX_WEIGHTS>
+void fillLeft(
+    TargetPartitioning const * const target,
+    Graph const * const graph,
+    PermutedVertexSet const vertices,
+    Partitioning * const part)
+{
+  PartitioningAnalyzer analyzer(part, target);
+
+  for (Vertex const vertex : vertices) {
+    // balance to within 1 vertex
+    if (part->getWeight(LEFT_PARTITION) + \
+        graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex) > \
+        target->getMaxWeight(LEFT_PARTITION)) {
+      break;
+    }
+
+    double const balance = analyzer.calcMaxImbalance();
+
+    part->move(vertex, LEFT_PARTITION);
+
+    if (balance < analyzer.calcMaxImbalance()) {
+      // we hit the best balance undo move and exit loop 
+      part->move(vertex, RIGHT_PARTITION);
+      break;
+    }
   }
 }
 
@@ -180,27 +231,13 @@ Partitioning RandomBisector::execute(
   Partitioning partitioning(NUM_BISECTION_PARTS, graph);
   partitioning.assignAll(RIGHT_PARTITION);
 
-  PartitioningAnalyzer analyzer(&partitioning, target);
-
   PermutedVertexSet vertices = RandomOrderVertexSet::generate(
       graph->vertices(), m_randEngine.get());
 
-  for (Vertex const vertex : vertices) {
-    // balance to within 1 vertex
-    if (partitioning.getWeight(LEFT_PARTITION) + graph->weightOf(vertex) > \
-        target->getMaxWeight(LEFT_PARTITION)) {
-      break;
-    }
-
-    double const balance = analyzer.calcMaxImbalance();
-
-    partitioning.move(vertex, LEFT_PARTITION);
-
-    if (balance < analyzer.calcMaxImbalance()) {
-      // we hit the best balance undo move and exit loop 
-      partitioning.move(vertex, RIGHT_PARTITION);
-      break;
-    }
+  if (graph->hasUnitVertexWeight()) {
+    fillLeft<false>(target, graph, std::move(vertices), &partitioning);
+  } else {
+    fillLeft<true>(target, graph, std::move(vertices), &partitioning);
   }
 
   // by construction the left partition cannot be overweight at this point

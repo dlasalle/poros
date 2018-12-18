@@ -58,6 +58,32 @@ bool shouldBeInBorder(
  return v.external > 0 || v.internal == 0;
 }
 
+template<bool HAS_EDGE_WEIGHTS>
+void setupConnections(
+    Graph const * const graph,
+    Partitioning const * const partitioning,
+    sl::Array<vertex_struct> * const connectivity)
+{
+  // populate connectivity vector
+  for (Vertex const vertex : graph->vertices()) {
+    vertex_struct pair{0, 0};
+    vtx_type const v = vertex.index;
+    pid_type const home = partitioning->getAssignment(vertex);
+    for (Edge const edge : graph->edgesOf(vertex)) {
+      Vertex const u = graph->destinationOf(edge);
+      pid_type const other = partitioning->getAssignment(u);
+      wgt_type const wgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+      if (other == home) {
+        pair.internal += wgt;
+      } else {
+        pair.external += wgt;
+      }
+    }
+
+    (*connectivity)[v] = pair;
+  }
+}
+
 }
 
 
@@ -87,21 +113,10 @@ TwoWayConnectivity TwoWayConnectivity::fromPartitioning(
   sl::Array<vertex_struct> connectivity(graph->numVertices());
 
   // populate connectivity vector
-  for (Vertex const vertex : graph->vertices()) {
-    vertex_struct pair{0, 0};
-    vtx_type const v = vertex.index;
-    pid_type const home = partitioning->getAssignment(vertex);
-    for (Edge const edge : graph->edgesOf(vertex)) {
-      Vertex const u = graph->destinationOf(edge);
-      pid_type const other = partitioning->getAssignment(u);
-      if (other == home) {
-        pair.internal += graph->weightOf(edge);
-      } else {
-        pair.external += graph->weightOf(edge);
-      }
-    }
-
-    connectivity[v] = pair;
+  if (graph->hasUnitEdgeWeight()) {
+    setupConnections<false>(graph, partitioning, &connectivity);
+  } else {
+    setupConnections<true>(graph, partitioning, &connectivity);
   }
 
   return TwoWayConnectivity(std::move(connectivity));

@@ -28,12 +28,55 @@
 
 #include "Partitioning.hpp"
 
-// delete me
-#include <cstdio>
 
 namespace poros
 {
 
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+template<bool HAS_VERTEX_WEIGHT>
+void sumPartitionWeight(
+    Graph const * const graph,
+    pid_type const * const assignment,
+    wgt_type * const partWeight)
+{
+   for (Vertex const & vertex : graph->vertices()) {
+    vtx_type const v = vertex.index;
+    pid_type const part = assignment[v];
+    wgt_type const wgt = graph->weightOf<HAS_VERTEX_WEIGHT>(vertex);
+    partWeight[part] += wgt;
+  }
+}
+
+template<bool HAS_EDGE_WEIGHT>
+wgt_type sumCutEdgeWeight(
+    Graph const * const graph,
+    pid_type const * const assignment)
+{
+  wgt_type twoWayCutEdgeWeight = 0;
+  for (Vertex const vertex : graph->vertices()) {
+    vtx_type const v = vertex.index;
+
+    pid_type const home = assignment[v];
+    for (Edge const edge : graph->edgesOf(vertex)) {
+      Vertex const u = graph->destinationOf(edge);
+      pid_type const other = assignment[u.index];
+      if (other != home) {
+        twoWayCutEdgeWeight += graph->weightOf<HAS_EDGE_WEIGHT>(edge);
+      }
+    }
+  }
+
+  return twoWayCutEdgeWeight / 2;
+}
+
+}
 
 /******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
@@ -63,15 +106,17 @@ Partitioning::Partitioning(
   ASSERT_GREATER(numParts, 0);
 
   // calculate partition weights
-  for (Vertex const & vertex : graph->vertices()) {
-    vtx_type const v = vertex.index;
-    pid_type const part = m_assignment[v];
-    ASSERT_LESS(part, numParts);
-    m_partitionWeight[part] += graph->weightOf(vertex);
+  if (graph->hasUnitVertexWeight()) {
+    sumPartitionWeight<false>(m_graph, m_assignment.data(), m_partitionWeight.data());
+  } else {
+    sumPartitionWeight<true>(m_graph, m_assignment.data(), m_partitionWeight.data());
   }
 
-  // TODO: should not be calling private method inside of constructor
-  recalcCutEdgeWeight();
+  if (m_graph->hasUnitEdgeWeight()) {
+    m_cutEdgeWeight = sumCutEdgeWeight<false>(m_graph, m_assignment.data());
+  } else {
+    m_cutEdgeWeight = sumCutEdgeWeight<true>(m_graph, m_assignment.data());
+  }
 }
 
 
@@ -103,21 +148,11 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
 
 void Partitioning::recalcCutEdgeWeight()
 {
-  wgt_type twoWayCutEdgeWeight = 0;
-  for (Vertex const vertex : m_graph->vertices()) {
-    vtx_type const v = vertex.index;
-
-    pid_type const home = m_assignment[v];
-    for (Edge const edge : m_graph->edgesOf(vertex)) {
-      Vertex const u = m_graph->destinationOf(edge);
-      pid_type const other = m_assignment[u.index];
-      if (other != home) {
-        twoWayCutEdgeWeight += m_graph->weightOf(edge);
-      }
-    }
+  if (m_graph->hasUnitEdgeWeight()) {
+    m_cutEdgeWeight = sumCutEdgeWeight<false>(m_graph, m_assignment.data());
+  } else {
+    m_cutEdgeWeight = sumCutEdgeWeight<true>(m_graph, m_assignment.data());
   }
-
-  m_cutEdgeWeight = twoWayCutEdgeWeight / 2;
 }
 
 

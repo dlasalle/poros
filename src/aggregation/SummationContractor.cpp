@@ -44,7 +44,7 @@ namespace poros
 namespace
 {
 
-template<bool UNIT_VERTICES, bool UNIT_EDGES>
+template<bool HAS_VERTEX_WEIGHTS, bool HAS_EDGE_WEIGHTS>
 GraphHandle contractGraph(
     Graph const * const graph,
     Aggregation const * const aggregation)
@@ -58,20 +58,13 @@ GraphHandle contractGraph(
     wgt_type coarseVertexWeight = 0;
 
     for (Vertex const vertex : group.fineVertices()) {
-      if (UNIT_VERTICES) {
-        coarseVertexWeight += static_cast<wgt_type>(1);
-      } else {
-        coarseVertexWeight += graph->weightOf(vertex);
-      }
+      coarseVertexWeight += graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
       for (Edge const edge : graph->edgesOf(vertex)) {
         vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
             graph->destinationOf(edge).index);
         if (coarseVertex != coarseNeighbor) {
-          if (UNIT_EDGES) {
-            builder.addEdge(coarseNeighbor, static_cast<wgt_type>(1));
-          } else {
-            builder.addEdge(coarseNeighbor, graph->weightOf(edge));
-          }
+          wgt_type const ewgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+          builder.addEdge(coarseNeighbor, ewgt);
         }
       }
     }
@@ -84,10 +77,6 @@ GraphHandle contractGraph(
 
   return next;
 }
-
-
-
-
 
 
 }
@@ -117,15 +106,15 @@ GraphHandle SummationContractor::contract(
 {
   if (graph->hasUnitVertexWeight()) {
     if (graph->hasUnitEdgeWeight()) {
-      return contractGraph<true, true>(graph, aggregation);
+      return contractGraph<false, false>(graph, aggregation);
     } else {
-      return contractGraph<true, false>(graph, aggregation);
+      return contractGraph<false, true>(graph, aggregation);
     }
   } else {
     if (graph->hasUnitEdgeWeight()) {
-      return contractGraph<false, true>(graph, aggregation);
+      return contractGraph<true, false>(graph, aggregation);
     } else {
-      return contractGraph<false, false>(graph, aggregation);
+      return contractGraph<true, true>(graph, aggregation);
     }
   }
 }

@@ -89,6 +89,21 @@ class TwoStepGraphBuilder
     */
     GraphHandle finish();
 
+    /**
+    * @brief Generate the graph with vertex with weight 1.
+    *
+    * @param hasUnitWeights Whether or not the graph has vertex weights of 1.
+    */
+    void setUnitVertexWeight(
+        bool hasUnitWeights);
+
+    /**
+    * @brief Generate the graph with edge with weight 1.
+    *
+    * @param hasUnitWeights Whether or not the graph has edge weights of 1.
+    */
+    void setUnitEdgeWeight(
+        bool hasUnitWeights);
 
     /**
     * @brief Set the number of edges this vertex will have.
@@ -135,6 +150,7 @@ class TwoStepGraphBuilder
         wgt_type const weight) noexcept
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
+      ASSERT_FALSE(m_unitVertexWeight);
 
       m_vertexWeight[vertex] = weight;
     }
@@ -159,7 +175,9 @@ class TwoStepGraphBuilder
 
       adj_type const index = m_edgePrefix[vertex+1]++;
       m_edgeList[index] = dest;
-      m_edgeWeight[index] = weight;
+      if (!m_unitEdgeWeight) {
+        m_edgeWeight[index] = weight;
+      }
     }
 
 
@@ -167,6 +185,8 @@ class TwoStepGraphBuilder
     int m_phase;
     vtx_type m_numVertices;
     adj_type m_numEdges;
+    bool m_unitVertexWeight;
+    bool m_unitEdgeWeight;
     sl::Array<adj_type> m_edgePrefix;
     sl::Array<vtx_type> m_edgeList;
     sl::Array<wgt_type> m_vertexWeight;

@@ -60,24 +60,24 @@ class Partitioning
           // do nothing
         }
 
-        inline Partition operator*() const
+        Partition operator*() const
         {
           return Partition(m_index, m_partitionWeight[m_index]);
         }
 
-        inline Iterator & operator++()
+        Iterator & operator++()
         {
           ++m_index;
           return *this;
         }
 
-        inline bool operator==(
+        bool operator==(
             Iterator const & other) const
         {
           return m_index == other.m_index;
         }
 
-        inline bool operator!=(
+        bool operator!=(
             Iterator const & other) const
         {
           return m_index != other.m_index;
@@ -209,7 +209,7 @@ class Partitioning
     *
     * @return The partition.
     */
-    inline Partition operator[](
+    Partition operator[](
         pid_type const part) const noexcept
     {
       return Partition(part, m_partitionWeight[part]);
@@ -221,7 +221,7 @@ class Partitioning
     *
     * @param weight The cut edge weight.
     */
-    inline void setCutEdgeWeight(
+    void setCutEdgeWeight(
         wgt_type const weight) noexcept
     {
       m_cutEdgeWeight = weight;
@@ -233,7 +233,7 @@ class Partitioning
     *
     * @param weightDelta The cut edge weight delta.
     */
-    inline void addCutEdgeWeight(
+    void addCutEdgeWeight(
         wgt_type const weightDelta) noexcept
     {
       m_cutEdgeWeight += weightDelta;
@@ -245,7 +245,7 @@ class Partitioning
     *
     * @return The weight.
     */
-    inline wgt_type getCutEdgeWeight() const noexcept
+    wgt_type getCutEdgeWeight() const noexcept
     {
       return m_cutEdgeWeight;
     }
@@ -256,7 +256,7 @@ class Partitioning
      *
      * @return The number of partitions. 
      */
-    inline pid_type numPartitions() const noexcept
+    pid_type numPartitions() const noexcept
     {
       return static_cast<pid_type>(m_partitionWeight.size());
     }
@@ -269,7 +269,7 @@ class Partitioning
      * @param vertex The vertex.
      * @param partition The partition to assign it to.
      */
-    inline void assign(
+    void assign(
         Vertex const vertex,
         pid_type const partition) noexcept
     {
@@ -279,7 +279,8 @@ class Partitioning
       ASSERT_LESS(partition, m_partitionWeight.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
 
-      wgt_type const weight = m_graph->weightOf(vertex);
+      wgt_type const weight = m_graph->hasUnitVertexWeight() ? \
+          m_graph->weightOf<false>(vertex) : m_graph->weightOf<true>(vertex);
 
       m_partitionWeight[partition] += weight;
       m_assignment[index] = partition;
@@ -292,7 +293,7 @@ class Partitioning
      * @param vertex The vertex to move.
      * @param partition The partition to move the vertex to.
      */
-    inline void move(
+    void move(
         Vertex const vertex,
         pid_type const partition) noexcept
     {
@@ -303,7 +304,8 @@ class Partitioning
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
       ASSERT_NOTEQUAL(getAssignment(vertex), partition);
 
-      wgt_type const weight = m_graph->weightOf(vertex);
+      wgt_type const weight = m_graph->hasUnitVertexWeight() ? \
+          m_graph->weightOf<false>(vertex) : m_graph->weightOf<true>(vertex);
 
       // remove from previous partition
       pid_type const current = getAssignment(vertex);
@@ -321,7 +323,7 @@ class Partitioning
      * @param vertex The vertex to unassign.
      * @param weight The weight of the vertex.
      */
-    inline void unassign(
+    void unassign(
         Vertex const vertex) noexcept
     {
       vtx_type const index = vertex.index;
@@ -332,7 +334,8 @@ class Partitioning
 
       ASSERT_NOTEQUAL(current, NULL_PID);
 
-      m_partitionWeight[current] -= m_graph->weightOf(vertex);
+      m_partitionWeight[current] -= m_graph->hasUnitVertexWeight() ? \
+          m_graph->weightOf<false>(vertex) : m_graph->weightOf<true>(vertex);
       m_assignment[index] = NULL_PID;
     }
 
@@ -344,7 +347,7 @@ class Partitioning
      *
      * @return The assignment.
      */
-    inline pid_type getAssignment(
+    pid_type getAssignment(
         Vertex const vertex) const noexcept
     {
       ASSERT_LESS(vertex.index, m_assignment.size());
@@ -360,7 +363,7 @@ class Partitioning
      *
      * @return The assignment.
      */
-    inline pid_type getAssignment(
+    pid_type getAssignment(
         vtx_type const vertex) const noexcept
     {
       ASSERT_LESS(vertex, m_assignment.size());
@@ -376,7 +379,7 @@ class Partitioning
      *
      * @return True if the vertex has been assigned to a partition.
      */
-    inline bool isAssigned(
+    bool isAssigned(
         Vertex const vertex) const noexcept
     {
       return getAssignment(vertex) != NULL_PID;
@@ -390,7 +393,7 @@ class Partitioning
     *
     * @return The weight of the partition.
     */
-    inline wgt_type getWeight(
+    wgt_type getWeight(
         pid_type const partition) const noexcept
     {
       ASSERT_LESS(partition, m_partitionWeight.size());
@@ -405,7 +408,7 @@ class Partitioning
     *
     * @return The fraction of weight.
     */
-    inline double getFraction(
+    double getFraction(
         pid_type const partition) const noexcept
     {
       ASSERT_LESS(partition, m_partitionWeight.size());
@@ -419,7 +422,7 @@ class Partitioning
     *
     * @return The iterator.
     */
-    inline Iterator begin() const noexcept
+    Iterator begin() const noexcept
     {
       return Iterator(0, m_partitionWeight.data());
     }
@@ -430,7 +433,7 @@ class Partitioning
     *
     * @return The iterator.
     */
-    inline Iterator end() const noexcept
+    Iterator end() const noexcept
     {
       return Iterator(m_partitionWeight.size(), m_partitionWeight.data());
     }

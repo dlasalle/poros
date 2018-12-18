@@ -149,7 +149,7 @@ UNITTEST(TwoWayConnectivity, UpdateNeighbor)
     Vertex const u = g.destinationOf(edge);
     pid_type const where = p.getAssignment(u);
     int const status = \
-        conn.updateNeighbor(u, g.weightOf(edge), \
+        conn.updateNeighbor(u, g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(1, where));
     if (u == 5) {
       testEqual(status, TwoWayConnectivity::BORDER_REMOVED);
@@ -221,7 +221,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   p.move(Vertex::make(0), 1);
   for (Edge const & edge : g.edgesOf(Vertex::make(0))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(1, where));
   }
 
@@ -234,7 +234,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   p.move(Vertex::make(2), 0);
   for (Edge const & edge : g.edgesOf(Vertex::make(2))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(0, where));
   }
 
@@ -247,7 +247,7 @@ UNITTEST(TwoWayConnectivity, MoveAndUpdate)
   p.move(Vertex::make(0), 0);
   for (Edge const & edge : g.edgesOf(Vertex::make(0))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(0, where));
   }
 
@@ -344,7 +344,7 @@ UNITTEST(TwoWayConnectivity, Verify)
   p.move(Vertex::make(0), 1);
   for (Edge const edge : g.edgesOf(Vertex::make(0))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(1, where));
   }
   testTrue(conn.verify(&g, &p));
@@ -353,7 +353,7 @@ UNITTEST(TwoWayConnectivity, Verify)
   p.move(Vertex::make(2), 0);
   for (Edge const edge : g.edgesOf(Vertex::make(2))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(0, where));
   }
   testTrue(conn.verify(&g, &p));
@@ -362,7 +362,7 @@ UNITTEST(TwoWayConnectivity, Verify)
   p.move(Vertex::make(0), 0);
   for (Edge const edge : g.edgesOf(Vertex::make(0))) {
     pid_type const where = p.getAssignment(g.destinationOf(edge));
-    conn.updateNeighbor(g.destinationOf(edge), g.weightOf(edge), \
+    conn.updateNeighbor(g.destinationOf(edge), g.weightOf<true>(edge), \
         TwoWayConnectivity::getDirection(0, where));
   }
 
