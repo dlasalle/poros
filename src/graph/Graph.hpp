@@ -273,10 +273,17 @@ class Graph
     *
     * @return The weight.
     */
+    template<bool HAS_EDGE_WEIGHT>
     wgt_type weightOf(
         Edge const e) const noexcept
     {
-      return m_edgeWeight[e.index];
+      ASSERT_EQUAL(HAS_EDGE_WEIGHT, !hasUnitEdgeWeight());
+      if (HAS_EDGE_WEIGHT) {
+        return m_edgeWeight[e.index];
+      } else {
+        return static_cast<wgt_type>(1);
+      }
+
     }
 
     /**
@@ -286,10 +293,16 @@ class Graph
     *
     * @return The weight.
     */
+    template<bool HAS_VERTEX_WEIGHT>
     wgt_type weightOf(
         Vertex const v) const noexcept
     {
-      return m_vertexWeight[v.index];
+      ASSERT_EQUAL(HAS_VERTEX_WEIGHT, !hasUnitVertexWeight());
+      if (HAS_VERTEX_WEIGHT) {
+        return m_vertexWeight[v.index];
+      } else {
+        return static_cast<wgt_type>(1);
+      }
     }
 
     /**

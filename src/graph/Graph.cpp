@@ -32,6 +32,9 @@
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
 
+#ifndef NDEBUG
+#include <iostream>
+#endif
 
 namespace poros
 {
@@ -76,9 +79,8 @@ Graph::Graph(
 {
   // calculate total vertex weight
   if (m_numVertices > 0) {
-    if (m_vertexWeight.data() == nullptr) {
+    if (m_vertexWeight.size() == 0) {
       // allocate unit vertex weight
-      m_vertexWeight = sl::Array<vtx_type>(m_numVertices, 1);
       m_unitVertexWeight = true;
     } else {
       for (vtx_type v = 0; v < m_numVertices; ++v) {
@@ -94,9 +96,8 @@ Graph::Graph(
 
   // calculate total edge weight
   if (m_numEdges > 0) {
-    if (m_edgeWeight.data() == nullptr) {
+    if (m_edgeWeight.size() == 0) {
       // allocate unit edge weight
-      m_edgeWeight = sl::Array<wgt_type>(m_numEdges, 1);
       m_unitEdgeWeight = true;
     } else {
       for (adj_type e = 0; e < m_numEdges; ++e) {
@@ -144,39 +145,55 @@ bool Graph::isValid() const
 {
   // check vertex weight sum
   wgt_type vertexSum = 0;
-  for (vtx_type i = 0; i < m_numVertices; ++i) {
-    vertexSum += m_vertexWeight[i];
+  for (Vertex const v : vertices()) {
+    if (hasUnitVertexWeight()) {
+      vertexSum += weightOf<false>(v);
+    } else {
+      vertexSum += weightOf<true>(v);
+    }
   }
   if (vertexSum != m_totalVertexWeight) {
+    std::cerr << "Invalid vertex weight sum: Actual " << vertexSum <<
+        " Expected: " << m_totalVertexWeight << std::endl;
     return false;
   }
 
   // check edge list
-  for (adj_type i = 0; i < m_numEdges; ++i) {
-    if (m_edgeList[i] >= m_numVertices) {
+  for (Edge const e : edges()) {
+    if (destinationOf(e) >= m_numVertices) {
       // invalid vertex
+      std::cerr << "Invalid vertex: " << destinationOf(e) <<
+          " / " << m_numVertices << std::endl;
       return false;
     }
   }
 
   // check edge weight sum
   wgt_type edgeSum = 0;
-  for (adj_type i = 0; i < m_numEdges; ++i) {
-    edgeSum += m_edgeWeight[i];
+  for (Edge const e : edges()) {
+    if (hasUnitEdgeWeight()) {
+      edgeSum += weightOf<false>(e);
+    } else {
+      edgeSum += weightOf<true>(e);
+    }
   }
   if (edgeSum != m_totalEdgeWeight) {
+    std::cerr << "Invalid edge weight sum: Actual " << edgeSum << " Expected: "
+        << m_totalEdgeWeight << std::endl;
     return false;
   }
 
   // check symmetry
-  for (vtx_type v = 0; v < m_numVertices; ++v) {
-    for (adj_type j = m_edgePrefix[v]; j < m_edgePrefix[v+1]; ++j) {
+  for (Vertex const v : vertices()) {
+    for (Edge const e : edgesOf(v)) {
       // find reverse edge
-      vtx_type const u = m_edgeList[j];
+      Vertex const u = destinationOf(e);
       bool found = false;
-      for (adj_type k = m_edgePrefix[u]; k < m_edgePrefix[u+1]; ++k) {
-        if (v == m_edgeList[k]) {
-          if (m_edgeWeight[k] != m_edgeWeight[j]) {
+      for (Edge const f : edgesOf(u)) {
+        if (v == destinationOf(f)) {
+          if (!hasUnitEdgeWeight() && weightOf<true>(e) != weightOf<true>(f)) {
+            std::cerr << "Edge weight is not symmetric " << e.index << ": " <<
+                weightOf<true>(e) << " / " << weightOf<true>(f) << std::endl;
             return false;
           }
           found = true;
@@ -184,6 +201,7 @@ bool Graph::isValid() const
         }
       }
       if (!found) {
+        std::cerr << "Did not find return edge for " << e.index << std::endl;
         return false;
       }
     }
