@@ -66,8 +66,8 @@ class IContractor
     * @return The contracted graph.
     */
     virtual GraphHandle contract(
-        Graph const * const graph,
-        Aggregation const * const aggregation) = 0;
+        Graph const * graph,
+        Aggregation const * aggregation) = 0;
 
 };
 

@@ -58,8 +58,8 @@ class SummationContractor : public IContractor
     * @return The contracted graph.
     */
     GraphHandle contract(
-        Graph const * const graph,
-        Aggregation const * const aggregation) override;
+        Graph const * graph,
+        Aggregation const * aggregation) override;
 };
 
 

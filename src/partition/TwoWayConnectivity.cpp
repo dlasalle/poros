@@ -29,6 +29,7 @@
 
 #include "TwoWayConnectivity.hpp"
 
+#include <string>
 
 namespace poros
 {

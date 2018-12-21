@@ -57,7 +57,7 @@ class TimedAggregator : public IAggregator, public TimedProcess
     * @return The aggregation.
     */
     Aggregation aggregate(
-        AggregationParameters const params,
+        AggregationParameters params,
         Graph const * graph) override;
 
   private:

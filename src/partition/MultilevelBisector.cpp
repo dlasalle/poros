@@ -80,8 +80,8 @@ Partitioning MultilevelBisector::execute(
   criteria.add(std::unique_ptr<IStoppingCriteria>(
       new EdgeRatioStoppingCriteria(0.95)));
 
-  params.setMaxVertexWeight( \
-      1.5 * graph->getTotalVertexWeight() / targetNumVertices);
+  params.setMaxVertexWeight(static_cast<wgt_type>( \
+      (1.5 * graph->getTotalVertexWeight()) / targetNumVertices));
 
   PartitioningInformation partInfo = \
       recurse(0, params, &criteria, target, nullptr, graph);
