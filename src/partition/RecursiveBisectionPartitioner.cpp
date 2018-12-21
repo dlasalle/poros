@@ -35,6 +35,7 @@
 #include "solidutils/VectorMath.hpp"
 
 #include <cmath>
+#include <string>
 
 namespace poros
 {
