@@ -3,8 +3,10 @@ project(POROS)
 
 if (DEFINED DEBUG)
   add_definitions(-DDEBUG=${DEBUG})
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+  if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+  endif()
   set(CMAKE_BUILD_TYPE Debug)
   message("Building a debug release")
 else()
@@ -48,7 +50,11 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14") 
 
 # use gnu directories
-include(GNUInstallDirs)
+if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  include(GNUInstallDirs)
+elseif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
+  set(CMAKE_INSTALL_LIBDIR "lib") 
+endif()
 
 # must be before including src
 if (DEFINED TESTS AND NOT TESTS EQUAL 0)

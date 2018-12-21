@@ -27,7 +27,9 @@
 
 
 #include "EdgeRatioStoppingCriteria.hpp"
+
 #include <stdexcept>
+#include <string>
 
 
 namespace poros

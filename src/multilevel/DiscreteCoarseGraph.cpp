@@ -29,8 +29,7 @@
 #include "aggregation/SummationContractor.hpp"
 #include "partition/TwoWayConnectivityBuilder.hpp"
 
-#include "solidutils/Timer.hpp"
-#include <iostream>
+#include <string>
 
 namespace poros
 {
@@ -99,9 +98,6 @@ PartitioningInformation DiscreteCoarseGraph::project(
       std::to_string(m_fine->numVertices()));
   Partitioning finePart(coarsePart->numPartitions(), m_fine);
 
-  sl::Timer tmr;
-  tmr.start();
-
   // iterate over fine vertices
   for (Vertex const vertex : m_fine->vertices()) {
     vtx_type const v = vertex.index;
@@ -151,10 +147,6 @@ PartitioningInformation DiscreteCoarseGraph::project(
 
   finePart.setCutEdgeWeight(coarsePart->getCutEdgeWeight());
   ASSERT_EQUAL(finePart.getCutEdgeWeight(), coarsePart->getCutEdgeWeight());
-
-  tmr.stop();
-
-  std::cout << "Projection took: " << tmr.poll() << std::endl;
 
   return PartitioningInformation(std::move(finePart), connBuilder.finish());
 }

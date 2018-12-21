@@ -37,6 +37,7 @@
 
 #include <vector>
 #include <array>
+#include <string>
 
 namespace poros
 {

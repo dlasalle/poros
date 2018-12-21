@@ -31,6 +31,8 @@
 
 #include "solidutils/Debug.hpp"
 
+#include <string>
+
 
 namespace poros
 {
@@ -66,7 +68,8 @@ void calcTargetWeight(
 {
   wgt_type assignedWeight = 0;
   for (pid_type part = 0; part < numPartitions; ++part) {
-    targetWeight[part] = fractions[part] * totalVertexWeight;
+    targetWeight[part] = \
+        static_cast<wgt_type>(fractions[part] * totalVertexWeight);
     assignedWeight += targetWeight[part];
   }
 
@@ -94,7 +97,8 @@ void calcMaxWeight(
     wgt_type * const maxWeight) noexcept
 {
   for (pid_type part = 0; part < numPartitions; ++part) {
-    maxWeight[part] = targetWeight[part] * (1.0+imbalanceTolerance);
+    maxWeight[part] = \
+        static_cast<wgt_type>(targetWeight[part] * (1.0+imbalanceTolerance));
   }
 }
 

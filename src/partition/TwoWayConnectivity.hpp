@@ -79,7 +79,7 @@ class TwoWayConnectivity
         pid_type const destVertexA,
         pid_type const homeVertexB) noexcept
     {
-      return -(((destVertexA ^ homeVertexB)<<1)-1);
+      return -(static_cast<int>((destVertexA ^ homeVertexB)<<1)-1);
     }
 
 

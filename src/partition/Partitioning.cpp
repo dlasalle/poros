@@ -103,7 +103,7 @@ std::vector<vtx_type> Partitioning::calcVertexCounts() const
 
 void Partitioning::recalcCutEdgeWeight()
 {
-  double twoWayCutEdgeWeight = 0;
+  wgt_type twoWayCutEdgeWeight = 0;
   for (Vertex const vertex : m_graph->vertices()) {
     vtx_type const v = vertex.index;
 

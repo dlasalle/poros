@@ -43,6 +43,30 @@ class SimpleRandomEngine
 {
   public:
   using result_type = uint32_t;
+  using RandomGenerator = std::mt19937;
+
+
+  /**
+  * @brief The minimum value returned from the () operator.
+  *
+  * @return The minimum value.
+  */
+  constexpr static result_type min()
+  {
+    return RandomGenerator::min();
+  }
+
+
+  /**
+  * @brief The maximum value return from dthe () operator.
+  *
+  * @return The maximum value.
+  */
+  constexpr static result_type max()
+  {
+    return RandomGenerator::max();
+  }
+
 
   /**
   * @brief Create a new random engine.
@@ -82,28 +106,6 @@ class SimpleRandomEngine
 
 
   /**
-  * @brief The minimum value returned from the () operator.
-  *
-  * @return The minimum value.
-  */
-  result_type min() const
-  {
-    return m_rng.min();
-  }
-
-
-  /**
-  * @brief The maximum value return from dthe () operator.
-  *
-  * @return The maximum value.
-  */
-  result_type max() const
-  {
-    return m_rng.max();
-  }
-
-
-  /**
   * @brief Generate a random number between min() and max().
   *
   * @return The random number.
@@ -124,7 +126,7 @@ class SimpleRandomEngine
 
 
   private:
-  std::mt19937 m_rng;
+  RandomGenerator m_rng;
 };
 
 }
