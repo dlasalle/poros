@@ -41,6 +41,24 @@ namespace poros
 
 
 /******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+template<typename T>
+sl::ConstArray<T> emptyIfNull(
+    T const * const ptr,
+    size_t const size)
+{
+  if (ptr != nullptr) {
+    return sl::ConstArray<T>(ptr, size);
+  } else {
+    return sl::ConstArray<T>(nullptr, 0);
+  }
+}
+    
+
+
+/******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
 
@@ -54,8 +72,8 @@ Graph::Graph(
     wgt_type const * const edgeWeight) :
   Graph(sl::ConstArray<adj_type>(edgePrefix, numVertices+1),
         sl::ConstArray<vtx_type>(edgeList, numEdges),
-        sl::ConstArray<wgt_type>(vertexWeight, numVertices),
-        sl::ConstArray<wgt_type>(edgeWeight, numEdges))
+        emptyIfNull(vertexWeight, numVertices),
+        emptyIfNull(edgeWeight, numEdges))
 {
   // do nothing
 }
@@ -82,6 +100,7 @@ Graph::Graph(
     if (m_vertexWeight.size() == 0) {
       // allocate unit vertex weight
       m_unitVertexWeight = true;
+      m_totalVertexWeight = static_cast<wgt_type>(m_numVertices);
     } else {
       for (vtx_type v = 0; v < m_numVertices; ++v) {
         const wgt_type vwgt = m_vertexWeight[v];
@@ -99,6 +118,7 @@ Graph::Graph(
     if (m_edgeWeight.size() == 0) {
       // allocate unit edge weight
       m_unitEdgeWeight = true;
+      m_totalEdgeWeight = static_cast<wgt_type>(m_numEdges);
     } else {
       for (adj_type e = 0; e < m_numEdges; ++e) {
         const wgt_type ewgt = m_edgeWeight[e];

@@ -111,7 +111,7 @@ class TwoStepGraphBuilder
     * @param vertex The vertex.
     * @param numEdges The number of edges.
     */
-    inline void setVertexNumEdges(
+    void setVertexNumEdges(
         vtx_type const vertex,
         adj_type const numEdges) noexcept
     {
@@ -127,7 +127,7 @@ class TwoStepGraphBuilder
     *
     * @param vertex The vertex.
     */
-    inline void incVertexNumEdges(
+    void incVertexNumEdges(
         vtx_type const vertex) noexcept
     {
       ASSERT_EQUAL(m_phase, PHASE_VERTICES);
@@ -145,7 +145,7 @@ class TwoStepGraphBuilder
     * @param vertex The vertex to set the weight of.
     * @param weight The weight of the vertex.
     */
-    inline void setVertexWeight(
+    void setVertexWeight(
         vtx_type const vertex,
         wgt_type const weight) noexcept
     {
@@ -163,7 +163,7 @@ class TwoStepGraphBuilder
     * @param dest The vertex at the other end of the edge.
     * @param weight The weight of the edge.  
     */
-    inline void addEdgeToVertex(
+    void addEdgeToVertex(
         vtx_type const vertex,
         vtx_type const dest,
         wgt_type const weight) noexcept
