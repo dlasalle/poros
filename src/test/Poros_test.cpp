@@ -199,4 +199,67 @@ UNITTEST(Poros, PartGraphRecursiveSevenCut)
   }
 }
 
+UNITTEST(Poros, PartGraphNullEdgeWeight)
+{
+  GridGraphGenerator gen(5, 5, 5);
+
+  Graph g = gen.generate();
+
+  poros_options_struct opts = POROS_defaultOptions();
+
+  // make 10 partitions
+  wgt_type cutEdgeWeight;
+
+  opts.randomSeed = static_cast<unsigned int>(0);
+
+  sl::Array<pid_type> where(g.numVertices());
+  int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+      g.getEdgeList(), g.getVertexWeight(), nullptr, \
+      3, &opts, &cutEdgeWeight, where.data());
+
+  testEqual(r, 1);
+}
+
+UNITTEST(Poros, PartGraphNullVertexWeight)
+{
+  GridGraphGenerator gen(5, 5, 5);
+
+  Graph g = gen.generate();
+
+  poros_options_struct opts = POROS_defaultOptions();
+
+  // make 10 partitions
+  wgt_type cutEdgeWeight;
+
+  opts.randomSeed = static_cast<unsigned int>(0);
+
+  sl::Array<pid_type> where(g.numVertices());
+  int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+      g.getEdgeList(), nullptr, g.getEdgeWeight(), \
+      3, &opts, &cutEdgeWeight, where.data());
+
+  testEqual(r, 1);
+}
+
+UNITTEST(Poros, PartGraphNullWeights)
+{
+  GridGraphGenerator gen(5, 5, 5);
+
+  Graph g = gen.generate();
+
+  poros_options_struct opts = POROS_defaultOptions();
+
+  // make 10 partitions
+  wgt_type cutEdgeWeight;
+
+  opts.randomSeed = static_cast<unsigned int>(0);
+
+  sl::Array<pid_type> where(g.numVertices());
+  int r = POROS_PartGraphRecursive(g.numVertices(), g.getEdgePrefix(), \
+      g.getEdgeList(), nullptr, nullptr, \
+      3, &opts, &cutEdgeWeight, where.data());
+
+  testEqual(r, 1);
+}
+
 }
