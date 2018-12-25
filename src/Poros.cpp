@@ -72,8 +72,8 @@ int POROS_PartGraphRecursive(
     vtx_type const numVertices,
     adj_type const * const edgePrefix,
     vtx_type const * const edgeList,
-    wgt_type const * vertexWeights,
-    wgt_type const * edgeWeights,
+    wgt_type const * const vertexWeights,
+    wgt_type const * const edgeWeights,
     pid_type const numPartitions,
     poros_options_struct const * const options,
     wgt_type * const totalCutEdgeWeight,
@@ -93,18 +93,6 @@ int POROS_PartGraphRecursive(
 
   // create a parameters object
   RandomEngineHandle randEngine = globalParams.randomEngine();
-
-  // allocate unit edge weights and vertex weights of needed
-  sl::Array<wgt_type> unitVwgts;
-  if (vertexWeights == nullptr) {
-    unitVwgts = sl::Array<wgt_type>(numVertices, 1);
-    vertexWeights = unitVwgts.data();
-  }
-  sl::Array<wgt_type> unitEwgts;
-  if (edgeWeights == nullptr) {
-    unitEwgts = sl::Array<wgt_type>(edgePrefix[numVertices], 1);
-    edgeWeights = unitEwgts.data();
-  }
 
   // assemble a new graph
   Graph baseGraph(numVertices, edgePrefix[numVertices], edgePrefix, \
