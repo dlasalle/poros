@@ -47,6 +47,9 @@ To build the static library
 
 and `build/<os-arch>/src/libporos.a` will be built.
 
+A command line front-end is available in the
+[poros-bin](https://github.com/dlasalle/poros-bin) repository.
+
 
 Testing
 -------
