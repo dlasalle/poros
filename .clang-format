@@ -1,0 +1,32 @@
+BasedOnStyle: LLVM 
+IndentWidth: 2
+ColumnLimit: 80
+ContinuationIndentWidth: 4
+BinPackParameters: false
+BreakBeforeBraces: Custom 
+BraceWrapping:
+  AfterEnum: true 
+  AfterStruct: true
+  AfterClass: true
+  AfterControlStatement: false
+  AfterFunction: true
+  AfterNamespace: true
+  AfterUnion: true
+  AfterExternBlock: false 
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyRecord: true
+BreakInheritanceList: AfterColon
+DerivePointerAlignment: false
+PointerAlignment: Left 
+AlignAfterOpenBracket: AlwaysBreak
+NamespaceIndentation: None
+SpaceBeforeParens: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeInheritanceColon: true
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBinaryOperators: false
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
