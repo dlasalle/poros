@@ -7,5 +7,5 @@ compiler:
   - clang
   - gcc
 script:
-  - "./configure --debug --devel --test && make && make test"
+  - "./configure --debug --devel --test && ( [[ \"${CXX}\" == \"clang++\" ]] && scan-build --status-bugs -no-failure-reports make || make ) && make test"
   - "./configure --test && make && make test"
