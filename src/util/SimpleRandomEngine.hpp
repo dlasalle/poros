@@ -30,6 +30,7 @@
 #define POROS_SRC_SIMPLERANDOMENGINE_HPP
 
 #include "Base.hpp"
+#include "solidutils/FastIntDistribution.hpp"
 
 #include <cstdint>
 #include <random>
@@ -101,7 +102,7 @@ class SimpleRandomEngine
       vtx_type const min,
       vtx_type const max)
   {
-    return std::uniform_int_distribution<vtx_type>(min, max)(m_rng);
+    return sl::FastIntDistribution<vtx_type>(min, max)(m_rng);
   }
 
 
