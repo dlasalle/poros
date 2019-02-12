@@ -170,7 +170,7 @@ Graph GridGraphGenerator::generate()
   // each vertex can be the root of up to 3 edges
   std::vector<wgt_type> srcEdgeWeights(numVertices*3);
   sl::Random::fillWithRange(srcEdgeWeights.data(), \
-      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax, rng);
+      srcEdgeWeights.size(), m_edgeWeightMin, m_edgeWeightMax+1, rng);
   
   adj_type edge = 0;
   vtx_type vertex = 0;
