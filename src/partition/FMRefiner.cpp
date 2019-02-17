@@ -216,7 +216,8 @@ void FMRefiner::refine(
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 
-      ASSERT_EQUAL(pqs[from].max(), -connectivity->getVertexDelta(pqs[from].peek()));
+      ASSERT_EQUAL(pqs[from].max(), \
+          -connectivity->getVertexDelta(pqs[from].peek()));
 
       Vertex const vertex = pqs[from].pop();
 
