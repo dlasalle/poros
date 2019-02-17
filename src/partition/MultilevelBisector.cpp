@@ -35,8 +35,6 @@
 
 #include "solidutils/Timer.hpp"
 
-#include <iostream>
-
 namespace poros
 {
 
@@ -107,12 +105,6 @@ PartitioningInformation MultilevelBisector::recurse(
       " vertices and " + std::to_string(graph->numEdges()) +
       " edges, with an exposed weight of " +
       std::to_string(graph->getTotalEdgeWeight()) + ".");
-
-   std::cout << "Coarsened graph to " +
-      std::to_string(graph->numVertices()) +
-      " vertices and " + std::to_string(graph->numEdges()) +
-      " edges, with an exposed weight of " +
-      std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
 
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     Partitioning part = m_initialBisector->execute(target, graph); 

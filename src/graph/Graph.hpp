@@ -273,10 +273,17 @@ class Graph
     *
     * @return The weight.
     */
+    template<bool HAS_EDGE_WEIGHT>
     wgt_type weightOf(
         Edge const e) const noexcept
     {
-      return m_edgeWeight[e.index];
+      ASSERT_EQUAL(HAS_EDGE_WEIGHT, !hasUnitEdgeWeight());
+      if (HAS_EDGE_WEIGHT) {
+        return m_edgeWeight[e.index];
+      } else {
+        return static_cast<wgt_type>(1);
+      }
+
     }
 
     /**
@@ -286,30 +293,36 @@ class Graph
     *
     * @return The weight.
     */
+    template<bool HAS_VERTEX_WEIGHT>
     wgt_type weightOf(
         Vertex const v) const noexcept
     {
-      return m_vertexWeight[v.index];
+      ASSERT_EQUAL(HAS_VERTEX_WEIGHT, !hasUnitVertexWeight());
+      if (HAS_VERTEX_WEIGHT) {
+        return m_vertexWeight[v.index];
+      } else {
+        return static_cast<wgt_type>(1);
+      }
     }
 
     /**
-    * @brief Check if the graph has uniform edge weights.
+    * @brief Check if the graph has unit edge weights.
     *
     * @return True if the edge weights are all equal.
     */
-    bool hasUniformEdgeWeight() const noexcept
+    bool hasUnitEdgeWeight() const noexcept
     {
-      return m_uniformEdgeWeight;
+      return m_unitEdgeWeight;
     }
 
     /**
-    * @brief Check if the graph has uniform vertex weights.
+    * @brief Check if the graph has unit vertex weights.
     *
     * @return True if the vertex weights are all equal.
     */
-    bool hasUniformVertexWeight() const noexcept
+    bool hasUnitVertexWeight() const noexcept
     {
-      return m_uniformVertexWeight;
+      return m_unitVertexWeight;
     }
 
    
@@ -323,8 +336,8 @@ class Graph
     #endif
 
   private:
-    bool m_uniformEdgeWeight;
-    bool m_uniformVertexWeight;
+    bool m_unitEdgeWeight;
+    bool m_unitVertexWeight;
 
     vtx_type m_numVertices;
     adj_type m_numEdges;

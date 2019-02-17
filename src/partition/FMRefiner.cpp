@@ -96,6 +96,7 @@ pid_type pickSide(
 }
 
 
+template<bool HAS_EDGE_WEIGHTS>
 void move(
     Vertex const vertex,
     pid_type const to,
@@ -120,7 +121,7 @@ void move(
     Vertex const u = graph->destinationOf(edge);
     pid_type const neighborHome = partitioning->getAssignment(u);
     int const borderStatus = connectivity->updateNeighbor(u.index, \
-        graph->weightOf(edge), \
+        graph->weightOf<HAS_EDGE_WEIGHTS>(edge), \
         TwoWayConnectivity::getDirection(to, neighborHome));
 
     if (pqs && !visited->hasVisited(u.index)) {
@@ -185,8 +186,6 @@ void FMRefiner::refine(
                static_cast<vtx_type>(25)));
 
   for (int refIter = 0; refIter < m_maxRefinementIters; ++refIter) {
-    
-    // delete me
     DEBUG_MESSAGE(std::string("Cut is ") + \
         std::to_string(partitioning->getCutEdgeWeight()) + \
         std::string(" with balance of ") + \
@@ -195,7 +194,6 @@ void FMRefiner::refine(
 
     DEBUG_MESSAGE(std::string("Number of boundary vertices is ") + \
         std::to_string(connectivity->getBorderVertexSet()->size()));
- 
      
     // fill priority queue with boundary vertices
     for (vtx_type const v : *(connectivity->getBorderVertexSet())) {
@@ -224,7 +222,11 @@ void FMRefiner::refine(
       visited.visit(vertex.index);
       ASSERT_EQUAL(from, partitioning->getAssignment(vertex));
 
-      move(vertex, to, graph, partitioning, connectivity, pqs.data(), &visited);
+      if (graph->hasUnitEdgeWeight()) {
+        move<false>(vertex, to, graph, partitioning, connectivity, pqs.data(), &visited);
+      } else {
+        move<true>(vertex, to, graph, partitioning, connectivity, pqs.data(), &visited);
+      }
 
       wgt_type const currentCut = partitioning->getCutEdgeWeight();
       double const balance = analyzer.calcMaxImbalance();
@@ -255,7 +257,11 @@ void FMRefiner::refine(
       pid_type const from = partitioning->getAssignment(vertex);
       pid_type const to = from ^ 1;
 
-      move(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
+      if (graph->hasUnitEdgeWeight()) {
+        move<false>(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
+      } else {
+        move<true>(vertex, to, graph, partitioning, connectivity, nullptr, nullptr);
+      }
     }
     ASSERT_TRUE(connectivity->verify(graph, partitioning));
     ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);

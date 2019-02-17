@@ -38,6 +38,7 @@ namespace poros
 UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 {
   GridGraphGenerator gen(30,40,50);
+  gen.setRandomEdgeWeight(1,3);
   Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
@@ -53,7 +54,7 @@ UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 
   // verify at most two vertices per coarse vertex
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
-  for (Vertex const & vertex : graph.vertices()) {
+  for (Vertex const vertex : graph.vertices()) {
     vtx_type const coarse = agg.getCoarseVertexNumber(vertex.index);
     ++matchCount[coarse];
   }
@@ -67,6 +68,7 @@ UNITTEST(HeavyEdgeMatchingAggregator, LimitTwoMatch)
 UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 {
   GridGraphGenerator gen(30,40,50);
+  gen.setRandomEdgeWeight(1,3);
   Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);
@@ -102,6 +104,7 @@ UNITTEST(HeavyEdgeMatchingAggregator, ConnectedMatch)
 UNITTEST(HeavyEdgeMatchingAggregator, MaxSize)
 {
   GridGraphGenerator gen(30,40,50);
+  gen.setRandomEdgeWeight(1,3);
   Graph graph = gen.generate();
 
   RandomEngineHandle rand = RandomEngineFactory::make(0);

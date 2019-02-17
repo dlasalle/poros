@@ -40,17 +40,76 @@ namespace poros
 namespace
 {
 
-void moveBackUntilBalanced(
+
+template<bool HAS_VERTEX_WEIGHTS, bool HAS_EDGE_WEIGHTS>
+void bfsPriorityMove(
     Graph const * const graph,
     TargetPartitioning const * const target,
-    Partitioning * const part,
-    VertexQueue * const weightQueue)
+    VertexQueue * const queue,
+    Partitioning * const part)
 {
-  while (weightQueue->size() > 0) {
-    Vertex const vertex = weightQueue->pop();
-    wgt_type const newWeight = graph->weightOf(vertex) + part->getWeight(0);
+  // move vertices based on edge connectivity
+  while (queue->size() > 0 && \
+      (*part)[0].weight() < target->getTargetWeight(0)) {
+    // TODO queue should contain Vertex type
+    Vertex const vertex = queue->pop();
+
+    // We only make moves that will satisfy the balance constraint 
+    if (graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex) + \
+        (*part)[0].weight() <= target->getMaxWeight(0)) {
+      part->move(vertex, 0);
+
+      // update neighbor priority
+      for (const Edge edge : graph->edgesOf(vertex)) {
+        if (queue->contains(graph->destinationOf(edge))) {
+          queue->updateByDelta(graph->weightOf<HAS_EDGE_WEIGHTS>(edge), \
+              graph->destinationOf(edge));
+        }
+      }
+    }
+  }
+}
+
+
+void bfsWeightBalance(
+    Graph const * const graph,
+    TargetPartitioning const * const target,
+    VertexQueue::VertexSet const remaining,
+    Partitioning * const part)
+{
+  // if we're still not at a balanced state, find the vertex with the
+  // smallest weight to move over if it improves balance -- to do this
+  // we add all remaining vertices to a new priority queue based on weight
+  VertexQueue weightQueue(graph->numVertices());
+  for (vtx_type const v : remaining) {
+    Vertex const vertex = Vertex::make(v);
+    weightQueue.add(graph->weightOf<true>(vertex), vertex);
+  }
+
+  while (weightQueue.size() > 0) {
+    Vertex const vertex = weightQueue.pop();
+    wgt_type const newWeight = graph->weightOf<true>(vertex) + \
+        (*part)[0].weight();
     if (newWeight / static_cast<double>(target->getMaxWeight(0)) < \
-        part->getWeight(1) / static_cast<double>(target->getMaxWeight(1))) {
+        (*part)[1].weight() / static_cast<double>(target->getMaxWeight(1))) {
+      part->move(vertex, 0);
+      break;
+    }
+  }
+}
+
+void bfsUnitBalance(
+    Graph const * const graph,
+    TargetPartitioning const * const target,
+    VertexQueue::VertexSet const remaining,
+    Partitioning * const part)
+{
+  for (vtx_type const v : remaining) {
+    Vertex const vertex = Vertex::make(v);
+
+    wgt_type const newWeight = static_cast<wgt_type>(1) + (*part)[0].weight();
+    if (newWeight / static_cast<double>(target->getMaxWeight(0)) < \
+        (*part)[1].weight() / static_cast<double>(target->getMaxWeight(1))) {
       part->move(vertex, 0);
       break;
     }
@@ -105,35 +164,26 @@ Partitioning BFSBisector::execute(
 
   part.assignAll(1);
 
-  // move vertices based on edge connectivity
-  while (queue.size() > 0 && part[0].weight() < target->getTargetWeight(0)) {
-    // TODO queue should contain Vertex type
-    Vertex const vertex = queue.pop();
-
-    // We only make moves that will satisfy the balance constraint 
-    if (graph->weightOf(vertex) + part[0].weight() <= target->getMaxWeight(0)) {
-      part.move(vertex, 0);
-
-      // update neighbor priority
-      for (const Edge edge : graph->edgesOf(vertex)) {
-        if (queue.contains(graph->destinationOf(edge))) {
-          queue.updateByDelta(graph->weightOf(edge), graph->destinationOf(edge));
-        }
-      }
+  if (graph->hasUnitVertexWeight()) {
+    if (graph->hasUnitEdgeWeight()) {
+      bfsPriorityMove<false, false>(graph, target, &queue, &part);
+    } else {
+      bfsPriorityMove<false, true>(graph, target, &queue, &part);
+    }
+  } else {
+    if (graph->hasUnitEdgeWeight()) {
+      bfsPriorityMove<true, false>(graph, target, &queue, &part);
+    } else {
+      bfsPriorityMove<true, true>(graph, target, &queue, &part);
     }
   }
 
   if (part[1].weight() > target->getMaxWeight(1)) {
-    // if we're still not at a balanced state, find the vertex with the
-    // smallest weight to move over if it improves balance -- to do this
-    // we add all remaining vertices to a new priority queue based on weight
-    VertexQueue weightQueue(graph->numVertices());
-    for (vtx_type const v : queue.remaining()) {
-      Vertex const vertex = Vertex::make(v);
-      weightQueue.add(graph->weightOf(vertex), vertex);
+    if (graph->hasUnitVertexWeight()) {
+      bfsWeightBalance(graph, target, queue.remaining(), &part);
+    } else {
+      bfsUnitBalance(graph, target, queue.remaining(), &part);
     }
-
-    moveBackUntilBalanced(graph, target, &part, &weightQueue);
   }
 
   part.recalcCutEdgeWeight();

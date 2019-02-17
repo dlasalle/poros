@@ -68,9 +68,9 @@ UNITTEST(DiscreteCoarseGraph, Contract)
 
   // check edge and vertex weights
   for (Vertex const vertex : coarseGraph->vertices()) {
-    testEqual(coarseGraph->weightOf(vertex), static_cast<wgt_type>(2));
+    testEqual(coarseGraph->weightOf<true>(vertex), static_cast<wgt_type>(2));
     for (Edge const edge : coarseGraph->edgesOf(vertex)) {
-      testEqual(coarseGraph->weightOf(edge), static_cast<wgt_type>(2));
+      testEqual(coarseGraph->weightOf<true>(edge), static_cast<wgt_type>(2));
       testEqual(std::abs(static_cast<int>(coarseGraph->destinationOf(edge).index)
           - static_cast<int>(vertex.index)), 1);
     }

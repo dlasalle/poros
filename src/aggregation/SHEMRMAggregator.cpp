@@ -52,7 +52,7 @@ Aggregation SHEMRMAggregator::aggregate(
     AggregationParameters const params,
     Graph const * const graph)
 {
-  if (graph->hasUniformEdgeWeight()) {
+  if (graph->hasUnitEdgeWeight()) {
     return m_rm.aggregate(params, graph);
   } else {
     return m_shem.aggregate(params, graph);

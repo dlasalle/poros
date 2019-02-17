@@ -31,11 +31,55 @@
 #include "SummationContractor.hpp"
 #include "graph/OneStepGraphBuilder.hpp"
 
-#include <iostream>
-#include "solidutils/Timer.hpp"
 
 namespace poros
 {
+
+
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+template<bool HAS_VERTEX_WEIGHTS, bool HAS_EDGE_WEIGHTS>
+GraphHandle contractGraph(
+    Graph const * const graph,
+    Aggregation const * const aggregation)
+{
+  OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
+
+  // go over each fine vertex
+  vtx_type coarseVertex = 0;
+  for (VertexGroup const group : aggregation->coarseVertices()) {
+
+    wgt_type coarseVertexWeight = 0;
+
+    for (Vertex const vertex : group.fineVertices()) {
+      coarseVertexWeight += graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
+      for (Edge const edge : graph->edgesOf(vertex)) {
+        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
+            graph->destinationOf(edge).index);
+        if (coarseVertex != coarseNeighbor) {
+          wgt_type const ewgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+          builder.addEdge(coarseNeighbor, ewgt);
+        }
+      }
+    }
+
+    builder.finishVertex(coarseVertexWeight);
+    ++coarseVertex;
+  }
+
+  GraphHandle next = builder.finish();
+
+  return next;
+}
+
+
+}
 
 
 /******************************************************************************
@@ -60,38 +104,19 @@ GraphHandle SummationContractor::contract(
     Graph const * const graph,
     Aggregation const * const aggregation)
 {
-  sl::Timer tmr;
-  tmr.start();
-
-  OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
-
-  // go over each fine vertex
-  vtx_type coarseVertex = 0;
-  for (VertexGroup const group : aggregation->coarseVertices()) {
-
-    wgt_type coarseVertexWeight = 0;
-
-    for (Vertex const vertex : group.fineVertices()) {
-      coarseVertexWeight += graph->weightOf(vertex);
-      for (Edge const edge : graph->edgesOf(vertex)) {
-        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
-            graph->destinationOf(edge).index);
-        if (coarseVertex != coarseNeighbor) {
-          builder.addEdge(coarseNeighbor, graph->weightOf(edge));
-        }
-      }
+  if (graph->hasUnitVertexWeight()) {
+    if (graph->hasUnitEdgeWeight()) {
+      return contractGraph<false, false>(graph, aggregation);
+    } else {
+      return contractGraph<false, true>(graph, aggregation);
     }
-
-    builder.finishVertex(coarseVertexWeight);
-    ++coarseVertex;
+  } else {
+    if (graph->hasUnitEdgeWeight()) {
+      return contractGraph<true, false>(graph, aggregation);
+    } else {
+      return contractGraph<true, true>(graph, aggregation);
+    }
   }
-
-  GraphHandle next = builder.finish();
-
-  tmr.stop();
-  std::cout << "Contract: " << tmr.poll() << std::endl;
-
-  return next;
 }
 
 

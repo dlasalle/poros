@@ -32,9 +32,30 @@
 #include "solidutils/Debug.hpp"
 #include "solidutils/Array.hpp"
 
+#ifndef NDEBUG
+#include <iostream>
+#endif
 
 namespace poros
 {
+
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+template<typename T>
+sl::ConstArray<T> emptyIfNull(
+    T const * const ptr,
+    size_t const size)
+{
+  if (ptr != nullptr) {
+    return sl::ConstArray<T>(ptr, size);
+  } else {
+    return sl::ConstArray<T>(nullptr, 0);
+  }
+}
+    
 
 
 /******************************************************************************
@@ -51,8 +72,8 @@ Graph::Graph(
     wgt_type const * const edgeWeight) :
   Graph(sl::ConstArray<adj_type>(edgePrefix, numVertices+1),
         sl::ConstArray<vtx_type>(edgeList, numEdges),
-        sl::ConstArray<wgt_type>(vertexWeight, numVertices),
-        sl::ConstArray<wgt_type>(edgeWeight, numEdges))
+        emptyIfNull(vertexWeight, numVertices),
+        emptyIfNull(edgeWeight, numEdges))
 {
   // do nothing
 }
@@ -63,8 +84,8 @@ Graph::Graph(
     sl::ConstArray<vtx_type> edgeList,
     sl::ConstArray<wgt_type> vertexWeight,
     sl::ConstArray<wgt_type> edgeWeight) :
-  m_uniformEdgeWeight(true),
-  m_uniformVertexWeight(true),
+  m_unitEdgeWeight(true),
+  m_unitVertexWeight(true),
   m_numVertices(edgePrefix.size()-1),
   m_numEdges(edgeList.size()),
   m_totalVertexWeight(0),
@@ -76,18 +97,17 @@ Graph::Graph(
 {
   // calculate total vertex weight
   if (m_numVertices > 0) {
-    if (m_vertexWeight.data() == nullptr) {
-      // allocate uniform vertex weight
-      m_vertexWeight = sl::Array<vtx_type>(m_numVertices, 1);
-      m_uniformVertexWeight = true;
+    if (m_vertexWeight.size() == 0) {
+      // allocate unit vertex weight
+      m_unitVertexWeight = true;
+      m_totalVertexWeight = static_cast<wgt_type>(m_numVertices);
     } else {
-      const wgt_type baseVertexWeight = m_vertexWeight[0];
       for (vtx_type v = 0; v < m_numVertices; ++v) {
         const wgt_type vwgt = m_vertexWeight[v];
         m_totalVertexWeight += vwgt;
 
-        if (vwgt != baseVertexWeight) {
-          m_uniformVertexWeight = false;
+        if (vwgt != static_cast<wgt_type>(1)) {
+          m_unitVertexWeight = false;
         }
       }
     }
@@ -95,18 +115,17 @@ Graph::Graph(
 
   // calculate total edge weight
   if (m_numEdges > 0) {
-    if (m_edgeWeight.data() == nullptr) {
-      // allocate uniform edge weight
-      m_edgeWeight = sl::Array<wgt_type>(m_numEdges, 1);
-      m_uniformEdgeWeight = true;
+    if (m_edgeWeight.size() == 0) {
+      // allocate unit edge weight
+      m_unitEdgeWeight = true;
+      m_totalEdgeWeight = static_cast<wgt_type>(m_numEdges);
     } else {
-      const wgt_type baseEdgeWeight = m_edgeWeight[0];
       for (adj_type e = 0; e < m_numEdges; ++e) {
         const wgt_type ewgt = m_edgeWeight[e];
         m_totalEdgeWeight += ewgt;
 
-        if (ewgt != baseEdgeWeight) {
-          m_uniformEdgeWeight = false;
+        if (ewgt != static_cast<wgt_type>(1)) {
+          m_unitEdgeWeight = false;
         }
       }
     }
@@ -118,8 +137,8 @@ Graph::Graph(
 
 Graph::Graph(
     Graph && lhs) noexcept :
-  m_uniformEdgeWeight(lhs.m_uniformEdgeWeight),
-  m_uniformVertexWeight(lhs.m_uniformVertexWeight),
+  m_unitEdgeWeight(lhs.m_unitEdgeWeight),
+  m_unitVertexWeight(lhs.m_unitVertexWeight),
   m_numVertices(lhs.m_numVertices),
   m_numEdges(lhs.m_numEdges),
   m_totalVertexWeight(lhs.m_totalVertexWeight),
@@ -146,39 +165,55 @@ bool Graph::isValid() const
 {
   // check vertex weight sum
   wgt_type vertexSum = 0;
-  for (vtx_type i = 0; i < m_numVertices; ++i) {
-    vertexSum += m_vertexWeight[i];
+  for (Vertex const v : vertices()) {
+    if (hasUnitVertexWeight()) {
+      vertexSum += weightOf<false>(v);
+    } else {
+      vertexSum += weightOf<true>(v);
+    }
   }
   if (vertexSum != m_totalVertexWeight) {
+    std::cerr << "Invalid vertex weight sum: Actual " << vertexSum <<
+        " Expected: " << m_totalVertexWeight << std::endl;
     return false;
   }
 
   // check edge list
-  for (adj_type i = 0; i < m_numEdges; ++i) {
-    if (m_edgeList[i] >= m_numVertices) {
+  for (Edge const e : edges()) {
+    if (destinationOf(e) >= m_numVertices) {
       // invalid vertex
+      std::cerr << "Invalid vertex: " << destinationOf(e) <<
+          " / " << m_numVertices << std::endl;
       return false;
     }
   }
 
   // check edge weight sum
   wgt_type edgeSum = 0;
-  for (adj_type i = 0; i < m_numEdges; ++i) {
-    edgeSum += m_edgeWeight[i];
+  for (Edge const e : edges()) {
+    if (hasUnitEdgeWeight()) {
+      edgeSum += weightOf<false>(e);
+    } else {
+      edgeSum += weightOf<true>(e);
+    }
   }
   if (edgeSum != m_totalEdgeWeight) {
+    std::cerr << "Invalid edge weight sum: Actual " << edgeSum << " Expected: "
+        << m_totalEdgeWeight << std::endl;
     return false;
   }
 
   // check symmetry
-  for (vtx_type v = 0; v < m_numVertices; ++v) {
-    for (adj_type j = m_edgePrefix[v]; j < m_edgePrefix[v+1]; ++j) {
+  for (Vertex const v : vertices()) {
+    for (Edge const e : edgesOf(v)) {
       // find reverse edge
-      vtx_type const u = m_edgeList[j];
+      Vertex const u = destinationOf(e);
       bool found = false;
-      for (adj_type k = m_edgePrefix[u]; k < m_edgePrefix[u+1]; ++k) {
-        if (v == m_edgeList[k]) {
-          if (m_edgeWeight[k] != m_edgeWeight[j]) {
+      for (Edge const f : edgesOf(u)) {
+        if (v == destinationOf(f)) {
+          if (!hasUnitEdgeWeight() && weightOf<true>(e) != weightOf<true>(f)) {
+            std::cerr << "Edge weight is not symmetric " << e.index << ": " <<
+                weightOf<true>(e) << " / " << weightOf<true>(f) << std::endl;
             return false;
           }
           found = true;
@@ -186,6 +221,7 @@ bool Graph::isValid() const
         }
       }
       if (!found) {
+        std::cerr << "Did not find return edge for " << e.index << std::endl;
         return false;
       }
     }
