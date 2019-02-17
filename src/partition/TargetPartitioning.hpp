@@ -88,6 +88,21 @@ class TargetPartitioning
 
 
     /**
+    * @brief Create a new target partitioning with the specified partition
+    * configuration.
+    *
+    * @param numPartitions The number of partitions (k).
+    * @param fractions The fractions of weight for each partition.
+    * @param targetWeights The target weight of each partition.
+    * @param maxWeights The maximum allowable weight of each partition.
+    */
+    TargetPartitioning(
+        pid_type numPartitions,
+        sl::Array<wgt_type> targetWeights,
+        sl::Array<wgt_type> maxWeights);
+
+
+    /**
     * @brief Get the maximum allowable partition weights.
     *
     * @return The maximum weights.
@@ -160,13 +175,20 @@ class TargetPartitioning
 
 
     /**
-    * @brief Get the imbalance tolerance.
+    * @brief Get the amount of weight which is allowed to be in excess for this
+    * partition.
     *
-    * @return The tolerance.
+    * @param part The partition.
+    *
+    * @return The amount of excess weight.
     */
-    inline double getImbalanceTolerance() const noexcept
+    inline wgt_type getMaxExcessWeight(
+         pid_type const part) const noexcept
     {
-      return m_imbalanceTolerance;
+      ASSERT_LESS(part, m_numPartitions);
+      ASSERT_GREATEREQUAL(m_maxWeight[part], m_targetWeight[part]);
+
+      return m_maxWeight[part] - m_targetWeight[part];
     }
 
 
@@ -183,7 +205,6 @@ class TargetPartitioning
 
   private:
     pid_type m_numPartitions;
-    double m_imbalanceTolerance;
     sl::Array<double> m_targetFraction;
     sl::Array<wgt_type> m_targetWeight; 
     sl::Array<wgt_type> m_maxWeight; 

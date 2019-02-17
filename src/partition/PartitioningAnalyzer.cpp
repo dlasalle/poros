@@ -29,10 +29,39 @@
 
 #include "PartitioningAnalyzer.hpp"
 
+#include <utility>
 
 
 namespace poros
 {
+
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+std::pair<pid_type, double> findMax(
+    PartitioningAnalyzer const * const analyzer,
+    pid_type const numPartitions)
+{
+  double max = 0.0;
+  pid_type maxId = 0;
+
+  for (pid_type part = 0; part < numPartitions; ++part) {
+    double const frac = analyzer->getImbalance(part);
+    if (frac > max) {
+      max = frac;
+      maxId = part;
+    }
+  }
+
+  return std::make_pair(maxId, max);
+}
+
+}
 
 
 /******************************************************************************
@@ -54,17 +83,13 @@ PartitioningAnalyzer::PartitioningAnalyzer(
 
 double PartitioningAnalyzer::calcMaxImbalance() const
 {
-  double max = 0.0;
-  pid_type const numPartitions = m_partitioning->numPartitions();
+  return findMax(this, m_partitioning->numPartitions()).second;
+}
 
-  for (pid_type part = 0; part < numPartitions; ++part) {
-    double const frac = getImbalance(part);
-    if (frac > max) {
-      max = frac;
-    }
-  }
 
-  return max;
+pid_type PartitioningAnalyzer::findMostOverWeightPartition() const
+{
+  return findMax(this, m_partitioning->numPartitions()).first;
 }
 
 

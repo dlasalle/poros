@@ -97,8 +97,10 @@ UNITTEST(RecursiveBisectionPartitioner, ExecuteKWay1To5)
 
     double const imbalance = analyzer.calcMaxImbalance();
     // TODO: fix balance issues and re-instate this limit
-    //testLess(imbalance, 0.03005) << "Num partitions = " << k;
-    testLess(imbalance, 0.03025) << "Num partitions = " << k;
+    testLess(imbalance, 0.03005) << "Num partitions = " << k << ", heaviest "
+        "partition is " << analyzer.findMostOverWeightPartition() << " (" <<
+        analyzer.calcMaxImbalance() << ":" <<
+        part.getWeight(analyzer.findMostOverWeightPartition()) << ")" << std::endl;
   }
 }
 

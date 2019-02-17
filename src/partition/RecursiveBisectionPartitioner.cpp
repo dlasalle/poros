@@ -60,41 +60,44 @@ void RecursiveBisectionPartitioner::recurse(
   // also be at maximum weight (in the case of non-uniform vertex weights we
   // may find it impossible to balance). So instead, what we do is use
   // \eps / \log_2(k)
-  double const tolerance = target->getImbalanceTolerance() / \
-      std::log2(target->numPartitions());
-
-  double const * const targetFractions = target->getTargetFraction();
+  double const toleranceFactor = 1.0 / std::log2(target->numPartitions());
 
   // calculate target fractions
   sl::Array<pid_type> numPartsPrefix(3);
   numPartsPrefix.set(0);
 
-  std::vector<double> targetBisectionFractions(NUM_BISECTION_PARTS, 0);
+  sl::Array<wgt_type> targetBisectWeights(NUM_BISECTION_PARTS, 0);
+  sl::Array<wgt_type> maxBisectWeights(NUM_BISECTION_PARTS, 0);
   for (pid_type pid = 0; pid < numParts; ++pid) {
     // we must put a larger or equal number of partitions in the second half
     pid_type const half = static_cast<pid_type>(pid >= numParts/2);
-    targetBisectionFractions[half] += targetFractions[pid];
+    targetBisectWeights[half] += target->getTargetWeight(pid);
+    maxBisectWeights[half] += target->getTargetWeight(pid) +
+        (target->getMaxExcessWeight(pid)*toleranceFactor);
     ++numPartsPrefix[half];
   }
 
-  // build parameters for bisection
-  TargetPartitioning bisectTarget(2, graph->getTotalVertexWeight(), \
-      tolerance, targetBisectionFractions.data());
-
   sl::VectorMath::prefixSumExclusive(numPartsPrefix.data(), \
       numPartsPrefix.size());
+
+  // build parameters for bisection
+  TargetPartitioning bisectTarget(NUM_BISECTION_PARTS, \
+      std::move(targetBisectWeights), std::move(maxBisectWeights));
 
   // calculate the target weight for each side bisect
   Partitioning bisection = m_bisector->execute(&bisectTarget, graph);
   PartitioningAnalyzer analyzer(&bisection, &bisectTarget);
 
   DEBUG_MESSAGE(std::string("Made bisection of balance ") + \
-      std::to_string(analyzer.calcMaxImbalance()) + std::string("/") + \
-      std::to_string(bisectTarget.getImbalanceTolerance()) + \
+      std::to_string(analyzer.calcMaxImbalance()) + \
       std::string(" (") + \
       std::to_string(bisection.getWeight(LEFT_PARTITION)) + \
+      std::string("/") + \
+      std::to_string(bisectTarget.getMaxWeight(LEFT_PARTITION)) + \
       std::string(":") + \
-      std::to_string(bisection.getWeight(RIGHT_PARTITION)) + std::string(")"));
+      std::to_string(bisection.getWeight(RIGHT_PARTITION)) + std::string("/") + \
+      std::to_string(bisectTarget.getMaxWeight(RIGHT_PARTITION)) + \
+      std::string(")"));
 
   // NOTE: this requires that for uneven number of parts, latter half has more
   ASSERT_GREATEREQUAL(numPartsPrefix[2]-numPartsPrefix[1], \
@@ -117,22 +120,18 @@ void RecursiveBisectionPartitioner::recurse(
       pid_type const numHalfParts = numPartsPrefix[part+1] - \
           numPartsPrefix[part];
 
-      double const halfTargetFraction = targetBisectionFractions[part];
-
-      double const ratio = analyzer.getImbalance(part);
-
       if (numHalfParts > 1) {
         // recursively call execute
-        std::vector<double> subTargetFractions(numHalfParts);
+        sl::Array<wgt_type> halfWeights(numHalfParts);
+        sl::Array<wgt_type> halfMaxs(numHalfParts);
         for (pid_type pid = 0; pid < numHalfParts; ++pid) {
-          pid_type const offsetPid = pid + numPartsPrefix[part];
-          subTargetFractions[pid] = \
-              targetFractions[offsetPid] / halfTargetFraction;
+          pid_type const offset = numPartsPrefix[part];
+          halfWeights[pid] = target->getTargetWeight(pid+offset);
+          halfMaxs[pid] = target->getMaxWeight(pid+offset);
         }
         TargetPartitioning subTarget(numHalfParts, \
-            parts[part].getGraph()->getTotalVertexWeight(), \
-            target->getImbalanceTolerance() - ratio, \
-            subTargetFractions.data());
+            std::move(halfWeights),
+            std::move(halfMaxs));
 
         recurse(partitionLabels, &subTarget, &(parts[part]), \
             offset+numPartsPrefix[part]);

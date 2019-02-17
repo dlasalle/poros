@@ -73,34 +73,40 @@ void calcTargetWeight(
     assignedWeight += targetWeight[part];
   }
 
-  wgt_type excessWeight = totalVertexWeight - assignedWeight; 
-  if (excessWeight >= numPartitions) {
-    wgt_type const base = excessWeight / numPartitions;
-    for (pid_type part = 0; part < numPartitions; ++part) {
-      targetWeight[part] += base;
-    }
-    excessWeight -= base * numPartitions;
-  }
-  ASSERT_LESS(excessWeight, numPartitions);
-
-  // place any excess weight
-  for (pid_type part = 0; part < excessWeight; ++part) {
-    targetWeight[part] += 1; 
-  }
+  // NOTE: total assignedWeight may be less than total vertex weight
 }
 
 
 void calcMaxWeight(
     pid_type const numPartitions,
+    wgt_type const totalVertexWeight,
     double const imbalanceTolerance,
-    wgt_type const * const targetWeight,
+    double const * const fractions,
     wgt_type * const maxWeight) noexcept
 {
   for (pid_type part = 0; part < numPartitions; ++part) {
     maxWeight[part] = \
-        static_cast<wgt_type>(targetWeight[part] * (1.0+imbalanceTolerance));
+        static_cast<wgt_type>(fractions[part] * (1.0+imbalanceTolerance) * totalVertexWeight);
   }
 }
+
+void calcFractions(
+    pid_type const numPartitions,
+    wgt_type const * const targetWeight,
+    double * const fractions) noexcept
+{
+  wgt_type total = 0;
+  for (pid_type part = 0; part < numPartitions; ++part) {
+    total += targetWeight[part];
+  }
+
+  const double invTotal = 1.0 / static_cast<double>(total);
+  for (pid_type part = 0; part < numPartitions; ++part) {
+    fractions[part] = static_cast<double>(targetWeight[part])*invTotal;
+  }
+}
+
+
 
 }
 
@@ -114,16 +120,10 @@ TargetPartitioning::TargetPartitioning(
     pid_type const numPartitions,
     wgt_type const totalVertexWeight,
     double const imbalanceTolerance) :
-  m_numPartitions(numPartitions),
-  m_imbalanceTolerance(imbalanceTolerance),
-  m_targetFraction(numPartitions, 1.0 / numPartitions),
-  m_targetWeight(numPartitions),
-  m_maxWeight(numPartitions)
+  TargetPartitioning(numPartitions, totalVertexWeight, imbalanceTolerance,
+      sl::Array<double>(numPartitions, 1.0 / numPartitions).data())
 {
-  calcTargetWeight(numPartitions, totalVertexWeight, m_targetFraction.data(), \
-      m_targetWeight.data());
-  calcMaxWeight(numPartitions, imbalanceTolerance, \
-      m_targetWeight.data(), m_maxWeight.data());
+  // do nothing
 }
 
 
@@ -133,7 +133,6 @@ TargetPartitioning::TargetPartitioning(
     double const imbalanceTolerance,
     double const * const fractions) :
   m_numPartitions(numPartitions),
-  m_imbalanceTolerance(imbalanceTolerance),
   m_targetFraction(numPartitions),
   m_targetWeight(numPartitions),
   m_maxWeight(numPartitions)
@@ -159,8 +158,21 @@ TargetPartitioning::TargetPartitioning(
 
   calcTargetWeight(numPartitions, totalVertexWeight, m_targetFraction.data(), \
       m_targetWeight.data());
-  calcMaxWeight(numPartitions, imbalanceTolerance, m_targetWeight.data(), \
-      m_maxWeight.data());
+  calcMaxWeight(numPartitions, totalVertexWeight, imbalanceTolerance,
+      m_targetFraction.data(), m_maxWeight.data());
+}
+
+
+TargetPartitioning::TargetPartitioning(
+    pid_type const numPartitions,
+    sl::Array<wgt_type> targetWeights,
+    sl::Array<wgt_type> maxWeights) :
+  m_numPartitions(numPartitions),
+  m_targetFraction(numPartitions),
+  m_targetWeight(std::move(targetWeights)),
+  m_maxWeight(std::move(maxWeights))
+{
+  calcFractions(numPartitions, m_targetWeight.data(), m_targetFraction.data());
 }
 
 

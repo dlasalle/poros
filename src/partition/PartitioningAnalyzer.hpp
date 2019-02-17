@@ -65,6 +65,15 @@ class PartitioningAnalyzer
 
 
     /**
+    * @brief Find the partition which has the most weight over its target
+    * percentage wise.
+    *
+    * @return The partition id.
+    */
+    pid_type findMostOverWeightPartition() const;
+
+
+    /**
     * @brief Get the current imbalance of a partition.
     *
     * @param part The partition.
