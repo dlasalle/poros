@@ -177,8 +177,6 @@ void FMRefiner::refine(
   PartitioningAnalyzer analyzer(partitioning, target);
   VisitTracker visited(graph->numVertices());
 
-  double const tolerance = target->getImbalanceTolerance();
-
   std::vector<Vertex> moves;
   moves.reserve(graph->numVertices());
 
@@ -192,8 +190,7 @@ void FMRefiner::refine(
     DEBUG_MESSAGE(std::string("Cut is ") + \
         std::to_string(partitioning->getCutEdgeWeight()) + \
         std::string(" with balance of ") + \
-        std::to_string(analyzer.calcMaxImbalance()) + \
-        std::string("/") + std::to_string(target->getImbalanceTolerance()) + \
+        std::to_string(analyzer.calcMaxImbalance()) +\
         std::string(" at iter ") + std::to_string(refIter));
 
     DEBUG_MESSAGE(std::string("Number of boundary vertices is ") + \
@@ -231,9 +228,10 @@ void FMRefiner::refine(
       wgt_type const currentCut = partitioning->getCutEdgeWeight();
       double const balance = analyzer.calcMaxImbalance();
 
-      if ((bestBalance > tolerance && balance < bestBalance) ||
+      bool const isBalanced = analyzer.isBalanced();
+      if ((!isBalanced && balance < bestBalance) ||
           (currentCut < bestCut && \
-            (balance <= tolerance || balance <= bestBalance))) {
+            (isBalanced || balance <= bestBalance))) {
         bestCut = currentCut;
         bestBalance = balance;
         moves.clear();
