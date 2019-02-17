@@ -32,6 +32,33 @@
 namespace poros
 {
 
+
+/******************************************************************************
+* HELPER FUNCTIONS ************************************************************
+******************************************************************************/
+
+namespace
+{
+
+void moveBackUntilBalanced(
+    Graph const * const graph,
+    TargetPartitioning const * const target,
+    Partitioning * const part,
+    VertexQueue * const weightQueue)
+{
+  while (weightQueue->size() > 0) {
+    Vertex const vertex = weightQueue->pop();
+    wgt_type const newWeight = graph->weightOf(vertex) + part->getWeight(0);
+    if (newWeight / static_cast<double>(target->getMaxWeight(0)) < \
+        part->getWeight(1) / static_cast<double>(target->getMaxWeight(1))) {
+      part->move(vertex, 0);
+      break;
+    }
+  }
+}
+
+}
+
 /******************************************************************************
 * CONSTRUCTORS / DESTRUCTOR ***************************************************
 ******************************************************************************/
@@ -106,15 +133,7 @@ Partitioning BFSBisector::execute(
       weightQueue.add(graph->weightOf(vertex), vertex);
     }
 
-    while (weightQueue.size() > 0) {
-      Vertex const vertex = queue.pop();
-      wgt_type const newWeight = graph->weightOf(vertex) + part[0].weight();
-      if (newWeight / static_cast<double>(target->getMaxWeight(0)) < \
-          part[1].weight() / static_cast<double>(target->getMaxWeight(1))) {
-        part.move(vertex, 0);
-        break;
-      }
-    }
+    moveBackUntilBalanced(graph, target, &part, &weightQueue);
   }
 
   part.recalcCutEdgeWeight();
