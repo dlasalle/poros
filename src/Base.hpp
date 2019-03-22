@@ -61,9 +61,9 @@ constexpr adj_type const NULL_ADJ = std::numeric_limits<adj_type>::max();
 constexpr wgt_type const NULL_WGT = std::numeric_limits<wgt_type>::max();
 constexpr pid_type const NULL_PID = std::numeric_limits<pid_type>::max();
 
-pid_type const LEFT_PARTITION = 0;
-pid_type const RIGHT_PARTITION = 1;
-pid_type const NUM_BISECTION_PARTS = 2;
+constexpr pid_type const LEFT_PARTITION = 0;
+constexpr pid_type const RIGHT_PARTITION = 1;
+constexpr pid_type const NUM_BISECTION_PARTS = 2;
 
 }
 
