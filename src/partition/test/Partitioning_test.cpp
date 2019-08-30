@@ -51,7 +51,7 @@ UNITTEST(Partitioning, BlankConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.weight(), 9u*7u);
+    testEqual(part.weight(), static_cast<wgt_type>(9*7));
   }
 }
 
@@ -71,7 +71,7 @@ UNITTEST(Partitioning, VectorConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p) {
-    testEqual(part.weight(), 9u*7u);
+    testEqual(part.weight(), static_cast<wgt_type>(9*7));
   }
 }
 
@@ -92,7 +92,7 @@ UNITTEST(Partitioning, MoveConstructor)
 
   // check partition weights -- should all be 9x7
   for (Partition const & part : p2) {
-    testEqual(part.weight(), 9u*7u);
+    testEqual(part.weight(), static_cast<wgt_type>(9*7));
   }
 }
 
@@ -104,7 +104,7 @@ UNITTEST(Partitioning, NumberOfPartitions)
   Graph graph = gen.generate(); 
   Partitioning p(5, &graph);
 
-  testEqual(5u, p.numPartitions());
+  testEqual(static_cast<pid_type>(5), p.numPartitions());
 }
 
 
@@ -135,7 +135,7 @@ UNITTEST(Partitioning, CalcVertexCounts)
 
   // check counts
   for (Partition const & part : p) {
-    testEqual(counts[part.index()], part.weight());
+    testEqual(static_cast<wgt_type>(counts[part.index()]), part.weight());
   }
 }
 

@@ -134,7 +134,7 @@ TwoWayConnectivity::TwoWayConnectivity(
   m_connectivity(std::move(connectivity))
 {
   // fill in border
-  for (vtx_type v = 0; v < m_connectivity.size(); ++v) {
+  for (vtx_type v = 0; v < static_cast<vtx_type>(m_connectivity.size()); ++v) {
     if (shouldBeInBorder(m_connectivity[v])) {
       m_border.add(v);
     }

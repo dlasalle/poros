@@ -57,7 +57,8 @@ Aggregation MatchedAggregationBuilder::build() const
   sl::Array<vtx_type> cmap(m_match.size());
   
   vtx_type numCoarseVertices = 0;
-  for (vtx_type v = 0; v < m_match.size(); ++v) {
+  for (vtx_type v = 0; v < static_cast<vtx_type>(m_match.size()); ++v) {
+    ASSERT_LESS(static_cast<size_t>(v), m_match.size());
     vtx_type const u = m_match[v];
     if (u == NULL_VTX) {
       // set cmap for unmatched vertices

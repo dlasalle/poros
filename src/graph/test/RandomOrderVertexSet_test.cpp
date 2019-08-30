@@ -45,7 +45,7 @@ UNITTEST(RandomOrderVertexSet, Size)
   PermutedVertexSet set = RandomOrderVertexSet::generate(
       vSet, random.get());
 
-  testEqual(set.size(), 10U);
+  testEqual(set.size(), static_cast<vtx_type>(10));
 }
 
 

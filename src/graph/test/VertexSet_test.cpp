@@ -41,7 +41,7 @@ UNITTEST(VertexSet, Size)
 {
   VertexSet set(0, 10);
 
-  testEqual(set.size(), 10U);
+  testEqual(set.size(), static_cast<vtx_type>(10));
 }
 
 

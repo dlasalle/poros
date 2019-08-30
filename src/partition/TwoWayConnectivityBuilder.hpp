@@ -64,7 +64,7 @@ class TwoWayConnectivityBuilder
         Vertex const vertex,
         wgt_type const weight) noexcept
     {
-      ASSERT_LESS(vertex.index, m_connectivity.size());
+      ASSERT_LESS(static_cast<size_t>(vertex.index), m_connectivity.size());
       m_connectivity[vertex.index].internal = weight;
     }
 
@@ -78,7 +78,7 @@ class TwoWayConnectivityBuilder
         Vertex const vertex,
         wgt_type const weight) noexcept
     {
-      ASSERT_LESS(vertex.index, m_connectivity.size());
+      ASSERT_LESS(static_cast<size_t>(vertex.index), m_connectivity.size());
       m_connectivity[vertex.index].external = weight;
     }
 

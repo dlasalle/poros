@@ -41,7 +41,7 @@ UNITTEST(Vertex, Index)
 {
   Vertex v = Vertex::make(7);
   
-  testEqual(v.index, 7U);
+  testEqual(v.index, static_cast<vtx_type>(7));
 }
 
 

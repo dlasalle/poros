@@ -127,7 +127,7 @@ UNITTEST(RecursiveBisectionPartitioner, Execute4Way)
 
   // partition 
   Partitioning part = rb.execute(&target, &graph);
-  testEqual(part.numPartitions(), targets.size());
+  testEqual(static_cast<size_t>(part.numPartitions()), targets.size());
   PartitioningAnalyzer analyzer(&part, &target);
 
   double const imbalance = analyzer.calcMaxImbalance();

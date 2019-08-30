@@ -50,15 +50,15 @@ UNITTEST(SubgraphExtract, Partitions)
 
   std::vector<Subgraph> subs = SubgraphExtractor::partitions(&g, &p);
 
-  testEqual(subs[0].getSuperMap(0), 0u);
-  testEqual(subs[0].getSuperMap(1), 1u);
-  testEqual(subs[0].getSuperMap(2), 4u);
-  testEqual(subs[0].getSuperMap(3), 5u);
+  testEqual(subs[0].getSuperMap(0), static_cast<vtx_type>(0));
+  testEqual(subs[0].getSuperMap(1), static_cast<vtx_type>(1));
+  testEqual(subs[0].getSuperMap(2), static_cast<vtx_type>(4));
+  testEqual(subs[0].getSuperMap(3), static_cast<vtx_type>(5));
 
-  testEqual(subs[1].getSuperMap(0), 2u);
-  testEqual(subs[1].getSuperMap(1), 3u);
-  testEqual(subs[2].getSuperMap(0), 6u);
-  testEqual(subs[2].getSuperMap(1), 7u);
+  testEqual(subs[1].getSuperMap(0), static_cast<vtx_type>(2));
+  testEqual(subs[1].getSuperMap(1), static_cast<vtx_type>(3));
+  testEqual(subs[2].getSuperMap(0), static_cast<vtx_type>(6));
+  testEqual(subs[2].getSuperMap(1), static_cast<vtx_type>(7));
 }
 
 }
