@@ -70,7 +70,7 @@ class MatchedAggregationBuilder
     inline bool isMatched(
         vtx_type const vertex) const noexcept
     {
-      ASSERT_LESS(vertex, m_match.size());
+      ASSERT_LESS(static_cast<size_t>(vertex), m_match.size());
 
       return m_match[vertex] != NULL_VTX;
     }
@@ -86,8 +86,8 @@ class MatchedAggregationBuilder
         vtx_type const first,
         vtx_type const second) noexcept
     {
-      ASSERT_LESS(first, m_match.size());
-      ASSERT_LESS(second, m_match.size());
+      ASSERT_LESS(static_cast<size_t>(first), m_match.size());
+      ASSERT_LESS(static_cast<size_t>(second), m_match.size());
       ASSERT_EQUAL(m_match[first], NULL_VTX);
       ASSERT_EQUAL(m_match[second], NULL_VTX);
 
@@ -96,14 +96,15 @@ class MatchedAggregationBuilder
     }
 
     /**
-    * @brief Get the next unmatched vertex. This function amortizes the const
+    * @brief Get the next unmatched vertex. This function amortizes the cont
     * of a linear search over subsequent calls.
     *
     * @return The unmatched vertex.
     */
     inline vtx_type getNextUnmatched() noexcept
     {
-      while (m_nextUnmatched < m_match.size() && isMatched(m_nextUnmatched)) {
+      while (static_cast<size_t>(m_nextUnmatched) < m_match.size() && \
+          isMatched(m_nextUnmatched)) {
         ++m_nextUnmatched;
       }
 

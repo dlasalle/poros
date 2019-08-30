@@ -40,7 +40,7 @@ UNITTEST(Edge, Index)
 {
   Edge e = Edge::make(7);
 
-  testEqual(e.index, 7U);
+  testEqual(e.index, static_cast<adj_type>(7));
 }
 
 static_assert(std::is_pod<Edge>::value, "Edge must be a POD");

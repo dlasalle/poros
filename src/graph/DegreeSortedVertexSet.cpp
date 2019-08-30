@@ -49,10 +49,10 @@ PermutedVertexSet DegreeSortedVertexSet::ascending(
     degrees[vertex.index] = graph->degreeOf(vertex);
   }
 
-  std::unique_ptr<vtx_type[]> perm = sl::Sort::fixedKeys<vtx_type, vtx_type>( \
-      degrees.data(), degrees.size());
+  sl::ConstArray<vtx_type> perm(sl::Sort::fixedKeys<vtx_type, vtx_type>( \
+      degrees.data(), degrees.size()), numVertices);
 
-  return PermutedVertexSet(std::move(perm), numVertices);  
+  return PermutedVertexSet(std::move(perm));  
 }
 
 
@@ -67,11 +67,11 @@ PermutedVertexSet DegreeSortedVertexSet::ascendingRandom(
     degrees[vertex.index] = graph->degreeOf(vertex);
   }
 
-  std::unique_ptr<vtx_type[]> perm = \
+  sl::ConstArray<vtx_type> perm(
       sl::Sort::fixedKeysRandom<vtx_type, vtx_type>( \
-      degrees.data(), degrees.size(), *engine);
+      degrees.data(), degrees.size(), *engine), numVertices);
 
-  return PermutedVertexSet(std::move(perm), numVertices);
+  return PermutedVertexSet(std::move(perm));
 }
 
 }

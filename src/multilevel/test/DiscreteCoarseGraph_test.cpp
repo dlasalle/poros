@@ -53,8 +53,8 @@ UNITTEST(DiscreteCoarseGraph, Contract)
   Graph const * coarseGraph = coarse.graph();
 
   // check size
-  testEqual(coarseGraph->numVertices(), 8U);
-  testEqual(coarseGraph->numEdges(), 14U);
+  testEqual(coarseGraph->numVertices(), static_cast<vtx_type>(8));
+  testEqual(coarseGraph->numEdges(), static_cast<adj_type>(14));
   
   // check edge counts
   testEqual(coarseGraph->degreeOf(Vertex::make(0)), static_cast<vtx_type>(1));

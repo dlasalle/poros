@@ -73,15 +73,15 @@ UNITTEST(TwoStepGraphBuilder, FullBuild)
   GraphHandle graph = builder.finish();
 
   // verify graph
-  testEqual(graph->numVertices(), 4u);
-  testEqual(graph->numEdges(), 8u);
+  testEqual(graph->numVertices(), static_cast<vtx_type>(4));
+  testEqual(graph->numEdges(), static_cast<adj_type>(8));
 
   for (Vertex const vertex : graph->vertices()) {
-    testEqual(graph->weightOf<false>(vertex), 1u);
-    testEqual(graph->degreeOf(vertex), 2u);
+    testEqual(graph->weightOf<false>(vertex), static_cast<wgt_type>(1));
+    testEqual(graph->degreeOf(vertex), static_cast<vtx_type>(2));
 
     for (Edge const edge : graph->edgesOf(vertex)) {
-      testEqual(graph->weightOf<true>(edge), 2u);
+      testEqual(graph->weightOf<true>(edge), static_cast<wgt_type>(2));
     }
   }
 }

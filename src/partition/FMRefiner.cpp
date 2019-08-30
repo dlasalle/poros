@@ -210,7 +210,7 @@ void FMRefiner::refine(
 
     // move all possible vertices
     while ((pqs[0].size() > 0 || pqs[1].size() > 0) && \
-        moves.size() < maxNumBadMoves) {
+        static_cast<vtx_type>(moves.size()) < maxNumBadMoves) {
       pid_type const from = pickSide(&analyzer, pqs);
       pid_type const to = from ^ 1;
 
@@ -266,7 +266,7 @@ void FMRefiner::refine(
     ASSERT_TRUE(connectivity->verify(graph, partitioning));
     ASSERT_EQUAL(partitioning->getCutEdgeWeight(), bestCut);
 
-    if (numMoved == moves.size()) {
+    if (numMoved == static_cast<vtx_type>(moves.size())) {
       // no improvement
       DEBUG_MESSAGE("Kept zero moves, stopping refinement early.");
       break;

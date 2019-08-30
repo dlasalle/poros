@@ -41,11 +41,11 @@ PermutedVertexSet RandomOrderVertexSet::generate(
     RandomEngine * const randomEngine)
 {
   vtx_type const numVertices = set.size();
-  std::unique_ptr<vtx_type[]> perm(new vtx_type[numVertices]);
 
-  randomEngine->fillWithPerm(perm.get(), 0, numVertices);
+  sl::Array<vtx_type> perm(numVertices);
+  randomEngine->fillWithPerm(perm.data(), 0, numVertices);
 
-  return PermutedVertexSet(std::move(perm), numVertices);
+  return PermutedVertexSet(sl::ConstArray<vtx_type>(std::move(perm)));
 }
 
 

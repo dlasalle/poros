@@ -275,8 +275,8 @@ class Partitioning
     {
       vtx_type const index = vertex.index;
 
-      ASSERT_LESS(index, m_assignment.size());
-      ASSERT_LESS(partition, m_partitionWeight.size());
+      ASSERT_LESS(static_cast<size_t>(index), m_assignment.size());
+      ASSERT_LESS(static_cast<size_t>(partition), m_partitionWeight.size());
       ASSERT_EQUAL(getAssignment(vertex), NULL_PID);
 
       wgt_type const weight = m_graph->hasUnitVertexWeight() ? \
@@ -299,8 +299,8 @@ class Partitioning
     {
       vtx_type const index = vertex.index;
 
-      ASSERT_LESS(index, m_assignment.size());
-      ASSERT_LESS(partition, m_partitionWeight.size());
+      ASSERT_LESS(static_cast<size_t>(index), m_assignment.size());
+      ASSERT_LESS(static_cast<size_t>(partition), m_partitionWeight.size());
       ASSERT_NOTEQUAL(getAssignment(vertex), NULL_PID);
       ASSERT_NOTEQUAL(getAssignment(vertex), partition);
 
@@ -328,7 +328,7 @@ class Partitioning
     {
       vtx_type const index = vertex.index;
 
-      ASSERT_LESS(index, m_assignment.size());
+      ASSERT_LESS(static_cast<size_t>(index), m_assignment.size());
 
       pid_type const current = getAssignment(vertex);
 
@@ -350,7 +350,7 @@ class Partitioning
     pid_type getAssignment(
         Vertex const vertex) const noexcept
     {
-      ASSERT_LESS(vertex.index, m_assignment.size());
+      ASSERT_LESS(static_cast<size_t>(vertex.index), m_assignment.size());
 
       return m_assignment[vertex.index];
     }
@@ -366,7 +366,7 @@ class Partitioning
     pid_type getAssignment(
         vtx_type const vertex) const noexcept
     {
-      ASSERT_LESS(vertex, m_assignment.size());
+      ASSERT_LESS(static_cast<size_t>(vertex), m_assignment.size());
 
       return m_assignment[vertex];
     }
@@ -396,7 +396,7 @@ class Partitioning
     wgt_type getWeight(
         pid_type const partition) const noexcept
     {
-      ASSERT_LESS(partition, m_partitionWeight.size());
+      ASSERT_LESS(static_cast<size_t>(partition), m_partitionWeight.size());
       return m_partitionWeight[partition];
     }
 
@@ -411,7 +411,7 @@ class Partitioning
     double getFraction(
         pid_type const partition) const noexcept
     {
-      ASSERT_LESS(partition, m_partitionWeight.size());
+      ASSERT_LESS(static_cast<size_t>(partition), m_partitionWeight.size());
       return static_cast<double>(m_partitionWeight[partition]) / \
           static_cast<double>(m_graph->getTotalVertexWeight());
     }

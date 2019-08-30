@@ -46,12 +46,12 @@ UNITTEST(AggregationTest, CoarseVertexNumberTest)
 
   Aggregation agg(std::move(cmap), 3u);
 
-  testEqual(agg.getNumCoarseVertices(), 3u);
-  testEqual(agg.getCoarseVertexNumber(0), 0u);
-  testEqual(agg.getCoarseVertexNumber(1), 1u);
-  testEqual(agg.getCoarseVertexNumber(2), 2u);
-  testEqual(agg.getCoarseVertexNumber(3), 1u);
-  testEqual(agg.getCoarseVertexNumber(4), 0u);
+  testEqual(agg.getNumCoarseVertices(), static_cast<vtx_type>(3));
+  testEqual(agg.getCoarseVertexNumber(0), static_cast<vtx_type>(0));
+  testEqual(agg.getCoarseVertexNumber(1), static_cast<vtx_type>(1));
+  testEqual(agg.getCoarseVertexNumber(2), static_cast<vtx_type>(2));
+  testEqual(agg.getCoarseVertexNumber(3), static_cast<vtx_type>(1));
+  testEqual(agg.getCoarseVertexNumber(4), static_cast<vtx_type>(0));
 }
 
 UNITTEST(AggregationTest, CoarseVertexSetTest)
@@ -64,7 +64,7 @@ UNITTEST(AggregationTest, CoarseVertexSetTest)
   cmap[4] = 0;
   Aggregation agg(std::move(cmap), 3u);
 
-  testEqual(agg.getNumCoarseVertices(), 3u);
+  testEqual(agg.getNumCoarseVertices(), static_cast<vtx_type>(3));
 
   vtx_type coarse = 0;
   std::vector<bool> visited(5u, false);

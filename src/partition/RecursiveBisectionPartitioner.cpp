@@ -116,7 +116,7 @@ void RecursiveBisectionPartitioner::recurse(
 
     ASSERT_EQUAL(parts.size(), NUM_BISECTION_PARTS);
 
-    for (pid_type part = 0; part < parts.size(); ++part) {
+    for (pid_type part = 0; static_cast<size_t>(part) < parts.size(); ++part) {
       pid_type const numHalfParts = numPartsPrefix[part+1] - \
           numPartsPrefix[part];
 

@@ -44,7 +44,7 @@ UNITTEST(Subgraph, GetGraph)
   GraphHandle g = gen.generate();
 
   sl::Array<vtx_type> superMap(g->numVertices());
-  sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
+  sl::VectorMath::increment(superMap.data(), superMap.size(), static_cast<vtx_type>(1));
 
   Subgraph s(g, std::move(superMap));
 
@@ -59,7 +59,7 @@ UNITTEST(Subgraph, GetSuperMap)
   GraphHandle g = gen.generate();
 
   sl::Array<vtx_type> superMap(g->numVertices());
-  sl::VectorMath::increment(superMap.data(), superMap.size(), 1U);
+  sl::VectorMath::increment(superMap.data(), superMap.size(), static_cast<vtx_type>(1));
 
   Subgraph s(g, std::move(superMap));
 
@@ -75,7 +75,7 @@ UNITTEST(Subgraph, MapPartitioning)
   GraphHandle tempG = gen.generate();
 
   sl::Array<vtx_type> superMap(tempG->numVertices());
-  sl::VectorMath::increment(superMap.data(), superMap.size(), 0U);
+  sl::VectorMath::increment(superMap.data(), superMap.size(), static_cast<vtx_type>(0));
 
   Subgraph s(tempG, std::move(superMap));
 

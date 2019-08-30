@@ -226,7 +226,7 @@ class TwoWayConnectivity
     wgt_diff_type getVertexDelta(
         vtx_type const vertex) const noexcept
     {
-      ASSERT_LESS(vertex, m_connectivity.size());
+      ASSERT_LESS(static_cast<size_t>(vertex), m_connectivity.size());
       return static_cast<wgt_diff_type>(m_connectivity[vertex].internal) - \
           static_cast<wgt_diff_type>(m_connectivity[vertex].external);
     }

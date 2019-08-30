@@ -59,7 +59,7 @@ UNITTEST(FMRefiner, RefineRandomGridCut)
 
   fm.refine(&target, &conn, &part, &graph);
 
-  testLess(part.getCutEdgeWeight(), 100u);
+  testLess(part.getCutEdgeWeight(), static_cast<wgt_type>(100));
 
   PartitioningAnalyzer analyzer(&part, &target);
 
@@ -90,7 +90,7 @@ UNITTEST(FMRefiner, RefineUnbalancedCut)
 
   fm.refine(&target, &conn, &part, &graph);
 
-  testLessOrEqual(part.getCutEdgeWeight(), 60u);
+  testLessOrEqual(part.getCutEdgeWeight(), static_cast<wgt_type>(60));
 
   PartitioningAnalyzer analyzer(&part, &target);
 
