@@ -31,6 +31,7 @@
 #include "TimedAggregator.hpp"
 
 #include "poros.h"
+#include <stdexcept>
 
 
 namespace poros
