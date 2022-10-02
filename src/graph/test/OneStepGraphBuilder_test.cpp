@@ -68,15 +68,15 @@ UNITTEST(OneStepGraphBuilderTest, BuildStar)
 
   GraphHandle g = builder.finish();
 
-  testEqual(g->numVertices(), 7U);
-  testEqual(g->numEdges(), 12U);
+  testEqual(g->numVertices(), static_cast<vtx_type>(7));
+  testEqual(g->numEdges(), static_cast<vtx_type>(12));
 
-  testEqual(g->degreeOf(Vertex::make(0)), 6U);
-  testEqual(g->degreeOf(Vertex::make(1)), 1U);
-  testEqual(g->degreeOf(Vertex::make(2)), 1U);
-  testEqual(g->degreeOf(Vertex::make(3)), 1U);
-  testEqual(g->degreeOf(Vertex::make(4)), 1U);
-  testEqual(g->degreeOf(Vertex::make(5)), 1U);
+  testEqual(g->degreeOf(Vertex::make(0)), static_cast<vtx_type>(6));
+  testEqual(g->degreeOf(Vertex::make(1)), static_cast<vtx_type>(1));
+  testEqual(g->degreeOf(Vertex::make(2)), static_cast<vtx_type>(1));
+  testEqual(g->degreeOf(Vertex::make(3)), static_cast<vtx_type>(1));
+  testEqual(g->degreeOf(Vertex::make(4)), static_cast<vtx_type>(1));
+  testEqual(g->degreeOf(Vertex::make(5)), static_cast<vtx_type>(1));
 }
 
 

@@ -33,6 +33,7 @@
 
 #include "Vertex.hpp"
 #include "Base.hpp"
+#include "solidutils/ConstArray.hpp"
 
 #include <vector>
 #include <memory>
@@ -102,12 +103,10 @@ class PermutedVertexSet
     * @brief Create a new vertex set with a permuted order.
     *
     * @param vertices The set of vertices (order matters).
-    * @param size The number of vertices.
     */
     PermutedVertexSet(
-        std::unique_ptr<vtx_type[]> set,
-        vtx_type const size) noexcept :
-      m_size(size),
+        sl::ConstArray<vtx_type>&& set) noexcept :
+      m_size(set.size()),
       m_set(std::move(set))
     {
       // do nothing
@@ -123,9 +122,12 @@ class PermutedVertexSet
         vtx_type const * const set,
         vtx_type const size) noexcept :
       m_size(size),
-      m_set(new vtx_type[m_size])
+      m_set()
     {
-      std::copy(set, set+size, m_set.get());
+      sl::Array<vtx_type> mutableSet(size);
+      std::copy(set, set+size, mutableSet.begin());
+
+      m_set = std::move(mutableSet);
     }
 
     /**
@@ -139,7 +141,7 @@ class PermutedVertexSet
       m_set(std::move(other.m_set))
     {
       other.m_size = 0;
-      other.m_set.reset(nullptr);
+      other.m_set.clear();
     }
 
     /**
@@ -167,7 +169,7 @@ class PermutedVertexSet
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator::make(m_set.get());
+      return Iterator::make(m_set.data());
     }
 
     /**
@@ -177,7 +179,7 @@ class PermutedVertexSet
     */
     inline Iterator end() const noexcept
     {
-      return Iterator::make(m_set.get() + m_size);
+      return Iterator::make(m_set.data() + m_size);
     }
 
     /**
@@ -206,7 +208,7 @@ class PermutedVertexSet
   
   private:
     vtx_type m_size;
-    std::unique_ptr<vtx_type[]> m_set;
+    sl::ConstArray<vtx_type> m_set;
 };
 
 

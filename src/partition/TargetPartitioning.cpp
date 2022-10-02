@@ -140,7 +140,7 @@ TargetPartitioning::TargetPartitioning(
   std::copy(fractions, fractions+numPartitions, m_targetFraction.begin());
 
   double fractionSum = 0;
-  for (size_t i = 0; i < m_numPartitions; ++i) {
+  for (pid_type i = 0; i < m_numPartitions; ++i) {
     if (m_targetFraction[i] < 0.0 || m_targetFraction[i] > 1.0) {
       throw InvalidPartitionFractionsException(std::string("Invalid target " \
           "fractions {") + std::to_string(m_targetFraction[0]) + \

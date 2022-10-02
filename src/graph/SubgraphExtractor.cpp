@@ -114,7 +114,7 @@ std::vector<Subgraph> SubgraphExtractor::partitions(
   // map of sub graph vertices to super graph vertices 
   std::vector<sl::Array<vtx_type>> superMaps;
   for (pid_type pid = 0; pid < numParts; ++pid) {
-    ASSERT_EQUAL(superMaps.size(), pid);
+    ASSERT_EQUAL(superMaps.size(), static_cast<size_t>(pid));
 
     // allocate arrays for this subgraph
     superMaps.emplace_back(vertexCounts[pid]);

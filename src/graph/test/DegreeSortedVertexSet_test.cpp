@@ -48,7 +48,7 @@ UNITTEST(DegreeSortedVertexSet, Size)
 
   PermutedVertexSet set = DegreeSortedVertexSet::ascending(vSet, &g);
 
-  testEqual(set.size(), 10U);
+  testEqual(set.size(), static_cast<vtx_type>(10));
 
   vtx_type lastDegree = 0;
   for (Vertex const vertex : set) {

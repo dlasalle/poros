@@ -87,7 +87,7 @@ UNITTEST(RandomMatchingAggregator, ConnectedMatch)
   std::vector<int> matchCount(agg.getNumCoarseVertices(), 0);
   for (VertexGroup const & group : agg.coarseVertices()) {
     // should be a matching
-    testLessOrEqual(group.size(), 2U);
+    testLessOrEqual(group.size(), static_cast<vtx_type>(2));
     if (group.size() == 2) {
       PermutedVertexSet const set = group.fineVertices();
       bool found = false;
