@@ -29,6 +29,8 @@
 #include "MultiBisector.hpp"
 #include "partition/PartitioningAnalyzer.hpp"
 
+#include <iostream>
+
 
 namespace poros
 {

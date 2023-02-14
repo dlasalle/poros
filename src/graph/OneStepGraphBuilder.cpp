@@ -50,6 +50,8 @@ OneStepGraphBuilder::OneStepGraphBuilder(
   m_edgeList(maxNumEdges),
   m_vertexWeight(numVertices),
   m_edgeWeight(maxNumEdges),
+  m_totalVertexWeight(0),
+  m_totalEdgeWeight(0),
   m_htable(numVertices, NULL_ADJ)
 {
   m_edgePrefix[0] = 0;
@@ -76,6 +78,7 @@ void OneStepGraphBuilder::finishVertex(
   }
 
   m_vertexWeight[thisVtx] = vertexWeight;
+  m_totalVertexWeight += vertexWeight;
   m_edgePrefix[m_numVertices] = m_numEdges;
 }
 
@@ -85,11 +88,15 @@ GraphHandle OneStepGraphBuilder::finish()
   m_edgeList.shrink(m_numEdges);
   m_edgeWeight.shrink(m_numEdges);
 
-  GraphHandle handle(
+  GraphHandle handle(Graph(
       std::move(m_edgePrefix),
       std::move(m_edgeList),
       std::move(m_vertexWeight),
-      std::move(m_edgeWeight));
+      std::move(m_edgeWeight),
+      m_totalVertexWeight,
+      m_totalEdgeWeight,
+      false,
+      false));
 
   ASSERT_TRUE(handle->isValid());
 

@@ -35,6 +35,8 @@
 
 #include "solidutils/Timer.hpp"
 
+#include <iostream>
+
 namespace poros
 {
 
@@ -100,11 +102,11 @@ PartitioningInformation MultilevelBisector::recurse(
     Graph const * const parent,
     Graph const * const graph)
 {
-  DEBUG_MESSAGE("Coarsened graph to " +
+   std::cout << "Coarsened graph to " +
       std::to_string(graph->numVertices()) +
       " vertices and " + std::to_string(graph->numEdges()) +
       " edges, with an exposed weight of " +
-      std::to_string(graph->getTotalEdgeWeight()) + ".");
+      std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
 
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
     Partitioning part = m_initialBisector->execute(target, graph); 
@@ -120,6 +122,7 @@ PartitioningInformation MultilevelBisector::recurse(
     contractTmr.start();
     DiscreteCoarseGraph coarse(graph, &agg);
     contractTmr.stop();
+    std::cout << "Contraction took: " << contractTmr.poll() << std::endl;
     m_timeKeeper->reportTime(TimeKeeper::CONTRACTION, contractTmr.poll());
 
     coarsenTmr.stop();

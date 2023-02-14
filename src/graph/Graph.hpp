@@ -68,6 +68,19 @@ class Graph
         sl::ConstArray<wgt_type> edgeWeight);
 
 
+    Graph(
+        sl::ConstArray<adj_type> edgePrefix,
+        sl::ConstArray<vtx_type> edgeList,
+        sl::ConstArray<wgt_type> vertexWeight,
+        sl::ConstArray<wgt_type> edgeWeight,
+        wgt_type totalVertexWeight,
+        wgt_type totalEdgeWeight,
+        bool unitVertexWeight,
+        bool unitEdgeWeight);
+
+
+
+
     /**
     * @brief Create a new constant graph, where the memory for it is owned
     * externally.

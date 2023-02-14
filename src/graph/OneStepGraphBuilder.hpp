@@ -75,6 +75,8 @@ class OneStepGraphBuilder
     } else {
       m_edgeWeight[idx] += wgt;
     }
+
+    m_totalEdgeWeight += wgt;
   }
 
   /**
@@ -100,6 +102,9 @@ class OneStepGraphBuilder
     sl::Array<vtx_type> m_edgeList;
     sl::Array<wgt_type> m_vertexWeight;
     sl::Array<wgt_type> m_edgeWeight;
+
+    wgt_type m_totalVertexWeight;
+    wgt_type m_totalEdgeWeight;
 
     std::vector<adj_type> m_htable;
 
