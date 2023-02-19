@@ -47,14 +47,18 @@ OneStepGraphBuilder::OneStepGraphBuilder(
   m_numVertices(0),
   m_numEdges(0),
   m_edgePrefix(numVertices+1),
-  m_edgeList(maxNumEdges),
+  m_edgeList(maxNumEdges+1), // last slot used for self loops
   m_vertexWeight(numVertices),
-  m_edgeWeight(maxNumEdges),
+  m_edgeWeight(maxNumEdges+1), // last slot used for self loops
   m_totalVertexWeight(0),
   m_totalEdgeWeight(0),
-  m_htable(numVertices, NULL_ADJ)
+  m_htable(numVertices+1, NULL_ADJ), // last slot needed for self loops
+  m_maxNumEdges(maxNumEdges)
 {
   m_edgePrefix[0] = 0;
+
+  // set collection point for first vertex
+  m_htable[0] = m_maxNumEdges;
 }
 
 
@@ -65,6 +69,9 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 
 GraphHandle OneStepGraphBuilder::finish()
 {
+  // subtract off self loop weight
+  m_totalEdgeWeight -= m_edgeWeight[m_maxNumEdges];
+
   m_edgeList.shrink(m_numEdges);
   m_edgeWeight.shrink(m_numEdges);
 

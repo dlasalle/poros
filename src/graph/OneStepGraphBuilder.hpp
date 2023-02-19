@@ -89,6 +89,8 @@ class OneStepGraphBuilder
         vtx_type const vertexWeight)
   {
     vtx_type const thisVtx = m_numVertices;
+    // clear self loop
+    m_htable[thisVtx] = NULL_ADJ;
 
     ++m_numVertices;
 
@@ -102,6 +104,9 @@ class OneStepGraphBuilder
     m_totalVertexWeight += vertexWeight;
     m_vertexWeight[thisVtx] = vertexWeight;
     m_edgePrefix[m_numVertices] = m_numEdges;
+
+    // set next self-loop
+    m_htable[m_numVertices] = m_maxNumEdges;
   }
 
   /**
@@ -123,6 +128,8 @@ class OneStepGraphBuilder
     wgt_type m_totalEdgeWeight;
 
     std::vector<adj_type> m_htable;
+
+    adj_type m_maxNumEdges;
 
     // prevent copying
     OneStepGraphBuilder(

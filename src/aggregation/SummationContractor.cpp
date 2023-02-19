@@ -61,18 +61,17 @@ GraphHandle contractGraph(
   // go over each fine vertex
   vtx_type coarseVertex = 0;
   for (VertexGroup const group : aggregation->coarseVertices()) {
-
     wgt_type coarseVertexWeight = 0;
 
     for (Vertex const vertex : group) {
+      ASSERT_EQUAL(coarseVertex, \
+          aggregation->getCoarseVertexNumber(vertex.index));
       coarseVertexWeight += graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
       for (Edge const edge : graph->edgesOf(vertex)) {
         vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
             graph->destinationOf(edge).index);
-        if (coarseVertex != coarseNeighbor) {
-          wgt_type const ewgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
-          builder.addEdge(coarseNeighbor, ewgt);
-        }
+        wgt_type const ewgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
+        builder.addEdge(coarseNeighbor, ewgt);
       }
     }
 
