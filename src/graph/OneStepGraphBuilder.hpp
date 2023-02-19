@@ -62,7 +62,7 @@ class OneStepGraphBuilder
   * @param dest The destination of the edge.
   * @param wgt The weight of the edge.
   */
-  void addEdge(
+  inline void addEdge(
       vtx_type const dest,
       wgt_type const wgt)
   {
@@ -85,8 +85,24 @@ class OneStepGraphBuilder
   *
   * @param wgt The weight of the vertex.
   */
-  void finishVertex(
-      vtx_type wgt);
+  inline void finishVertex(
+        vtx_type const vertexWeight)
+  {
+    vtx_type const thisVtx = m_numVertices;
+
+    ++m_numVertices;
+
+    adj_type const start = m_edgePrefix[thisVtx];
+    for (vtx_type j = start; j < m_numEdges; ++j) {
+      vtx_type const u = m_edgeList[j];
+      ASSERT_LESS(u, m_htable.size());
+      m_htable[u] = NULL_ADJ;
+    }
+
+    m_totalVertexWeight += vertexWeight;
+    m_vertexWeight[thisVtx] = vertexWeight;
+    m_edgePrefix[m_numVertices] = m_numEdges;
+  }
 
   /**
   * @brief Build the graph. This resets the builder to its initial state.

@@ -63,26 +63,6 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 * PUBLIC METHODS **************************************************************
 ******************************************************************************/
 
-void OneStepGraphBuilder::finishVertex(
-      vtx_type const vertexWeight)
-{
-  vtx_type const thisVtx = m_numVertices;
-
-  ++m_numVertices;
-
-  adj_type const start = m_edgePrefix[thisVtx];
-  for (vtx_type j = start; j < m_numEdges; ++j) {
-    vtx_type const u = m_edgeList[j];
-    ASSERT_LESS(u, m_htable.size());
-    m_htable[u] = NULL_ADJ;
-  }
-
-  m_vertexWeight[thisVtx] = vertexWeight;
-  m_totalVertexWeight += vertexWeight;
-  m_edgePrefix[m_numVertices] = m_numEdges;
-}
-
-
 GraphHandle OneStepGraphBuilder::finish()
 {
   m_edgeList.shrink(m_numEdges);

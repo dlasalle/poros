@@ -64,7 +64,7 @@ GraphHandle contractGraph(
 
     wgt_type coarseVertexWeight = 0;
 
-    for (Vertex const vertex : group.fineVertices()) {
+    for (Vertex const vertex : group) {
       coarseVertexWeight += graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
       for (Edge const edge : graph->edgesOf(vertex)) {
         vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(

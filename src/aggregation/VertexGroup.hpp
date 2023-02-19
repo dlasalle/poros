@@ -38,6 +38,57 @@ namespace poros
 class VertexGroup
 {
   public:
+    class Iterator
+    {
+      public:
+        Iterator(
+            vtx_type const * ptr) :
+          m_ptr(ptr)
+        {
+          // do nothing 
+        }
+
+        inline Vertex operator*() const noexcept
+        {
+          return Vertex::make(*m_ptr);
+        }
+
+        inline Iterator const & operator++() noexcept
+        {
+          ++m_ptr;
+          return *this;
+        }
+
+        inline Iterator const & operator+=(
+            vtx_type const offset) noexcept
+        {
+          m_ptr += offset;
+          return *this;
+        }
+
+        inline Iterator const & operator-=(
+            vtx_type const offset) noexcept
+        {
+          m_ptr -= offset;
+          return *this;
+        }
+
+        inline bool operator==(
+            Iterator const & other) const noexcept
+        {
+          return m_ptr == other.m_ptr;
+        }
+
+        inline bool operator!=(
+            Iterator const & other) const noexcept
+        {
+          return m_ptr != other.m_ptr;
+        }
+
+        private:
+          vtx_type const * m_ptr;
+    };
+
     /**
     * @brief Create a new vertex group.
     *
@@ -55,14 +106,25 @@ class VertexGroup
     }
 
     /**
-    * @brief Get the fine vertices that make up this vertex group.
+    * @brief Get the iterator for the beginning of the vertex groups in this
+    * grouping.
     *
-    * @return The set of fine vertices.
+    * @return The beginning iterator.
     */
-    PermutedVertexSet fineVertices() const noexcept
+    inline Iterator begin() const
     {
-      // TODO: make VertexSet a templated class taking in an iterator
-      return PermutedVertexSet(m_fineVertices, m_size); 
+      return Iterator(m_fineVertices); 
+    }
+
+    /**
+    * @brief Get the iteartor for the end (one past the last) of the vertex
+    * groups in this grouping.
+    *
+    * @return The ending iterator.
+    */
+    inline Iterator end() const
+    {
+      return Iterator(m_fineVertices+m_size);
     }
 
     /**
