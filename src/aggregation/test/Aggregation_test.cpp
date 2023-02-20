@@ -69,7 +69,7 @@ UNITTEST(AggregationTest, CoarseVertexSetTest)
   vtx_type coarse = 0;
   std::vector<bool> visited(5u, false);
   for (const VertexGroup& group : agg.coarseVertices()) {
-    for (const Vertex& v : group.fineVertices()) {
+    for (const Vertex& v : group) {
       testEqual(agg.getCoarseVertexNumber(v.index), coarse);
       visited[v.index] = true;
     }

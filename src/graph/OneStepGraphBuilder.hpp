@@ -64,7 +64,7 @@ class OneStepGraphBuilder
   */
   inline void addEdge(
       vtx_type const dest,
-      wgt_type const wgt)
+      wgt_type const wgt) noexcept
   {
     adj_type const idx = m_htable[dest];
     if (idx == NULL_ADJ) {
@@ -86,27 +86,34 @@ class OneStepGraphBuilder
   * @param wgt The weight of the vertex.
   */
   inline void finishVertex(
-        vtx_type const vertexWeight)
+        vtx_type const vertexWeight) noexcept
   {
     vtx_type const thisVtx = m_numVertices;
-    // clear self loop
-    m_htable[thisVtx] = NULL_ADJ;
 
     ++m_numVertices;
 
-    adj_type const start = m_edgePrefix[thisVtx];
-    for (vtx_type j = start; j < m_numEdges; ++j) {
+    adj_type const firstEdge = m_edgePrefix[thisVtx];
+    for (vtx_type j = firstEdge; j < m_numEdges; ++j) {
       vtx_type const u = m_edgeList[j];
       ASSERT_LESS(u, m_htable.size());
       m_htable[u] = NULL_ADJ;
     }
 
+    adj_type const lastEdge = m_numEdges-1;
+
+    // clear self-loop
+    m_totalEdgeWeight -= m_edgeWeight[firstEdge];
+    m_edgeList[firstEdge] = m_edgeList[lastEdge];
+    m_edgeWeight[firstEdge] = m_edgeWeight[lastEdge];
+
     m_totalVertexWeight += vertexWeight;
     m_vertexWeight[thisVtx] = vertexWeight;
-    m_edgePrefix[m_numVertices] = m_numEdges;
+    m_edgePrefix[m_numVertices] = lastEdge;
 
     // set next self-loop
-    m_htable[m_numVertices] = m_maxNumEdges;
+    m_htable[m_numVertices] = lastEdge;
+    m_edgeList[lastEdge] = m_numVertices;
+    m_edgeWeight[lastEdge] = 0; 
   }
 
   /**

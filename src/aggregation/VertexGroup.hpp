@@ -31,6 +31,7 @@
 #define POROS_SRC_VERTEXGROUP_HPP
 
 #include "graph/PermutedVertexSet.hpp"
+#include "solidutils/Debug.hpp"
 
 namespace poros
 {
@@ -111,7 +112,7 @@ class VertexGroup
     *
     * @return The beginning iterator.
     */
-    inline Iterator begin() const
+    inline Iterator begin() const noexcept
     {
       return Iterator(m_fineVertices); 
     }
@@ -122,9 +123,15 @@ class VertexGroup
     *
     * @return The ending iterator.
     */
-    inline Iterator end() const
+    inline Iterator end() const noexcept
     {
       return Iterator(m_fineVertices+m_size);
+    }
+
+    inline Vertex operator[](vtx_type const index) const noexcept
+    {
+      ASSERT_LESS(index, m_size);
+      return Vertex::make(m_fineVertices[index]);
     }
 
     /**
@@ -132,7 +139,7 @@ class VertexGroup
     *
     * @return The number of vertices.
     */
-    vtx_type size() const
+    inline vtx_type size() const noexcept
     {
       return m_size;
     }
