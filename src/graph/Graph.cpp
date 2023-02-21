@@ -242,7 +242,9 @@ bool Graph::isValid() const
         }
       }
       if (!found) {
-        std::cerr << "Did not find return edge for " << e.index << std::endl;
+        std::cerr << "Did not find return edge for edge " << e.index
+            << "(src " << v.index << ", dst " << destinationOf(e).index <<
+            ")" << std::endl;
         return false;
       }
     }
