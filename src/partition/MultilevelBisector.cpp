@@ -102,14 +102,14 @@ PartitioningInformation MultilevelBisector::recurse(
     Graph const * const parent,
     Graph const * const graph)
 {
-   std::cout << "Coarsened graph to " +
+   DEBUG_MESSAGE("Coarsened graph to " +
       std::to_string(graph->numVertices()) +
       " vertices and " + std::to_string(graph->numEdges()) +
       " edges, with an exposed weight of " +
-      std::to_string(graph->getTotalEdgeWeight()) + "." << std::endl;
+      std::to_string(graph->getTotalEdgeWeight()) + ".");
 
   if (stoppingCriteria->shouldStop(level, parent, graph)) {
-    Partitioning part = m_initialBisector->execute(target, graph); 
+    Partitioning part = m_initialBisector->execute(target, graph);
     TwoWayConnectivity conn = \
         TwoWayConnectivity::fromPartitioning(graph, &part);
     return PartitioningInformation(std::move(part), std::move(conn));
@@ -122,7 +122,6 @@ PartitioningInformation MultilevelBisector::recurse(
     contractTmr.start();
     DiscreteCoarseGraph coarse(graph, &agg);
     contractTmr.stop();
-    std::cout << "Contraction took: " << contractTmr.poll() << std::endl;
     m_timeKeeper->reportTime(TimeKeeper::CONTRACTION, contractTmr.poll());
 
     coarsenTmr.stop();
@@ -137,7 +136,7 @@ PartitioningInformation MultilevelBisector::recurse(
 
     sl::Timer projectTmr;
     projectTmr.start();
-    PartitioningInformation finePartInfo = coarse.project(&coarsePartInfo); 
+    PartitioningInformation finePartInfo = coarse.project(&coarsePartInfo);
     projectTmr.stop();
     m_timeKeeper->reportTime(TimeKeeper::PROJECTION, projectTmr.poll());
 
