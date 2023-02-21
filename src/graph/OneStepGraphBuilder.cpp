@@ -57,7 +57,7 @@ OneStepGraphBuilder::OneStepGraphBuilder(
 {
   m_edgePrefix[0] = 0;
 
-  // add implicit first edge 
+  // add implicit first edge
   m_htable[0] = 0;
   m_edgeList[0] = 0;
   m_edgeWeight[0] = 0;

@@ -46,7 +46,7 @@ class VertexGroup
             vtx_type const * ptr) :
           m_ptr(ptr)
         {
-          // do nothing 
+          // do nothing
         }
 
         inline Vertex operator*() const noexcept
@@ -103,7 +103,7 @@ class VertexGroup
       m_size(size),
       m_fineVertices(fineVertices)
     {
-      // do nothing 
+      // do nothing
     }
 
     /**
@@ -114,7 +114,7 @@ class VertexGroup
     */
     inline Iterator begin() const noexcept
     {
-      return Iterator(m_fineVertices); 
+      return Iterator(m_fineVertices);
     }
 
     /**
@@ -147,7 +147,7 @@ class VertexGroup
   private:
     vtx_type const m_size;
     vtx_type const * const m_fineVertices;
-    
+ 
 };
 
 }

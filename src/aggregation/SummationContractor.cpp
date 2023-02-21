@@ -55,9 +55,6 @@ GraphHandle contractGraph(
 {
   OneStepGraphBuilder builder(aggregation->getNumCoarseVertices(), graph->numEdges());
 
-  sl::Timer tmr;
-  tmr.start();
-
   // go over each fine vertex
   vtx_type coarseVertex = 0;
   for (VertexGroup const group : aggregation->coarseVertices()) {
@@ -79,13 +76,7 @@ GraphHandle contractGraph(
     ++coarseVertex;
   }
 
-  tmr.stop();
-  std::cout << "Contraction alone: " << tmr.poll() << std::endl;
-
-  tmr.start();
   GraphHandle next = builder.finish();
-  tmr.stop();
-  std::cout << "Builder took: " << tmr.poll() << std::endl;
 
   return next;
 }

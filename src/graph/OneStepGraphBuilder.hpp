@@ -113,7 +113,7 @@ class OneStepGraphBuilder
     // set next self-loop
     m_htable[m_numVertices] = lastEdge;
     m_edgeList[lastEdge] = m_numVertices;
-    m_edgeWeight[lastEdge] = 0; 
+    m_edgeWeight[lastEdge] = 0;
   }
 
   /**

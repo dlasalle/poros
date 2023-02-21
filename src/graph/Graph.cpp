@@ -55,7 +55,7 @@ sl::ConstArray<T> emptyIfNull(
     return sl::ConstArray<T>(nullptr, 0);
   }
 }
-    
+
 
 
 /******************************************************************************
