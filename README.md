@@ -1,14 +1,6 @@
 Poros
 =====
 
-<a href="https://travis-ci.org/dlasalle/poros">
-  <img src="https://travis-ci.org/dlasalle/poros.svg?branch=master"/>
-</a>
-
-<a href="https://ci.appveyor.com/project/dlasalle/poros">
-  <img src="https://ci.appveyor.com/api/projects/status/63qae2yj658w41dr/branch/master?svg=true" />
-</a>
-
 <a href='https://poros.readthedocs.io/en/latest/poros_8h.html'>
   <img src='https://readthedocs.org/projects/poros/badge/?version=latest' alt='Documentation Status' />
 </a>
