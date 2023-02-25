@@ -55,7 +55,7 @@ sl::ConstArray<T> emptyIfNull(
     return sl::ConstArray<T>(nullptr, 0);
   }
 }
-    
+
 
 
 /******************************************************************************
@@ -132,6 +132,27 @@ Graph::Graph(
   }
 }
 
+Graph::Graph(
+    sl::ConstArray<adj_type> edgePrefix,
+    sl::ConstArray<vtx_type> edgeList,
+    sl::ConstArray<wgt_type> vertexWeight,
+    sl::ConstArray<wgt_type> edgeWeight,
+    wgt_type const totalVertexWeight,
+    wgt_type const totalEdgeWeight,
+    bool const unitVertexWeight,
+    bool const unitEdgeWeight) :
+  m_unitEdgeWeight(unitEdgeWeight),
+  m_unitVertexWeight(unitVertexWeight),
+  m_numVertices(edgePrefix.size()-1),
+  m_numEdges(edgeList.size()),
+  m_totalVertexWeight(totalVertexWeight),
+  m_totalEdgeWeight(totalEdgeWeight),
+  m_edgePrefix(std::move(edgePrefix)),
+  m_edgeList(std::move(edgeList)),
+  m_vertexWeight(std::move(vertexWeight)),
+  m_edgeWeight(std::move(edgeWeight))
+{
+}
 
 
 
@@ -221,7 +242,9 @@ bool Graph::isValid() const
         }
       }
       if (!found) {
-        std::cerr << "Did not find return edge for " << e.index << std::endl;
+        std::cerr << "Did not find return edge for edge " << e.index
+            << "(src " << v.index << ", dst " << destinationOf(e).index <<
+            ")" << std::endl;
         return false;
       }
     }

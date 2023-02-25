@@ -41,10 +41,8 @@ class VertexGrouping
   {
     public:
       Iterator(
-          vtx_type const index,
           vtx_type const * const finePrefix,
           vtx_type const * const fineMap) :
-        m_index(index),
         m_finePrefix(finePrefix),
         m_fineMap(fineMap)
       {
@@ -54,45 +52,44 @@ class VertexGrouping
       inline VertexGroup operator*() const noexcept
       {
         return VertexGroup(
-            m_finePrefix[m_index+1]-m_finePrefix[m_index],
-            m_fineMap + m_finePrefix[m_index]);
+            m_finePrefix[1]-m_finePrefix[0],
+            m_fineMap + m_finePrefix[0]);
       }
 
       inline Iterator const & operator++() noexcept
       {
-        ++m_index;
+        ++m_finePrefix;
         return *this;
       }
 
       inline Iterator const & operator+=(
           vtx_type const offset) noexcept
       {
-        m_index += offset;
+        m_finePrefix += offset;
         return *this;
       }
 
       inline Iterator const & operator-=(
           vtx_type const offset) noexcept
       {
-        m_index -= offset;
+        m_finePrefix -= offset;
         return *this;
       }
 
       inline bool operator==(
           Iterator const & other) const noexcept
       {
-        return m_index == other.m_index;
+        return m_finePrefix == other.m_finePrefix;
       }
 
       inline bool operator!=(
           Iterator const & other) const noexcept
       {
-        return m_index != other.m_index;
+        return m_finePrefix != other.m_finePrefix;
       }
 
       private:
-        vtx_type m_index;
-        vtx_type const * const m_finePrefix;
+        vtx_type const * m_finePrefix;
         vtx_type const * const m_fineMap;
   };
 
@@ -120,9 +117,9 @@ class VertexGrouping
   *
   * @return The beginning iterator.
   */
-  inline Iterator begin() const
+  inline Iterator begin() const noexcept
   {
-    return Iterator(0, m_finePrefix, m_fineMap); 
+    return Iterator(m_finePrefix, m_fineMap); 
   }
 
   /**
@@ -131,9 +128,9 @@ class VertexGrouping
   *
   * @return The ending iterator.
   */
-  inline Iterator end() const
+  inline Iterator end() const noexcept
   {
-    return Iterator(m_numCoarseVertices, m_finePrefix, m_fineMap);
+    return Iterator(m_finePrefix + m_numCoarseVertices, m_fineMap);
   }
 
   private:

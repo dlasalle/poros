@@ -89,10 +89,9 @@ UNITTEST(RandomMatchingAggregator, ConnectedMatch)
     // should be a matching
     testLessOrEqual(group.size(), 2U);
     if (group.size() == 2) {
-      PermutedVertexSet const set = group.fineVertices();
       bool found = false;
-      for (Edge const e : graph.edgesOf(set[0])) {
-        if (graph.destinationOf(e) == set[1]) {
+      for (Edge const e : graph.edgesOf(group[0])) {
+        if (graph.destinationOf(e) == group[1]) {
           found = true;
           break;
         }
