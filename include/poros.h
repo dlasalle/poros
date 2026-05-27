@@ -109,6 +109,12 @@ typedef struct {
    * benchmarking purposes.
    */
   int outputTimes;
+
+  /**
+   * @brief The number of global partitions to make and keep the best one.
+   * This effectively run the whole partitioner numGlobalCuts times.
+   */
+  int numGlobalCuts;
 } poros_options_struct;
 
 
