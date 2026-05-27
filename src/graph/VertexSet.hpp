@@ -44,7 +44,7 @@ class VertexSet
     class Iterator
     {
       public:
-        static Iterator make(
+        FORCEINLINE static Iterator make(
             vtx_type const index) noexcept
         {
           Iterator i;
@@ -53,38 +53,38 @@ class VertexSet
           return i;
         }
 
-        inline Vertex operator*() const noexcept
+        FORCEINLINE Vertex operator*() const noexcept
         {
           return Vertex::make(m_index);
         }
 
-        inline Iterator const & operator++() noexcept
+        FORCEINLINE Iterator const & operator++() noexcept
         {
           ++m_index;
           return *this;
         }
 
-        inline Iterator const & operator+=(
+        FORCEINLINE Iterator const & operator+=(
             vtx_type const offset) noexcept
         {
           m_index += offset;
           return *this;
         }
 
-        inline Iterator const & operator-=(
+        FORCEINLINE Iterator const & operator-=(
             vtx_type const offset) noexcept
         {
           m_index -= offset;
           return *this;
         }
 
-        inline bool operator==(
+        FORCEINLINE bool operator==(
             Iterator const & other) const noexcept
         {
           return m_index == other.m_index;
         }
 
-        inline bool operator!=(
+        FORCEINLINE bool operator!=(
             Iterator const & other) const noexcept
         {
           return m_index != other.m_index;
@@ -100,7 +100,7 @@ class VertexSet
     * @param begin The starting vertex.
     * @param end The ending vertex (exclusive).
     */
-    VertexSet(
+    FORCEINLINE VertexSet(
         vtx_type const begin,
         vtx_type const end) noexcept :
       m_begin(begin),
@@ -114,7 +114,7 @@ class VertexSet
     *
     * @return The iterator.
     */
-    inline Iterator begin() const noexcept
+    FORCEINLINE Iterator begin() const noexcept
     {
       return Iterator::make(m_begin);
     }
@@ -124,7 +124,7 @@ class VertexSet
     *
     * @return The end iterator.
     */
-    inline Iterator end() const noexcept
+    FORCEINLINE Iterator end() const noexcept
     {
       return Iterator::make(m_end);
     }
@@ -134,7 +134,7 @@ class VertexSet
     *
     * @return The number of vertices.
     */
-    inline vtx_type size() const noexcept
+    FORCEINLINE vtx_type size() const noexcept
     {
       return m_end - m_begin;
     }
@@ -147,7 +147,7 @@ class VertexSet
     *
     * @return The vertex.
     */
-    inline Vertex operator[](
+    FORCEINLINE Vertex operator[](
         vtx_type const index) const noexcept
     {
       return Vertex::make(index);

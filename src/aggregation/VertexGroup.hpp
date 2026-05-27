@@ -42,45 +42,45 @@ class VertexGroup
     class Iterator
     {
       public:
-        Iterator(
+        FORCEINLINE Iterator(
             vtx_type const * ptr) :
           m_ptr(ptr)
         {
           // do nothing
         }
 
-        inline Vertex operator*() const noexcept
+        FORCEINLINE Vertex operator*() const noexcept
         {
           return Vertex::make(*m_ptr);
         }
 
-        inline Iterator const & operator++() noexcept
+        FORCEINLINE Iterator const & operator++() noexcept
         {
           ++m_ptr;
           return *this;
         }
 
-        inline Iterator const & operator+=(
+        FORCEINLINE Iterator const & operator+=(
             vtx_type const offset) noexcept
         {
           m_ptr += offset;
           return *this;
         }
 
-        inline Iterator const & operator-=(
+        FORCEINLINE Iterator const & operator-=(
             vtx_type const offset) noexcept
         {
           m_ptr -= offset;
           return *this;
         }
 
-        inline bool operator==(
+        FORCEINLINE bool operator==(
             Iterator const & other) const noexcept
         {
           return m_ptr == other.m_ptr;
         }
 
-        inline bool operator!=(
+        FORCEINLINE bool operator!=(
             Iterator const & other) const noexcept
         {
           return m_ptr != other.m_ptr;
@@ -97,7 +97,7 @@ class VertexGroup
     * @param fineVertices The set of fine vertices in the group.
     * @param data The graph data.
     */
-    VertexGroup(
+    FORCEINLINE VertexGroup(
         vtx_type const size,
         vtx_type const * const fineVertices) noexcept :
       m_size(size),
@@ -112,7 +112,7 @@ class VertexGroup
     *
     * @return The beginning iterator.
     */
-    inline Iterator begin() const noexcept
+    FORCEINLINE Iterator begin() const noexcept
     {
       return Iterator(m_fineVertices);
     }
@@ -123,12 +123,12 @@ class VertexGroup
     *
     * @return The ending iterator.
     */
-    inline Iterator end() const noexcept
+    FORCEINLINE Iterator end() const noexcept
     {
       return Iterator(m_fineVertices+m_size);
     }
 
-    inline Vertex operator[](vtx_type const index) const noexcept
+    FORCEINLINE Vertex operator[](vtx_type const index) const noexcept
     {
       ASSERT_LESS(index, m_size);
       return Vertex::make(m_fineVertices[index]);
@@ -139,7 +139,7 @@ class VertexGroup
     *
     * @return The number of vertices.
     */
-    inline vtx_type size() const noexcept
+    FORCEINLINE vtx_type size() const noexcept
     {
       return m_size;
     }

@@ -40,7 +40,7 @@ class VertexGrouping
   class Iterator
   {
     public:
-      Iterator(
+      FORCEINLINE Iterator(
           vtx_type const * const finePrefix,
           vtx_type const * const fineMap) :
         m_finePrefix(finePrefix),
@@ -49,40 +49,40 @@ class VertexGrouping
         // do nothing 
       }
 
-      inline VertexGroup operator*() const noexcept
+      FORCEINLINE VertexGroup operator*() const noexcept
       {
         return VertexGroup(
             m_finePrefix[1]-m_finePrefix[0],
             m_fineMap + m_finePrefix[0]);
       }
 
-      inline Iterator const & operator++() noexcept
+      FORCEINLINE Iterator const & operator++() noexcept
       {
         ++m_finePrefix;
         return *this;
       }
 
-      inline Iterator const & operator+=(
+      FORCEINLINE Iterator const & operator+=(
           vtx_type const offset) noexcept
       {
         m_finePrefix += offset;
         return *this;
       }
 
-      inline Iterator const & operator-=(
+      FORCEINLINE Iterator const & operator-=(
           vtx_type const offset) noexcept
       {
         m_finePrefix -= offset;
         return *this;
       }
 
-      inline bool operator==(
+      FORCEINLINE bool operator==(
           Iterator const & other) const noexcept
       {
         return m_finePrefix == other.m_finePrefix;
       }
 
-      inline bool operator!=(
+      FORCEINLINE bool operator!=(
           Iterator const & other) const noexcept
       {
         return m_finePrefix != other.m_finePrefix;
@@ -117,7 +117,7 @@ class VertexGrouping
   *
   * @return The beginning iterator.
   */
-  inline Iterator begin() const noexcept
+  FORCEINLINE Iterator begin() const noexcept
   {
     return Iterator(m_finePrefix, m_fineMap); 
   }
@@ -128,7 +128,7 @@ class VertexGrouping
   *
   * @return The ending iterator.
   */
-  inline Iterator end() const noexcept
+  FORCEINLINE Iterator end() const noexcept
   {
     return Iterator(m_finePrefix + m_numCoarseVertices, m_fineMap);
   }

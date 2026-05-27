@@ -103,7 +103,7 @@ class GraphHandle
     *
     * @return The underlying graph.
     */
-    Graph * operator->() noexcept
+    FORCEINLINE Graph * operator->() noexcept
     {
       return m_graph.get();
     }
@@ -114,7 +114,7 @@ class GraphHandle
     *
     * @return The underlying graph.
     */
-    Graph const * operator->() const noexcept
+    FORCEINLINE Graph const * operator->() const noexcept
     {
       return m_graph.get();
     }
@@ -125,7 +125,7 @@ class GraphHandle
     *
     * @return The pointer.
     */
-    Graph * get() noexcept
+    FORCEINLINE Graph * get() noexcept
     {
       return m_graph.get();
     }
@@ -136,7 +136,7 @@ class GraphHandle
     *
     * @return The pointer.
     */
-    Graph const * get() const noexcept
+    FORCEINLINE Graph const * get() const noexcept
     {
       return m_graph.get();
     }

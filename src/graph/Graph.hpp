@@ -120,7 +120,7 @@ class Graph
     *
     * @return The number of vertices.
     */
-    vtx_type numVertices() const noexcept
+    FORCEINLINE vtx_type numVertices() const noexcept
     {
       return m_numVertices;
     }
@@ -131,7 +131,7 @@ class Graph
     *
     * @return The number of edges.
     */
-    adj_type numEdges() const noexcept
+    FORCEINLINE adj_type numEdges() const noexcept
     {
       return m_numEdges;
     }
@@ -142,7 +142,7 @@ class Graph
     *
     * @return The total weight.
     */
-    wgt_type getTotalVertexWeight() const noexcept
+    FORCEINLINE wgt_type getTotalVertexWeight() const noexcept
     {
       return m_totalVertexWeight; 
     }
@@ -153,7 +153,7 @@ class Graph
     *
     * @return The total weight.
     */
-    wgt_type getTotalEdgeWeight() const noexcept
+    FORCEINLINE wgt_type getTotalEdgeWeight() const noexcept
     {
       return m_totalEdgeWeight;
     }
@@ -164,7 +164,7 @@ class Graph
     *
     * @return The edge prefixsum array.
     */
-    adj_type const * getEdgePrefix() const noexcept
+    FORCEINLINE adj_type const * getEdgePrefix() const noexcept
     {
       return m_edgePrefix.data();
     }
@@ -175,7 +175,7 @@ class Graph
     *
     * @return The edge list array.
     */
-    vtx_type const * getEdgeList() const noexcept
+    FORCEINLINE vtx_type const * getEdgeList() const noexcept
     {
       return m_edgeList.data();
     }
@@ -188,7 +188,7 @@ class Graph
     *
     * @return The weight of the vertex.
     */
-    wgt_type getVertexWeight(
+    FORCEINLINE wgt_type getVertexWeight(
         vtx_type const vertex) const noexcept
     {
       return m_vertexWeight[vertex];
@@ -200,7 +200,7 @@ class Graph
     *
     * @return The vertex weight array.
     */
-    wgt_type const * getVertexWeight() const noexcept
+    FORCEINLINE wgt_type const * getVertexWeight() const noexcept
     {
       return m_vertexWeight.data();
     }
@@ -211,7 +211,7 @@ class Graph
     *
     * @return The edge weight array.
     */
-    wgt_type const * getEdgeWeight() const noexcept
+    FORCEINLINE wgt_type const * getEdgeWeight() const noexcept
     {
       return m_edgeWeight.data();
     }
@@ -222,7 +222,7 @@ class Graph
     *
     * @return The vertex set.
     */
-    VertexSet vertices() const noexcept
+    FORCEINLINE VertexSet vertices() const noexcept
     {
       return VertexSet(0, m_numVertices);
     }
@@ -233,7 +233,7 @@ class Graph
     *
     * @return The edge set.
     */
-    EdgeSet edges() const noexcept
+    FORCEINLINE EdgeSet edges() const noexcept
     {
       return EdgeSet(0, m_numEdges);
     }
@@ -246,7 +246,7 @@ class Graph
     *
     * @return The edge set of the vertex.
     */
-    EdgeSet edgesOf(
+    FORCEINLINE EdgeSet edgesOf(
         Vertex const vertex) const noexcept
     {
       vtx_type const v = vertex.index;
@@ -260,7 +260,7 @@ class Graph
     *
     * @return The degree of the vertex.
     */
-    vtx_type degreeOf(
+    FORCEINLINE vtx_type degreeOf(
         Vertex const v) const noexcept
     {
       return m_edgePrefix[v.index+1] - m_edgePrefix[v.index];
@@ -273,7 +273,7 @@ class Graph
     *
     * @return The destination vertex.
     */
-    Vertex destinationOf(
+    FORCEINLINE Vertex destinationOf(
         Edge const e) const noexcept
     {
       return Vertex::make(m_edgeList[e.index]);
@@ -287,7 +287,7 @@ class Graph
     * @return The weight.
     */
     template<bool HAS_EDGE_WEIGHT>
-    wgt_type weightOf(
+    FORCEINLINE wgt_type weightOf(
         Edge const e) const noexcept
     {
       ASSERT_EQUAL(HAS_EDGE_WEIGHT, !hasUnitEdgeWeight());
@@ -307,7 +307,7 @@ class Graph
     * @return The weight.
     */
     template<bool HAS_VERTEX_WEIGHT>
-    wgt_type weightOf(
+    FORCEINLINE wgt_type weightOf(
         Vertex const v) const noexcept
     {
       ASSERT_EQUAL(HAS_VERTEX_WEIGHT, !hasUnitVertexWeight());
@@ -323,7 +323,7 @@ class Graph
     *
     * @return True if the edge weights are all equal.
     */
-    bool hasUnitEdgeWeight() const noexcept
+    FORCEINLINE bool hasUnitEdgeWeight() const noexcept
     {
       return m_unitEdgeWeight;
     }
@@ -333,7 +333,7 @@ class Graph
     *
     * @return True if the vertex weights are all equal.
     */
-    bool hasUnitVertexWeight() const noexcept
+    FORCEINLINE bool hasUnitVertexWeight() const noexcept
     {
       return m_unitVertexWeight;
     }

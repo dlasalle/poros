@@ -43,31 +43,31 @@ class EdgeSet
     class Iterator
     {
       public:
-        Iterator(
+        FORCEINLINE Iterator(
             adj_type const index) noexcept :
           m_index(index)
         {
           // do nothing
         }
 
-        Edge operator*() const
+        FORCEINLINE Edge operator*() const
         {
           return Edge::make(m_index);
         }
 
-        Iterator const & operator++()
+        FORCEINLINE Iterator const & operator++()
         {
           ++m_index;
           return *this;
         }
 
-        bool operator==(
+        FORCEINLINE bool operator==(
             Iterator const & other) const
         {
           return m_index == other.m_index;
         }
 
-        bool operator!=(
+        FORCEINLINE bool operator!=(
             Iterator const & other) const
         {
           return m_index != other.m_index;
@@ -85,7 +85,7 @@ class EdgeSet
     * @param edgeList The edge list array.
     * @param edgeWeight The edge weight array.
     */
-    EdgeSet(
+    FORCEINLINE EdgeSet(
         adj_type const begin,
         adj_type const end) :
       m_begin(begin),
@@ -99,7 +99,7 @@ class EdgeSet
     *
     * @return The iterator.
     */
-    Iterator begin() const noexcept
+    FORCEINLINE Iterator begin() const noexcept
     {
       return Iterator(m_begin);
     }
@@ -110,7 +110,7 @@ class EdgeSet
     *
     * @return The iterator.
     */
-    Iterator end() const noexcept
+    FORCEINLINE Iterator end() const noexcept
     {
       return Iterator(m_end);
     }
@@ -120,7 +120,7 @@ class EdgeSet
     *
     * @return The number of edges in this edge set.
     */
-    adj_type size() const noexcept
+    FORCEINLINE adj_type size() const noexcept
     {
       return m_end - m_begin;
     }

@@ -95,7 +95,7 @@ class Aggregation
     *
     * @return The number of coarse vertices.
     */
-    vtx_type getNumCoarseVertices() const noexcept
+    FORCEINLINE vtx_type getNumCoarseVertices() const noexcept
     {
       return m_numCoarseVertices;
     }
@@ -108,7 +108,7 @@ class Aggregation
     *
     * @return The coarse vertex number.
     */
-    vtx_type getCoarseVertexNumber(
+    FORCEINLINE vtx_type getCoarseVertexNumber(
         const vtx_type v) const noexcept
     {
       ASSERT_LESS(v, m_numFineVertices);
@@ -133,17 +133,17 @@ class Aggregation
     void fillCoarseMap(
         vtx_type * data) const noexcept;
 
-    vtx_type const * finePrefix() const noexcept
+    FORCEINLINE vtx_type const * finePrefix() const noexcept
     {
       return m_finePrefix.data();
     }
 
-    vtx_type const * fineMap() const noexcept
+    FORCEINLINE vtx_type const * fineMap() const noexcept
     {
       return m_fineMap.data();
     }
 
-    vtx_type const * cmap() const noexcept
+    FORCEINLINE vtx_type const * cmap() const noexcept
     {
       return m_coarseMap.data();
     }

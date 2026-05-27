@@ -42,7 +42,6 @@
 namespace poros
 {
 
-
 class OneStepGraphBuilder
 {
   public:
@@ -62,7 +61,7 @@ class OneStepGraphBuilder
   * @param dest The destination of the edge.
   * @param wgt The weight of the edge.
   */
-  inline void addEdge(
+  FORCEINLINE void addEdge(
       vtx_type const dest,
       wgt_type const wgt) noexcept
   {
@@ -85,7 +84,7 @@ class OneStepGraphBuilder
   *
   * @param wgt The weight of the vertex.
   */
-  inline void finishVertex(
+  FORCEINLINE void finishVertex(
         vtx_type const vertexWeight) noexcept
   {
     vtx_type const thisVtx = m_numVertices;
