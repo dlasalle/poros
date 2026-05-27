@@ -62,7 +62,8 @@ poros_options_struct POROS_defaultOptions()
     0,
     8,
     SORTED_HEAVY_EDGE_MATCHING,
-    false
+    false,
+    1
   };
 
   return opts;
@@ -119,10 +120,16 @@ int POROS_PartGraphRecursive(
       baseGraph.getTotalVertexWeight(), params.getImbalanceTolerance(), \
       params.getTargetPartitionFractions());
 
-  Partitioning part = partitioner.execute(&target, &baseGraph);
+  wgt_type bestCut;
+  for (int i = 0; i < options->numGlobalCuts; ++i) {
+    Partitioning part = partitioner.execute(&target, &baseGraph);
 
-  // output data
-  part.output(totalCutEdgeWeight, partitionAssignment);
+    if (i == 0 || part.getCutEdgeWeight() < bestCut) {
+      bestCut = part.getCutEdgeWeight();
+      // output data
+      part.output(totalCutEdgeWeight, partitionAssignment);
+    }
+  }
 
   totalTimer.stop();
   timeKeeper->reportTime(TimeKeeper::TOTAL, totalTimer.poll());
