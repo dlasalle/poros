@@ -133,7 +133,7 @@ class TargetPartitioning
     *
     * @return The target fraction.
     */
-    inline double getTargetFraction(
+    FORCEINLINE double getTargetFraction(
          pid_type const part) const noexcept
     {
       ASSERT_LESS(part, m_numPartitions);
@@ -149,7 +149,7 @@ class TargetPartitioning
     *
     * @return The maximum weight.
     */
-    inline wgt_type getMaxWeight(
+    FORCEINLINE wgt_type getMaxWeight(
         pid_type const part) const noexcept
     {
       ASSERT_LESS(part, m_numPartitions);
@@ -165,7 +165,7 @@ class TargetPartitioning
     *
     * @return The target weight.
     */
-    inline wgt_type getTargetWeight(
+    FORCEINLINE wgt_type getTargetWeight(
          pid_type const part) const noexcept
     {
       ASSERT_LESS(part, m_numPartitions);
@@ -182,7 +182,7 @@ class TargetPartitioning
     *
     * @return The amount of excess weight.
     */
-    inline wgt_type getMaxExcessWeight(
+    FORCEINLINE wgt_type getMaxExcessWeight(
          pid_type const part) const noexcept
     {
       ASSERT_LESS(part, m_numPartitions);
@@ -197,7 +197,7 @@ class TargetPartitioning
     *
     * @return The number of partitions.
     */
-    inline pid_type numPartitions() const noexcept
+    FORCEINLINE pid_type numPartitions() const noexcept
     {
       return m_numPartitions;
     }

@@ -67,7 +67,7 @@ class MatchedAggregationBuilder
     *
     * @return True if the vertex has been matched.
     */
-    inline bool isMatched(
+    FORCEINLINE bool isMatched(
         vtx_type const vertex) const noexcept
     {
       ASSERT_LESS(vertex, m_match.size());
@@ -82,7 +82,7 @@ class MatchedAggregationBuilder
     * @param first The first vertex to match.
     * @param second The second vertex to match.
     */
-    inline void match(
+    FORCEINLINE void match(
         vtx_type const first,
         vtx_type const second) noexcept
     {
@@ -101,7 +101,7 @@ class MatchedAggregationBuilder
     *
     * @return The unmatched vertex.
     */
-    inline vtx_type getNextUnmatched() noexcept
+    FORCEINLINE vtx_type getNextUnmatched() noexcept
     {
       while (m_nextUnmatched < m_match.size() && isMatched(m_nextUnmatched)) {
         ++m_nextUnmatched;

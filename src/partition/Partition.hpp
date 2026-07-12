@@ -61,7 +61,7 @@ class Partition
     *
     * @return The index.
     */
-    inline pid_type index() const noexcept
+    FORCEINLINE pid_type index() const noexcept
     {
       return m_index;
     }
@@ -72,7 +72,7 @@ class Partition
     *
     * @return The weight.
     */
-    inline wgt_type weight() const noexcept
+    FORCEINLINE wgt_type weight() const noexcept
     {
       return m_weight;
     }

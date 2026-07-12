@@ -75,7 +75,7 @@ class TwoWayConnectivity
     *
     * @return The appropriate value from move_direction_enum.
     */
-    static inline int getDirection(
+    static FORCEINLINE int getDirection(
         pid_type const destVertexA,
         pid_type const homeVertexB) noexcept
     {
@@ -324,7 +324,7 @@ class TwoWayConnectivity
     *
     * @return The state of the vertex in the bodrer (the border_status_enum). 
     */
-    inline int updateBorderStatus(
+    FORCEINLINE int updateBorderStatus(
         vtx_type const vertex) noexcept
     {
       if (m_border.has(vertex)) {

@@ -57,38 +57,38 @@ class PermutedVertexSet
           return i;
         }
 
-        inline Vertex operator*() const
+        FORCEINLINE Vertex operator*() const
         {
           return Vertex::make(*m_ptr);
         }
 
-        inline Iterator const & operator++()
+        FORCEINLINE Iterator const & operator++()
         {
           ++m_ptr;
           return *this;
         }
 
-        inline Iterator const & operator+=(
+        FORCEINLINE Iterator const & operator+=(
             vtx_type const offset)
         {
           m_ptr += offset;
           return *this;
         }
 
-        inline Iterator const & operator-=(
+        FORCEINLINE Iterator const & operator-=(
             vtx_type const offset)
         {
           m_ptr -= offset;
           return *this;
         }
 
-        inline bool operator==(
+        FORCEINLINE bool operator==(
             Iterator const & other) const
         {
           return m_ptr == other.m_ptr;
         }
 
-        inline bool operator!=(
+        FORCEINLINE bool operator!=(
             Iterator const & other) const
         {
           return m_ptr != other.m_ptr;
@@ -165,7 +165,7 @@ class PermutedVertexSet
     *
     * @return The iterator.
     */
-    inline Iterator begin() const noexcept
+    FORCEINLINE Iterator begin() const noexcept
     {
       return Iterator::make(m_set.get());
     }
@@ -175,7 +175,7 @@ class PermutedVertexSet
     *
     * @return The end iterator.
     */
-    inline Iterator end() const noexcept
+    FORCEINLINE Iterator end() const noexcept
     {
       return Iterator::make(m_set.get() + m_size);
     }
@@ -185,7 +185,7 @@ class PermutedVertexSet
     *
     * @return The number of vertices.
     */
-    inline vtx_type size() const noexcept
+    FORCEINLINE vtx_type size() const noexcept
     {
       return m_size;
     }
@@ -197,7 +197,7 @@ class PermutedVertexSet
     *
     * @return The vertex.
     */
-    inline Vertex operator[](
+    FORCEINLINE Vertex operator[](
         size_t const index) const noexcept
     {
       return Vertex::make(m_set[index]);

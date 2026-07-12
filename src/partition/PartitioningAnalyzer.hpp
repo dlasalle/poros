@@ -80,7 +80,7 @@ class PartitioningAnalyzer
     *
     * @return The imbalance.
     */
-    inline double getImbalance(
+    FORCEINLINE double getImbalance(
         pid_type const part) const noexcept
     {
       double const target = m_target->getTargetFraction(part);
@@ -97,7 +97,7 @@ class PartitioningAnalyzer
     *
     * @return Whether or not the partition is overweight.
     */
-    inline bool isOverWeight(
+    FORCEINLINE bool isOverWeight(
         pid_type const part) const noexcept
     {
       return m_target->getMaxWeight(part) < m_partitioning->getWeight(part);
@@ -109,7 +109,7 @@ class PartitioningAnalyzer
     *
     * @return True if it is balanced.
     */
-    inline bool isBalanced() const noexcept
+    FORCEINLINE bool isBalanced() const noexcept
     {
       bool balanced = true;
       for (Partition const & part : *m_partitioning) {

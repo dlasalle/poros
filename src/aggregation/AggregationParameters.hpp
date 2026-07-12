@@ -58,7 +58,7 @@ class AggregationParameters
     *
     * @return True if the weight is within allowed limits.
     */
-    inline bool isAllowedVertexWeight(
+    FORCEINLINE bool isAllowedVertexWeight(
         wgt_type wgt) const
     {
       // if m_maxVertexWeight has not been set, everything is allowed.
