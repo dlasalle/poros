@@ -26,7 +26,7 @@
 */
 
 #include "multilevel/DiscreteCoarseGraph.hpp"
-#include "aggregation/SummationContractor.hpp"
+#include "aggregation/TwoStepSummationContractor.hpp"
 #include "partition/TwoWayConnectivityBuilder.hpp"
 
 #include <string>
@@ -53,7 +53,7 @@ GraphHandle contract(
   Graph const * graph,
   Aggregation const * agg)
 {
-  SummationContractor contractor;
+  TwoStepSummationContractor contractor;
 
   return contractor.contract(graph, agg);
 }

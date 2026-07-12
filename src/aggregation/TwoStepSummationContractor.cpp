@@ -1,6 +1,6 @@
 /**
-* @file SummationContractor.cpp
-* @brief Implementation of the SummationContractor class.
+* @file TwoStepSummationContractor.cpp
+* @brief Implementation of the TwoStepSummationContractor class.
 * @author Dominique LaSalle <dominique@solidlake.com>
 * Copyright 2018-2026
 * @version 1
@@ -28,7 +28,7 @@
 
 
 
-#include "SummationContractor.hpp"
+#include "TwoStepSummationContractor.hpp"
 #include "Aggregation.hpp"
 #include "graph/OneStepGraphBuilder.hpp"
 
@@ -47,10 +47,25 @@ namespace poros
 namespace
 {
 
+sl::Array<vtx_type> projectCmap(
+    Graph const * const graph,
+    Aggregation const * const aggregation)
+{
+  sl::Array<vtx_type> mappedEdges(graph->numEdges());
+
+  for (Edge const edge : graph->edges()) {
+    vtx_type const fineNeighbor = graph->destinationOf(edge).index;
+    mappedEdges[edge.index] = aggregation->getCoarseVertexNumber(fineNeighbor);
+  }
+
+  return mappedEdges;
+}
+
 template<bool HAS_VERTEX_WEIGHTS, bool HAS_EDGE_WEIGHTS>
 GraphHandle contractGraph(
     Graph const * const graph,
-    Aggregation const * const aggregation)
+    Aggregation const * const aggregation,
+    vtx_type const * const mappedEdges)
 {
   OneStepGraphBuilder builder(
       aggregation->getNumCoarseVertices(),
@@ -63,8 +78,7 @@ GraphHandle contractGraph(
     for (Vertex const vertex : group) {
       coarseVertexWeight += graph->weightOf<HAS_VERTEX_WEIGHTS>(vertex);
       for (Edge const edge : graph->edgesOf(vertex)) {
-        vtx_type const coarseNeighbor = aggregation->getCoarseVertexNumber(
-            graph->destinationOf(edge).index);
+        vtx_type const coarseNeighbor = mappedEdges[edge.index];
         wgt_type const ewgt = graph->weightOf<HAS_EDGE_WEIGHTS>(edge);
         builder.addEdge(coarseNeighbor, ewgt);
       }
@@ -86,7 +100,7 @@ GraphHandle contractGraph(
 ******************************************************************************/
 
 
-SummationContractor::SummationContractor()
+TwoStepSummationContractor::TwoStepSummationContractor()
 {
   // do nothing
 }
@@ -99,21 +113,23 @@ SummationContractor::SummationContractor()
 ******************************************************************************/
 
 
-GraphHandle SummationContractor::contract(
+GraphHandle TwoStepSummationContractor::contract(
     Graph const * const graph,
     Aggregation const * const aggregation)
 {
+  sl::Array<vtx_type> const mappedEdges = projectCmap(graph, aggregation);
+
   if (graph->hasUnitVertexWeight()) {
     if (graph->hasUnitEdgeWeight()) {
-      return contractGraph<false, false>(graph, aggregation);
+      return contractGraph<false, false>(graph, aggregation, mappedEdges.data());
     } else {
-      return contractGraph<false, true>(graph, aggregation);
+      return contractGraph<false, true>(graph, aggregation, mappedEdges.data());
     }
   } else {
     if (graph->hasUnitEdgeWeight()) {
-      return contractGraph<true, false>(graph, aggregation);
+      return contractGraph<true, false>(graph, aggregation, mappedEdges.data());
     } else {
-      return contractGraph<true, true>(graph, aggregation);
+      return contractGraph<true, true>(graph, aggregation, mappedEdges.data());
     }
   }
 }
